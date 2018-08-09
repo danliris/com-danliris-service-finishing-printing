@@ -72,13 +72,13 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return new ReadResponse<StepModel>(data, totalData, orderDictionary, selectedFields);
         }
 
-        public async Task<int> Create(StepModel model)
+        public async Task<int> CreateAsync(StepModel model)
         {
             StepLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<StepModel> ReadById(int id)
+        public async Task<StepModel> ReadByIdAsync(int id)
         {
             return await StepLogic.ReadModelById(id);
         }

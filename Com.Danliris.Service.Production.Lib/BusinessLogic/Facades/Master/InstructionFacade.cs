@@ -76,13 +76,13 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return new ReadResponse<InstructionModel>(data, totalData, orderDictionary, selectedFields);
         }
 
-        public async Task<int> Create(InstructionModel model)
+        public async Task<int> CreateAsync(InstructionModel model)
         {
             InstructionLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<InstructionModel> ReadById(int id)
+        public async Task<InstructionModel> ReadByIdAsync(int id)
         {
             return await InstructionLogic.ReadModelById(id);
         }

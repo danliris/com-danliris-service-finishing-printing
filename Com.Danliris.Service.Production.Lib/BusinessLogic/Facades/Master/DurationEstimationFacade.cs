@@ -75,13 +75,13 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return new ReadResponse<DurationEstimationModel>(data, totalData, orderDictionary, selectedFields);
         }
 
-        public async Task<int> Create(DurationEstimationModel model)
+        public async Task<int> CreateAsync(DurationEstimationModel model)
         {
             DurationEstimationLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<DurationEstimationModel> ReadById(int id)
+        public async Task<DurationEstimationModel> ReadByIdAsync(int id)
         {
             return await DurationEstimationLogic.ReadModelById(id);
         }
