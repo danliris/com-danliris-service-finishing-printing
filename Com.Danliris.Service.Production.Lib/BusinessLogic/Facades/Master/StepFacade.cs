@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id", "Alias", "Code", "Process", "ProcessArea", "StepIndicators"
+                    "Id", "Alias", "Code", "Process", "ProcessArea", "StepIndicators", "LastModifiedUtc"
                 };
             query = query
                 .Select(field => new StepModel
@@ -54,6 +54,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
                     Code = field.Code,
                     Process = field.Process,
                     ProcessArea = field.ProcessArea,
+                    LastModifiedUtc = field.LastModifiedUtc,
                     StepIndicators = new List<StepIndicatorModel>(field.StepIndicators.Select(i => new StepIndicatorModel
                     {
                         Name = i.Name,
@@ -74,6 +75,11 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public async Task<int> Create(StepModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
             StepLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
@@ -109,9 +115,9 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             query = QueryHelper<StepModel>.Filter(query, filterDictionary);
 
             List<string> selectedFields = new List<string>()
-                {
-                    "Alias", "Code", "Process", "ProcessArea", "StepIndicators"
-                };
+            {
+                "Alias", "Code", "Process", "ProcessArea", "StepIndicators"
+            };
             query = query
                 .Select(field => new StepModel
                 {

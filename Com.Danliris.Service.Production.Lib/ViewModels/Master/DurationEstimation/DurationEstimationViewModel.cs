@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Master.DurationEstimati
 {
     public class DurationEstimationViewModel : BaseViewModel, IValidatableObject
     {
+        public string Code { get; set; }
         public ProcessTypeIntegrationViewModel ProcessType { get; set; }
         public List<DurationEstimationAreaViewModel> Areas { get; set; }
 
@@ -37,7 +38,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Master.DurationEstimati
                         AreaErrors += "Name: 'Nama Area tidak boleh duplikat', ";
                     }
 
-                    if (Area.Duration < 0)
+                    if (Area.Duration <= 0)
                     {
                         Count++;
                         AreaErrors += "Duration: 'Durasi harus lebih besar dari 0', ";
