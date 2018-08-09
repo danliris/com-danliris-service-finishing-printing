@@ -35,7 +35,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "Alias", "Process"
+                "Code", "Name"
             };
             query = QueryHelper<InstructionModel>.Search(query, searchAttributes, keyword);
 
@@ -78,6 +78,11 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public async Task<int> CreateAsync(InstructionModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
             InstructionLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
@@ -87,9 +92,9 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return await InstructionLogic.ReadModelById(id);
         }
 
-        public async Task<int> Update(int id, InstructionModel model)
+        public async Task<int> UpdateAsync(int id, InstructionModel model)
         {
-            InstructionLogic.UpdateModel(id, model);
+            InstructionLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
@@ -105,7 +110,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "Alias", "Process"
+                "Code", "Name", "Process"
             };
             query = QueryHelper<InstructionModel>.Search(query, searchAttributes, keyword);
 
@@ -113,9 +118,9 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             query = QueryHelper<InstructionModel>.Filter(query, filterDictionary);
 
             List<string> selectedFields = new List<string>()
-                {
-                    "Name", "Code", "Steps"
-                };
+            {
+                "Name", "Code", "Steps"
+            };
             query = query
                 .Select(field => new InstructionModel
                 {

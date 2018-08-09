@@ -48,6 +48,7 @@ namespace Com.Danliris.Service.Production.WebApi
             services
                 .AddTransient<IStepFacade, StepFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
+                .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IMachineTypeFacade, MachineTypeFacade>();
         }
@@ -59,7 +60,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<StepIndicatorLogic>()
                 .AddTransient<InstructionLogic>()
                 .AddTransient<DurationEstimationLogic>()
-                .AddTransient<MachineTypeLogic>();
+                .AddTransient<MachineTypeLogic>()
+                .AddTransient<MachineTypeIndicatorsLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

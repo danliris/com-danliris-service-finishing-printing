@@ -28,7 +28,7 @@ namespace Com.Danliris.Service.Production.WebApi.Controllers.v1.Master
         {
             try
             {
-                ReadResponse<StepModel> read = Facade.Read(page, size, order, select, keyword, filter);
+                ReadResponse<StepModel> read = Facade.ReadVM(page, size, order, select, keyword, filter);
 
                 List<StepModel> dataVM = Mapper.Map<List<StepModel>>(read.Data);
 

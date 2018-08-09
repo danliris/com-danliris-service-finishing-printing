@@ -145,7 +145,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
 
                 TModel model = Mapper.Map<TModel>(viewModel);
 
-                await Facade.Update(id, model);
+                await Facade.UpdateAsync(id, model);
 
                 return NoContent();
             }

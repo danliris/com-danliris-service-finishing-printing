@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType
 {
     public class MachineTypeModel : StandardEntity, IValidatableObject
     {
+        public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<MachineTypeIndicatorsModel> Indicators { get; set; }

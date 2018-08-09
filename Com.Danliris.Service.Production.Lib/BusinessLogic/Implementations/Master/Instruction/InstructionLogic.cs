@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Mast
             return DbSet.Include(d => d.Steps).ThenInclude(d => d.StepIndicators).FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
         }
 
-        public override void UpdateModel(int id, InstructionModel model)
+        public override void UpdateModelAsync(int id, InstructionModel model)
         {
             if (model.Steps != null)
             {
@@ -56,10 +56,11 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Mast
                     if (step == null)
                     {
                         step = _DbSetInstructionStep.Where(w => w.Id == stepId).FirstOrDefault();
+                        var stepIndicators = _DbSetInstructionStepIndicator.Where(w => w.Id == step.Id).ToList();
                         EntityExtension.FlagForDelete(step, IdentityService.Username, UserAgent);
                         _DbSetInstructionStep.Update(step);
 
-                        foreach (var stepIndicator in step.StepIndicators)
+                        foreach (var stepIndicator in stepIndicators)
                         {
                             EntityExtension.FlagForDelete(stepIndicator, IdentityService.Username, UserAgent);
                             _DbSetInstructionStepIndicator.Update(stepIndicator);
@@ -92,7 +93,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Mast
                     }
                 }
             }
-            base.UpdateModel(id, model);
+            base.UpdateModelAsync(id, model);
         }
 
         public override async Task DeleteModel(int id)
