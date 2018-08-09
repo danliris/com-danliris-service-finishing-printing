@@ -56,10 +56,11 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Mast
                     if (step == null)
                     {
                         step = _DbSetInstructionStep.Where(w => w.Id == stepId).FirstOrDefault();
+                        var stepIndicators = _DbSetInstructionStepIndicator.Where(w => w.Id == step.Id).ToList();
                         EntityExtension.FlagForDelete(step, IdentityService.Username, UserAgent);
                         _DbSetInstructionStep.Update(step);
 
-                        foreach (var stepIndicator in step.StepIndicators)
+                        foreach (var stepIndicator in stepIndicators)
                         {
                             EntityExtension.FlagForDelete(stepIndicator, IdentityService.Username, UserAgent);
                             _DbSetInstructionStepIndicator.Update(stepIndicator);

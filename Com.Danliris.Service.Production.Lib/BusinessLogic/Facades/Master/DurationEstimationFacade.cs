@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "ProcessName"
+                "Code", "ProcessTypeName"
             };
             query = QueryHelper<DurationEstimationModel>.Search(query, searchAttributes, keyword);
 
@@ -44,9 +44,9 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             query = QueryHelper<DurationEstimationModel>.Filter(query, filterDictionary);
 
             List<string> selectedFields = new List<string>()
-                {
-                    "Id", "Code", "ProcessTypeCode", "ProcessTypeId", "ProcessTypeName", "OrderTypeCode", "OrderTypeId", "OrderTypeName", "Areas"
-                };
+            {
+                "Id", "Code", "Areas", "ProcessType"
+            };
             query = query
                 .Select(field => new DurationEstimationModel
                 {
@@ -77,6 +77,11 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public async Task<int> Create(DurationEstimationModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
             DurationEstimationLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }

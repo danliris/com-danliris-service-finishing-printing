@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Production.WebApi
             services
                 .AddTransient<IStepFacade, StepFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
-                .AddTransient<IInstructionFacade, InstructionFacade>();
+                .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)

@@ -2,7 +2,7 @@
 
 namespace Com.Danliris.Service.Production.Lib.Utilities
 {
-    public static class Code
+    public static class CodeGenerator
     {
         private const int LENGTH = 8;
         private const string ALLOWED_CHARACTER = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";

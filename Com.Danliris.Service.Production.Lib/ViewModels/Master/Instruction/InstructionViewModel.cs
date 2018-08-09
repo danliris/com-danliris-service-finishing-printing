@@ -7,6 +7,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Master.Instruction
 {
     public class InstructionViewModel : BaseViewModel, IValidatableObject
     {
+        public string Code { get; set; }
         public string Name { get; set; }
         public List<StepViewModel> Steps { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
