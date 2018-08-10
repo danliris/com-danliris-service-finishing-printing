@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Master
 {
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    [Route("v{version:apiVersion}/sales/machine")]
+    [Route("v{version:apiVersion}/master/machine")]
     [Authorize]
     public class MachineController : BaseController<MachineModel, MachineViewModel, IMachineFacade>
     {
