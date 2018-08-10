@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
                 ValidateService.Validate(viewModel);
 
                 TModel model = Mapper.Map<TModel>(viewModel);
-                await Facade.Create(model);
+                await Facade.CreateAsync(model);
 
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, General.CREATED_STATUS_CODE, General.OK_MESSAGE)
@@ -100,7 +100,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
         {
             try
             {
-                TModel model = await Facade.ReadById(id);
+                TModel model = await Facade.ReadByIdAsync(id);
 
                 if (model == null)
                 {
@@ -145,7 +145,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
 
                 TModel model = Mapper.Map<TModel>(viewModel);
 
-                await Facade.Update(id, model);
+                await Facade.UpdateAsync(id, model);
 
                 return NoContent();
             }
@@ -172,7 +172,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
             {
                 VerifyUser();
 
-                await Facade.Delete(id);
+                await Facade.DeleteAsync(id);
 
                 return NoContent();
             }

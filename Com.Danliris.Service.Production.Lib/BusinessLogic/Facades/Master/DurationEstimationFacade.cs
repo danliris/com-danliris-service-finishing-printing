@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return new ReadResponse<DurationEstimationModel>(data, totalData, orderDictionary, selectedFields);
         }
 
-        public async Task<int> Create(DurationEstimationModel model)
+        public async Task<int> CreateAsync(DurationEstimationModel model)
         {
             do
             {
@@ -86,18 +86,18 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<DurationEstimationModel> ReadById(int id)
+        public async Task<DurationEstimationModel> ReadByIdAsync(int id)
         {
             return await DurationEstimationLogic.ReadModelById(id);
         }
 
-        public async Task<int> Update(int id, DurationEstimationModel model)
+        public async Task<int> UpdateAsync(int id, DurationEstimationModel model)
         {
-            DurationEstimationLogic.UpdateModel(id, model);
+            DurationEstimationLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             await DurationEstimationLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();

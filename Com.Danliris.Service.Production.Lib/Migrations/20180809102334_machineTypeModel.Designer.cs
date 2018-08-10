@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180809102334_machineTypeModel")]
+    partial class machineTypeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,17 +21,13 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineEventsModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.Machine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
-
-                    b.Property<string>("Category");
-
-                    b.Property<string>("Code");
 
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
@@ -62,91 +60,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("MachineId");
-
-                    b.Property<int?>("MachineModelId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("No");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MachineModelId");
-
-                    b.ToTable("MachineEvents");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Code");
-
-                    b.Property<string>("Condition");
-
-                    b.Property<string>("CreatedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("MachineTypeCode");
-
-                    b.Property<int>("MachineTypeId");
-
-                    b.Property<string>("MachineTypeName");
-
-                    b.Property<string>("Manufacture");
-
-                    b.Property<int>("MonthlyCapacity");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Process");
-
-                    b.Property<string>("UnitCode");
-
-                    b.Property<string>("UnitDivisionId");
-
-                    b.Property<string>("UnitDivisionName");
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<string>("UnitName");
-
-                    b.Property<int>("Year");
 
                     b.HasKey("Id");
 
@@ -259,51 +172,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MachineType");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event.MonitoringEventModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("CreatedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MonitoringEventModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailModel", b =>
@@ -800,8 +668,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<int?>("MachineModelId");
-
                     b.Property<string>("Process")
                         .HasMaxLength(500);
 
@@ -810,16 +676,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MachineModelId");
-
                     b.ToTable("Steps");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineEventsModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel")
-                        .WithMany("MachineEvents")
-                        .HasForeignKey("MachineModelId");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType.MachineTypeIndicatorsModel", b =>
@@ -860,13 +717,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .WithMany("StepIndicators")
                         .HasForeignKey("StepId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Production.Lib.Models.Master.Step.StepModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel")
-                        .WithMany("Steps")
-                        .HasForeignKey("MachineModelId");
                 });
 #pragma warning restore 612, 618
         }

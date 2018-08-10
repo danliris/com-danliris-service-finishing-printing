@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return new ReadResponse<StepModel>(data, totalData, orderDictionary, selectedFields);
         }
 
-        public async Task<int> Create(StepModel model)
+        public async Task<int> CreateAsync(StepModel model)
         {
             do
             {
@@ -84,18 +84,18 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<StepModel> ReadById(int id)
+        public async Task<StepModel> ReadByIdAsync(int id)
         {
             return await StepLogic.ReadModelById(id);
         }
 
-        public async Task<int> Update(int id, StepModel model)
+        public async Task<int> UpdateAsync(int id, StepModel model)
         {
             await StepLogic.UpdateModelStep(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             await StepLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();

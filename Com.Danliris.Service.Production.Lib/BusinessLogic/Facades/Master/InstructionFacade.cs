@@ -76,7 +76,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return new ReadResponse<InstructionModel>(data, totalData, orderDictionary, selectedFields);
         }
 
-        public async Task<int> Create(InstructionModel model)
+        public async Task<int> CreateAsync(InstructionModel model)
         {
             do
             {
@@ -87,18 +87,18 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<InstructionModel> ReadById(int id)
+        public async Task<InstructionModel> ReadByIdAsync(int id)
         {
             return await InstructionLogic.ReadModelById(id);
         }
 
-        public async Task<int> Update(int id, InstructionModel model)
+        public async Task<int> UpdateAsync(int id, InstructionModel model)
         {
-            InstructionLogic.UpdateModel(id, model);
+            InstructionLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             await InstructionLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();

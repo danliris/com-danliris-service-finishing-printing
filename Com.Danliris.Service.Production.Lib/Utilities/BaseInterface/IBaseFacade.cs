@@ -7,9 +7,9 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseInterface
     public interface IBaseFacade<TModel>
     {
         ReadResponse<TModel> Read(int page, int size, string order, List<string> select, string keyword, string filter);
-        Task<int> Create(TModel model);
-        Task<TModel> ReadById(int id);
-        Task<int> Update(int id, TModel model);
-        Task<int> Delete(int id);
+        Task<int> CreateAsync(TModel model);
+        Task<TModel> ReadByIdAsync(int id);
+        Task<int> UpdateAsync(int id, TModel model);
+        Task<int> DeleteAsync(int id);
     }
 }
