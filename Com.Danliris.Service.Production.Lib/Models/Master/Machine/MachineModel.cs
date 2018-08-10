@@ -1,4 +1,5 @@
-﻿using Com.Moonlay.Models;
+﻿using Com.Danliris.Service.Production.Lib.Models.Master.Step;
+using Com.Moonlay.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +23,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine
         public string UnitName { get; set; }
         public string UnitDivisionId { get; set; }
         public string UnitDivisionName { get; set; }
+
+        //machine type
+        public int MachineTypeId { get; set; }
+        public string MachineTypeCode { get; set; }
+        public string MachineTypeName { get; set; }
+
+        public ICollection<MachineEventsModel> MachineEvents { get; set; }
+        public ICollection<StepModel> Steps { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

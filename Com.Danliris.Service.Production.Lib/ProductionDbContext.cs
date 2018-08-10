@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step;
@@ -26,6 +27,8 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<DurationEstimationAreaModel> DurationEstimationAreas { get; set; }
         public DbSet<MachineTypeModel> MachineType { get; set; }
         public DbSet<MachineTypeIndicatorsModel> MachineTypeIndicators { get; set; }
+        public DbSet<MachineModel> Machine { get; set; }
+        public DbSet<MachineEventsModel> MachineEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

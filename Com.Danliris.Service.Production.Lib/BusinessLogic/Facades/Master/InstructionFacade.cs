@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             await InstructionLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();

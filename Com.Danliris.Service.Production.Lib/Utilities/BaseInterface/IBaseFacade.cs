@@ -10,6 +10,6 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseInterface
         Task<int> CreateAsync(TModel model);
         Task<TModel> ReadByIdAsync(int id);
         Task<int> UpdateAsync(int id, TModel model);
-        Task<int> Delete(int id);
+        Task<int> DeleteAsync(int id);
     }
 }

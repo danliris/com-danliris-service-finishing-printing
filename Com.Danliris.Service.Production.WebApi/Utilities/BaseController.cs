@@ -172,7 +172,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
             {
                 VerifyUser();
 
-                await Facade.Delete(id);
+                await Facade.DeleteAsync(id);
 
                 return NoContent();
             }

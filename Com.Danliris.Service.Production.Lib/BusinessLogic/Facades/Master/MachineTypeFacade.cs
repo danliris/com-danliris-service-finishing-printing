@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             await MachineTypeLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();
