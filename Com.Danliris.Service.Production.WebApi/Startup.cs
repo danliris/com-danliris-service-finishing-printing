@@ -22,6 +22,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -66,7 +67,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<MachineTypeIndicatorsLogic>()
                 .AddTransient<MachineEventLogic>()
                 .AddTransient<MachineLogic>()
-                .AddTransient<MachineStepLogic>();
+                .AddTransient<MachineStepLogic>()
+                .AddTransient<MonitoringSpecificationMachineLogic>()
+                .AddTransient<MonitoringSpecificationMachineDetailsLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

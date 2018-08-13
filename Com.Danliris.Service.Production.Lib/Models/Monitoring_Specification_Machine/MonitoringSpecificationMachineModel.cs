@@ -1,24 +1,30 @@
 ﻿using Com.Moonlay.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine
 {
-    public class MonitoringSpecificationMachineModel : StandardEntity
+    public class MonitoringSpecificationMachineModel : StandardEntity, IValidatableObject
     {
         public string Code { get; set; }
         public DateTimeOffset DateTime { get; set; }
         public string CartNumber { get; set; }
 
-        //unit
-        public string UnitId { get; set; }
-        public string UnitCode { get; set; }
-        public string UnitName { get; set; }
-        public string DivisionId { get; set; }
-        public string DivisionName { get; set; }
-        public string DivisionCode { get; set; }
+        //Machine
+        public int MachineId { get; set; }
+        public string MachineName { get; set; }
 
+        //ProductionOrder
+        public int ProductionOrderId { get; set; }
+        public string ProductionOrderName { get; set; }
 
+        public ICollection<MonitoringSpecificationMachineDetailsModel> Details { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
