@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<MachineTypeIndicatorsModel> MachineTypeIndicators { get; set; }
         public DbSet<MachineModel> Machine { get; set; }
         public DbSet<MachineEventsModel> MachineEvents { get; set; }
-
+        public DbSet<MachineStepModel> MachineSteps { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new StepConfig());
