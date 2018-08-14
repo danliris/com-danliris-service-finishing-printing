@@ -18,7 +18,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specific
 
         //ProductionOrder
         public int ProductionOrderId { get; set; }
-        public string ProductionOrderName { get; set; }
+        public string ProductionOrderNo { get; set; }
 
         public ICollection<MonitoringSpecificationMachineDetailsModel> Details { get; set; }
 

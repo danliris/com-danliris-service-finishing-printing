@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 {
     public class MonitoringSpecificationMachineDetailsLogic : BaseLogic<MonitoringSpecificationMachineDetailsModel>
     {
+        private const string UserAgent = "production-service";
         public MonitoringSpecificationMachineDetailsLogic(IIdentityService identityService, ProductionDbContext dbContext) : base(identityService, dbContext)
         {
         }
