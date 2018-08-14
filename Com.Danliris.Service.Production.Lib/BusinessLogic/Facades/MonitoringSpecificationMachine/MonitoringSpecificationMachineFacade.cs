@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using Newtonsoft.Json;
+using Com.Moonlay.NetCore.Lib;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine
 {
@@ -38,7 +41,47 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
         public ReadResponse<MonitoringSpecificationMachineModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
-            throw new NotImplementedException();
+            IQueryable<MonitoringSpecificationMachineModel> query = DbSet;
+
+            List<string> searchAttributes = new List<string>()
+            {
+                "Code", "Name"
+            };
+            query = QueryHelper<MonitoringSpecificationMachineModel>.Search(query, searchAttributes, keyword);
+
+            Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<MonitoringSpecificationMachineModel>.Filter(query, filterDictionary);
+
+            List<string> selectedFields = new List<string>()
+                {
+                    "Id", "Name", "Code", "Description", "Indicators", "LastModifiedUtc"
+                };
+
+            query = query
+                    .Select(field => new MonitoringSpecificationMachineModel
+                    {
+                        Id = field.Id,
+                        //Name = field.Name,
+                        Code = field.Code,
+                        LastModifiedUtc = field.LastModifiedUtc,
+                        //Indicators = new List<MachineTypeIndicatorsModel>(field.Indicators.Select(i => new MachineTypeIndicatorsModel
+                        //{
+                        //    Indicator = i.Indicator,
+                        //    DataType = i.DataType,
+                        //    DefaultValue = i.DefaultValue,
+                        //    Uom = i.Uom,
+                        //    MachineTypeId = i.MachineTypeId
+                        //}))
+                    });
+
+            Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<MonitoringSpecificationMachineModel>.Order(query, orderDictionary);
+
+            Pageable<MonitoringSpecificationMachineModel> pageable = new Pageable<MonitoringSpecificationMachineModel>(query, page - 1, size);
+            List<MonitoringSpecificationMachineModel> data = pageable.Data.ToList();
+            int totalData = pageable.TotalCount;
+
+            return new ReadResponse<MonitoringSpecificationMachineModel>(data, totalData, orderDictionary, selectedFields);
         }
 
         public async Task<MonitoringSpecificationMachineModel> ReadByIdAsync(int id)

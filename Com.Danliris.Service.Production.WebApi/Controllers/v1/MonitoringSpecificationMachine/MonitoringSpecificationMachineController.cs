@@ -7,16 +7,12 @@ using Com.Danliris.Service.Production.Lib.Services.ValidateService;
 using Com.Danliris.Service.Production.WebApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.MonitoringSpecificationMachine
 {
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    [Route("v{version:apiVersion}/finishing-printing/monitoring-events")]
+    [Route("v{version:apiVersion}/finishing-printing/monitoring-specification-machine")]
     [Authorize]
     public class MonitoringSpecificationMachineController : BaseController<MonitoringSpecificationMachineModel, MonitoringSpecificationMachineViewModel, IMonitoringSpecificationMachineFacade>
     {

@@ -23,6 +23,8 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -53,7 +55,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IMachineTypeFacade, MachineTypeFacade>()
-                .AddTransient<IMachineFacade, MachineFacade>();
+                .AddTransient<IMachineFacade, MachineFacade>()
+                .AddTransient<IMonitoringSpecificationMachineFacade, MonitoringSpecificationMachineFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
