@@ -21,6 +21,10 @@ using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.D
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
@@ -54,7 +58,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
-                .AddTransient<IMachineTypeFacade, MachineTypeFacade>();
+                .AddTransient<IMachineTypeFacade, MachineTypeFacade>()
+                .AddTransient<IMachineFacade, MachineFacade>()
+                .AddTransient<IMonitoringSpecificationMachineFacade, MonitoringSpecificationMachineFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -66,7 +72,12 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<InstructionLogic>()
                 .AddTransient<DurationEstimationLogic>()
                 .AddTransient<MachineTypeLogic>()
-                .AddTransient<MachineTypeIndicatorsLogic>();
+                .AddTransient<MachineTypeIndicatorsLogic>()
+                .AddTransient<MachineEventLogic>()
+                .AddTransient<MachineLogic>()
+                .AddTransient<MachineStepLogic>()
+                .AddTransient<MonitoringSpecificationMachineLogic>()
+                .AddTransient<MonitoringSpecificationMachineDetailsLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

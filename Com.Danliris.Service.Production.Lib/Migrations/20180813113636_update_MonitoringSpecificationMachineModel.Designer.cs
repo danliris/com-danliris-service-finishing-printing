@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180813113636_update_MonitoringSpecificationMachineModel")]
+    partial class update_MonitoringSpecificationMachineModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,10 +328,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("CartNumber");
-
-                    b.Property<string>("Code");
-
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -339,8 +337,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset>("DateTime");
 
                     b.Property<string>("DeletedAgent")
                         .IsRequired()
@@ -364,30 +360,12 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<string>("MachineEventCategory");
-
-                    b.Property<string>("MachineEventCode");
-
-                    b.Property<int>("MachineEventId");
-
-                    b.Property<string>("MachineEventName");
-
-                    b.Property<int>("MachineId");
-
-                    b.Property<string>("MachineName");
-
-                    b.Property<int>("ProductionOrderId");
-
-                    b.Property<string>("ProductionOrderName");
-
-                    b.Property<string>("Remark");
-
                     b.HasKey("Id");
 
                     b.ToTable("MonitoringEventModel");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailsModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -443,7 +421,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasIndex("MonitoringSpecificationMachineId");
 
-                    b.ToTable("MonitoringSpecificationMachineDetails");
+                    b.ToTable("MonitoringSpecificationMachineDetailModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineModel", b =>
@@ -492,17 +470,17 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<int>("MachineId");
+                    b.Property<string>("MachineId");
 
                     b.Property<string>("MachineName");
 
-                    b.Property<int>("ProductionOrderId");
+                    b.Property<string>("ProductionOrderId");
 
-                    b.Property<string>("ProductionOrderNo");
+                    b.Property<string>("ProductionOrderName");
 
                     b.HasKey("Id");
 
-                    b.ToTable("MonitoringSpecificationMachine");
+                    b.ToTable("MonitoringSpecificationMachineModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Production.Lib.Models.Master.DurationEstimation.DurationEstimationAreaModel", b =>
@@ -930,7 +908,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailsModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailModel", b =>
                 {
                     b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineModel", "MonitoringSpecificationMachine")
                         .WithMany("Details")
