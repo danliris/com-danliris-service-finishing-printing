@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "LastModifiedUtc"
+                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MachineEvents","MonthlyCapacity", "LastModifiedUtc"
                 };
 
             query = query
@@ -68,7 +68,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
                         Manufacture = field.Manufacture,
                         Year = field.Year,
                         Condition = field.Condition,
-                        UnitName=field.UnitName,
+                        UnitName = field.UnitName,
+                        MachineTypeId = field.MachineTypeId,
+                        MachineTypeName = field.MachineTypeName,
                         MonthlyCapacity = field.MonthlyCapacity,
                         LastModifiedUtc = field.LastModifiedUtc,
                         MachineEvents = new List<MachineEventsModel>(field.MachineEvents.Select(i => new MachineEventsModel

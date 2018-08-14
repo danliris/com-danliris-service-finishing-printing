@@ -29,6 +29,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
         }
         public async Task<int> CreateAsync(MonitoringSpecificationMachineModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
+
             this.MonitoringSpecificationMachineLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
@@ -45,7 +51,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "Name"
+                "Code"
             };
             query = QueryHelper<MonitoringSpecificationMachineModel>.Search(query, searchAttributes, keyword);
 
@@ -54,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id", "Name", "Code", "Description", "Indicators", "LastModifiedUtc"
+                    "Id","Code", "LastModifiedUtc"
                 };
 
             query = query
