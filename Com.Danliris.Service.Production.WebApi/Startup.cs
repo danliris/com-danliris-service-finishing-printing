@@ -21,6 +21,9 @@ using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.D
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -46,6 +49,7 @@ namespace Com.Danliris.Service.Production.WebApi
         private void RegisterFacades(IServiceCollection services)
         {
             services
+                .AddTransient<IKanbanFacade, KanbanFacade>()
                 .AddTransient<IStepFacade, StepFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>()
@@ -56,6 +60,7 @@ namespace Com.Danliris.Service.Production.WebApi
         private void RegisterLogics(IServiceCollection services)
         {
             services
+                .AddTransient<KanbanLogic>()
                 .AddTransient<StepLogic>()
                 .AddTransient<StepIndicatorLogic>()
                 .AddTransient<InstructionLogic>()

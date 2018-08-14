@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master
     {
         public string Address { get; set; }
         public string City { get; set; }
+        public string Code { get; set; }
         public string Contact { get; set; }
         public string Country { get; set; }
         public string Name { get; set; }
