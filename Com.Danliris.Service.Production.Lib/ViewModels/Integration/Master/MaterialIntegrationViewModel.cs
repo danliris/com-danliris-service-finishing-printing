@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master
+namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master
 {
-    public class ColorTypeIntegrationViewModel : BaseViewModel
+    public class MaterialIntegrationViewModel : BaseViewModel
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Remark { get; set; }
+        public double Price { get; set; }
+        public string Tags { get; set; }
     }
 }

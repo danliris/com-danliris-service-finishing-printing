@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
@@ -9,6 +11,7 @@ using Com.Danliris.Service.Production.Lib.Models.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.Models.Master.Step;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Com.Danliris.Service.Production.Lib
 {
@@ -33,6 +36,11 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<MachineStepModel> MachineSteps { get; set; }
         public DbSet<MonitoringSpecificationMachineModel> MonitoringSpecificationMachine { get; set; }
         public DbSet<MonitoringSpecificationMachineDetailsModel> MonitoringSpecificationMachineDetails { get; set; }
+        public DbSet<KanbanModel> Kanbans { get; set; }
+        public DbSet<KanbanInstructionModel> KanbanInstructions { get; set; }
+        public DbSet<KanbanStepModel> KanbanSteps { get; set; }
+        public DbSet<KanbanStepIndicatorModel> KanbanStepIndicators { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new StepConfig());
@@ -42,6 +50,15 @@ namespace Com.Danliris.Service.Production.Lib
             modelBuilder.ApplyConfiguration(new InstructionStepIndicatorConfig());
             modelBuilder.ApplyConfiguration(new DurationEstimationConfig());
             modelBuilder.ApplyConfiguration(new DurationEstimationAreaConfig());
+            modelBuilder.ApplyConfiguration(new KanbanConfig());
+            modelBuilder.ApplyConfiguration(new KanbanInstructionConfig());
+            modelBuilder.ApplyConfiguration(new KanbanStepConfig());
+            modelBuilder.ApplyConfiguration(new KanbanStepIndicatorConfig());
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(s => s.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
             base.OnModelCreating(modelBuilder);
         }
     }
