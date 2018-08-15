@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
@@ -40,6 +41,7 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<KanbanInstructionModel> KanbanInstructions { get; set; }
         public DbSet<KanbanStepModel> KanbanSteps { get; set; }
         public DbSet<KanbanStepIndicatorModel> KanbanStepIndicators { get; set; }
+        public DbSet<MonitoringEventModel> MonitoringEvent { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

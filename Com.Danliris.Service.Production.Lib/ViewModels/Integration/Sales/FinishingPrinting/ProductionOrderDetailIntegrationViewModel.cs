@@ -5,6 +5,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.Finis
 {
     public class ProductionOrderDetailIntegrationViewModel : BaseViewModel
     {
+        public string Code { get; set; }
         public string ColorRequest { get; set; }
         public string ColorTemplate { get; set; }
         public ColorTypeIntegrationViewModel ColorType { get; set; }

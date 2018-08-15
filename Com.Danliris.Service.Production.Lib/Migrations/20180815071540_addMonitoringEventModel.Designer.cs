@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180815071540_addMonitoringEventModel")]
+    partial class addMonitoringEventModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -730,7 +732,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<int>("ProductionOrderId");
 
-                    b.Property<string>("ProductionOrderOrderNo");
+                    b.Property<string>("ProductionOrderName");
 
                     b.Property<string>("Remark");
 
@@ -740,7 +742,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MonitoringEvent");
+                    b.ToTable("MonitoringEventModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailsModel", b =>
