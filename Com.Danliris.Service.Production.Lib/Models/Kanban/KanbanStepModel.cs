@@ -18,6 +18,5 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
         public DateTimeOffset Deadline { get; set; }
         public int SelectedIndex { get; set; }
         public int MachineId { get; set; }
-        public virtual MachineModel Machine { get; set; }
     }
 }

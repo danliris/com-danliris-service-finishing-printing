@@ -56,11 +56,6 @@ namespace Com.Danliris.Service.Production.Lib
             modelBuilder.ApplyConfiguration(new KanbanInstructionConfig());
             modelBuilder.ApplyConfiguration(new KanbanStepConfig());
             modelBuilder.ApplyConfiguration(new KanbanStepIndicatorConfig());
-
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(s => s.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
             base.OnModelCreating(modelBuilder);
         }
     }
