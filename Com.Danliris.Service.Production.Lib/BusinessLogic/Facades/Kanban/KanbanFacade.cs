@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "ProductionOrder", "Cart", "Instruction", "OldKanban"
+                "Id", "Code", "ProductionOrder", "Cart", "Instruction", "OldKanban", "SelectedProductionOrderDetail", "LastModifiedUtc"
             };
             query = query
                 .Select(field => new KanbanModel
@@ -55,7 +55,26 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                     IsComplete = field.IsComplete,
                     IsInactive = field.IsInactive,
                     IsReprocess = field.IsReprocess,
-                    Instruction = field.Instruction,
+                    Instruction = new KanbanInstructionModel()
+                    {
+                        Id = field.Instruction.Id,
+                        Name = field.Instruction.Name,
+                        Steps = new List<KanbanStepModel>(field.Instruction.Steps.Select(i => new KanbanStepModel()
+                        {
+                            Id = i.Id,
+                            Process = i.Process,
+                            ProcessArea = i.ProcessArea
+                        }))
+                    },
+                    LastModifiedUtc = field.LastModifiedUtc,
+                    ProductionOrderOrderNo = field.ProductionOrderOrderNo,
+                    SelectedProductionOrderDetailColorRequest = field.SelectedProductionOrderDetailColorRequest,
+                    SelectedProductionOrderDetailColorTemplate = field.SelectedProductionOrderDetailColorTemplate,
+                    SelectedProductionOrderDetailColorTypeCode = field.SelectedProductionOrderDetailColorTypeCode,
+                    SelectedProductionOrderDetailColorTypeName = field.SelectedProductionOrderDetailColorTypeName,
+                    SelectedProductionOrderDetailId = field.SelectedProductionOrderDetailId,
+                    SelectedProductionOrderDetailQuantity = field.SelectedProductionOrderDetailQuantity,
+                    SelectedProductionOrderDetailUomUnit = field.SelectedProductionOrderDetailUomUnit
                 });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
@@ -84,14 +103,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             throw new NotImplementedException();
         }
 
-        public Task<KanbanModel> ReadByIdAsync(int id)
+        public async Task<KanbanModel> ReadByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await KanbanLogic.ReadModelById(id);
         }
 
-        public Task<int> UpdateAsync(int id, KanbanModel model)
+        public async Task<int> UpdateAsync(int id, KanbanModel model)
         {
-            throw new NotImplementedException();
+            KanbanLogic.UpdateModelAsync(id, model);
+            return await DbContext.SaveChangesAsync();
         }
     }
 }

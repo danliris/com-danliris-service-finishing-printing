@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180816045458_FixForeignKey")]
+    partial class FixForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -349,6 +351,8 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InstructionId");
+
+                    b.HasIndex("MachineId");
 
                     b.ToTable("KanbanSteps");
                 });
@@ -1279,6 +1283,11 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanInstructionModel", "Instruction")
                         .WithMany("Steps")
                         .HasForeignKey("InstructionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel", "Machine")
+                        .WithMany()
+                        .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

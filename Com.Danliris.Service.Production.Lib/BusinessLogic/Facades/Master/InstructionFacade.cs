@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "Name", "Process"
+                "Code", "Name"
             };
             query = QueryHelper<InstructionModel>.Search(query, searchAttributes, keyword);
 

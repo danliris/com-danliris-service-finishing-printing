@@ -15,8 +15,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban
             builder
                 .HasMany(b => b.StepIndicators)
                 .WithOne(c => c.Step);
-            builder
-                .HasOne(b => b.Machine);
         }
     }
 }
