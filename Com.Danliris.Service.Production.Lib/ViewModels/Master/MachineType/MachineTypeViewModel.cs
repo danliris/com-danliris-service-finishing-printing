@@ -59,13 +59,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.MachineT
                                 Indicators += "{ 'input tidak tepat, angka pertama harus > kedua' }, ";
                             }
                         }
-
                     }
-
-                }
-
+                }            
             }
-
             Indicators += "]";
 
             if (Count > 0)
