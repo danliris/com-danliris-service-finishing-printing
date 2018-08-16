@@ -56,7 +56,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                     IsInactive = field.IsInactive,
                     IsReprocess = field.IsReprocess,
                     Instruction = field.Instruction,
-                    OldKanban = field.OldKanban
                 });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);

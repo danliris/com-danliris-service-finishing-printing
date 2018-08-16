@@ -46,7 +46,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         public override Task<KanbanModel> ReadModelById(int id)
         {
             return DbSet
-                .Include(a => a.OldKanban)
                 .Include(b => b.Instruction)
                 .ThenInclude(c => c.Steps.Select(s => s.StepIndicators))
                 .FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
