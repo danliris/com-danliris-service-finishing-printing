@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         Cart = cart,
                         CurrentQty = (double)viewModel.CurrentQty,
                         CurrentStepIndex = (int)viewModel.CurrentStepIndex,
-                        GoodOutput = (double)viewModel.GoodOutput,
+                        //GoodOutput = (double)viewModel.GoodOutput,
                         Grade = viewModel.Grade,
                         Instruction = viewModel.Instruction,
                         IsBadOutput = (bool)viewModel.IsBadOutput,
