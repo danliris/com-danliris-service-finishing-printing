@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specific
         public string Indicator { get; set; }
         public string DataType { get; set; }
         public string DefaultValue { get; set; }
-        public double Value { get; set; }
+        public string Value { get; set; }
         public string Uom { get; set; }
         public int MonitoringSpecificationMachineId { get; set; }
         public virtual MonitoringSpecificationMachineModel MonitoringSpecificationMachine { get; set; }
