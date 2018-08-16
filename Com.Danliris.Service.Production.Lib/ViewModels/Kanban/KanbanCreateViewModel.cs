@@ -68,7 +68,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
 
             ErrorCount = 0;
             string StepErrors = "[";
-            if (Instruction == null || Instruction.Id.Equals(0))
+            if (Instruction == null || string.IsNullOrWhiteSpace(Instruction.Name))
                 yield return new ValidationResult("Instruksi harus diisi", new List<string> { "Instruction" });
             else
             {
@@ -97,11 +97,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
                             StepErrors += "Deadline: 'Tanggal Deadline harus diisi', ";
                         }
 
-                        if (step.Machine == null || step.Machine.Equals(0))
-                        {
-                            ErrorCount++;
-                            StepErrors += "Machine: 'Mesin harus diisi', ";
-                        }
+                        //if (step.Machine == null || string.IsNullOrWhiteSpace(step.Machine.Name))
+                        //{
+                        //    ErrorCount++;
+                        //    StepErrors += "Machine: 'Mesin harus diisi', ";
+                        //}
                         StepErrors += "}, ";
                     }
                 }
