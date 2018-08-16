@@ -7,10 +7,6 @@ using Com.Danliris.Service.Production.Lib.ViewModels.Master.DurationEstimation;
 using Com.Danliris.Service.Production.WebApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Master
 {

@@ -22,11 +22,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
         public UnitViewModel Unit { get; set; }
         public MachineTypeViewModel MachineType { get; set; }
         public ICollection<MachineEventViewModel> MachineEvents { get; set; }
-        public ICollection<StepViewModel> Steps { get; set; }
+        public ICollection<MachineStepViewModel> MachineSteps { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(Name))
+                yield return new ValidationResult("Nama harus diisi", new List<string> { "Name" });
+
         }
     }
 }
