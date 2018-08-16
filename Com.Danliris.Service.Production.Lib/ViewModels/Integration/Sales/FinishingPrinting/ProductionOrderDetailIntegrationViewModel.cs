@@ -9,6 +9,6 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.Finis
         public string ColorTemplate { get; set; }
         public ColorTypeIntegrationViewModel ColorType { get; set; }
         public double Quantity { get; set; }
-        public UOMIntegrationViewModel Uom { get; set; }
+        public UOMIntegrationViewModel Uom { get; set; } 
     }
 }
