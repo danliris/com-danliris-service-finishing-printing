@@ -2,8 +2,9 @@
 
 namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting
 {
-    public class ProductionRunWidthIntegrationViewModel : BaseViewModel
+    public class ProductionRunWidthIntegrationViewModel
     {
-        public double Value { get; set; }
+        public int? Id { get; set; }
+        public double? Value { get; set; }
     }
 }

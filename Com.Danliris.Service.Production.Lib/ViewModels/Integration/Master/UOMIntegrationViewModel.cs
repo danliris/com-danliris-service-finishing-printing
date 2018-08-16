@@ -2,8 +2,9 @@
 
 namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master
 {
-    public class UOMIntegrationViewModel : BaseViewModel
+    public class UOMIntegrationViewModel
     {
+        public int? Id { get; set; }
         public string Unit { get; set; }
     }
 }

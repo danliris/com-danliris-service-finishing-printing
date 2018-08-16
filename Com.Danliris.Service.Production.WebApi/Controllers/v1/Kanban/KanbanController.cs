@@ -35,23 +35,32 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
 
                 foreach (var cart in viewModel.Carts)
                 {
-                    KanbanViewModel vmToCreate = new KanbanViewModel
-                    {
-                        BadOutput = (double)viewModel.BadOutput,
-                        Cart = cart,
-                        CurrentQty = (double)viewModel.CurrentQty,
-                        CurrentStepIndex = (int)viewModel.CurrentStepIndex,
-                        GoodOutput = (double)viewModel.GoodOutput,
-                        Grade = viewModel.Grade,
-                        Instruction = viewModel.Instruction,
-                        IsBadOutput = (bool)viewModel.IsBadOutput,
-                        IsComplete = (bool)viewModel.IsComplete,
-                        IsInactive = (bool)viewModel.IsInactive,
-                        IsReprocess = (bool)viewModel.IsReprocess,
-                        OldKanban = viewModel.OldKanban,
-                        ProductionOrder = viewModel.ProductionOrder,
-                        SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
-                    };
+                    KanbanViewModel vmToCreate = new KanbanViewModel();
+                    //{
+                    //    BadOutput = (double)viewModel.BadOutput,
+                    //    Cart = cart,
+                    //    CurrentQty = (double)viewModel.CurrentQty,
+                    //    CurrentStepIndex = (int)viewModel.CurrentStepIndex,
+                    //    GoodOutput = (double)viewModel.GoodOutput,
+                    //    Grade = viewModel.Grade,
+                    //    Instruction = viewModel.Instruction,
+                    //    IsBadOutput = (bool)viewModel.IsBadOutput,
+                    //    IsComplete = (bool)viewModel.IsComplete,
+                    //    IsInactive = (bool)viewModel.IsInactive,
+                    //    IsReprocess = (bool)viewModel.IsReprocess,
+                    //    OldKanban = viewModel.OldKanban ?? new KanbanViewModel(),
+                    //    ProductionOrder = viewModel.ProductionOrder,
+                    //    SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
+                    //};
+                    vmToCreate.Cart = cart;
+                    vmToCreate.CurrentQty = viewModel.CurrentQty ?? 0;
+                    vmToCreate.CurrentStepIndex = viewModel.CurrentStepIndex ?? 0;
+                    vmToCreate.GoodOutput = viewModel.GoodOutput ?? 0;
+                    vmToCreate.Grade = viewModel.Grade;
+                    vmToCreate.Instruction = viewModel.Instruction;
+                    vmToCreate.OldKanban = viewModel.OldKanban ?? new KanbanViewModel();
+                    vmToCreate.ProductionOrder = viewModel.ProductionOrder;
+                    vmToCreate.SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail;
 
                     KanbanModel model = Mapper.Map<KanbanModel>(vmToCreate);
                     await Facade.CreateAsync(model);

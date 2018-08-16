@@ -2,8 +2,9 @@
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master
 {
-    public class YarnMaterialIntegrationViewModel : BaseViewModel
+    public class YarnMaterialIntegrationViewModel
     {
+        public int? Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Remark { get; set; }

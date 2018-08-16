@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Mas
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public double Price { get; set; }
+        public double? Price { get; set; }
         public string Tags { get; set; }
     }
 }

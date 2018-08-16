@@ -9,17 +9,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
 {
     public class KanbanCreateViewModel : BaseViewModel, IValidatableObject
     {
-        public double BadOutput { get; set; }
+        public double? BadOutput { get; set; }
         public List<CartViewModel> Carts { get; set; }
         public string Code { get; set; }
-        public double CurrentQty { get; set; }
-        public int CurrentStepIndex { get; set; }
+        public double? CurrentQty { get; set; }
+        public int? CurrentStepIndex { get; set; }
+        public double? GoodOutput { get; set; }
         public string Grade { get; set; }
         public KanbanInstructionViewModel Instruction { get; set; }
-        public bool IsBadOutput { get; set; }
-        public bool IsComplete { get; set; }
-        public bool IsInactive { get; set; }
-        public bool IsReprocess { get; set; }
+        public bool? IsBadOutput { get; set; }
+        public bool? IsComplete { get; set; }
+        public bool? IsInactive { get; set; }
+        public bool? IsReprocess { get; set; }
         public KanbanViewModel OldKanban { get; set; }
         public ProductionOrderIntegrationViewModel ProductionOrder { get; set; }
         public ProductionOrderDetailIntegrationViewModel SelectedProductionOrderDetail { get; set; }
@@ -94,6 +95,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
                         {
                             ErrorCount++;
                             StepErrors += "Deadline: 'Tanggal Deadline harus diisi', ";
+                        }
+
+                        if (step.Machine == null || step.Machine.Equals(0))
+                        {
+                            ErrorCount++;
+                            StepErrors += "Machine: 'Mesin harus diisi', ";
                         }
                         StepErrors += "}, ";
                     }

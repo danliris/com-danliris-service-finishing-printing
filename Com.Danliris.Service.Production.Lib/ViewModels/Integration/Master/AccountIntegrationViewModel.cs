@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master
 {
-    public class AccountIntegrationViewModel : BaseViewModel
+    public class AccountIntegrationViewModel
     {
+        public int? Id { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
