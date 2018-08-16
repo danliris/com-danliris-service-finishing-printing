@@ -69,9 +69,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             return new ReadResponse<KanbanModel>(data, totalData, orderDictionary, selectedFields);
         }
 
-        public Task<int> CreateAsync(KanbanModel model)
+        public async Task<int> CreateAsync(KanbanModel model)
         {
-            throw new NotImplementedException();
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
+            KanbanLogic.CreateModel(model);
+            return await DbContext.SaveChangesAsync();
         }
 
         public Task<int> DeleteAsync(int id)

@@ -38,8 +38,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban
                 .HasOne(b => b.Instruction)
                 .WithOne(c => c.Kanban)
                 .HasForeignKey<KanbanModel>("InstructionId");
-            builder
-                .HasOne(b => b.OldKanban);
         }
     }
 }

@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master
 {
-    public class QualityIntegrationViewModel : BaseViewModel
+    public class QualityIntegrationViewModel
     {
+        public int? Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
     }

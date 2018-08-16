@@ -26,7 +26,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
         public bool IsInactive { get; set; }
         public bool IsReprocess { get; set; }
         public int OldKanbanId { get; set; }
-        public virtual KanbanModel OldKanban { get; set; }
         public int ProductionOrderId { get; set; }
         public string ProductionOrderOrderNo { get; set; }
         public int ProductionOrderOrderTypeId { get; set; }

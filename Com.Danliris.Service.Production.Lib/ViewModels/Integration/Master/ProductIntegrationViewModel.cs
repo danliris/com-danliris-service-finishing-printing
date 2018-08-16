@@ -5,10 +5,11 @@ using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master
 {
-    public class ProductIntegrationViewModel : BaseViewModel
+    public class ProductIntegrationViewModel
     {
+        public int? Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public dynamic Price { get; set; }
+        public double? Price { get; set; }
     }
 }
