@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master
             .ReverseMap();
 
             CreateMap<MachineEventsModel, MachineEventViewModel>().ReverseMap();
-            CreateMap<MachineStepModel, MachineStepViewModel>().ReverseMap();
+            CreateMap<StepModel, StepViewModel>().ReverseMap();
         }
     }
 }

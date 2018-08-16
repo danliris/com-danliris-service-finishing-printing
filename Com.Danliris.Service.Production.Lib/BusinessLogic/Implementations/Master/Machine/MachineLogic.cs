@@ -19,12 +19,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
     {
         private const string UserAgent = "production-service";
         private MachineEventLogic MachineEventLogic;
-        private MachineStepLogic MachineStepLogic;
+        private StepLogic StepLogic;
 
-        public MachineLogic(MachineEventLogic machineEventLogic, MachineStepLogic machineStepLogic, IIdentityService identityService, ProductionDbContext dbContext) : base(identityService, dbContext)
+        public MachineLogic(MachineEventLogic machineEventLogic, StepLogic stepLogic, IIdentityService identityService, ProductionDbContext dbContext) : base(identityService, dbContext)
         {
             this.MachineEventLogic = machineEventLogic;
-            this.MachineStepLogic = machineStepLogic;
+            this.StepLogic = stepLogic;
         }
 
         public override void CreateModel(MachineModel model)
@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
             }
 
-            foreach (MachineStepModel step in model.MachineSteps)
+            foreach (StepModel step in model.Steps)
             {
                 EntityExtension.FlagForCreate(step, IdentityService.Username, UserAgent);
             }
@@ -52,7 +52,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
             }
 
-            foreach (var step in model.MachineSteps)
+            foreach (var step in model.Steps)
             {
                 EntityExtension.FlagForDelete(step, IdentityService.Username, UserAgent);
             }
@@ -85,21 +85,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
 
 
-                HashSet<int> MachineStepId = MachineStepLogic.MachineStepIds(id);
-                foreach (var itemId in MachineStepId)
+                HashSet<int> StepId = MachineEventLogic.MachineEventIds(id);
+                foreach (var itemId in StepId)
                 {
-                    MachineStepModel data = model.MachineSteps.FirstOrDefault(prop => prop.Id.Equals(itemId));
+                    StepModel data = model.Steps.FirstOrDefault(prop => prop.Id.Equals(itemId));
                     if (data == null)
-                        await MachineStepLogic.DeleteModel(itemId);
+                        await StepLogic.DeleteModel(itemId);
                     else
                     {
-                        MachineStepLogic.UpdateModelAsync(itemId, data);
+                        StepLogic.UpdateModelAsync(itemId, data);
                     }
 
-                    foreach (MachineStepModel item in model.MachineSteps)
+                    foreach (StepModel item in model.Steps)
                     {
                         if (item.Id == 0)
-                            MachineStepLogic.CreateModel(item);
+                            StepLogic.CreateModel(item);
                     }
                 }
             }

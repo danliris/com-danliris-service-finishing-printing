@@ -7,7 +7,6 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master
 {
     public class ColorTypeIntegrationViewModel : BaseViewModel
     {
-        public string Code { get; set; }
         public string Name { get; set; }
         public string Remark { get; set; }
     }
