@@ -7,16 +7,20 @@ using Com.Danliris.Service.Production.Lib.Services.ValidateService;
 using Com.Danliris.Service.Production.WebApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.MonitoringSpecificationMachine
+namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Master
 {
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    [Route("v{version:apiVersion}/finishing-printing/monitoring-specification-machine")]
+    [Route("v{version:apiVersion}/master/test")]
     [Authorize]
-    public class MonitoringSpecificationMachineController : BaseController<MonitoringSpecificationMachineModel, MonitoringSpecificationMachineViewModel, IMonitoringSpecificationMachineFacade>
+    public class monitoringcontroller : BaseController<MonitoringSpecificationMachineModel, MonitoringSpecificationMachineViewModel, IMonitoringSpecificationMachineFacade>
     {
-        public MonitoringSpecificationMachineController(IIdentityService identityService, IValidateService validateService, IMonitoringSpecificationMachineFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
+        public monitoringcontroller(IIdentityService identityService, IValidateService validateService, IMonitoringSpecificationMachineFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
         }
     }

@@ -30,6 +30,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
         public async Task<int> CreateAsync(MachineModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
             this.MachineLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
@@ -69,6 +74,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
                         Year = field.Year,
                         Condition = field.Condition,
                         UnitName = field.UnitName,
+                        MachineTypeId = field.MachineTypeId,
+                        MachineTypeName = field.MachineTypeName,
                         MonthlyCapacity = field.MonthlyCapacity,
                         LastModifiedUtc = field.LastModifiedUtc,
                         MachineEvents = new List<MachineEventsModel>(field.MachineEvents.Select(i => new MachineEventsModel
