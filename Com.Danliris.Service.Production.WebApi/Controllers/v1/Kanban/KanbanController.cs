@@ -47,14 +47,15 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         ProductionOrder = viewModel.ProductionOrder,
                         SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
                     };
-                    vmToCreate.Instruction.Steps = new List<KanbanStepViewModel>();
+                    var Steps = new List<KanbanStepViewModel>();
 
                     foreach (var step in viewModel.Instruction.Steps)
                     {
                         step.MachineId = step.Machine.Id;
                         step.Machine = null;
-                        vmToCreate.Instruction.Steps.Add(step);
+                        Steps.Add(step);
                     }
+                    vmToCreate.Instruction.Steps = Steps;
 
                     KanbanModel model = Mapper.Map<KanbanModel>(vmToCreate);
                     await Facade.CreateAsync(model);

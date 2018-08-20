@@ -68,7 +68,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             foreach (var step in Result.Instruction.Steps)
             {
                 step.StepIndicators = await KanbanStepIndicatorDbSet.Where(w => w.StepId.Equals(step.Id) && !w.IsDeleted).ToListAsync();
-                step.Machine = await MachineDbSet.Where(w => w.Id.Equals(step.MachineId) && w.IsDeleted).SingleOrDefaultAsync();
+                step.Machine = await MachineDbSet.Where(w => w.Id.Equals(step.MachineId) && !w.IsDeleted).SingleOrDefaultAsync();
             }
             return Result;
         }
