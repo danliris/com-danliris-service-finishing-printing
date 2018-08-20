@@ -8,8 +8,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
 {
     public class KanbanStepViewModel : StepViewModel
     {
-        public DateTimeOffset Deadline { get; set; }
-        public int SelectedIndex { get; set; }
+        public DateTimeOffset? Deadline { get; set; }
+        public int? SelectedIndex { get; set; }
+        public int? MachineId { get; set; }
         public MachineViewModel Machine { get; set; }
     }
 }

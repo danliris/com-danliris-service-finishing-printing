@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
@@ -19,12 +20,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         private readonly DbSet<KanbanInstructionModel> KanbanInstructionDbSet;
         private readonly DbSet<KanbanStepModel> KanbanStepDbSet;
         private readonly DbSet<KanbanStepIndicatorModel> KanbanStepIndicatorDbSet;
+        private readonly DbSet<MachineModel> MachineDbSet;
         public KanbanLogic(IIdentityService identityService, ProductionDbContext dbContext) : base(identityService, dbContext)
         {
             DbContext = dbContext;
             KanbanInstructionDbSet = dbContext.Set<KanbanInstructionModel>();
             KanbanStepDbSet = dbContext.Set<KanbanStepModel>();
             KanbanStepIndicatorDbSet = dbContext.Set<KanbanStepIndicatorModel>();
+            MachineDbSet = dbContext.Set<MachineModel>();
         }
 
         public override void CreateModel(KanbanModel model)
@@ -65,6 +68,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             foreach (var step in Result.Instruction.Steps)
             {
                 step.StepIndicators = await KanbanStepIndicatorDbSet.Where(w => w.StepId.Equals(step.Id) && !w.IsDeleted).ToListAsync();
+                step.Machine = await MachineDbSet.Where(w => w.Id.Equals(step.MachineId) && w.IsDeleted).SingleOrDefaultAsync();
             }
             return Result;
         }
