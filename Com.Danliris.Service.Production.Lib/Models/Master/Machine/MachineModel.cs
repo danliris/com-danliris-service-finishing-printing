@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Production.Lib.Models.Master.Step;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Production.Lib.Models.Master.Step;
 using Com.Moonlay.Models;
 using System;
 using System.Collections.Generic;

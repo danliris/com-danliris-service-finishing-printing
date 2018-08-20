@@ -97,16 +97,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
                             StepErrors += "Deadline: 'Tanggal Deadline harus diisi', ";
                         }
 
-                        //if (step.Machine == null || string.IsNullOrWhiteSpace(step.Machine.Name))
-                        //{
-                        //    ErrorCount++;
-                        //    StepErrors += "Machine: 'Mesin harus diisi', ";
-                        //}
+                        if (step.Machine == null || string.IsNullOrWhiteSpace(step.Machine.Name))
+                        {
+                            ErrorCount++;
+                            StepErrors += "Machine: 'Mesin harus diisi', ";
+                        }
                         StepErrors += "}, ";
                     }
                 }
             }
-            StepErrors = "]";
+            StepErrors += "]";
+
+            if (ErrorCount > 0)
+                yield return new ValidationResult(StepErrors, new List<string> { "Steps" });
         }
     }
 }

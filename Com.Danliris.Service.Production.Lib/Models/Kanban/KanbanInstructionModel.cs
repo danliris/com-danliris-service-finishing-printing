@@ -1,5 +1,7 @@
-﻿using Com.Moonlay.Models;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using Com.Moonlay.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
 {
