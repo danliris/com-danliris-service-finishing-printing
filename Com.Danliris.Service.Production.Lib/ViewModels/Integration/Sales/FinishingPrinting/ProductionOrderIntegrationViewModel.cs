@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.Finis
         public string ArticleFabricEdge { get; set; }
         public BuyerIntegrationViewModel Buyer { get; set; }
         public string Code { get; set; }
-        public DateTimeOffset DeliveryDate { get; set; }
+        public DateTimeOffset? DeliveryDate { get; set; }
         public string DesignCode { get; set; }
         public DesignMotiveIntegrationViewModel DesignMotive { get; set; }
         public string DesignNumber { get; set; }

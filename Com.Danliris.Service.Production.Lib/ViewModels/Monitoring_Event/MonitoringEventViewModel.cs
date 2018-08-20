@@ -12,10 +12,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Even
     public class MonitoringEventViewModel : BaseViewModel, IValidatableObject
     {
         public string Code { get; set; }
-        public DateTimeOffset DateStart { get; set; }
-        public DateTimeOffset DateEnd { get; set; }
-        public double TimeInMilisStart { get; set; }
-        public double TimeInMilisEnd { get; set; }
+        public DateTimeOffset? DateStart { get; set; }
+        public DateTimeOffset? DateEnd { get; set; }
+        public double? TimeInMilisStart { get; set; }
+        public double? TimeInMilisEnd { get; set; }
         public string CartNumber { get; set; }
         public string Remark { get; set; }
         public MachineViewModel Machine { get; set; }
@@ -41,10 +41,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Even
             if (this.MachineEvent == null || this.MachineEvent.Id.Equals(0))
                 yield return new ValidationResult("MachineEvent harus di isi", new List<string> { "MachineEvent" });
 
-            if (string.IsNullOrWhiteSpace(CartNumber))
-                yield return new ValidationResult("Kereta harus diisi", new List<string> { "CartNumber" });
-
-
 
             if (this.DateStart == null)
             {
@@ -57,7 +53,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Even
                     yield return new ValidationResult("tanggal mulai lebih dari hari ini", new List<string> { "DateStart" });
                 }
             }
-
 
             if (this.DateEnd == null)
             {

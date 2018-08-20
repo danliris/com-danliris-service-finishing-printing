@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Monitor
 
             .ForPath(d => d.ProductionOrder.Id, opt => opt.MapFrom(s => s.ProductionOrderId))
             .ForPath(d => d.ProductionOrder.OrderNo, opt => opt.MapFrom(s => s.ProductionOrderOrderNo))
+            .ForPath(d => d.ProductionOrder.DeliveryDate, opt => opt.MapFrom(s => s.ProductionOrderDeliveryDate))
 
             .ForPath(d => d.MachineEvent.Id, opt => opt.MapFrom(s => s.MachineEventId))
             .ForPath(d => d.MachineEvent.Code, opt => opt.MapFrom(s => s.MachineEventCode))

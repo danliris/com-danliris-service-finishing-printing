@@ -33,47 +33,55 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Spec
             if (this.ProductionOrder == null || this.ProductionOrder.Id.Equals(0))
                 yield return new ValidationResult("ProductionOrder harus di isi", new List<string> { "ProductionOrder" });
 
-            if (this.Details.Count.Equals(0))
+            if (this.Details != null)
+            {
+                if (this.Details.Count.Equals(0))
+                {
+                    yield return new ValidationResult("Details harus di isi", new List<string> { "Details" });
+                }
+                else
+                {
+                    int Count = 0;
+                    string Details = "[";
+
+                    foreach (MonitoringSpecificationMachineDetailsViewModel data in this.Details)
+                    {
+                        if (data.DataType == "input skala angka")
+                        {
+                            string[] range = data.DefaultValue.Split("-");
+
+                            if (Convert.ToDouble(data.Value) < Convert.ToDouble(range[0]) || Convert.ToDouble(data.Value) > Convert.ToInt32(range[1]) || Convert.ToDouble(data.Value).Equals(0))
+                            {
+                                Count++;
+                                Details += "{ Value: 'input tidak sesuai' }, ";
+                            }
+                        }
+
+                        if (data.DataType == "input teks")
+                        {
+
+                            if (string.IsNullOrWhiteSpace(data.Value))
+                            {
+                                Count++;
+                                Details += "{ Value: 'harus di isi' }, ";
+                            }
+                        }
+
+                    }
+
+                    Details += "]";
+
+                    if (Count > 0)
+                    {
+                        yield return new ValidationResult(Details, new List<string> { "Details" });
+                    }
+                }
+            }
+            else if (this.Details == null)
             {
                 yield return new ValidationResult("Details harus di isi", new List<string> { "Details" });
             }
-            else
-            {
-                int Count = 0;
-                string Details = "[";
 
-                foreach (MonitoringSpecificationMachineDetailsViewModel data in this.Details)
-                {
-                    if (data.DataType == "input skala angka")
-                    {
-                        string[] range = data.DefaultValue.Split("-");
-
-                        if (Convert.ToDouble(data.Value) < Convert.ToDouble(range[0]) || Convert.ToDouble(data.Value) > Convert.ToInt32(range[1]) || Convert.ToDouble(data.Value).Equals(0))
-                        {
-                            Count++;
-                            Details += "{ 'input tidak sesuai' }, ";
-                        }
-                    }
-
-                    if (data.DataType == "input teks")
-                    {
-
-                        if (string.IsNullOrWhiteSpace(data.Value))
-                        {
-                            Count++;
-                            Details += "{ 'harus di isi' }, ";
-                        }
-                    }
-
-                }
-
-                Details += "]";
-
-                if (Count > 0)
-                {
-                    yield return new ValidationResult(Details, new List<string> { "Details" });
-                }
-            }
         }
     }
 }
