@@ -16,7 +16,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Kanban
             CreateMap<KanbanStepModel, KanbanStepViewModel>().ReverseMap();
             CreateMap<KanbanInstructionModel, KanbanInstructionViewModel>().ReverseMap();
             CreateMap<KanbanModel, KanbanViewModel>()
-                .ForPath(p => p.OldKanban.Id, opt => opt.MapFrom(m => m.OldKanbanId))
                 //Cart
                 .ForPath(p => p.Cart.CartNumber, opt => opt.MapFrom(m => m.CartCartNumber))
                 .ForPath(p => p.Cart.Code, opt => opt.MapFrom(m => m.CartCode))
