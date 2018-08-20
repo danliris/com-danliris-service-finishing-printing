@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specific
     public class MonitoringSpecificationMachineModel : StandardEntity, IValidatableObject
     {
         public string Code { get; set; }
-        public DateTimeOffset DateTime { get; set; }
+        public DateTimeOffset DateTimeInput { get; set; }
         public string CartNumber { get; set; }
 
         //Machine
