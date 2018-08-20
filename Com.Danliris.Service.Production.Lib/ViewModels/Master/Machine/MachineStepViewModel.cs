@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
         public string Code { get; set; }
         public string Process { get; set; }
         public string ProcessArea { get; set; }
-        public int StepId { get; set; }
+        public int? StepId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event
         //ProductionOrder
         public int ProductionOrderId { get; set; }
         public string ProductionOrderOrderNo { get; set; }
+        public string ProductionOrderDeliveryDate { get; set; }
         //SelectedProductionOrderDetail
         public string ProductionOrderDetailCode { get; set; }
         public string ProductionOrderDetailColorRequest { get; set; }

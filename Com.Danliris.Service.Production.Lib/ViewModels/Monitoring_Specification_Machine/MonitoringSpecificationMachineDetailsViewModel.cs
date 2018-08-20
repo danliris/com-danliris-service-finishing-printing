@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Spec
         public string DefaultValue { get; set; }
         public string Value { get; set; }
         public string Uom { get; set; }
-        public int MonitoringSpecificationMachineId { get; set; }
+        public int? MonitoringSpecificationMachineId { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             throw new NotImplementedException();

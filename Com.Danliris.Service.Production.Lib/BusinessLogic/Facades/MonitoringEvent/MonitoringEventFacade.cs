@@ -60,26 +60,25 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id","Code","DateStart","DateEnd", "LastModifiedUtc"
+                    "Id","Code","DateStart","Remark","DateEnd","CartNumber", "LastModifiedUtc","Machine","ProductionOrder","ProductionOrderDetail","MachineEvent"
                 };
 
             query = query
                     .Select(field => new MonitoringEventModel
                     {
                         Id = field.Id,
-                        //Name = field.Name,
                         Code = field.Code,
                         DateStart = field.DateStart,
                         DateEnd = field.DateEnd,
                         LastModifiedUtc = field.LastModifiedUtc,
-                        //Indicators = new List<MachineTypeIndicatorsModel>(field.Indicators.Select(i => new MachineTypeIndicatorsModel
-                        //{
-                        //    Indicator = i.Indicator,
-                        //    DataType = i.DataType,
-                        //    DefaultValue = i.DefaultValue,
-                        //    Uom = i.Uom,
-                        //    MachineTypeId = i.MachineTypeId
-                        //}))
+                        MachineName= field.MachineName,
+                        ProductionOrderOrderNo= field.ProductionOrderOrderNo,                      
+                        CartNumber= field.CartNumber,
+                        MachineEventName= field.MachineEventName,
+                        ProductionOrderDetailColorRequest= field.ProductionOrderDetailColorRequest,    
+                        ProductionOrderDeliveryDate=field.ProductionOrderDeliveryDate,
+                        Remark= field.Remark
+
                     });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
