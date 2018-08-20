@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id","Code", "LastModifiedUtc"
+                    "Id","Code","DateStart","DateEnd", "LastModifiedUtc"
                 };
 
             query = query
@@ -69,6 +69,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
                         Id = field.Id,
                         //Name = field.Name,
                         Code = field.Code,
+                        DateStart = field.DateStart,
+                        DateEnd = field.DateEnd,
                         LastModifiedUtc = field.LastModifiedUtc,
                         //Indicators = new List<MachineTypeIndicatorsModel>(field.Indicators.Select(i => new MachineTypeIndicatorsModel
                         //{

@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id","Code","Machine","ProductionOrder","CartNumber", "LastModifiedUtc"
+                    "Id","Code","Machine","ProductionOrder","CartNumber","DateTimeInput","Details","LastModifiedUtc"
                 };
 
             query = query
@@ -72,15 +72,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
                         MachineName = field.MachineName,
                         ProductionOrderNo = field.ProductionOrderNo,
                         Code = field.Code,
+                        DateTimeInput = field.DateTimeInput,
                         LastModifiedUtc = field.LastModifiedUtc,
-                        //Indicators = new List<MachineTypeIndicatorsModel>(field.Indicators.Select(i => new MachineTypeIndicatorsModel
-                        //{
-                        //    Indicator = i.Indicator,
-                        //    DataType = i.DataType,
-                        //    DefaultValue = i.DefaultValue,
-                        //    Uom = i.Uom,
-                        //    MachineTypeId = i.MachineTypeId
-                        //}))
+                        Details = new List<MonitoringSpecificationMachineDetailsModel>(field.Details.Select(i => new MonitoringSpecificationMachineDetailsModel
+                        {
+                            Indicator = i.Indicator,
+                            DataType = i.DataType,
+                            DefaultValue = i.DefaultValue,
+                            Uom = i.Uom,
+                            Value = i.Value
+                        }))
                     });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
