@@ -47,15 +47,6 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         ProductionOrder = viewModel.ProductionOrder,
                         SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
                     };
-                    var Steps = new List<KanbanStepViewModel>();
-
-                    foreach (var step in viewModel.Instruction.Steps)
-                    {
-                        step.MachineId = step.Machine.Id;
-                        step.Machine = null;
-                        Steps.Add(step);
-                    }
-                    vmToCreate.Instruction.Steps = Steps;
 
                     KanbanModel model = Mapper.Map<KanbanModel>(vmToCreate);
                     await Facade.CreateAsync(model);
@@ -66,50 +57,6 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                     new ResultFormatter(ApiVersion, General.CREATED_STATUS_CODE, General.OK_MESSAGE)
                     .Ok();
                 return Created(String.Concat(Request.Path, "/", 0), Result);
-            }
-            catch (ServiceValidationException e)
-            {
-                Dictionary<string, object> Result =
-                    new ResultFormatter(ApiVersion, General.BAD_REQUEST_STATUS_CODE, General.BAD_REQUEST_MESSAGE)
-                    .Fail(e);
-                return BadRequest(Result);
-            }
-            catch (Exception e)
-            {
-                Dictionary<string, object> Result =
-                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-                    .Fail();
-                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
-            }
-        }
-
-        [HttpPut("update/cart/{Id}")]
-        public async Task<IActionResult> PutKanban([FromRoute] int id, [FromBody] KanbanViewModel viewModel)
-        {
-            try
-            {
-                VerifyUser();
-                ValidateService.Validate(viewModel);
-
-                if (id != viewModel.Id)
-                {
-                    Dictionary<string, object> Result =
-                        new ResultFormatter(ApiVersion, General.BAD_REQUEST_STATUS_CODE, General.BAD_REQUEST_MESSAGE)
-                        .Fail();
-                    return BadRequest(Result);
-                }
-
-                foreach (var step in viewModel.Instruction.Steps)
-                {
-                    step.MachineId = step.Machine.Id;
-                    step.Machine = null;
-                }
-
-                KanbanModel model = Mapper.Map<KanbanModel>(viewModel);
-
-                await Facade.UpdateAsync(id, model);
-
-                return NoContent();
             }
             catch (ServiceValidationException e)
             {
