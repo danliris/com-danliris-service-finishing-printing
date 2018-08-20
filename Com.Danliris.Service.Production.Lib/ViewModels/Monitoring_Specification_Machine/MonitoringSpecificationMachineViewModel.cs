@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Spec
     public class MonitoringSpecificationMachineViewModel : BaseViewModel, IValidatableObject
     {
         public string Code { get; set; }
-        public DateTimeOffset DateTimeInput { get; set; }
+        public DateTimeOffset? DateTimeInput { get; set; }
         public string CartNumber { get; set; }
         public MachineViewModel Machine { get; set; }
         public ProductionOrderIntegrationViewModel ProductionOrder { get; set; }
@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Spec
 
             if (this.DateTimeInput == null)
             {
-                yield return new ValidationResult("harus di isi", new List<string> { "DateStart" });
+                yield return new ValidationResult("harus di isi", new List<string> { "DateTimeInput" });
             }
 
             if (this.Machine == null || this.Machine.Id.Equals(0))
