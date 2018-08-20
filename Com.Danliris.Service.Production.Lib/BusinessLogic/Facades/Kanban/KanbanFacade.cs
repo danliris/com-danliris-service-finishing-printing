@@ -98,9 +98,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             return await DbContext.SaveChangesAsync();
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            await KanbanLogic.DeleteModel(id);
+            return await DbContext.SaveChangesAsync();
         }
 
         public async Task<KanbanModel> ReadByIdAsync(int id)
