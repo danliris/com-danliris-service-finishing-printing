@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "ProductionOrder", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc"
+                "Id", "Code", "ProductionOrder", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId"
             };
             query = query
                 .Select(field => new KanbanModel
@@ -66,6 +66,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                             ProcessArea = i.ProcessArea
                         }))
                     },
+                    OldKanbanId = field.OldKanbanId,
                     LastModifiedUtc = field.LastModifiedUtc,
                     ProductionOrderOrderNo = field.ProductionOrderOrderNo,
                     SelectedProductionOrderDetailColorRequest = field.SelectedProductionOrderDetailColorRequest,
