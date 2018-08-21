@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "ProductionOrder", "Cart", "Instruction", "OldKanban", "SelectedProductionOrderDetail", "LastModifiedUtc"
+                "Id", "Code", "ProductionOrder", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc"
             };
             query = query
                 .Select(field => new KanbanModel
@@ -94,6 +94,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 model.Code = CodeGenerator.Generate();
             }
             while (DbSet.Any(d => d.Code.Equals(model.Code)));
+            foreach (var step in model.Instruction.Steps)
+            {
+                step.MachineId = step.Machine.Id;
+                step.Machine = null;
+            }
             KanbanLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
@@ -111,6 +116,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
         public async Task<int> UpdateAsync(int id, KanbanModel model)
         {
+            foreach (var step in model.Instruction.Steps)
+            {
+                step.MachineId = step.Machine.Id;
+                step.Machine = null;
+            }
             KanbanLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }

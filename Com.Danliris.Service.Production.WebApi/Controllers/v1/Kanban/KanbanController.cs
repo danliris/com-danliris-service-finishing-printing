@@ -43,19 +43,10 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         GoodOutput = viewModel.GoodOutput ?? 0,
                         Grade = viewModel.Grade,
                         Instruction = viewModel.Instruction,
-                        OldKanban = viewModel.OldKanban ?? new KanbanViewModel(),
+                        OldKanbanId = viewModel.OldKanbanId,
                         ProductionOrder = viewModel.ProductionOrder,
                         SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
                     };
-                    var Steps = new List<KanbanStepViewModel>();
-
-                    foreach (var step in viewModel.Instruction.Steps)
-                    {
-                        step.MachineId = step.Machine.Id;
-                        step.Machine = null;
-                        Steps.Add(step);
-                    }
-                    vmToCreate.Instruction.Steps = Steps;
 
                     KanbanModel model = Mapper.Map<KanbanModel>(vmToCreate);
                     await Facade.CreateAsync(model);

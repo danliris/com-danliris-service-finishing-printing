@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     }
                 }
             }
-            base.UpdateModelAsync(id ,model);
+            base.UpdateModelAsync(id, model);
         }
     }
 }
