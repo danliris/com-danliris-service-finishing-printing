@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180823100311_addBadOutputModel")]
+    partial class addBadOutputModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,14 +158,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<int>("OldKanbanId");
-
-                    b.Property<string>("ProductionOrderBuyerCode");
-
-                    b.Property<int>("ProductionOrderBuyerId");
-
-                    b.Property<string>("ProductionOrderBuyerName");
-
-                    b.Property<DateTimeOffset>("ProductionOrderDeliveryDate");
 
                     b.Property<string>("ProductionOrderHandlingStandard")
                         .HasMaxLength(100);
