@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput
         public string MachineCode { get; set; }
 
         public int BadOutputId { get; set; }
+        public virtual BadOutputModel BadOutput { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             throw new NotImplementedException();
