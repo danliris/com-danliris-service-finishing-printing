@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Com.Moonlay.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
 {
-    public class DailyOperationModel
+    public class DailyOperationModel : StandardEntity, IValidatableObject
     {
         public string Code { get; set; }
         public string Type { get; set; }
@@ -24,5 +26,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
         //kanban
         public int KanbanId { get; set; }
         public int KanbanCode { get; set; }
+
+        //machine
+        public int MachineId { get; set; }
+        public string MachineCode { get; set; }
+
+        public ICollection<DailyOperationBadOutputReasonsModel> BadOutputReasons { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

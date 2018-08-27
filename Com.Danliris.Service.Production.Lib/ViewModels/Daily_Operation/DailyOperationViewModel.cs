@@ -4,15 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.BadOutput
+namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 {
-    public class BadOutputMachineViewModel : BaseViewModel, IValidatableObject
+    public class DailyOperationViewModel : BaseViewModel, IValidatableObject
     {
-        public int MachineId { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
-
-        public int BadOutputId { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             throw new NotImplementedException();
