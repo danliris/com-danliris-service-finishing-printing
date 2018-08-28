@@ -9,8 +9,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.BadOutpu
     public class BadOutputMachineViewModel : BaseViewModel, IValidatableObject
     {
         public int MachineId { get; set; }
-        public string MachineName { get; set; }
-        public string MachineCode { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
 
         public int BadOutputId { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

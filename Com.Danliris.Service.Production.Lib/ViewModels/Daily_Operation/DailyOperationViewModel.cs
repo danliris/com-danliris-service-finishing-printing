@@ -1,12 +1,15 @@
-﻿using Com.Moonlay.Models;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
+using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
+using Com.Danliris.Service.Production.Lib.ViewModels.Master.Step;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
+namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 {
-    public class DailyOperationModel : StandardEntity, IValidatableObject
+    public class DailyOperationViewModel : BaseViewModel, IValidatableObject
     {
         public string Code { get; set; }
         public string Type { get; set; }
@@ -20,18 +23,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
         public double? BadOutput { get; set; }
 
         //step
-        public int StepId { get; set; }
-        public int StepProcess { get; set; }
+        public StepViewModel Step { get; set; }
 
         //kanban
-        public int KanbanId { get; set; }
-        public int KanbanCode { get; set; }
+        public KanbanViewModel Kanban { get; set; }
 
         //machine
-        public int MachineId { get; set; }
-        public string MachineCode { get; set; }
+        public MachineViewModel Machine { get; set; }
 
-        public ICollection<DailyOperationBadOutputReasonsModel> BadOutputReasons { get; set; }
+        public ICollection<DailyOperationBadOutputReasonsViewModel> BadOutputReasons { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

@@ -32,6 +32,9 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -67,7 +70,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMonitoringSpecificationMachineFacade, MonitoringSpecificationMachineFacade>()
                 .AddTransient<IMonitoringEventFacade, MonitoringEventFacade>()
                 .AddTransient<IMachineEventFacade, MachineEventFacade>()
-                .AddTransient<IBadOutputFacade, BadOutputFacade>();
+                .AddTransient<IBadOutputFacade, BadOutputFacade>()
+                .AddTransient<IDailyOperationFacade, DailyOperationFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -87,7 +91,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<MonitoringSpecificationMachineDetailsLogic>()
                 .AddTransient<MonitoringEventLogic>()
                 .AddTransient<BadOutputLogic>()
-                .AddTransient<BadOutputMachineLogic>();
+                .AddTransient<BadOutputMachineLogic>()
+                .AddTransient<DailyOperationBadOutputReasonsLogic>()
+                .AddTransient<DailyOperationLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

@@ -4,164 +4,22 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180824021729_updateBadOutputModel")]
+    partial class updateBadOutputModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationBadOutputReasonsModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Action");
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("BadOutputCode");
-
-                    b.Property<string>("BadOutputId");
-
-                    b.Property<string>("BadOutputReason");
-
-                    b.Property<string>("CreatedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<int?>("DailyOperationId");
-
-                    b.Property<string>("DeletedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("Description");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<double>("Length");
-
-                    b.Property<string>("MachineCode");
-
-                    b.Property<string>("MachineId");
-
-                    b.Property<string>("MachineName");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DailyOperationId");
-
-                    b.ToTable("DailyOperationBadOutputReasonsModel");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<double?>("BadOutput");
-
-                    b.Property<string>("Code");
-
-                    b.Property<string>("CreatedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset?>("DateInput");
-
-                    b.Property<DateTimeOffset?>("DateOutput");
-
-                    b.Property<string>("DeletedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<double?>("GoodOutput");
-
-                    b.Property<double?>("Input");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<int>("KanbanCode");
-
-                    b.Property<int>("KanbanId");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("MachineCode");
-
-                    b.Property<int>("MachineId");
-
-                    b.Property<string>("Shift");
-
-                    b.Property<int>("StepId");
-
-                    b.Property<int>("StepProcess");
-
-                    b.Property<double?>("TimeInput");
-
-                    b.Property<double?>("TimeOutput");
-
-                    b.Property<string>("Type");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DailyOperationModel");
-                });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanInstructionModel", b =>
                 {
@@ -1516,13 +1374,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Steps");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationBadOutputReasonsModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", "DailyOperation")
-                        .WithMany("BadOutputReasons")
-                        .HasForeignKey("DailyOperationId");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanInstructionModel", b =>
