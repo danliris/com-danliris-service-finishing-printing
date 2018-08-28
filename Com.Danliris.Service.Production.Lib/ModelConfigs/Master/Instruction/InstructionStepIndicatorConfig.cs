@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction
         {
             builder.Property(b => b.Name).HasMaxLength(100);
             builder.Property(b => b.Uom).HasMaxLength(100);
+            builder.Property(b => b.Value).HasMaxLength(150);
         }
     }
 }

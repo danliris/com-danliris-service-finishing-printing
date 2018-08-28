@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.Finis
         public string Remark { get; set; }
         public string Run { get; set; }
         public List<ProductionRunWidthIntegrationViewModel> RunWidths { get; set; }
+        public string SalesContractNo { get; set; }
         public string Sample { get; set; }
         public double? ShippingQuantityTolerance { get; set; }
         public string ShrinkageStandard { get; set; }

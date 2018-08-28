@@ -12,12 +12,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         {
             const int MARGIN = 20;
 
-            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 16);
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
-            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
-            Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
             Document document = new Document(PageSize.A4, MARGIN, MARGIN, MARGIN, MARGIN);
             MemoryStream stream = new MemoryStream();
@@ -26,8 +26,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             #region Header
             PdfPTable headerTable = new PdfPTable(4);
-            PdfPCell cellHeaderCS4 = new PdfPCell() { Border = Rectangle.NO_BORDER, Colspan = 4 };
-            PdfPCell cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellHeaderCS4 = new PdfPCell() { Border = Rectangle.NO_BORDER, Colspan = 4, PaddingTop = 1, PaddingBottom = 1  };
+            PdfPCell cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER, PaddingTop = 1, PaddingBottom = 1 };
             float[] widths = new float[] { 6f, 10f, 5f, 10f };
             headerTable.SetWidths(widths);
             headerTable.WidthPercentage = 100;
@@ -166,8 +166,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             bodyTable1Right.WidthPercentage = 100;
 
             #region Set Table 1 Header
-            PdfPCell table1LeftCellHeader = new PdfPCell() { FixedHeight = 30 };
-            PdfPCell table1RightCellHeader = new PdfPCell() { FixedHeight = 30, Colspan = 4 };
+            PdfPCell table1LeftCellHeader = new PdfPCell() { FixedHeight = 20 };
+            PdfPCell table1RightCellHeader = new PdfPCell() { FixedHeight = 20, Colspan = 4 };
 
             table1LeftCellHeader.Phrase = new Phrase("TGL", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -208,7 +208,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             #region Set Table 1 Value
             PdfPCell table1LeftCell = new PdfPCell() { FixedHeight = 15 };
             PdfPCell table1RightCellRS2CS4 = new PdfPCell() { Colspan = 4, FixedHeight = 30 };
-            PdfPCell table1RightCell = new PdfPCell() { FixedHeight = 15 };
+            PdfPCell table1RightCellNoRightBorder = new PdfPCell() { FixedHeight = 15, BorderWidthRight = 0 };
+            PdfPCell table1RightCellNoLeftBorder = new PdfPCell() { FixedHeight = 15, BorderWidthLeft = 0 };
 
             int totalRow = 0;
             foreach (var step in viewModel.Instruction.Steps)
@@ -222,13 +223,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 int countIndex = 0;
                 foreach (var stepIndicator in step.StepIndicators)
                 {
-                    table1RightCell.Phrase = new Phrase(stepIndicator.Name, body_font);
-                    table1RightCell.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCell);
+                    table1RightCellNoRightBorder.Phrase = new Phrase(stepIndicator.Name, body_font);
+                    table1RightCellNoRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+                    bodyTable1Right.AddCell(table1RightCellNoRightBorder);
 
-                    table1RightCell.Phrase = new Phrase($": {stepIndicator.Value} {stepIndicator.Uom}", body_font);
-                    table1RightCell.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCell);
+                    table1RightCellNoLeftBorder.Phrase = new Phrase($": {stepIndicator.Value} {stepIndicator.Uom}", body_font);
+                    table1RightCellNoLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+                    bodyTable1Right.AddCell(table1RightCellNoLeftBorder);
 
                     countIndex++;
                     if (countIndex == 2)
@@ -240,13 +241,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                 if (step.StepIndicators.Count % 2 != 0)
                 {
-                    table1RightCell.Phrase = new Phrase("", body_font);
-                    table1RightCell.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCell);
+                    table1RightCellNoRightBorder.Phrase = new Phrase("", body_font);
+                    table1RightCellNoRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+                    bodyTable1Right.AddCell(table1RightCellNoRightBorder);
 
-                    table1RightCell.Phrase = new Phrase("", body_font);
-                    table1RightCell.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCell);
+                    table1RightCellNoLeftBorder.Phrase = new Phrase("", body_font);
+                    table1RightCellNoLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+                    bodyTable1Right.AddCell(table1RightCellNoLeftBorder);
                     totalRow++;
                 }
             }
