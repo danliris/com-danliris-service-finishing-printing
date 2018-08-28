@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban
         {
             builder.Property(b => b.Name).HasMaxLength(100);
             builder.Property(b => b.Uom).HasMaxLength(100);
+            builder.Property(b => b.Value).HasMaxLength(150);
             builder
                 .HasOne(b => b.Step)
                 .WithMany(b => b.StepIndicators);

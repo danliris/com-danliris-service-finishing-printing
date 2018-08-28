@@ -32,6 +32,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
         public string ProductionOrderBuyerName { get; set; }
         public int ProductionOrderId { get; set; }
         public string ProductionOrderOrderNo { get; set; }
+        public string ProductionOrderSalesContractNo { get; set; }
         public int ProductionOrderOrderTypeId { get; set; }
         public string ProductionOrderOrderTypeCode { get; set; }
         public string ProductionOrderOrderTypeName { get; set; }

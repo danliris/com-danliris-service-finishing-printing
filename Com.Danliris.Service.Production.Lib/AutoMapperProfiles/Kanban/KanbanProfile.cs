@@ -42,6 +42,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Kanban
                 .ForPath(p => p.ProductionOrder.ProcessType.Id, opt => opt.MapFrom(m => m.ProductionOrderProcessTypeId))
                 .ForPath(p => p.ProductionOrder.ProcessType.Code, opt => opt.MapFrom(m => m.ProductionOrderProcessTypeCode))
                 .ForPath(p => p.ProductionOrder.ProcessType.Name, opt => opt.MapFrom(m => m.ProductionOrderProcessTypeName))
+                .ForPath(p => p.ProductionOrder.SalesContractNo, opt => opt.MapFrom(m => m.ProductionOrderProcessTypeName))
                 .ForPath(p => p.ProductionOrder.YarnMaterial.Id, opt => opt.MapFrom(m => m.ProductionOrderYarnMaterialId))
                 .ForPath(p => p.ProductionOrder.YarnMaterial.Code, opt => opt.MapFrom(m => m.ProductionOrderYarnMaterialCode))
                 .ForPath(p => p.ProductionOrder.YarnMaterial.Name, opt => opt.MapFrom(m => m.ProductionOrderYarnMaterialName))

@@ -33,6 +33,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         public override void CreateModel(KanbanModel model)
         {
             EntityExtension.FlagForCreate(model.Instruction, IdentityService.Username, UserAgent);
+
+            if (model.OldKanbanId > 0)
+            {
+                var OldKanban = DbSet.FirstOrDefault(a => a.Id == model.OldKanbanId);
+                OldKanban.IsInactive = true;
+                OldKanban.IsComplete = true;
+                DbSet.Update(OldKanban);
+            }
+
             foreach (var step in model.Instruction.Steps)
             {
                 EntityExtension.FlagForCreate(step, IdentityService.Username, UserAgent);
