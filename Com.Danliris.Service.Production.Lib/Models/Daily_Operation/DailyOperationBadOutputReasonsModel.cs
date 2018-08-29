@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
 {
     public class DailyOperationBadOutputReasonsModel : StandardEntity, IValidatableObject
     {
-        public double Length { get; set; }
+        public double? Length { get; set; }
         public string Action { get; set; }
         public string Description { get; set; }
 

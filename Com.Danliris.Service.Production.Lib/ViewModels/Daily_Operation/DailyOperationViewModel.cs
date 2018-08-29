@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
         public double? BadOutput { get; set; }
 
         //step
-        public StepViewModel Step { get; set; }
+        public MachineStepViewModel Step { get; set; }
 
         //kanban
         public KanbanViewModel Kanban { get; set; }
@@ -35,7 +35,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(Type))
+                yield return new ValidationResult("harus diisi", new List<string> { "Type" });
         }
     }
 }

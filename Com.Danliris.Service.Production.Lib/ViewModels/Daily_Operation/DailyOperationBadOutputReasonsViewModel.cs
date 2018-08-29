@@ -10,7 +10,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 {
     public class DailyOperationBadOutputReasonsViewModel : BaseViewModel, IValidatableObject
     {
-        public double Length { get; set; }
+        public double? Length { get; set; }
         public string Action { get; set; }
         public string Description { get; set; }
 
