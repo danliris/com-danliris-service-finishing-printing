@@ -36,6 +36,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 "Code", "ProductionOrderOrderNo", "CartCartNumber"
             };
             query = QueryHelper<KanbanModel>.Search(query, searchAttributes, keyword);
+            object processFilterData = null;
+            if (filter.Contains("CustomFilter#IntructionStepProcess"))
+            {
+                var processFilter = filter;
+
+                Dictionary<string, object> processFilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(processFilter);
+
+                foreach (var f in processFilterDictionary)
+                {
+                    string key = f.Key;
+                    object Value = f.Value;
+                    //string filterQuery = Value;
+                    processFilterData = Value;
+                }
+
+                filter = "{}";
+            }
 
             Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             query = QueryHelper<KanbanModel>.Filter(query, filterDictionary);
@@ -59,12 +76,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                     {
                         Id = field.Instruction.Id,
                         Name = field.Instruction.Name,
-                        Steps = new List<KanbanStepModel>(field.Instruction.Steps.Select(i => new KanbanStepModel()
+                        Steps = new List<KanbanStepModel>((processFilterData == null ? field.Instruction.Steps.Select(i => new KanbanStepModel()
                         {
                             Id = i.Id,
                             Process = i.Process,
                             ProcessArea = i.ProcessArea
-                        }))
+                        }) : field.Instruction.Steps.Where(s=>s.Process.Equals(processFilterData)).Select(i => new KanbanStepModel()
+                        {
+                            Id = i.Id,
+                            Process = i.Process,
+                            ProcessArea = i.ProcessArea
+                        })))
                     },
                     OldKanbanId = field.OldKanbanId,
                     LastModifiedUtc = field.LastModifiedUtc,

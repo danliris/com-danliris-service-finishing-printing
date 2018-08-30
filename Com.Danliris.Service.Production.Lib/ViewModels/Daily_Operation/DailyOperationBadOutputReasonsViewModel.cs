@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 {
-    public class DailyOperationBadOutputReasonsViewModel : BaseViewModel, IValidatableObject
+    public class DailyOperationBadOutputReasonsViewModel : BaseViewModel
     {
         public double? Length { get; set; }
         public string Action { get; set; }
@@ -19,10 +19,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
         //machine
         public MachineViewModel Machine { get; set; }
         public int? DailyOperationId { get; set; }
-        public virtual DailyOperationViewModel DailyOperation { get; set; }
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
