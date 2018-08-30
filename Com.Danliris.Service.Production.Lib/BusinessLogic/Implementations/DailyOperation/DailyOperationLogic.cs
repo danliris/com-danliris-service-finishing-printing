@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
             }
 
+            model.Kanban = null;
+            model.Machine = null;
             base.CreateModel(model);
         }
 
@@ -38,20 +41,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             var model = await ReadModelById(id);
 
-            if (model.Type =="output")
+            if (model.Type == "output")
             {
                 foreach (var item in model.BadOutputReasons)
                 {
                     EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
                 }
             }
+            model.Kanban = null;
+            model.Machine = null;
             EntityExtension.FlagForDelete(model, IdentityService.Username, UserAgent, true);
             DbSet.Update(model);
         }
 
         public override async void UpdateModelAsync(int id, DailyOperationModel model)
         {
-            if (model.Type =="output")
+            if (model.Type == "output")
             {
                 HashSet<int> detailId = DailyOperationBadOutputReasonsLogic.DataId(id);
                 foreach (var itemId in detailId)
@@ -71,14 +76,25 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     }
                 }
             }
-
+            model.Kanban = null;
+            model.Machine = null;
             EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
             DbSet.Update(model);
         }
 
         public override Task<DailyOperationModel> ReadModelById(int id)
         {
-            return DbSet.Include(d => d.BadOutputReasons).FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
+            return DbSet.Include(d => d.Machine)
+                .Include(d => d.Kanban)
+                .Include(d => d.BadOutputReasons)
+                .FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
+
+            //return DbSet.Include(d => d.BadOutputReasons).FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
+
+            //        return DbSet
+            //.Include(d => d.Machine)
+            //.Include(d => d.Kanban)
+            //.FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
         }
     }
 }

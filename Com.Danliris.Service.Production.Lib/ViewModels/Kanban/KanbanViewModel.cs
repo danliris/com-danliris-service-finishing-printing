@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
         public bool? IsInactive { get; set; }
         public bool? IsReprocess { get; set; }
         public int? OldKanbanId { get; set; }
+        public string FinishWidth { get; set; }
         public ProductionOrderIntegrationViewModel ProductionOrder { get; set; }
         public ProductionOrderDetailIntegrationViewModel SelectedProductionOrderDetail { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

@@ -80,6 +80,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
                         LastModifiedUtc = field.LastModifiedUtc,
                         MachineEvents = new List<MachineEventsModel>(field.MachineEvents.Select(i => new MachineEventsModel
                         {
+                            Id = i.Id,
                             Code = i.Code,
                             Name = i.Name,
                             No = i.No,
@@ -88,10 +89,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
                         })),
                         MachineSteps = new List<MachineStepModel>(field.MachineSteps.Select(i => new MachineStepModel
                         {
+                            Id=i.Id,
                             Code = i.Code,
                             Alias = i.Alias,
                             Process = i.Process,
-                            ProcessArea = i.ProcessArea
+                            ProcessArea = i.ProcessArea,
+                            StepId=i.StepId,
                         }))
                     });
 

@@ -44,10 +44,10 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<KanbanStepModel> KanbanSteps { get; set; }
         public DbSet<KanbanStepIndicatorModel> KanbanStepIndicators { get; set; }
         public DbSet<MonitoringEventModel> MonitoringEvent { get; set; }
-        public DbSet<BadOutputModel> BadOutputModel { get; set; }
-        public DbSet<BadOutputMachineModel> BadOutputMachineModel { get; set; }
-        public DbSet<DailyOperationModel> DailyOperationModel { get; set; }
-        public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasonsModel { get; set; }
+        public DbSet<BadOutputModel> BadOutput { get; set; }
+        public DbSet<BadOutputMachineModel> BadOutputMachine { get; set; }
+        public DbSet<DailyOperationModel> DailyOperation { get; set; }
+        public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
