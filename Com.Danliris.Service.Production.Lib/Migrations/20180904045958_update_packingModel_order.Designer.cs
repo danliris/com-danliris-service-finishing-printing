@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180904045958_update_packingModel_order")]
+    partial class update_packingModel_order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<string>("BadOutputCode");
 
-                    b.Property<int>("BadOutputId");
+                    b.Property<string>("BadOutputId");
 
                     b.Property<string>("BadOutputReason");
 
@@ -71,11 +73,11 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<double?>("Length");
+                    b.Property<double>("Length");
 
                     b.Property<string>("MachineCode");
 
-                    b.Property<int>("MachineId");
+                    b.Property<string>("MachineId");
 
                     b.Property<string>("MachineName");
 
@@ -83,7 +85,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasIndex("DailyOperationId");
 
-                    b.ToTable("DailyOperationBadOutputReasons");
+                    b.ToTable("DailyOperationBadOutputReasonsModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", b =>
@@ -128,7 +130,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("KanbanCode");
+                    b.Property<int>("KanbanCode");
 
                     b.Property<int>("KanbanId");
 
@@ -150,7 +152,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<int>("StepId");
 
-                    b.Property<string>("StepProcess");
+                    b.Property<int>("StepProcess");
 
                     b.Property<double?>("TimeInput");
 
@@ -160,11 +162,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KanbanId");
-
-                    b.HasIndex("MachineId");
-
-                    b.ToTable("DailyOperation");
+                    b.ToTable("DailyOperationModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricQualityControlModel", b =>
@@ -611,7 +609,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasIndex("BadOutputId");
 
-                    b.ToTable("BadOutputMachine");
+                    b.ToTable("BadOutputMachineModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput.BadOutputModel", b =>
@@ -660,7 +658,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BadOutput");
+                    b.ToTable("BadOutputModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineEventsModel", b =>
@@ -1771,19 +1769,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", "DailyOperation")
                         .WithMany("BadOutputReasons")
                         .HasForeignKey("DailyOperationId");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanModel", "Kanban")
-                        .WithMany()
-                        .HasForeignKey("KanbanId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel", "Machine")
-                        .WithMany()
-                        .HasForeignKey("MachineId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanInstructionModel", b =>
