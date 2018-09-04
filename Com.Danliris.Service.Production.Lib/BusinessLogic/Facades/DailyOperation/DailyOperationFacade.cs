@@ -14,6 +14,7 @@ using Com.Moonlay.NetCore.Lib;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore.Internal;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation
 {
@@ -21,13 +22,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
     {
         private readonly ProductionDbContext DbContext;
         private readonly DbSet<DailyOperationModel> DbSet;
-        //private readonly DbSet<MachineModel> DbSetMachine;
         private readonly DailyOperationLogic DailyOperationLogic;
         public DailyOperationFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
             this.DbContext = dbContext;
             this.DbSet = DbContext.Set<DailyOperationModel>();
-            //this.DbSetMachine = 
             this.DailyOperationLogic = serviceProvider.GetService<DailyOperationLogic>();
         }
 
@@ -59,12 +58,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             };
             query = QueryHelper<DailyOperationModel>.Search(query, searchAttributes, keyword);
 
-            if (filter.Contains("process"))
-            {
-                filter = "{}";
-                //List<ExpeditionPosition> positions = new List<ExpeditionPosition> { ExpeditionPosition.SEND_TO_PURCHASING_DIVISION, ExpeditionPosition.SEND_TO_ACCOUNTING_DIVISION, ExpeditionPosition.SEND_TO_CASHIER_DIVISION };
-                //Query = Query.Where(p => positions.Contains(p.Position));
-            }
 
             Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             query = QueryHelper<DailyOperationModel>.Filter(query, filterDictionary);
@@ -74,22 +67,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     "Id","Type","GoodOutput","Step","BadOutput","Code","Machine","Kanban","Input","Shift","DateInput","DateOutput","LastModifiedUtc"
                 };
 
-
-            //query = query.Join(DbContext.Machine,
-            //    daily => daily.MachineId,
-            //    machine => machine.Id,
-            //    (daily, machine) => new DailyOperationModel
-            //    {
-
-            //    })
-            //    .Join(DbContext.Kanbans,
-            //    daily => daily.KanbanId,
-            //    kanban => kanban.Id,
-            //    (daily, kanban) => new DailyOperationModel
-            //    {
-
-            //        Kanban = kanban
-            //    });
             query = from daily in query
                     join machine in DbContext.Machine on daily.MachineId equals machine.Id
                     join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
