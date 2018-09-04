@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
@@ -48,6 +49,9 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<BadOutputMachineModel> BadOutputMachineModel { get; set; }
         public DbSet<DailyOperationModel> DailyOperationModel { get; set; }
         public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasonsModel { get; set; }
+        public DbSet<FabricQualityControlModel> FabricQualityControls { get; set; }
+        public DbSet<FabricGradeTestModel> FabricGradeTests { get; set; }
+        public DbSet<CriteriaModel> Criterion { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
