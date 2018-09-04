@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
@@ -52,10 +53,6 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasons { get; set; }
         public DbSet<PackingModel> Packings { get; set; }
         public DbSet<PackingDetailModel> PackingDetails { get; set; }
-        public DbSet<BadOutputModel> BadOutputModel { get; set; }
-        public DbSet<BadOutputMachineModel> BadOutputMachineModel { get; set; }
-        public DbSet<DailyOperationModel> DailyOperationModel { get; set; }
-        public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasonsModel { get; set; }
         public DbSet<FabricQualityControlModel> FabricQualityControls { get; set; }
         public DbSet<FabricGradeTestModel> FabricGradeTests { get; set; }
         public DbSet<CriteriaModel> Criterion { get; set; }
@@ -73,6 +70,9 @@ namespace Com.Danliris.Service.Production.Lib
             modelBuilder.ApplyConfiguration(new KanbanInstructionConfig());
             modelBuilder.ApplyConfiguration(new KanbanStepConfig());
             modelBuilder.ApplyConfiguration(new KanbanStepIndicatorConfig());
+            modelBuilder.ApplyConfiguration(new FabricQualityControlConfig());
+            modelBuilder.ApplyConfiguration(new FabricGradeTestConfig());
+            modelBuilder.ApplyConfiguration(new CriteriaConfig());
             base.OnModelCreating(modelBuilder);
         }
     }
