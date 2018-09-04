@@ -35,8 +35,29 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (string.IsNullOrEmpty(Type))
+            if (string.IsNullOrEmpty(this.Type))
                 yield return new ValidationResult("harus diisi", new List<string> { "Type" });
+
+            if (string.IsNullOrEmpty(this.Shift))
+                yield return new ValidationResult("harus diisi", new List<string> { "Shift" });
+
+            if (this.Type == "input")
+            {
+                if (this.DateInput == null)
+                {
+                    yield return new ValidationResult("harus diisi", new List<string> { "Shift" });
+                }
+
+                if (this.DateInput > DateTime.Now)
+                {
+                    yield return new ValidationResult("date input lebih dari hari ini", new List<string> { "DateInput" });
+                }
+
+                if (this.DateInput > DateTime.Now)
+                {
+                    yield return new ValidationResult("date input lebih dari hari ini", new List<string> { "DateInput" });
+                }
+            }
         }
     }
 }
