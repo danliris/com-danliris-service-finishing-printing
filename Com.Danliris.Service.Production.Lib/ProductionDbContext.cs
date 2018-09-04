@@ -7,6 +7,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step;
@@ -45,6 +46,12 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<KanbanStepModel> KanbanSteps { get; set; }
         public DbSet<KanbanStepIndicatorModel> KanbanStepIndicators { get; set; }
         public DbSet<MonitoringEventModel> MonitoringEvent { get; set; }
+        public DbSet<BadOutputModel> BadOutput { get; set; }
+        public DbSet<BadOutputMachineModel> BadOutputMachine { get; set; }
+        public DbSet<DailyOperationModel> DailyOperation { get; set; }
+        public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasons { get; set; }
+        public DbSet<PackingModel> Packings { get; set; }
+        public DbSet<PackingDetailModel> PackingDetails { get; set; }
         public DbSet<BadOutputModel> BadOutputModel { get; set; }
         public DbSet<BadOutputMachineModel> BadOutputMachineModel { get; set; }
         public DbSet<DailyOperationModel> DailyOperationModel { get; set; }
