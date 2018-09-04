@@ -35,6 +35,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
@@ -52,6 +53,14 @@ namespace Com.Danliris.Service.Production.WebApi
         }
 
         public IConfiguration Configuration { get; }
+
+        public void RegisterEndpoint()
+        {
+            APIEndpoint.Core = Configuration.GetValue<string>("CoreEndpoint") ?? Configuration["CoreEndpoint"];
+            //APIEndpoint.Inventory = Configuration.GetValue<string>("InventoryEndpoint") ?? Configuration["InventoryEndpoint"];
+            //APIEndpoint.Production = Configuration.GetValue<string>("ProductionEndpoint") ?? Configuration["ProductionEndpoint"];
+            //APIEndpoint.Purchasing = Configuration.GetValue<string>("PurchasingEndpoint") ?? Configuration["PurchasingEndpoint"];
+        }
 
         private void RegisterServices(IServiceCollection services)
         {
@@ -114,6 +123,8 @@ namespace Com.Danliris.Service.Production.WebApi
             RegisterFacades(services);
 
             RegisterLogics(services);
+
+            RegisterEndpoint();
 
             services.AddAutoMapper();
             #endregion
