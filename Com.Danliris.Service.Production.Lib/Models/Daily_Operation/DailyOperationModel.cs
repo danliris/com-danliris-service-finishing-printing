@@ -1,4 +1,6 @@
-﻿using Com.Moonlay.Models;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using Com.Moonlay.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,17 +23,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
 
         //step
         public int StepId { get; set; }
-        public int StepProcess { get; set; }
+        public string StepProcess { get; set; }
 
         //kanban
         public int KanbanId { get; set; }
-        public int KanbanCode { get; set; }
+        public string KanbanCode { get; set; }
+        public virtual KanbanModel Kanban { get; set; }
 
         //machine
         public int MachineId { get; set; }
         public string MachineCode { get; set; }
 
-        public ICollection<DailyOperationBadOutputReasonsModel> BadOutputReasons { get; set; }
+        public virtual MachineModel Machine { get; set; }
+
+        public virtual ICollection<DailyOperationBadOutputReasonsModel> BadOutputReasons { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

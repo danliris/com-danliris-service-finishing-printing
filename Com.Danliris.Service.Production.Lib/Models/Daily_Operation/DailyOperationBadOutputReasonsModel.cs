@@ -8,17 +8,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
 {
     public class DailyOperationBadOutputReasonsModel : StandardEntity, IValidatableObject
     {
-        public double Length { get; set; }
+        public double? Length { get; set; }
         public string Action { get; set; }
         public string Description { get; set; }
 
         //BadOutputReason
-        public string BadOutputId { get; set; }
+        public int BadOutputId { get; set; }
         public string BadOutputCode { get; set; }
         public string BadOutputReason { get; set; }
 
         //machine
-        public string MachineId { get; set; }
+        public int MachineId { get; set; }
         public string MachineCode { get; set; }
         public string MachineName { get; set; }
 

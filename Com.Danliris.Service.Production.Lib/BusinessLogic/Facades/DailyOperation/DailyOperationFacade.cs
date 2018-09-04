@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using Newtonsoft.Json;
 using Com.Moonlay.NetCore.Lib;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation
 {
@@ -18,11 +21,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
     {
         private readonly ProductionDbContext DbContext;
         private readonly DbSet<DailyOperationModel> DbSet;
+        //private readonly DbSet<MachineModel> DbSetMachine;
         private readonly DailyOperationLogic DailyOperationLogic;
         public DailyOperationFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
             this.DbContext = dbContext;
             this.DbSet = DbContext.Set<DailyOperationModel>();
+            //this.DbSetMachine = 
             this.DailyOperationLogic = serviceProvider.GetService<DailyOperationLogic>();
         }
 
@@ -54,21 +59,57 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             };
             query = QueryHelper<DailyOperationModel>.Search(query, searchAttributes, keyword);
 
+            if (filter.Contains("process"))
+            {
+                filter = "{}";
+                //List<ExpeditionPosition> positions = new List<ExpeditionPosition> { ExpeditionPosition.SEND_TO_PURCHASING_DIVISION, ExpeditionPosition.SEND_TO_ACCOUNTING_DIVISION, ExpeditionPosition.SEND_TO_CASHIER_DIVISION };
+                //Query = Query.Where(p => positions.Contains(p.Position));
+            }
+
             Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             query = QueryHelper<DailyOperationModel>.Filter(query, filterDictionary);
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id","Code","LastModifiedUtc"
+                    "Id","Type","GoodOutput","Step","BadOutput","Code","Machine","Kanban","Input","Shift","DateInput","DateOutput","LastModifiedUtc"
                 };
 
-            query = query
-                    .Select(field => new DailyOperationModel
-                    {
-                        Id = field.Id,
-                        Code = field.Code,
 
-                    });
+            //query = query.Join(DbContext.Machine,
+            //    daily => daily.MachineId,
+            //    machine => machine.Id,
+            //    (daily, machine) => new DailyOperationModel
+            //    {
+
+            //    })
+            //    .Join(DbContext.Kanbans,
+            //    daily => daily.KanbanId,
+            //    kanban => kanban.Id,
+            //    (daily, kanban) => new DailyOperationModel
+            //    {
+
+            //        Kanban = kanban
+            //    });
+            query = from daily in query
+                    join machine in DbContext.Machine on daily.MachineId equals machine.Id
+                    join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
+                    select new DailyOperationModel
+                    {
+                        Id=daily.Id,
+                        Code=daily.Code,
+                        Type = daily.Type,
+                        StepProcess = daily.StepProcess,
+                        Shift = daily.Shift,
+                        Kanban = kanban,
+                        Machine = machine,
+                        DateInput = daily.DateInput,
+                        Input = daily.Input,
+                        DateOutput = daily.DateOutput,
+                        GoodOutput = daily.GoodOutput,
+                        BadOutput = daily.BadOutput,
+                        LastModifiedUtc = daily.LastModifiedUtc
+                    };
+
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<DailyOperationModel>.Order(query, orderDictionary);

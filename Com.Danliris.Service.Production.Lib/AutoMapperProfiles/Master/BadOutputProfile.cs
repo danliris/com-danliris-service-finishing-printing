@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master
         {
             CreateMap<BadOutputModel, BadOutputViewModel>().ReverseMap();
             CreateMap<BadOutputMachineModel, BadOutputMachineViewModel>()
+                .ForPath(d => d.MachineId, opt => opt.MapFrom(s => s.MachineId))
                 .ForPath(d => d.Name, opt => opt.MapFrom(s => s.MachineName))
                 .ForPath(d => d.Code, opt => opt.MapFrom(s => s.MachineCode))
                 .ReverseMap();
