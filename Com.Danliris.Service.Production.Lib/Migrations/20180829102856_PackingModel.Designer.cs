@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180829102856_PackingModel")]
+    partial class PackingModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1213,8 +1215,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.Property<string>("Lot")
                         .HasMaxLength(250);
 
-                    b.Property<int>("PackingId");
-
                     b.Property<int>("Quantity");
 
                     b.Property<string>("Remark")
@@ -1223,8 +1223,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.Property<int>("Weight");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PackingId");
 
                     b.ToTable("PackingDetails");
                 });
@@ -1266,7 +1264,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .HasMaxLength(250);
 
                     b.Property<string>("Construction")
-                        .HasMaxLength(300);
+                        .HasMaxLength(25);
 
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
@@ -1332,13 +1330,10 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.Property<string>("Motif")
                         .HasMaxLength(250);
 
-                    b.Property<string>("OrderTypeCode")
+                    b.Property<string>("OrderType")
                         .HasMaxLength(25);
 
-                    b.Property<int>("OrderTypeId");
-
-                    b.Property<string>("OrderTypeName")
-                        .HasMaxLength(25);
+                    b.Property<int>("PackingDetailId");
 
                     b.Property<string>("PackingUom")
                         .HasMaxLength(25);
@@ -1355,6 +1350,8 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .HasMaxLength(25);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PackingDetailId");
 
                     b.ToTable("Packings");
                 });
@@ -1838,11 +1835,11 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingDetailModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingModel", b =>
                 {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingModel", "Packing")
-                        .WithMany("PackingDetails")
-                        .HasForeignKey("PackingId")
+                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingDetailModel", "PackingDetail")
+                        .WithMany()
+                        .HasForeignKey("PackingDetailId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

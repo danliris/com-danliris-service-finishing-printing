@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180830074020_change_fk_packing")]
+    partial class change_fk_packing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1266,7 +1268,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .HasMaxLength(250);
 
                     b.Property<string>("Construction")
-                        .HasMaxLength(300);
+                        .HasMaxLength(25);
 
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
@@ -1332,12 +1334,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.Property<string>("Motif")
                         .HasMaxLength(250);
 
-                    b.Property<string>("OrderTypeCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("OrderTypeId");
-
-                    b.Property<string>("OrderTypeName")
+                    b.Property<string>("OrderType")
                         .HasMaxLength(25);
 
                     b.Property<string>("PackingUom")
@@ -1841,7 +1838,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingDetailModel", b =>
                 {
                     b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingModel", "Packing")
-                        .WithMany("PackingDetails")
+                        .WithMany()
                         .HasForeignKey("PackingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
