@@ -38,10 +38,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             packingLogic.CreateModel(model);
 
             var row = await dbContext.SaveChangesAsync();
-            //if(row > 0)
-            //{
-            //    await packingLogic.CreateProduct(model);
-            //}
+            if (row > 0)
+            {
+                packingLogic.CreateProduct(model);
+            }
             return row;
         }
 
