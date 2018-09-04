@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180904045958_update_packingModel_order")]
+    partial class update_packingModel_order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<string>("BadOutputCode");
 
-                    b.Property<int>("BadOutputId");
+                    b.Property<string>("BadOutputId");
 
                     b.Property<string>("BadOutputReason");
 
@@ -71,11 +73,11 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<double?>("Length");
+                    b.Property<double>("Length");
 
                     b.Property<string>("MachineCode");
 
-                    b.Property<int>("MachineId");
+                    b.Property<string>("MachineId");
 
                     b.Property<string>("MachineName");
 
@@ -83,7 +85,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasIndex("DailyOperationId");
 
-                    b.ToTable("DailyOperationBadOutputReasons");
+                    b.ToTable("DailyOperationBadOutputReasonsModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", b =>
@@ -128,7 +130,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("KanbanCode");
+                    b.Property<int>("KanbanCode");
 
                     b.Property<int>("KanbanId");
 
@@ -150,7 +152,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<int>("StepId");
 
-                    b.Property<string>("StepProcess");
+                    b.Property<int>("StepProcess");
 
                     b.Property<double?>("TimeInput");
 
@@ -160,122 +162,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KanbanId");
-
-                    b.HasIndex("MachineId");
-
-                    b.ToTable("DailyOperation");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.CriteriaModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Code");
-
-                    b.Property<int>("FabricGradeTestId");
-
-                    b.Property<int>("Group");
-
-                    b.Property<int>("Name");
-
-                    b.Property<double>("ScoreA");
-
-                    b.Property<double>("ScoreB");
-
-                    b.Property<double>("ScoreC");
-
-                    b.Property<double>("ScoreD");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FabricGradeTestId");
-
-                    b.ToTable("Criterion");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricGradeTestModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<double>("AvalLength");
-
-                    b.Property<string>("CreatedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<double>("FabricGradeTest");
-
-                    b.Property<int>("FabricQualityControlId");
-
-                    b.Property<double>("FinalArea");
-
-                    b.Property<double>("FinalGradeTest");
-
-                    b.Property<double>("FinalLength");
-
-                    b.Property<double>("FinalScore");
-
-                    b.Property<string>("Grade")
-                        .HasMaxLength(100);
-
-                    b.Property<double>("InitLength");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("PcsNo")
-                        .HasMaxLength(100);
-
-                    b.Property<double>("PointLimit");
-
-                    b.Property<double>("PointSystem");
-
-                    b.Property<double>("SampleLength");
-
-                    b.Property<double>("Score");
-
-                    b.Property<string>("Type")
-                        .HasMaxLength(100);
-
-                    b.Property<double>("Width");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FabricQualityControlId");
-
-                    b.ToTable("FabricGradeTests");
+                    b.ToTable("DailyOperationModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricQualityControlModel", b =>
@@ -286,21 +173,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("Buyer")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("CartNo")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Construction")
-                        .HasMaxLength(250);
-
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -310,8 +182,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset>("DateIm");
 
                     b.Property<string>("DeletedAgent")
                         .IsRequired()
@@ -323,17 +193,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<string>("Group")
-                        .HasMaxLength(250);
-
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<bool>("IsUsed");
-
-                    b.Property<string>("KanbanCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("KanbanId");
 
                     b.Property<string>("LastModifiedAgent")
                         .IsRequired()
@@ -345,36 +205,9 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<string>("MachineNoIm")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("OperatorIm")
-                        .HasMaxLength(250);
-
-                    b.Property<double>("OrderQuantity");
-
-                    b.Property<string>("PackingInstruction")
-                        .HasMaxLength(500);
-
-                    b.Property<double>("PointLimit");
-
-                    b.Property<double>("PointSystem");
-
-                    b.Property<string>("ProductionOrderNo")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("ProductionOrderType")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("ShiftIm")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Uom")
-                        .HasMaxLength(250);
-
                     b.HasKey("Id");
 
-                    b.ToTable("FabricQualityControls");
+                    b.ToTable("FabricQualityControlModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanInstructionModel", b =>
@@ -776,7 +609,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasIndex("BadOutputId");
 
-                    b.ToTable("BadOutputMachine");
+                    b.ToTable("BadOutputMachineModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput.BadOutputModel", b =>
@@ -825,7 +658,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BadOutput");
+                    b.ToTable("BadOutputModel");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineEventsModel", b =>
@@ -1936,35 +1769,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", "DailyOperation")
                         .WithMany("BadOutputReasons")
                         .HasForeignKey("DailyOperationId");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanModel", "Kanban")
-                        .WithMany()
-                        .HasForeignKey("KanbanId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel", "Machine")
-                        .WithMany()
-                        .HasForeignKey("MachineId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.CriteriaModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricGradeTestModel", "FabricGradeTest")
-                        .WithMany("Criteria")
-                        .HasForeignKey("FabricGradeTestId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricGradeTestModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricQualityControlModel", "FabricQualityControl")
-                        .WithMany("FabricGradeTests")
-                        .HasForeignKey("FabricQualityControlId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanInstructionModel", b =>
