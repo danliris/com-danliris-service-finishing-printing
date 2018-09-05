@@ -39,6 +39,9 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -84,7 +87,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMachineEventFacade, MachineEventFacade>()
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
                 .AddTransient<IDailyOperationFacade, DailyOperationFacade>()
-                .AddTransient<IPackingFacade, PackingFacade>();
+                .AddTransient<IPackingFacade, PackingFacade>()
+                .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -107,7 +111,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<BadOutputMachineLogic>()
                 .AddTransient<DailyOperationBadOutputReasonsLogic>()
                 .AddTransient<DailyOperationLogic>()
-                .AddTransient<PackingLogic>();
+                .AddTransient<PackingLogic>()
+                .AddTransient<FabricQualityControlLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
