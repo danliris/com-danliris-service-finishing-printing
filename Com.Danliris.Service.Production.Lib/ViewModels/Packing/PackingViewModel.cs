@@ -59,9 +59,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing
         public string MaterialWidthFinish { get; set; }
 
         [StringLength(300)]
-        public string Construction { get { return string.IsNullOrWhiteSpace(this.Construction) ? 
-                    this.Construction : string.Format("{0} / {1} / {2}", Material, MaterialConstructionFinishName, MaterialWidthFinish); }
-            set { this.Construction = value; } }
+        public string Construction { get; set; }
 
         [StringLength(25)]
         public string DeliveryType { get; set; }

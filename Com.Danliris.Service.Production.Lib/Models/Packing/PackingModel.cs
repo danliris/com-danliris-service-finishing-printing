@@ -1,33 +1,34 @@
 ﻿using Com.Moonlay.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing
 {
+    [JsonObject(IsReference = true)]
     public class PackingModel : StandardEntity, IValidatableObject
     {
         [MaxLength(25)]
         public string Code { get; set; }
+        
         public int ProductionOrderId { get; set; }
         [MaxLength(25)]
         public string ProductionOrderNo { get; set; }
-
+        
         public int OrderTypeId { get; set; }
         [MaxLength(25)]
         public string OrderTypeCode { get; set; }
         [MaxLength(25)]
         public string OrderTypeName { get; set; }
-
+        
         [MaxLength(25)]
         public string SalesContractNo { get; set; }
         [MaxLength(250)]
         public string DesignCode { get; set; }
         [MaxLength(250)]
         public string DesignNumber { get; set; }
-
+        
         public int BuyerId { get; set; }
         [MaxLength(25)]
         public string BuyerCode { get; set; }
@@ -57,10 +58,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing
         public string Material { get; set; }
         [MaxLength(25)]
         public string MaterialWidthFinish { get; set; }
-
+        
         [MaxLength(300)]
         public string Construction { get; set; }
-
         [MaxLength(25)]
         public string DeliveryType { get; set; }
         [MaxLength(25)]
@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing
         public bool Accepted { get; set; }
         public bool Declined { get; set; }
         
-        public ICollection<PackingDetailModel> PackingDetails { get; set; }
+        public virtual ICollection<PackingDetailModel> PackingDetails { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
