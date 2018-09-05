@@ -1,7 +1,8 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
-using Com.Danliris.Service.Production.Lib.ViewModels.Master.Step;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -35,6 +36,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            KanbanFacade data = (KanbanFacade)validationContext.GetService(typeof(KanbanFacade));
+            KanbanModel kanban = await data.ReadByIdAsync(Kanban.Id);
+
             if (string.IsNullOrEmpty(this.Type))
                 yield return new ValidationResult("harus diisi", new List<string> { "Type" });
 
