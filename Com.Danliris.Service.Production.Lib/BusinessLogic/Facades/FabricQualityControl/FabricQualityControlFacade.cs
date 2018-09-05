@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Fabr
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "CartNo", "DateIm", "IsUsed", "IsUsed", "MachineNoIm", "OperatorIm", "ProductionOrderNo", "ProductionOrderType"
+                "Id", "Code", "CartNo", "DateIm", "IsUsed", "MachineNoIm", "OperatorIm", "ProductionOrderNo", "ProductionOrderType"
             };
             query = query
                 .Select(field => new FabricQualityControlModel
