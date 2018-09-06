@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
@@ -55,13 +56,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (model.Type == "output")
             {
-                string flag = "delete";
+                string flag = "update";
                 foreach (var item in model.BadOutputReasons)
                 {
                     EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
                 }
                 this.UpdateKanban(model, flag);
             }
+
             model.Kanban = null;
             model.Machine = null;
             EntityExtension.FlagForDelete(model, IdentityService.Username, UserAgent, true);
@@ -92,6 +94,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
                 this.UpdateKanban(model, flag);
             }
+
             model.Kanban = null;
             model.Machine = null;
 
@@ -109,19 +112,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public void UpdateKanban(DailyOperationModel model, string flag)
         {
-
             KanbanModel kanban = this.DbSetKanban.Where(k => k.Id.Equals(model.KanbanId)).SingleOrDefault();
 
             int currentStepIndex = (flag == "create" ? kanban.CurrentStepIndex += 1 : flag == "update" ? kanban.CurrentStepIndex : kanban.CurrentStepIndex -= 1);
 
-            kanban.CurrentQty = (double)model.GoodOutput;
+            kanban.CurrentQty = model.GoodOutput != null ? (double)model.GoodOutput : 0;
             kanban.CurrentStepIndex = currentStepIndex;
-            kanban.GoodOutput = (double)model.GoodOutput;
-            kanban.BadOutput = (double)model.BadOutput;
+            kanban.GoodOutput = model.GoodOutput != null ? (double)model.GoodOutput : 0;
+            kanban.BadOutput = model.BadOutput != null ? (double)model.GoodOutput : 0;
 
             EntityExtension.FlagForUpdate(kanban, IdentityService.Username, UserAgent);
             DbSetKanban.Update(kanban);
+        }
 
+        public HashSet<int> hasInput(DailyOperationViewModel vm)
+        {
+            return new HashSet<int>(DbSet.Where(d => d.Kanban.Id == vm.Kanban.Id && d.Type == vm.Type && d.StepId == vm.Step.StepId).Select(d => d.Id));
         }
     }
 }

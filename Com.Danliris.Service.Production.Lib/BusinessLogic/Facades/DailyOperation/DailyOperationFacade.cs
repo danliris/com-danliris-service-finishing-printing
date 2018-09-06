@@ -15,13 +15,14 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore.Internal;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation
 {
     public class DailyOperationFacade : IDailyOperationFacade
     {
         private readonly ProductionDbContext DbContext;
-        private readonly DbSet<DailyOperationModel> DbSet;
+        public readonly DbSet<DailyOperationModel> DbSet;
         private readonly DailyOperationLogic DailyOperationLogic;
         public DailyOperationFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
@@ -72,8 +73,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
                     select new DailyOperationModel
                     {
-                        Id=daily.Id,
-                        Code=daily.Code,
+                        Id = daily.Id,
+                        Code = daily.Code,
                         Type = daily.Type,
                         StepProcess = daily.StepProcess,
                         Shift = daily.Shift,
@@ -108,5 +109,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             this.DailyOperationLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
+
     }
 }

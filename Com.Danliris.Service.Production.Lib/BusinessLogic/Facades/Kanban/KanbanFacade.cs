@@ -59,7 +59,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "ProductionOrder", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId"
+                "Id", "Code", "ProductionOrder","CurrentStepIndex", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId"
             };
             query = query
                 .Select(field => new KanbanModel
@@ -80,12 +80,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                         {
                             Id = i.Id,
                             Process = i.Process,
-                            ProcessArea = i.ProcessArea
-                        }) : field.Instruction.Steps.Where(s=>s.Process.Equals(processFilterData)).Select(i => new KanbanStepModel()
+                            ProcessArea = i.ProcessArea,
+                            SelectedIndex=i.SelectedIndex
+                        }) : field.Instruction.Steps.Where(s => s.Process.Equals(processFilterData)).Select(i => new KanbanStepModel()
                         {
                             Id = i.Id,
                             Process = i.Process,
-                            ProcessArea = i.ProcessArea
+                            ProcessArea = i.ProcessArea,
+                            SelectedIndex = i.SelectedIndex
                         })))
                     },
                     OldKanbanId = field.OldKanbanId,
@@ -151,5 +153,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             KanbanLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
+
     }
 }
