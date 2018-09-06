@@ -3,9 +3,9 @@
     public class CriteriaModel
     {
         public int Id { get; set; }
-        public int Code { get; set; }
-        public int Group { get; set; }
-        public int Name { get; set; }
+        public string Code { get; set; }
+        public string Group { get; set; }
+        public string Name { get; set; }
         public double ScoreA { get; set; }
         public double ScoreB { get; set; }
         public double ScoreC { get; set; }
