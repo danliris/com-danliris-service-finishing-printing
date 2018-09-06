@@ -1,14 +1,21 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
+using Com.Danliris.Service.Production.Lib;
+using Microsoft.Extensions.DependencyInjection;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
-using Com.Danliris.Service.Production.Lib.ViewModels.Master.Step;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 {
+
     public class DailyOperationViewModel : BaseViewModel, IValidatableObject
     {
         public string Code { get; set; }
@@ -33,10 +40,134 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public ICollection<DailyOperationBadOutputReasonsViewModel> BadOutputReasons { get; set; }
 
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (string.IsNullOrEmpty(Type))
+
+
+            if (string.IsNullOrEmpty(this.Type))
                 yield return new ValidationResult("harus diisi", new List<string> { "Type" });
+
+            if (string.IsNullOrEmpty(this.Shift))
+                yield return new ValidationResult("harus diisi", new List<string> { "Shift" });
+
+            if (this.Kanban != null)
+            {
+                DailyOperationLogic service = (DailyOperationLogic)validationContext.GetService(typeof(DailyOperationLogic));
+
+                HashSet<int> hasInput = service.hasInput(this);
+
+                if (hasInput.Count > 0)
+                {
+                    yield return new ValidationResult("Data input tidak dapat disimpan karena ada data input yang belum dibuat output di mesin ini", new List<string> { "Machine" });
+                    yield return new ValidationResult("Data input tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
+                }
+                else
+                {
+                    var stepProcess = this.Kanban.Instruction.Steps.Find(x => x.Process.Equals(this.Step.Process));
+                    var kanbanCurrentStepIndex = this.Kanban.CurrentStepIndex != null ? this.Kanban.CurrentStepIndex : 0;
+                    if (!(stepProcess.SelectedIndex > kanbanCurrentStepIndex))
+                    {
+                        yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
+                    }
+                }
+            }
+            else if (this.Kanban == null)
+            {
+                yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Kanban" });
+            }
+
+            if (this.Machine == null)
+            {
+                yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Machine" });
+            }
+
+            if (this.Step == null)
+            {
+                yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Step" });
+            }
+
+            if (this.Type == "input")
+            {
+                if (this.Input <= 0)
+                {
+                    yield return new ValidationResult("harus diisi", new List<string> { "Input" });
+                }
+
+                if (this.DateInput == null)
+                {
+                    yield return new ValidationResult("harus diisi", new List<string> { "DateInput" });
+                }
+
+                if (this.DateInput > DateTime.Now)
+                {
+                    yield return new ValidationResult("date input lebih dari hari ini", new List<string> { "DateInput" });
+                }
+
+            }
+            else if (this.Type == "output")
+            {
+                if (this.GoodOutput <= 0 )
+                {
+                    yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "GoodOutput" });
+                }
+
+                if (this.BadOutput <= 0 )
+                {
+                    yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "BadOutput" });
+                }
+
+                if (this.DateOutput > DateTime.Now)
+                {
+                    yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
+                }
+
+                if (this.BadOutputReasons.Count.Equals(0))
+                {
+                    yield return new ValidationResult("BadOutputReasons harus di isi", new List<string> { "BadOutputReasons" });
+                }
+                else
+                {
+                    int Count = 0;
+                    string BadOutputReasons = "[";
+                    foreach (DailyOperationBadOutputReasonsViewModel item in this.BadOutputReasons)
+                    {
+                        BadOutputReasons += "{";
+                        if (item.BadOutput == null)
+                        {
+                            Count++;
+                            BadOutputReasons += "BadOutput:'alasan harus di isi', ";
+                        }
+
+                        if (item.Length <= 0)
+                        {
+                            Count++;
+                            BadOutputReasons += " Length:'panjang harus di isi' , ";
+                        }
+
+                        if (string.IsNullOrEmpty(item.Action))
+                        {
+                            Count++;
+                            BadOutputReasons += " Action:'action harus di isi' , ";
+                        }
+
+                        if (item.Machine == null)
+                        {
+                            Count++;
+                            BadOutputReasons += " Machine: 'mesin harus di isi' , ";
+                        }
+                        BadOutputReasons += "}";
+                    }
+
+                    BadOutputReasons += "]";
+
+                    if (Count > 0)
+                    {
+                        yield return new ValidationResult(BadOutputReasons, new List<string> { "BadOutputReasons" });
+                    }
+                }
+            }
         }
+
     }
 }
