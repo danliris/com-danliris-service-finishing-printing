@@ -87,14 +87,11 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMonitoringEventFacade, MonitoringEventFacade>()
                 .AddTransient<IMachineEventFacade, MachineEventFacade>()
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
-<<<<<<< HEAD
                 .AddScoped<IDailyOperationFacade, DailyOperationFacade>()
-                .AddTransient<IPackingFacade, PackingFacade>();
-=======
+                .AddTransient<IPackingFacade, PackingFacade>()
                 .AddTransient<IDailyOperationFacade, DailyOperationFacade>()
                 .AddTransient<IPackingFacade, PackingFacade>()
                 .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>();
->>>>>>> upstream/dev
         }
 
         private void RegisterLogics(IServiceCollection services)
