@@ -1,12 +1,13 @@
 ﻿using Com.Moonlay.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing
 {
+    [JsonObject(IsReference = true)]
     public class PackingDetailModel : StandardEntity, IValidatableObject
     {
         [MaxLength(250)]

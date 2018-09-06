@@ -3,18 +3,15 @@ using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using Com.Moonlay.Models;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using System.Net;
-using System.Web;
+using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
+using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing
 {
@@ -34,6 +31,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public override void CreateModel(PackingModel model)
         {
+            model.Construction = string.Format("{0} / {1} / {2}", model.Material, model.MaterialConstructionFinishName, model.MaterialWidthFinish);
             EntityExtension.FlagForCreate(model, IdentityService.Username, UserAgent);
             foreach(var detail in model.PackingDetails)
             {
@@ -46,13 +44,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("");
+                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Core, "master/products/packing/create"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
-                var myContent = JsonConvert.SerializeObject(model);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                var response = await client.PostAsync("", byteContent);
+                var myContentJson = JsonConvert.SerializeObject(model);
+                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(uri, myContent);
                 response.EnsureSuccessStatusCode();
             }
         }
