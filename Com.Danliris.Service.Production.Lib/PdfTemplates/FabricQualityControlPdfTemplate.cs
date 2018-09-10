@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
             headerTable.AddCell(cellHeader);
 
-            cellHeader.Phrase = new Phrase($": {viewModel.DateIm.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", body_font);
+            cellHeader.Phrase = new Phrase($": {viewModel.DateIm.Value.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", body_font);
             cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
             headerTable.AddCell(cellHeader);
 
