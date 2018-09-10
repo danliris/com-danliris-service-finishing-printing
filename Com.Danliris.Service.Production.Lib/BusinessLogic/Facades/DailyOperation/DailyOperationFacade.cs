@@ -16,6 +16,11 @@ using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore.Internal;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation
 {
@@ -110,5 +115,96 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             return await DbContext.SaveChangesAsync();
         }
 
+        public ReadResponse<DailyOperationViewModel> GetReport(int page, int size, int kanbanID, int machineID, DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
+        {
+            IQueryable<DailyOperationModel> query = DbContext.DailyOperation.AsQueryable();
+            IEnumerable<DailyOperationViewModel> queries;
+
+            if (kanbanID != -1)
+                query = query.Where(x => x.KanbanId == kanbanID);
+
+            if (machineID != -1)
+                query = query.Where(x => x.MachineId == machineID);
+            
+            if (dateFrom == null && dateTo == null)
+            {
+                query = query
+                    .Where(x => DateTimeOffset.UtcNow.Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date 
+                        && x.DateInput.Value.AddHours(offSet).Date <= DateTimeOffset.UtcNow.Date);
+            }
+            else if (dateFrom == null && dateTo != null)
+            {
+                query = query
+                    .Where(x => dateTo.Value.Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date
+                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+            else if (dateTo == null && dateFrom != null)
+            {
+                query = query
+                    .Where(x =>  dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
+                        && x.DateInput.Value.AddHours(offSet).Date <= dateFrom.Value.Date.AddDays(30));
+            }
+            else
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
+                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+            queries = query.Select(x => new DailyOperationViewModel()
+            {
+                Kanban = new KanbanViewModel()
+                {
+                    ProductionOrder = new ProductionOrderIntegrationViewModel()
+                    {
+                        OrderNo = x.Kanban.ProductionOrderOrderNo,
+                        Material = new MaterialIntegrationViewModel()
+                        {
+                            Name = x.Kanban.ProductionOrderMaterialName
+                        },
+                        FinishWidth = x.Kanban.FinishWidth,
+                        ProcessType = new ProcessTypeIntegrationViewModel()
+                        {
+                            Name = x.Kanban.ProductionOrderProcessTypeName
+                        }
+                    },
+                    Cart = new CartViewModel()
+                    {
+                        CartNumber = x.Kanban.CartCartNumber
+                    },
+                    IsReprocess = x.Kanban.IsReprocess,
+                    SelectedProductionOrderDetail = new ProductionOrderDetailIntegrationViewModel()
+                    {
+                        ColorRequest = x.Kanban.SelectedProductionOrderDetailColorRequest
+                    }
+                },
+                Machine = new MachineViewModel()
+                {
+                    Name = x.Machine.Name
+                },
+                Step = new MachineStepViewModel()
+                {
+                    Process = x.StepProcess
+                },
+                BadOutput = x.BadOutput,
+                GoodOutput = x.GoodOutput,
+                DateInput = x.DateInput,
+                DateOutput = x.DateOutput,
+                TimeInput = x.TimeInput,
+                TimeOutput = x.TimeOutput,
+                Input = x.Input,
+                Id = x.Id,
+                Active = x.Active,
+                Code = x.Code,
+                CreatedAgent = x.CreatedAgent,
+                IsDeleted = x.IsDeleted,
+                Shift = x.Shift,
+                Type = x.Type
+
+            });
+            Pageable<DailyOperationViewModel> pageable = new Pageable<DailyOperationViewModel>(queries, page - 1, size);
+            List<DailyOperationViewModel> data = pageable.Data.ToList();
+
+            return new ReadResponse<DailyOperationViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
+        }
     }
 }

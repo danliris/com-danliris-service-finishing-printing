@@ -22,6 +22,37 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
     {
         public DailyOperationController(IIdentityService identityService, IValidateService validateService, IDailyOperationFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
+
+        }
+
+        [HttpGet("reports")]
+        public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, int kanbanID = -1, int machineID = -1, int offSet = 7, int page = 1, int size = 25)
+        {
+            try
+            {
+                var data = Facade.GetReport(page, size, kanbanID, machineID, dateFrom, dateTo, offSet);
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data.Data,
+                    info = new
+                    {
+                        Count = data.Count,
+                        Orded = data.Order,
+                        Selected = data.Selected
+                    },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                   .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
         }
     }
 }
