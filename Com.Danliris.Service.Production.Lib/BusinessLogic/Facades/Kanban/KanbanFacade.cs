@@ -68,6 +68,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                     Code = field.Code,
                     CartCartNumber = field.CartCartNumber,
                     CurrentStepIndex = field.CurrentStepIndex,
+                    CartQty = field.CartQty,
                     IsBadOutput = field.IsBadOutput,
                     IsComplete = field.IsComplete,
                     IsInactive = field.IsInactive,
@@ -81,7 +82,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                             Id = i.Id,
                             Process = i.Process,
                             ProcessArea = i.ProcessArea,
-                            SelectedIndex=i.SelectedIndex
+                            SelectedIndex = i.SelectedIndex
                         }) : field.Instruction.Steps.Where(s => s.Process.Equals(processFilterData)).Select(i => new KanbanStepModel()
                         {
                             Id = i.Id,
