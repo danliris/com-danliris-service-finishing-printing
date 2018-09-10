@@ -107,14 +107,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
             }
             else if (this.Type == "output")
             {
-                if (this.GoodOutput <= 0 )
+                if (this.GoodOutput <= 0)
                 {
                     yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "GoodOutput" });
                 }
 
-                if (this.BadOutput <= 0 )
+                if (this.DateOutput == null)
                 {
-                    yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "BadOutput" });
+                    yield return new ValidationResult("harus diisi", new List<string> { "DateOutput" });
                 }
 
                 if (this.DateOutput > DateTime.Now)
@@ -122,7 +122,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
                 }
 
-                if (this.BadOutputReasons.Count.Equals(0))
+                if (this.BadOutputReasons.Count.Equals(0) && this.BadOutput > 0)
                 {
                     yield return new ValidationResult("BadOutputReasons harus di isi", new List<string> { "BadOutputReasons" });
                 }

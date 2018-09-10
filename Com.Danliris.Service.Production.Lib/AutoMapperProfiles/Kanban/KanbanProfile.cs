@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Kanban
                 .ForPath(p => p.Cart.Uom.Unit, opt => opt.MapFrom(m => m.CartUomUnit))
                 //Production Order
                 .ForPath(p => p.ProductionOrder.Id, opt => opt.MapFrom(m => m.ProductionOrderId))
+                .ForPath(p => p.ProductionOrder.FinishWidth, opt => opt.MapFrom(m => m.FinishWidth))
                 .ForPath(p => p.ProductionOrder.DeliveryDate, opt => opt.MapFrom(m => m.ProductionOrderDeliveryDate))
                 .ForPath(p => p.ProductionOrder.Buyer.Id, opt => opt.MapFrom(m => m.ProductionOrderBuyerId))
                 .ForPath(p => p.ProductionOrder.Buyer.Code, opt => opt.MapFrom(m => m.ProductionOrderBuyerCode))
