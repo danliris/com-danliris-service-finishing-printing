@@ -110,7 +110,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public override Task<MachineModel> ReadModelById(int id)
         {
-            return DbSet.Include(d => d.MachineEvents).FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
+            return DbSet.Include(d => d.MachineEvents)
+                .Include(d => d.MachineSteps)
+                .FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
+
         }
     }
 }

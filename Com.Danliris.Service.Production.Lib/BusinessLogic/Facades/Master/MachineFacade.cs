@@ -74,6 +74,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
                         Year = field.Year,
                         Condition = field.Condition,
                         UnitName = field.UnitName,
+                        UnitDivisionName = field.UnitDivisionName,
                         MachineTypeId = field.MachineTypeId,
                         MachineTypeName = field.MachineTypeName,
                         MonthlyCapacity = field.MonthlyCapacity,
@@ -87,14 +88,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
                             Category = i.Category,
                             MachineId = i.MachineId
                         })),
-                        MachineSteps = new List<MachineStepModel>(field.MachineSteps.Select(i => new MachineStepModel
+                        MachineSteps = new List<MachineStepModel>(field.MachineSteps.Select(d => new MachineStepModel
                         {
-                            Id=i.Id,
-                            Code = i.Code,
-                            Alias = i.Alias,
-                            Process = i.Process,
-                            ProcessArea = i.ProcessArea,
-                            StepId=i.StepId,
+                            Id = d.Id,
+                            Code = d.Code,
+                            Alias = d.Alias,
+                            Process = d.Process,
+                            ProcessArea = d.ProcessArea,
+                            StepId = d.StepId,
                         }))
                     });
 
