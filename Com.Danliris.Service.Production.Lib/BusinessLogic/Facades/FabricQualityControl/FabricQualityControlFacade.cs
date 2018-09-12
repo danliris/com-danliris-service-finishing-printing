@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Fabr
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "CartNo", "DateIm", "IsUsed", "IsUsed", "MachineNoIm", "OperatorIm", "ProductionOrderNo", "ProductionOrderType"
+                "Id", "Code", "CartNo", "DateIm", "IsUsed", "MachineNoIm", "OperatorIm", "ProductionOrderNo", "ProductionOrderType", "ShiftIm", "LastModifiedUtc"
             };
             query = query
                 .Select(field => new FabricQualityControlModel
@@ -52,10 +52,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Fabr
                     CartNo = field.CartNo,
                     DateIm = field.DateIm,
                     IsUsed = field.IsUsed,
+                    LastModifiedUtc = field.LastModifiedUtc,
                     MachineNoIm = field.MachineNoIm,
                     OperatorIm = field.OperatorIm,
                     ProductionOrderNo = field.ProductionOrderNo,
-                    ProductionOrderType = field.ProductionOrderType
+                    ProductionOrderType = field.ProductionOrderType,
+                    ShiftIm = field.ShiftIm
                 });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);

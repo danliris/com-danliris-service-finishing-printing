@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityCo
         public string Code { get; set; }
         public string Color { get; set; }
         public string Construction { get; set; }
-        public DateTimeOffset DateIm { get; set; }
+        public DateTimeOffset? DateIm { get; set; }
         public List<FabricGradeTestViewModel> FabricGradeTests { get; set; }
         public string Group { get; set; }
         public bool? IsUsed { get; set; }
@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityCo
                     yield return new ValidationResult("Point Limit harus lebih besar dari 0", new List<string> { "PointLimit" });
 
             if (DateIm == null)
-                yield return new ValidationResult("Tanggal harus diisi", new List<string> { "Tanggal IM" });
+                yield return new ValidationResult("Tanggal harus diisi", new List<string> { "DateIm" });
 
             if (string.IsNullOrWhiteSpace(ShiftIm))
                 yield return new ValidationResult("Shift harus diisi", new List<string> { "ShiftIm" });
