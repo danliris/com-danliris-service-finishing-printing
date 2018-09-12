@@ -91,7 +91,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IPackingFacade, PackingFacade>()
                 .AddTransient<IDailyOperationFacade, DailyOperationFacade>()
                 .AddTransient<IPackingFacade, PackingFacade>()
-                .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>();
+                .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>()
+                .AddTransient<MachineEventFacade>()
+                .AddTransient<MonitoringEventReportFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
