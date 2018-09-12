@@ -10,6 +10,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
 {
     public interface IDailyOperationFacade : IBaseFacade<DailyOperationModel>
     {
-        ReadResponse<DailyOperationViewModel> GetReport(int page, int size, int kanbanID, int machineID, DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
+        ReadResponse<DailyOperationViewModel> GetReport(int page, int size, int kanbanID, int machineID, DateTimeOffset? dateFrom, DateTimeOffset? dateTo);
     }
 }

@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             return await DbContext.SaveChangesAsync();
         }
 
-        public ReadResponse<DailyOperationViewModel> GetReport(int page, int size, int kanbanID, int machineID, DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
+        public ReadResponse<DailyOperationViewModel> GetReport(int page, int size, int kanbanID, int machineID, DateTimeOffset? dateFrom, DateTimeOffset? dateTo)
         {
             IQueryable<DailyOperationModel> query = DbContext.DailyOperation.AsQueryable();
             IEnumerable<DailyOperationViewModel> queries;
@@ -129,26 +129,26 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             if (dateFrom == null && dateTo == null)
             {
                 query = query
-                    .Where(x => DateTimeOffset.UtcNow.Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date 
-                        && x.DateInput.Value.AddHours(offSet).Date <= DateTimeOffset.UtcNow.Date);
+                    .Where(x => DateTimeOffset.UtcNow.Date.AddDays(-30) <= x.DateInput.Value.Date 
+                        && x.DateInput.Value.Date <= DateTimeOffset.UtcNow.Date);
             }
             else if (dateFrom == null && dateTo != null)
             {
                 query = query
-                    .Where(x => dateTo.Value.Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+                    .Where(x => dateTo.Value.Date.AddDays(-30) <= x.DateInput.Value.Date
+                        && x.DateInput.Value.Date <= dateTo.Value.Date);
             }
             else if (dateTo == null && dateFrom != null)
             {
                 query = query
-                    .Where(x =>  dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateFrom.Value.Date.AddDays(30));
+                    .Where(x =>  dateFrom.Value.Date <= x.DateInput.Value.Date
+                        && x.DateInput.Value.Date <= dateFrom.Value.Date.AddDays(30));
             }
             else
             {
                 query = query
-                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.Date
+                        && x.DateInput.Value.Date <= dateTo.Value.Date);
             }
             queries = query.Select(x => new DailyOperationViewModel()
             {

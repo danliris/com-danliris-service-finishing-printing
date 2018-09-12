@@ -26,11 +26,11 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
         }
 
         [HttpGet("reports")]
-        public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, int kanbanID = -1, int machineID = -1, int offSet = 7, int page = 1, int size = 25)
+        public IActionResult GetReport(DateTimeOffset? dateFrom = null, DateTimeOffset? dateTo = null, int kanban = -1, int machine = -1, int page = 1, int size = 25)
         {
             try
             {
-                var data = Facade.GetReport(page, size, kanbanID, machineID, dateFrom, dateTo, offSet);
+                var data = Facade.GetReport(page, size, kanban, machine, dateFrom, dateTo);
 
                 return Ok(new
                 {
