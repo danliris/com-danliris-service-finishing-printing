@@ -26,11 +26,13 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
         }
 
         [HttpGet("reports")]
-        public IActionResult GetReport(DateTimeOffset? dateFrom = null, DateTimeOffset? dateTo = null, int kanban = -1, int machine = -1, int page = 1, int size = 25)
+        public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, int kanban = -1, int machine = -1, int page = 1, int size = 25)
         {
             try
             {
-                var data = Facade.GetReport(page, size, kanban, machine, dateFrom, dateTo);
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                //int offSet = 7;
+                var data = Facade.GetReport(page, size, kanban, machine, dateFrom, dateTo, offSet);
 
                 return Ok(new
                 {
@@ -51,6 +53,30 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                 Dictionary<string, object> Result =
                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("reports/downloads/xls")]
+        public IActionResult GetXls(DateTime? dateFrom = null, DateTime? dateTo = null, int kanban = -1, int machine = -1)
+        {
+            try
+            {
+                byte[] xlsInBytes;
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var xls = Facade.GenerateExcel(kanban, machine, dateFrom, dateTo, offSet);
+
+                string fileName = string.Format("Daily Operation Report - {0}", DateTime.UtcNow.AddHours(offSet).ToString("ddMMyyyy"));
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                  .Fail();
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
