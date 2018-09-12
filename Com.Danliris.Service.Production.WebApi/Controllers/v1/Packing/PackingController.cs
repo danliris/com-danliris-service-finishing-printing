@@ -60,34 +60,36 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
             }
         }
 
-        //[HttpGet("reports")]
-        //public IActionResult GetReport(DateTimeOffset? dateFrom = null, DateTimeOffset? dateTo = null, int kanban = -1, int machine = -1, int page = 1, int size = 25)
-        //{
-        //    try
-        //    {
-        //        var data = Facade.GetReport(page, size, kanban, machine, dateFrom, dateTo);
+        [HttpGet("reports")]
+        public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, string productionOrderNo = null, int page = 1, int size = 25)
+        {
+            try
+            {
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                //int offSet = 7;
+                var data = Facade.GetReport(page, size, code, productionOrderNo, dateFrom, dateTo, offSet);
 
-        //        return Ok(new
-        //        {
-        //            apiVersion = ApiVersion,
-        //            data = data.Data,
-        //            info = new
-        //            {
-        //                Count = data.Count,
-        //                Orded = data.Order,
-        //                Selected = data.Selected
-        //            },
-        //            message = General.OK_MESSAGE,
-        //            statusCode = General.OK_STATUS_CODE
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Dictionary<string, object> Result =
-        //           new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-        //           .Fail();
-        //        return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
-        //    }
-        //}
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data.Data,
+                    info = new
+                    {
+                        Count = data.Count,
+                        Orded = data.Order,
+                        Selected = data.Selected
+                    },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                   .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing
 {
@@ -49,6 +50,73 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         {
             await packingLogic.DeleteModel(id);
             return await dbContext.SaveChangesAsync();
+        }
+
+        public ReadResponse<PackingViewModel> GetReport(int page, int size, string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            IQueryable<PackingModel> query = dbContext.Packings.Include(x => x.PackingDetails).AsQueryable();
+
+            IEnumerable<PackingViewModel> queries;
+
+            if (!string.IsNullOrEmpty(code))
+                query = query.Where(x => x.Code == code);
+
+            if (!string.IsNullOrEmpty(productionOrderNo))
+                query = query.Where(x => x.ProductionOrderNo == productionOrderNo);
+
+
+            if (dateFrom == null && dateTo == null)
+            {
+                query = query
+                    .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= DateTime.UtcNow.Date);
+            }
+            else if (dateFrom == null && dateTo != null)
+            {
+                query = query
+                    .Where(x => dateTo.Value.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+            else if (dateTo == null && dateFrom != null)
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
+            }
+            else
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+
+            queries = query.Select(x => new PackingViewModel()
+            {
+                Code = x.Code,
+                DeliveryType = x.DeliveryType,
+                ProductionOrderNo = x.ProductionOrderNo,
+                OrderTypeName = x.OrderTypeName,
+                FinishedProductType = x.FinishedProductType,
+                BuyerName = x.BuyerName,
+                Construction = x.Construction,
+                DesignCode = x.DesignCode,
+                ColorName = x.ColorName,
+                Date = x.Date,
+                PackingDetails = x.PackingDetails.Select(y => new PackingDetailViewModel()
+                {
+                    Lot = y.Lot,
+                    Grade = y.Grade,
+                    Weight = y.Weight,
+                    Length = y.Length,
+                    Quantity = y.Quantity,
+                    Remark = y.Remark
+                }).ToList()
+            });
+
+            Pageable<PackingViewModel> pageable = new Pageable<PackingViewModel>(queries, page - 1, size);
+            List<PackingViewModel> data = pageable.Data.ToList();
+
+            return new ReadResponse<PackingViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
         }
 
         public ReadResponse<PackingModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)

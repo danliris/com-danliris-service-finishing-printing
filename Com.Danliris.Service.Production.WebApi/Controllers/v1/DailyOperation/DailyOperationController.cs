@@ -66,7 +66,15 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                 int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 var xls = Facade.GenerateExcel(kanban, machine, dateFrom, dateTo, offSet);
 
-                string fileName = string.Format("Daily Operation Report - {0}", DateTime.UtcNow.AddHours(offSet).ToString("ddMMyyyy"));
+                string fileName = "";
+                if(dateFrom == null && dateTo == null)
+                    fileName = string.Format("Daily Operation Report");
+                else if(dateFrom != null && dateTo == null)
+                    fileName = string.Format("Daily Operation Report {0}", dateFrom.Value.ToString("dd/MM/yyyy"));
+                else if(dateFrom == null && dateTo != null)
+                    fileName = string.Format("Daily Operation Report {0}", dateTo.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                else
+                    fileName = string.Format("Daily Operation Report {0} - {1}", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
                 xlsInBytes = xls.ToArray();
 
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
