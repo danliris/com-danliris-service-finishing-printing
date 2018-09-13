@@ -11,6 +11,13 @@ using System.Threading.Tasks;
 using System.Linq;
 using Newtonsoft.Json;
 using Com.Moonlay.NetCore.Lib;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+using System.IO;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
+using System.Data;
+using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban
 {
@@ -155,5 +162,170 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             return await DbContext.SaveChangesAsync();
         }
 
+        public ReadResponse<KanbanViewModel> GetReport(int page, int size, bool? proses, int orderTypeId, int processTypeId, string orderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            var queries = GetReport(proses, orderTypeId, processTypeId, orderNo, dateFrom, dateTo, offSet);
+            queries = queries.OrderByDescending(x => x.LastModifiedUtc).ToList();
+            Pageable<KanbanViewModel> pageable = new Pageable<KanbanViewModel>(queries, page - 1, size);
+            List<KanbanViewModel> data = pageable.Data.ToList();
+
+            return new ReadResponse<KanbanViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
+        }
+
+        public MemoryStream GenerateExcel(bool? proses, int orderTypeId, int processTypeId, string orderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            var data = GetReport(proses, orderTypeId, processTypeId, orderNo, dateFrom, dateTo, offSet);
+
+            data = data.OrderByDescending(x => x.LastModifiedUtc).ToList();
+
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor Order", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Order", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Proses", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Standar Handfeel", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Lebar Finish", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Konstruksi", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor Benang", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor Kereta", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang", DataType = typeof(Int64) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "PCS", DataType = typeof(Int64) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Step Index", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Step", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Status", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Reproses", DataType = typeof(String) });
+
+            if (data.Count == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, "", "", "", "", "");
+            }
+            else
+            {
+                int index = 1;
+                foreach (var item in data)
+                {
+                    dt.Rows.Add(index, item.ProductionOrder.OrderNo, item.CreatedUtc.AddHours(offSet).ToString("dd MMM yyyy"), item.ProductionOrder.OrderType.Name, item.ProductionOrder.ProcessType.Name,
+                        item.SelectedProductionOrderDetail.ColorRequest, item.ProductionOrder.HandlingStandard, item.ProductionOrder.FinishWidth,
+                        item.ProductionOrder.Material.Name, item.ProductionOrder.MaterialConstruction.Name, item.ProductionOrder.YarnMaterial.Name,
+                        item.Grade, item.Cart.CartNumber, item.Cart.Qty, item.Cart.Pcs, item.Cart.Uom.Unit, string.Format("{0} / {1}", item.CurrentStepIndex.GetValueOrDefault(), item.Instruction.Steps.Count),
+                        item.CurrentStepIndex.GetValueOrDefault() == 0 ? "-" : item.Instruction.Steps[item.CurrentStepIndex.GetValueOrDefault() - 1].Process,
+                        item.IsComplete.GetValueOrDefault() ? "Complete" : item.CurrentStepIndex.GetValueOrDefault() == item.Instruction.Steps.Count ? "Pending" : "Incomplete",
+                        item.IsReprocess.GetValueOrDefault() ? "Ya" : "Tidak");
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Monitoring Kanban") }, true);
+        }
+
+        public List<KanbanViewModel> GetReport(bool? proses, int orderTypeId, int processTypeId, string orderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            IQueryable<KanbanModel> query = DbContext.Kanbans.AsQueryable();
+
+            IEnumerable<KanbanViewModel> kanbans;
+
+            if (proses != null)
+                query = query.Where(x => x.IsReprocess == proses.Value);
+
+            if (orderTypeId != -1)
+                query = query.Where(x => x.ProductionOrderOrderTypeId == orderTypeId);
+
+            if (processTypeId != -1)
+                query = query.Where(x => x.ProductionOrderProcessTypeId == processTypeId);
+
+            if (!string.IsNullOrEmpty(orderNo))
+                query = query.Where(x => x.ProductionOrderOrderNo.Contains(orderNo));
+
+
+            if (dateFrom == null && dateTo == null)
+            {
+                query = query
+                    .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.CreatedUtc.AddHours(offSet).Date
+                        && x.CreatedUtc.AddHours(offSet).Date <= DateTime.UtcNow.Date);
+            }
+            else if (dateFrom == null && dateTo != null)
+            {
+                query = query
+                    .Where(x => dateTo.Value.AddDays(-30).Date <= x.CreatedUtc.AddHours(offSet).Date
+                        && x.CreatedUtc.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+            else if (dateTo == null && dateFrom != null)
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.CreatedUtc.AddHours(offSet).Date
+                        && x.CreatedUtc.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
+            }
+            else
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.CreatedUtc.AddHours(offSet).Date
+                        && x.CreatedUtc.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+
+            kanbans = query.Select(x => new KanbanViewModel()
+            {
+                CreatedUtc = x.CreatedUtc.AddHours(offSet),
+                ProductionOrder = new ProductionOrderIntegrationViewModel()
+                {
+                    OrderNo = x.ProductionOrderOrderNo,
+                    OrderType = new OrderTypeIntegrationViewModel()
+                    {
+                        Name = x.ProductionOrderOrderTypeName
+                    },
+                    ProcessType = new ProcessTypeIntegrationViewModel()
+                    {
+                        Name = x.ProductionOrderProcessTypeName
+                    },
+                    HandlingStandard = x.ProductionOrderHandlingStandard,
+                    FinishWidth = x.FinishWidth,
+                    Material = new MaterialIntegrationViewModel()
+                    {
+                        Name = x.ProductionOrderMaterialName
+                    },
+                    MaterialConstruction = new MaterialConstructionIntegrationViewModel()
+                    {
+                        Name = x.ProductionOrderMaterialConstructionName
+                    },
+                    YarnMaterial = new YarnMaterialIntegrationViewModel()
+                    {
+                        Name = x.ProductionOrderYarnMaterialName
+                    }
+
+                },
+                SelectedProductionOrderDetail = new ProductionOrderDetailIntegrationViewModel()
+                {
+                    ColorRequest = x.SelectedProductionOrderDetailColorRequest
+                },
+                Grade = x.Grade,
+                Cart = new CartViewModel()
+                {
+                    CartNumber = x.CartCartNumber,
+                    Qty = x.CartQty,
+                    Pcs = x.CartPcs,
+                    Uom = new UOMIntegrationViewModel()
+                    {
+                        Unit = x.CartUomUnit
+                    }
+                },
+                IsReprocess = x.IsReprocess,
+                IsComplete = x.IsComplete,
+                CurrentStepIndex = x.CurrentStepIndex,
+                Instruction = new KanbanInstructionViewModel()
+                {
+                    Steps = x.Instruction.Steps.Select(y => new KanbanStepViewModel()
+                    {
+                        Process = y.Process
+                    }).ToList()
+                },
+                LastModifiedUtc = x.LastModifiedUtc
+            });
+
+            return kanbans.ToList();
+        }
     }
 }
