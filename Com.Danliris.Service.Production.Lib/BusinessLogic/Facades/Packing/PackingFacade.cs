@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
 using System.IO;
+using System.Data;
+using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing
 {
@@ -55,10 +57,56 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
         public MemoryStream GenerateExcel(string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
-            throw new NotImplementedException();
+            var data = GetReport(code, productionOrderNo, dateFrom, dateTo, offSet);
+
+            data = data.OrderByDescending(x => x.LastModifiedUtc).ToList();
+
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor Packing", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Penyerahan", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor Order", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Order", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Barang Jadi", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Konstruksi", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna yang diminta", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Lot", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Berat(kg)", DataType = typeof(Int32) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang(m)", DataType = typeof(Int32) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(Int32) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(Int32) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(String) });
+
+
+            if (data.Count == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
+            }
+            else
+            {
+                int index = 1;
+                foreach (var item in data)
+                {
+                    foreach (var detail in item.PackingDetails)
+                    {
+                        dt.Rows.Add(index++, item.Code, item.DeliveryType, item.ProductionOrderNo, item.OrderTypeName, item.FinishedProductType,
+                            item.BuyerName, item.Construction, item.DesignCode, item.ColorName, item.Date.AddHours(offSet).ToString("dd/MM/yyyy"),
+                            detail.Lot, detail.Grade, detail.Weight, detail.Length, detail.Quantity, (detail.Length * detail.Quantity), detail.Remark);
+                    }
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Packing") }, true);
+
+            
         }
 
-        public ReadResponse<PackingViewModel> GetReport(int page, int size, string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        public List<PackingViewModel> GetReport(string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
             IQueryable<PackingModel> query = dbContext.Packings.Include(x => x.PackingDetails).AsQueryable();
 
@@ -115,9 +163,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     Weight = y.Weight,
                     Length = y.Length,
                     Quantity = y.Quantity,
-                    Remark = y.Remark
-                }).ToList()
+                    Remark = y.Remark,
+                    LastModifiedUtc = y.LastModifiedUtc
+                }).ToList(),
+                LastModifiedUtc = x.LastModifiedUtc
+
             });
+
+            return queries.ToList();
+        }
+
+        public ReadResponse<PackingViewModel> GetReport(int page, int size, string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            var queries = GetReport(code, productionOrderNo, dateFrom, dateTo, offSet);
 
             Pageable<PackingViewModel> pageable = new Pageable<PackingViewModel>(queries, page - 1, size);
             List<PackingViewModel> data = pageable.Data.ToList();
