@@ -19,47 +19,14 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
 {
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    [Route("v{version:apiVersion}/finishing-printing/quality-control/packings")]
+    [Route("v{version:apiVersion}/finishing-printing/packings")]
     [Authorize]
-    public class PackingController : BaseController<PackingModel, PackingViewModel, IPackingFacade>
+    public class PackingReportController : BaseController<PackingModel, PackingViewModel, IPackingFacade>
     {
-        public PackingController(IIdentityService identityService, IValidateService validateService, IPackingFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
+        public PackingReportController(IIdentityService identityService, IValidateService validateService, IPackingFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
         }
-
-        [HttpGet("pdf/{Id}")]
-        public new async Task<IActionResult> GetById([FromRoute] int id)
-        {
-            try
-            {
-                PackingModel model = await Facade.ReadByIdAsync(id);
-                if (model == null)
-                {
-                    Dictionary<string, object> Result =
-                        new ResultFormatter(ApiVersion, General.NOT_FOUND_STATUS_CODE, General.NOT_FOUND_MESSAGE)
-                        .Fail();
-                    return NotFound(Result);
-                }
-                else
-                {
-                    int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                    PackingPdfTemplate pdfTemplate = new PackingPdfTemplate(model, timeoffsset);
-                    MemoryStream stream = pdfTemplate.GeneratePdfTemplate();
-                    return new FileStreamResult(stream, "application/pdf")
-                    {
-                        FileDownloadName = string.Format("{0}.pdf", model.Code)
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                Dictionary<string, object> Result =
-                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-                    .Fail();
-                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
-            }
-        }
-
+        
         [HttpGet("reports")]
         public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, string productionOrderNo = null, int page = 1, int size = 25)
         {
