@@ -10,10 +10,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.P
 {
     public interface IPackingFacade : IBaseFacade<PackingModel>
     {
-        ReadResponse<PackingViewModel> GetReport(int page, int size, string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet);
+        ReadResponse<PackingViewModel> GetReport(int page, int size, string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
-        MemoryStream GenerateExcel(string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet);
+        MemoryStream GenerateExcel(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
-        List<PackingViewModel> GetReport(string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet);
+        List<PackingViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
     }
 }

@@ -130,7 +130,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
         public List<DailyOperationViewModel> GetReport(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
             IQueryable<DailyOperationModel> query = DbContext.DailyOperation.AsQueryable();
-            IEnumerable<DailyOperationViewModel> queries;
+            IEnumerable<DailyOperationViewModel> dailyOperations;
 
             if (kanbanID != -1)
                 query = query.Where(x => x.KanbanId == kanbanID);
@@ -162,7 +162,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
                         && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
             }
-            queries = query.Select(x => new DailyOperationViewModel()
+            dailyOperations = query.Select(x => new DailyOperationViewModel()
             {
                 Kanban = new KanbanViewModel()
                 {
@@ -214,7 +214,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                 LastModifiedUtc = x.LastModifiedUtc
 
             });
-            return queries.ToList();
+            return dailyOperations.ToList();
         }
 
         public MemoryStream GenerateExcel(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)

@@ -55,9 +55,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             return await dbContext.SaveChangesAsync();
         }
 
-        public MemoryStream GenerateExcel(string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        public MemoryStream GenerateExcel(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
-            var data = GetReport(code, productionOrderNo, dateFrom, dateTo, offSet);
+            var data = GetReport(code, productionOrderId, dateFrom, dateTo, offSet);
 
             data = data.OrderByDescending(x => x.LastModifiedUtc).ToList();
 
@@ -106,17 +106,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             
         }
 
-        public List<PackingViewModel> GetReport(string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        public List<PackingViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
             IQueryable<PackingModel> query = dbContext.Packings.Include(x => x.PackingDetails).AsQueryable();
 
-            IEnumerable<PackingViewModel> queries;
+            IEnumerable<PackingViewModel> packings;
 
             if (!string.IsNullOrEmpty(code))
                 query = query.Where(x => x.Code == code);
 
-            if (!string.IsNullOrEmpty(productionOrderNo))
-                query = query.Where(x => x.ProductionOrderNo == productionOrderNo);
+            if (productionOrderId != -1)
+                query = query.Where(x => x.ProductionOrderId == productionOrderId);
 
 
             if (dateFrom == null && dateTo == null)
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                         && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
             }
 
-            queries = query.Select(x => new PackingViewModel()
+            packings = query.Select(x => new PackingViewModel()
             {
                 Code = x.Code,
                 DeliveryType = x.DeliveryType,
@@ -170,12 +170,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
             });
 
-            return queries.ToList();
+            return packings.ToList();
         }
 
-        public ReadResponse<PackingViewModel> GetReport(int page, int size, string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        public ReadResponse<PackingViewModel> GetReport(int page, int size, string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
-            var queries = GetReport(code, productionOrderNo, dateFrom, dateTo, offSet);
+            var queries = GetReport(code, productionOrderId, dateFrom, dateTo, offSet);
 
             Pageable<PackingViewModel> pageable = new Pageable<PackingViewModel>(queries, page - 1, size);
             List<PackingViewModel> data = pageable.Data.ToList();

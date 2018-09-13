@@ -61,13 +61,13 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
         }
 
         [HttpGet("reports")]
-        public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, string productionOrderNo = null, int page = 1, int size = 25)
+        public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, int productionOrderId = -1, int page = 1, int size = 25)
         {
             try
             {
                 int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 //int offSet = 7;
-                var data = Facade.GetReport(page, size, code, productionOrderNo, dateFrom, dateTo, offSet);
+                var data = Facade.GetReport(page, size, code, productionOrderId, dateFrom, dateTo, offSet);
 
                 return Ok(new
                 {
@@ -93,13 +93,13 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
         }
 
         [HttpGet("reports/downloads/xls")]
-        public IActionResult GetXls(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, string productionOrderNo = null)
+        public IActionResult GetXls(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, int productionOrderId = -1)
         {
             try
             {
                 byte[] xlsInBytes;
                 int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var xls = Facade.GenerateExcel(code, productionOrderNo, dateFrom, dateTo, offSet);
+                var xls = Facade.GenerateExcel(code, productionOrderId, dateFrom, dateTo, offSet);
 
                 string fileName = "";
                 if (dateFrom == null && dateTo == null)
