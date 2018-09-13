@@ -120,98 +120,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
         public ReadResponse<DailyOperationViewModel> GetReport(int page, int size, int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
-            IQueryable<DailyOperationModel> query = DbContext.DailyOperation.AsQueryable();
-            IEnumerable<DailyOperationViewModel> queries;
-
-            if (kanbanID != -1)
-                query = query.Where(x => x.KanbanId == kanbanID);
-
-            if (machineID != -1)
-                query = query.Where(x => x.MachineId == machineID);
-
-            if (dateFrom == null && dateTo == null)
-            {
-                query = query
-                    .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= DateTime.UtcNow.Date);
-            }
-            else if (dateFrom == null && dateTo != null)
-            {
-                query = query
-                    .Where(x => dateTo.Value.AddDays(-30).Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
-            }
-            else if (dateTo == null && dateFrom != null)
-            {
-                query = query
-                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
-            }
-            else
-            {
-                query = query
-                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
-            }
-            queries = query.Select(x => new DailyOperationViewModel()
-            {
-                Kanban = new KanbanViewModel()
-                {
-                    ProductionOrder = new ProductionOrderIntegrationViewModel()
-                    {
-                        OrderNo = x.Kanban.ProductionOrderOrderNo,
-                        Material = new MaterialIntegrationViewModel()
-                        {
-                            Name = x.Kanban.ProductionOrderMaterialName
-                        },
-                        FinishWidth = x.Kanban.FinishWidth,
-                        ProcessType = new ProcessTypeIntegrationViewModel()
-                        {
-                            Name = x.Kanban.ProductionOrderProcessTypeName
-                        }
-                    },
-                    Cart = new CartViewModel()
-                    {
-                        CartNumber = x.Kanban.CartCartNumber
-                    },
-                    IsReprocess = x.Kanban.IsReprocess,
-                    SelectedProductionOrderDetail = new ProductionOrderDetailIntegrationViewModel()
-                    {
-                        ColorRequest = x.Kanban.SelectedProductionOrderDetailColorRequest
-                    }
-                },
-                Machine = new MachineViewModel()
-                {
-                    Name = x.Machine.Name
-                },
-                Step = new MachineStepViewModel()
-                {
-                    Process = x.StepProcess
-                },
-                BadOutput = x.BadOutput,
-                GoodOutput = x.GoodOutput,
-                DateInput = x.DateInput,
-                DateOutput = x.DateOutput,
-                TimeInput = x.TimeInput,
-                TimeOutput = x.TimeOutput,
-                Input = x.Input,
-                Id = x.Id,
-                Active = x.Active,
-                Code = x.Code,
-                CreatedAgent = x.CreatedAgent,
-                IsDeleted = x.IsDeleted,
-                Shift = x.Shift,
-                Type = x.Type,
-                LastModifiedUtc = x.LastModifiedUtc
-
-            });
+            var queries = GetReport(kanbanID, machineID, dateFrom, dateTo, offSet);
             Pageable<DailyOperationViewModel> pageable = new Pageable<DailyOperationViewModel>(queries, page - 1, size);
             List<DailyOperationViewModel> data = pageable.Data.ToList();
 
             return new ReadResponse<DailyOperationViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
         }
 
-        public ReadResponse<DailyOperationViewModel> GetReport(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        public List<DailyOperationViewModel> GetReport(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
             IQueryable<DailyOperationModel> query = DbContext.DailyOperation.AsQueryable();
             IEnumerable<DailyOperationViewModel> queries;
@@ -298,14 +214,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                 LastModifiedUtc = x.LastModifiedUtc
 
             });
-            List<DailyOperationViewModel> data = queries.ToList();
-
-            return new ReadResponse<DailyOperationViewModel>(data, data.Count, new Dictionary<string, string>(), new List<string>());
+            return queries.ToList();
         }
 
         public MemoryStream GenerateExcel(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
-            var data = GetReport(kanbanID, machineID, dateFrom, dateTo, offSet).Data;
+            var data = GetReport(kanbanID, machineID, dateFrom, dateTo, offSet);
             data = data.OrderByDescending(x => x.LastModifiedUtc).ToList();
 
             DataTable dt = new DataTable();

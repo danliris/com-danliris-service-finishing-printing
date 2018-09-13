@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
+using System.IO;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing
 {
@@ -50,6 +51,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         {
             await packingLogic.DeleteModel(id);
             return await dbContext.SaveChangesAsync();
+        }
+
+        public MemoryStream GenerateExcel(string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            throw new NotImplementedException();
         }
 
         public ReadResponse<PackingViewModel> GetReport(int page, int size, string code, string productionOrderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)
