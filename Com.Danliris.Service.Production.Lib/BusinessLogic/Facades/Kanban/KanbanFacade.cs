@@ -169,7 +169,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             Pageable<KanbanViewModel> pageable = new Pageable<KanbanViewModel>(queries, page - 1, size);
             List<KanbanViewModel> data = pageable.Data.ToList();
 
-            return new ReadResponse<KanbanViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
+            return new ReadResponse<KanbanViewModel>(queries, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
         }
 
         public MemoryStream GenerateExcel(bool? proses, int orderTypeId, int processTypeId, string orderNo, DateTime? dateFrom, DateTime? dateTo, int offSet)

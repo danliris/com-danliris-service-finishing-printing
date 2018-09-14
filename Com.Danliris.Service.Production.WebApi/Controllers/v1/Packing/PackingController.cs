@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
                 else if (dateFrom == null && dateTo != null)
                     fileName = string.Format("Packing Report {0}", dateTo.GetValueOrDefault().ToString("dd/MM/yyyy"));
                 else
-                    fileName = string.Format("Daily Operation Report {0} - {1}", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
+                    fileName = string.Format("Packing Report {0} - {1}", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
                 xlsInBytes = xls.ToArray();
 
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);

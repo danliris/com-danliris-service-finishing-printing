@@ -124,7 +124,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             Pageable<DailyOperationViewModel> pageable = new Pageable<DailyOperationViewModel>(queries, page - 1, size);
             List<DailyOperationViewModel> data = pageable.Data.ToList();
 
-            return new ReadResponse<DailyOperationViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
+            return new ReadResponse<DailyOperationViewModel>(queries, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
         }
 
         public List<DailyOperationViewModel> GetReport(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)
