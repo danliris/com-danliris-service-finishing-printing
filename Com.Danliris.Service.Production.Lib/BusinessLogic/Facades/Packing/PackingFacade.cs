@@ -180,7 +180,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             Pageable<PackingViewModel> pageable = new Pageable<PackingViewModel>(queries, page - 1, size);
             List<PackingViewModel> data = pageable.Data.ToList();
 
-            return new ReadResponse<PackingViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
+            return new ReadResponse<PackingViewModel>(queries, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
         }
 
         public ReadResponse<PackingModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
