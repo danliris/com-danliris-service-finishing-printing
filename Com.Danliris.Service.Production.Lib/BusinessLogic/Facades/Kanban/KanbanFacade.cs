@@ -314,6 +314,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 },
                 IsReprocess = x.IsReprocess,
                 IsComplete = x.IsComplete,
+                IsInactive = x.IsInactive,
                 CurrentStepIndex = x.CurrentStepIndex,
                 Instruction = new KanbanInstructionViewModel()
                 {
