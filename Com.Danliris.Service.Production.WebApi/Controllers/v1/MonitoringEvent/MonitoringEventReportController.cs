@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
         }
 
         [HttpGet("download")]
-        public IActionResult GetXlsAll(string no, string buyerCode, string comodityCode, DateTime? dateFrom, DateTime? dateTo)
+        public IActionResult GetXlsAll(string machineId, string machineEventId, string productionOrderNumber, DateTime? dateFrom, DateTime? dateTo)
         {
 
             try
@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
                 DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
                 DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-                var xls = _facade.GenerateExcel(no, buyerCode, comodityCode, dateFrom, dateTo, offset);
+                var xls = _facade.GenerateExcel(machineId, machineEventId, productionOrderNumber, dateFrom, dateTo, offset);
 
                 string filename = String.Format("Laporan Monitoring Event - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 
