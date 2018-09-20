@@ -59,60 +59,65 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 }
 
                 filter = "{}";
+
+
+                query = query
+                        .Where(x => x.Instruction.Steps.Any(y => y.Process == processFilterData.ToString()));
+
+
             }
 
             Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             query = QueryHelper<KanbanModel>.Filter(query, filterDictionary);
 
+
             List<string> selectedFields = new List<string>()
             {
                 "Id", "Code", "ProductionOrder","CurrentStepIndex", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId"
             };
+
+
             query = query
-                .Select(field => new KanbanModel
-                {
-                    Id = field.Id,
-                    Code = field.Code,
-                    CartCartNumber = field.CartCartNumber,
-                    CurrentStepIndex = field.CurrentStepIndex,
-                    CartQty = field.CartQty,
-                    IsBadOutput = field.IsBadOutput,
-                    IsComplete = field.IsComplete,
-                    IsInactive = field.IsInactive,
-                    IsReprocess = field.IsReprocess,
-                    Instruction = new KanbanInstructionModel()
-                    {
-                        Id = field.Instruction.Id,
-                        Name = field.Instruction.Name,
-                        Steps = new List<KanbanStepModel>((processFilterData == null ? field.Instruction.Steps.Select(i => new KanbanStepModel()
-                        {
-                            Id = i.Id,
-                            Process = i.Process,
-                            ProcessArea = i.ProcessArea,
-                            SelectedIndex = i.SelectedIndex
-                        }) : field.Instruction.Steps.Where(s => s.Process.Equals(processFilterData)).Select(i => new KanbanStepModel()
-                        {
-                            Id = i.Id,
-                            Process = i.Process,
-                            ProcessArea = i.ProcessArea,
-                            SelectedIndex = i.SelectedIndex
-                        })))
-                    },
-                    OldKanbanId = field.OldKanbanId,
-                    LastModifiedUtc = field.LastModifiedUtc,
-                    ProductionOrderMaterialName = field.ProductionOrderMaterialName,
-                    ProductionOrderMaterialConstructionName = field.ProductionOrderMaterialConstructionName,
-                    ProductionOrderYarnMaterialName = field.ProductionOrderYarnMaterialName,
-                    FinishWidth = field.FinishWidth,
-                    ProductionOrderOrderNo = field.ProductionOrderOrderNo,
-                    SelectedProductionOrderDetailColorRequest = field.SelectedProductionOrderDetailColorRequest,
-                    SelectedProductionOrderDetailColorTemplate = field.SelectedProductionOrderDetailColorTemplate,
-                    SelectedProductionOrderDetailColorTypeCode = field.SelectedProductionOrderDetailColorTypeCode,
-                    SelectedProductionOrderDetailColorTypeName = field.SelectedProductionOrderDetailColorTypeName,
-                    SelectedProductionOrderDetailId = field.SelectedProductionOrderDetailId,
-                    SelectedProductionOrderDetailQuantity = field.SelectedProductionOrderDetailQuantity,
-                    SelectedProductionOrderDetailUomUnit = field.SelectedProductionOrderDetailUomUnit
-                });
+    .Select(field => new KanbanModel
+    {
+        Id = field.Id,
+        Code = field.Code,
+        CartCartNumber = field.CartCartNumber,
+        CurrentStepIndex = field.CurrentStepIndex,
+        CartQty = field.CartQty,
+        IsBadOutput = field.IsBadOutput,
+        IsComplete = field.IsComplete,
+        IsInactive = field.IsInactive,
+        IsReprocess = field.IsReprocess,
+        Instruction = new KanbanInstructionModel()
+        {
+            Id = field.Instruction.Id,
+            Name = field.Instruction.Name,
+            Steps = new List<KanbanStepModel>(field.Instruction.Steps.Select(i => new KanbanStepModel()
+            {
+                Id = i.Id,
+                Process = i.Process,
+                ProcessArea = i.ProcessArea,
+                SelectedIndex = i.SelectedIndex
+            }))
+        },
+        OldKanbanId = field.OldKanbanId,
+        LastModifiedUtc = field.LastModifiedUtc,
+        ProductionOrderMaterialName = field.ProductionOrderMaterialName,
+        ProductionOrderMaterialConstructionName = field.ProductionOrderMaterialConstructionName,
+        ProductionOrderYarnMaterialName = field.ProductionOrderYarnMaterialName,
+        FinishWidth = field.FinishWidth,
+        ProductionOrderOrderNo = field.ProductionOrderOrderNo,
+        SelectedProductionOrderDetailColorRequest = field.SelectedProductionOrderDetailColorRequest,
+        SelectedProductionOrderDetailColorTemplate = field.SelectedProductionOrderDetailColorTemplate,
+        SelectedProductionOrderDetailColorTypeCode = field.SelectedProductionOrderDetailColorTypeCode,
+        SelectedProductionOrderDetailColorTypeName = field.SelectedProductionOrderDetailColorTypeName,
+        SelectedProductionOrderDetailId = field.SelectedProductionOrderDetailId,
+        SelectedProductionOrderDetailQuantity = field.SelectedProductionOrderDetailQuantity,
+        SelectedProductionOrderDetailUomUnit = field.SelectedProductionOrderDetailUomUnit
+    });
+
+
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<KanbanModel>.Order(query, orderDictionary);
