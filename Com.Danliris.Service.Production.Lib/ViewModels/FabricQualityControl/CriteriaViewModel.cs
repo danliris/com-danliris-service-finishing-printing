@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityCo
 
         public string Code { get; set; }
         public string Group { get; set; }
+        public int Index { get; set; }
         public string Name { get; set; }
         public Score Score { get; set; }
     }

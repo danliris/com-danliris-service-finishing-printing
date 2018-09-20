@@ -124,13 +124,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             Pageable<DailyOperationViewModel> pageable = new Pageable<DailyOperationViewModel>(queries, page - 1, size);
             List<DailyOperationViewModel> data = pageable.Data.ToList();
 
-            return new ReadResponse<DailyOperationViewModel>(data, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
+            return new ReadResponse<DailyOperationViewModel>(queries, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
         }
 
         public List<DailyOperationViewModel> GetReport(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
             IQueryable<DailyOperationModel> query = DbContext.DailyOperation.AsQueryable();
-            IEnumerable<DailyOperationViewModel> queries;
+            List<DailyOperationViewModel> dailyOperations;
 
             if (kanbanID != -1)
                 query = query.Where(x => x.KanbanId == kanbanID);
@@ -162,7 +162,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
                         && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
             }
-            queries = query.Select(x => new DailyOperationViewModel()
+            dailyOperations = query.Select(x => new DailyOperationViewModel()
             {
                 Kanban = new KanbanViewModel()
                 {
@@ -187,22 +187,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     SelectedProductionOrderDetail = new ProductionOrderDetailIntegrationViewModel()
                     {
                         ColorRequest = x.Kanban.SelectedProductionOrderDetailColorRequest
-                    }
+                    },
+                    Id = x.KanbanId
                 },
                 Machine = new MachineViewModel()
                 {
-                    Name = x.Machine.Name
+                    Name = x.Machine.Name,
+                    Id = x.MachineId
                 },
                 Step = new MachineStepViewModel()
                 {
-                    Process = x.StepProcess
+                    Process = x.StepProcess,
+                    Id = x.StepId
                 },
-                BadOutput = x.BadOutput,
-                GoodOutput = x.GoodOutput,
+                
                 DateInput = x.DateInput,
-                DateOutput = x.DateOutput,
+                
                 TimeInput = x.TimeInput,
-                TimeOutput = x.TimeOutput,
+                
                 Input = x.Input,
                 Id = x.Id,
                 Active = x.Active,
@@ -213,8 +215,40 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                 Type = x.Type,
                 LastModifiedUtc = x.LastModifiedUtc
 
-            });
-            return queries.ToList();
+            }).ToList();
+
+            foreach(var dailyOperation in dailyOperations)
+            {
+                var outputModel = GetOutputDailyOperationModel(dailyOperation.Kanban.Id, dailyOperation.Machine.Id, dailyOperation.Step.Id);
+                if (outputModel != null)
+                {
+                    dailyOperation.BadOutput = outputModel.BadOutput;
+                    dailyOperation.GoodOutput = outputModel.GoodOutput;
+                    dailyOperation.DateOutput = outputModel.DateOutput;
+                    dailyOperation.TimeOutput = outputModel.TimeOutput;
+                    dailyOperation.BadOutputDescription = GetOutputBadDescription(outputModel);
+                }
+                
+            }
+            return dailyOperations;
+        }
+
+        public DailyOperationModel GetOutputDailyOperationModel(int kanbanID, int machineID, int stepID)
+        {
+            return DbContext.DailyOperation.Include(x => x.BadOutputReasons).FirstOrDefault(x => x.KanbanId == kanbanID && x.MachineId == machineID && x.StepId == stepID
+                    && x.Input == null && x.DateOutput != null);
+        }
+
+        public string GetOutputBadDescription(DailyOperationModel outputModel)
+        {
+            List<string> badOutputDescription = new List<string>();
+            int index = 1;
+            foreach(var model in outputModel.BadOutputReasons)
+            {
+                badOutputDescription.Add(string.Format("{0}. {1} | {2}. {3}", index++, model.MachineName, model.BadOutputReason, model.Action));
+            }
+
+            return string.Join(Environment.NewLine, badOutputDescription);
         }
 
         public MemoryStream GenerateExcel(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)

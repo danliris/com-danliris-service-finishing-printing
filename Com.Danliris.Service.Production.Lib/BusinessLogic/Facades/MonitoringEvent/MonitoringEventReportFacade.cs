@@ -172,9 +172,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
             return Query.ToList();
         }
 
-        public MonitoringSpecificationMachineModel ReadMonitoringSpecMachine(int id, string productionOrderNumber, DateTimeOffset dateTimeInput)
-        {
-            var Result = dBset.Where(m => m.MachineId == id && m.ProductionOrderNo == productionOrderNumber /*&& m.DateTimeInput<dateTimeInput*/)
+        public MonitoringSpecificationMachineModel ReadMonitoringSpecMachine(int id, string productionOrderNumber, DateTime dateTimeInput)
+         {
+            var Result = dBset.Where(m => m.MachineId == id && m.ProductionOrderNo == productionOrderNumber && m.DateTimeInput <= dateTimeInput)
                 .Include(m => m.Details)
                 .OrderByDescending(m => m.DateTimeInput)
                 .FirstOrDefault();

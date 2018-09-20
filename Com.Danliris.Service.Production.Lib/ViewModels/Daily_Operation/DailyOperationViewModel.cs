@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public ICollection<DailyOperationBadOutputReasonsViewModel> BadOutputReasons { get; set; }
 
+        public string BadOutputDescription { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
