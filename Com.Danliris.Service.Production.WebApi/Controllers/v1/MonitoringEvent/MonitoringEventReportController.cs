@@ -128,11 +128,11 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
         [HttpGet("monitoringSpecMachine")]
         public IActionResult Get(int id, string productionOrderNumber, string dateTime)
         {
-            var m = DateTime.ParseExact(dateTime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            var m = DateTime.ParseExact(dateTime, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
 
             try
             {
-                var model = _facade.ReadMonitoringSpecMachine(id, productionOrderNumber, Convert.ToDateTime(dateTime));
+                var model = _facade.ReadMonitoringSpecMachine(id, productionOrderNumber, m);
                 var viewModel = mapper.Map<MonitoringSpecificationMachineViewModel>(model);
 
                 return Ok(new
