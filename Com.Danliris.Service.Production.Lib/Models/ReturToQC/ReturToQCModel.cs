@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC
 {
     public class ReturToQCModel : StandardEntity, IValidatableObject
     {
+
         public DateTimeOffset Date { get; set; }
 
         public string DeliveryOrderNo { get; set; }
@@ -43,7 +44,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC
         [MaxLength(25)]
         public string MaterialConstructionCode { get; set; }
         
-        //public ICollection<ReturToQCItemViewModel> Items { get; set; }
+        public ICollection<ReturToQCItemModel> ReturToQCItems { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

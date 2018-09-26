@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -32,10 +33,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC
 
         public int StorageId { get; set; }
 
-        public string UOM { get; set; }
-
-        public int UOMId { get; set; }
-
+        public UOMIntegrationViewModel UOM { get; set; }
+        
         public double Weight
         {
             get { return Weight; }

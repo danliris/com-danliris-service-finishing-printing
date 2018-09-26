@@ -10,6 +10,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step;
@@ -58,6 +59,9 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<FabricGradeTestModel> FabricGradeTests { get; set; }
         public DbSet<CriteriaModel> Criterion { get; set; }
         public DbSet<PackingReceiptModel> PackingReceipt { get; set; }
+        public DbSet<ReturToQCModel> ReturToQCs { get; set; }
+        public DbSet<ReturToQCItemModel> ReturToQCItems { get; set; }
+        public DbSet<ReturToQCItemDetailModel> ReturToQCItemDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
