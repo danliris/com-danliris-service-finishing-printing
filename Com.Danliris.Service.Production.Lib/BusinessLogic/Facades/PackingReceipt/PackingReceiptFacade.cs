@@ -41,6 +41,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             while (dbSet.Any(d => d.Code.Equals(model.Code)));
             this.packingReceiptLogic.CreateModel(model);
 
+            await this.packingReceiptLogic.UpdatePacking(model);
+            //await this.packingReceiptLogic.CreateInventory(model);
+
             return await dbContext.SaveChangesAsync();
         }
 
