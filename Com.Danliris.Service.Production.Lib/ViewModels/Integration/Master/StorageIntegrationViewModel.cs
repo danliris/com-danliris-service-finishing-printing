@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master
 {
-    public class DivisionViewModel : BaseViewModel
+    public class StorageIntegrationViewModel : BaseViewModel
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public UnitViewModel Unit { get; set; }
     }
 }

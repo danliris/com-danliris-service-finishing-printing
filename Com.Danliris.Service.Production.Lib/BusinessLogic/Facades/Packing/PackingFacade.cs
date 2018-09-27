@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Packing") }, true);
 
-            
+
         }
 
         public List<PackingViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "Date", "BuyerName", "ProductionOrderNo", "ColorName", "Construction", "DesignNumber", "Accepted"
+                "Id", "Code", "Date", "PackingDetails","BuyerName", "ProductionOrderNo", "ColorName", "Construction", "DesignNumber", "Accepted"
             };
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
