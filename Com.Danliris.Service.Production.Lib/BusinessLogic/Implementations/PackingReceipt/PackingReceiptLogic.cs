@@ -37,6 +37,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public override void CreateModel(PackingReceiptModel model)
         {
+            model.ReferenceNo = $"RFNO-{model.Code}";
+            model.ReferenceType = $"Penerimaan Packing {model.StorageName}";
+            model.Type = "IN";
             foreach (var item in model.Items)
             {
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
@@ -45,14 +48,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbSet.Add(model);
         }
 
-        public async Task UpdatePacking(PackingReceiptModel model)
+        public async Task UpdatePacking(PackingReceiptModel model, bool flag)
         {
             try
             {
                 var result = await dbSetPacking.Where(d => d.Id.Equals(model.PackingId)).SingleOrDefaultAsync();
                 if (result != null)
                 {
-                    result.Accepted = true;
+
+                    result.Accepted = flag;
                     dbSetPacking.Update(result);
                 }
             }
@@ -70,15 +74,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
 
-                //ProductCode = item.productCode,
-                //    ProductId = item.productId,
-                //    ProductName = item.productName,
-                //    ProductRemark = item.remark,
-                //    Quantity = item.quantity,
-                //    StockPlanning = item.stockPlanning,
-                //    UomId = item.uomId,
-                //    UomUnit = item.uom,
-
                 InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
                 inventoryDoc.referenceNo = "RFNO" + " - " + model.Code;
                 string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
@@ -94,14 +89,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 {
                     var data = new
                     {
-                        productCode="",
+                        productCode = "",
                         productName = item.Product,
-                        productId= item.ProductId,
-                        remark=item.Remark,
-                        quantity=item.Quantity,
-                        uomId=item.UomId,
-                        stockPlanning=0,
-                        uom="",
+                        productId = item.ProductId,
+                        remark = item.Remark,
+                        quantity = item.Quantity,
+                        uomId = item.UomId,
+                        stockPlanning = 0,
+                        uom = "",
                     };
                     inventoryDoc.items.Add(data);
                 }
@@ -113,6 +108,98 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             }
         }
 
+        public async Task UpdateInventory(PackingReceiptModel model)
+        {
+            using (var client = new HttpClient())
+            {
+                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
 
+                InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
+                string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
+                inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
+                inventoryDoc.remark = "VOID PACKING RECEIPT";
+                inventoryDoc.type = "OUT";
+                inventoryDoc.date = new DateTime().ToString();
+                inventoryDoc.storageId = Convert.ToString(model.StorageId);
+
+                inventoryDoc.items = new List<object>();
+
+                foreach (var item in model.Items)
+                {
+                    var data = new
+                    {
+                        productCode = "",
+                        productName = item.Product,
+                        productId = item.ProductId,
+                        remark = item.Remark,
+                        quantity = item.Quantity,
+                        uomId = item.UomId,
+                        stockPlanning = 0,
+                        uom = "",
+                    };
+                    inventoryDoc.items.Add(data);
+                }
+
+                var myContentJson = JsonConvert.SerializeObject(inventoryDoc);
+                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(uri, myContent);
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        public override Task<PackingReceiptModel> ReadModelById(int id)
+        {
+            return dbSet.Include(res => res.Items).FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
+        }
+
+        public override async Task DeleteModel(int id)
+        {
+            var model = await ReadModelById(id);
+
+            foreach (var item in model.Items)
+            {
+                EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
+            }
+
+            EntityExtension.FlagForDelete(model, IdentityService.Username, UserAgent, true);
+            DbSet.Update(model);
+        }
+
+        public override void UpdateModelAsync(int id, PackingReceiptModel model)
+        {
+            if (model.Items != null)
+            {
+                HashSet<int> ItemId = dbSetItem.Where(d => d.PackingReceiptId == model.Id).Select(d => d.Id).ToHashSet(); ;
+                foreach (var itemId in ItemId)
+                {
+                    PackingReceiptItem data = model.Items.FirstOrDefault(prop => prop.Id.Equals(itemId));
+                    if (data == null)
+                    {
+                        EntityExtension.FlagForDelete(data, IdentityService.Username, UserAgent);
+                        dbSetItem.Update(data);
+                    }
+                    else
+                    {
+                        EntityExtension.FlagForUpdate(data, IdentityService.Username, UserAgent);
+                        dbSetItem.Update(data);
+                    }
+
+                    foreach (PackingReceiptItem item in model.Items)
+                    {
+                        if (item.Id == 0)
+                        {
+                            EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
+                            dbSetItem.Add(item);
+                        }
+
+                    }
+                }
+
+            }
+
+            EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
+            dbSet.Update(model);
+        }
     }
 }

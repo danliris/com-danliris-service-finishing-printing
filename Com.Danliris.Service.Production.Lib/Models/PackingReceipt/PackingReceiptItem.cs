@@ -18,6 +18,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt
         public int UomId { get; set; }
         public bool IsDelivered { get; set; }
         public int AvailableQuantity { get; set; }
+        public int PackingReceiptId { get; set; }
+        public virtual PackingReceiptModel PackingReceipt { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             throw new NotImplementedException();
