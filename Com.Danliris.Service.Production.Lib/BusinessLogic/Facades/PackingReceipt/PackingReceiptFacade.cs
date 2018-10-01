@@ -20,7 +20,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 {
     public class PackingReceiptFacade : IPackingReceiptFacade
     {
-        private IIdentityService IdentityService;
         private readonly ProductionDbContext dbContext;
         private readonly DbSet<PackingReceiptModel> dbSet;
         private readonly PackingReceiptLogic packingReceiptLogic;
@@ -38,8 +37,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             {
                 model.Code = CodeGenerator.Generate();
             }
-            while (dbSet.Any(d => d.Code.Equals(model.Code)));
+            while (dbSet.Any(d => d.Code.Equals(model.Code))) ;
             this.packingReceiptLogic.CreateModel(model);
+
+            await this.packingReceiptLogic.UpdatePacking(model, true);
+            //await this.packingReceiptLogic.CreateInventory(model);
 
             return await dbContext.SaveChangesAsync();
         }
@@ -65,14 +67,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id","Code","LastModifiedUtc"
+                    "Id","Code","Buyer","Storage","PackingCode","LastModifiedUtc","Date","ProductionOrderNo","ColorName","Construction","CreatedBy"
                 };
 
             query = query
                     .Select(field => new PackingReceiptModel
                     {
                         Id = field.Id,
-                        //Name = field.Name,
+                        Code = field.Code,
+                        Buyer = field.Buyer,
+                        StorageName = field.StorageName,
+                        PackingCode = field.PackingCode,
+                        Date = field.Date,
+                        ProductionOrderNo = field.ProductionOrderNo,
+                        ColorName = field.ColorName,
+                        Construction = field.Construction,
+                        LastModifiedUtc = field.LastModifiedUtc,
+                        CreatedBy = field.CreatedBy,
+                        Items = field.Items,
                     });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
@@ -93,6 +105,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         public async Task<int> UpdateAsync(int id, PackingReceiptModel model)
         {
             packingReceiptLogic.UpdateModelAsync(id, model);
+            await this.packingReceiptLogic.UpdatePacking(model, false);
+            //await this.packingReceiptLogic.UpdateInventory(model);
             return await dbContext.SaveChangesAsync();
         }
     }
