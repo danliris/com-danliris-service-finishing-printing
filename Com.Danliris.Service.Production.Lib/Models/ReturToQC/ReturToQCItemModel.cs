@@ -17,8 +17,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC
 
         public int ProductionOrderId { get; set; }
 
-        public string ProductionOrderName { get; set; }
-        
+        public string ProductionOrderNo { get; set; }
+
+        public string ProductionOrderCode { get; set; }
+
         public ICollection<ReturToQCItemDetailModel> ReturToQCItemDetails { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC
 
         public int StorageId { get; set; }
 
-        public string UOM { get; set; }
+        public string UOMUnit { get; set; }
 
         public int UOMId { get; set; }
 

@@ -1,10 +1,16 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC
@@ -55,10 +61,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public override Task<ReturToQCModel> ReadModelById(int id)
         {
-            return base.ReadModelById(id);
-            //return dbContext.ReturToQCs.Include(x => x.ReturToQCItems.Select(y => y.ReturToQCItemDetails)).FirstOrDefaultAsync(d => d.Id.Equals(id)
-            //       && d.IsDeleted.Equals(false)
-            //       && d.ReturToQCItems.Any(e => e.IsDeleted.Equals(false) && e.ReturToQCItemDetails.Any(f => f.IsDeleted.Equals(false))));
+            //return base.ReadModelById(id);
+            dbContext.ReturToQCItems.Load();
+            dbContext.ReturToQCItemDetails.Load();
+            return dbContext.ReturToQCs.FirstOrDefaultAsync(d =>
+                    !d.IsDeleted
+                    && (d.ReturToQCItems.Count == 0 || (d.ReturToQCItems.Count > 0 && d.ReturToQCItems.Any(e =>
+                        !e.IsDeleted
+                        && (e.ReturToQCItemDetails.Count == 0 || (e.ReturToQCItemDetails.Count > 0 && e.ReturToQCItemDetails.Any(f =>
+                            !f.IsDeleted)))))));
         }
 
         public override void UpdateModelAsync(int id, ReturToQCModel model)
@@ -91,6 +102,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
             }
             DbSet.Update(model);
+        }
+
+        public async Task CreateInventoryDocument(ReturToQCModel model)
+        {
+            using (var client = new HttpClient())
+            {
+                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents/retur-to-qc/create"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
+                var myContentJson = JsonConvert.SerializeObject(model);
+                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(uri, myContent);
+                response.EnsureSuccessStatusCode();
+            }
         }
     }
 }
