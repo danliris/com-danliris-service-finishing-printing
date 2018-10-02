@@ -18,21 +18,27 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC
         public string DesignCode { get; set; }
 
         public int DesignNumber { get; set; }
-
+        
         public double Length { get; set; }
 
         public int ProductId { get; set; }
 
-        public int ProductName { get; set; }
+        public string ProductName { get; set; }
 
-        public int QuantityBefore { get; set; }
+        public string ProductCode { get; set; }
+
+        public double QuantityBefore { get; set; }
 
         [MaxLength(500)]
         public string Remark { get; set; }
 
-        public int ReturQuantity { get; set; }
+        public double ReturQuantity { get; set; }
 
         public int StorageId { get; set; }
+
+        public string StorageName { get; set; }
+
+        public string StorageCode { get; set; }
 
         public string UOMUnit { get; set; }
 

@@ -26,8 +26,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ReturTo
                 .ReverseMap();
 
             CreateMap<ReturToQCItemDetailModel, ReturToQCItemDetailViewModel>()
-                .ForPath(dest => dest.UOM.Id, opt => opt.MapFrom(src => src.UOMId))
-                .ForPath(dest => dest.UOM.Unit, opt => opt.MapFrom(src => src.UOMUnit))
                 .ReverseMap();
         }
     }

@@ -17,34 +17,35 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC
         public string DesignCode { get; set; }
 
         public int DesignNumber { get; set; }
-
+        
         public double Length { get; set; }
 
         public int ProductId { get; set; }
 
-        public int ProductName { get; set; }
+        public string ProductName { get; set; }
 
-        public int QuantityBefore { get; set; }
+        public string ProductCode { get; set; }
+
+        public double QuantityBefore { get; set; }
 
         [StringLength(500)]
         public string Remark { get; set; }
 
-        public int ReturQuantity { get; set; }
+        public double ReturQuantity { get; set; }
 
         public int StorageId { get; set; }
 
-        public UOMIntegrationViewModel UOM { get; set; }
+        public string StorageCode { get; set; }
+
+        public string StorageName { get; set; }
+
+        public string UOMUnit { get; set; }
+
+        public int UOMId { get; set; }
         
         public double Weight
         {
-            get { return Weight; }
-            set
-            {
-                if (Weight <= 0)
-                {
-                    Weight = 0;
-                }
-            }
+            get; set;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

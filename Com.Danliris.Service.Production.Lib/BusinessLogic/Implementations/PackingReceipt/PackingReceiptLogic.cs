@@ -80,14 +80,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
                 inventoryDoc.remark = " ";
                 inventoryDoc.type = "IN";
-                inventoryDoc.date = new DateTime().ToString();
-                inventoryDoc.storageId = Convert.ToString(model.StorageId);
+                inventoryDoc.date = DateTimeOffset.UtcNow;
+                inventoryDoc.storageId = model.StorageId;
 
-                inventoryDoc.items = new List<object>();
+                inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
 
                 foreach (var item in model.Items)
                 {
-                    var data = new
+                    var data = new InventoryDocumentItemViewModel
                     {
                         productCode = "",
                         productName = item.Product,
@@ -120,14 +120,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
                 inventoryDoc.remark = "VOID PACKING RECEIPT";
                 inventoryDoc.type = "OUT";
-                inventoryDoc.date = new DateTime().ToString();
-                inventoryDoc.storageId = Convert.ToString(model.StorageId);
+                inventoryDoc.date = DateTimeOffset.UtcNow;
+                inventoryDoc.storageId = model.StorageId;
 
-                inventoryDoc.items = new List<object>();
+                inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
 
                 foreach (var item in model.Items)
                 {
-                    var data = new
+                    var data = new InventoryDocumentItemViewModel
                     {
                         productCode = "",
                         productName = item.Product,

@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
@@ -7,10 +8,12 @@ using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC
@@ -38,9 +41,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
                 foreach (var detail in item.ReturToQCItemDetails)
                 {
+                    if (detail.Weight < 0)
+                    {
+                        detail.Weight = 0;
+                    }
                     EntityExtension.FlagForCreate(detail, IdentityService.Username, UserAgent);
                 }
             }
+
             base.CreateModel(model);
         }
 
@@ -106,14 +114,47 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public async Task CreateInventoryDocument(ReturToQCModel model)
         {
-            using (var client = new HttpClient())
+            using (var client = new HttpClient() { Timeout = Timeout.InfiniteTimeSpan })
             {
-                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents/retur-to-qc/create"));
+                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
-                var myContentJson = JsonConvert.SerializeObject(model);
-                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(uri, myContent);
-                response.EnsureSuccessStatusCode();
+                var listContainer = new List<StringContent>();
+                if (model.ReturToQCItems != null && model.ReturToQCItems.Count != 0)
+                {
+                    foreach (var item in model.ReturToQCItems)
+                    {
+                        InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
+                        inventoryDoc.referenceNo = model.ReturNo + " - " + item.ProductionOrderNo;
+                        inventoryDoc.referenceType = "retur-to-qc";
+                        inventoryDoc.remark = "";
+                        inventoryDoc.type = model.IsVoid ? "IN" : "OUT";
+                        inventoryDoc.date = DateTimeOffset.UtcNow;
+                        var itemDetails = item.ReturToQCItemDetails.LastOrDefault();
+
+                        if (itemDetails != null)
+                        {
+                            inventoryDoc.storageId = itemDetails.StorageId;
+                            inventoryDoc.storageCode = itemDetails.StorageCode;
+                            inventoryDoc.storageName = itemDetails.StorageName;
+                        }
+
+                        inventoryDoc.items = item.ReturToQCItemDetails.Select(x => new InventoryDocumentItemViewModel()
+                        {
+                            productCode = x.ProductCode,
+                            productName = x.ProductName,
+                            productId = x.ProductId,
+                            remark = x.Remark,
+                            quantity = x.ReturQuantity,
+                            uomId = x.UOMId,
+                            uom = x.UOMUnit,
+                        }).ToList();
+
+                        var myContentJson = JsonConvert.SerializeObject(inventoryDoc);
+                        var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+                        listContainer.Add(myContent);
+                    }
+                    await Task.WhenAll(listContainer.Select(x => client.PostAsync(uri, x)));
+                }
             }
         }
     }

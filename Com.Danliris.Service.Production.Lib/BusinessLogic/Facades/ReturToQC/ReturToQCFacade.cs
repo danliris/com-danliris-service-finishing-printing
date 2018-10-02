@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
 
                     if (model.ReturToQCItems.Count > 0)
                     {
-                        //await returToQCLogic.CreateInventoryDocument(model);
+                        await returToQCLogic.CreateInventoryDocument(model);
                     }
                     transaction.Commit();
                     return id;
@@ -125,15 +125,27 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
 
         public async Task<int> UpdateAsync(int id, ReturToQCModel model)
         {
-            try
+            using (var transaction = dbContext.Database.BeginTransaction())
             {
-                returToQCLogic.UpdateModelAsync(id, model);
-                return await dbContext.SaveChangesAsync();
-            }catch(Exception e)
-            {
-                throw e;
+                try
+                {
+                    returToQCLogic.UpdateModelAsync(id, model);
+                    var modelID = await dbContext.SaveChangesAsync();
+
+                    if (model.ReturToQCItems.Count > 0)
+                    {
+                        await returToQCLogic.CreateInventoryDocument(model);
+                    }
+
+                    transaction.Commit();
+                    return modelID;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
             }
-            
         }
     }
 }
