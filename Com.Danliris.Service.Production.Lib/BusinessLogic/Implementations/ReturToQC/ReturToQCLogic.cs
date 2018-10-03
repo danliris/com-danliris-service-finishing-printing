@@ -73,6 +73,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbContext.ReturToQCItems.Load();
             dbContext.ReturToQCItemDetails.Load();
             return dbContext.ReturToQCs.FirstOrDefaultAsync(d =>
+                    d.Id == id &&
                     !d.IsDeleted
                     && (d.ReturToQCItems.Count == 0 || (d.ReturToQCItems.Count > 0 && d.ReturToQCItems.Any(e =>
                         !e.IsDeleted
