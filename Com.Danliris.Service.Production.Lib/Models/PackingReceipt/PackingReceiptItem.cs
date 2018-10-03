@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt
     public class PackingReceiptItem : StandardEntity, IValidatableObject
     {
         public string Product { get; set; }
+        public string ProductCode { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public int Length { get; set; }
@@ -16,6 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt
         public string Remark { get; set; }
         public string Notes { get; set; }
         public int UomId { get; set; }
+        public string Uom { get; set; }
         public bool IsDelivered { get; set; }
         public int AvailableQuantity { get; set; }
         public int PackingReceiptId { get; set; }
