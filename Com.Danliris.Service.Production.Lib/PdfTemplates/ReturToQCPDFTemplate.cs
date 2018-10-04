@@ -87,7 +87,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
 
             Title = GetTitle();
-            //this.Header = this.GetHeader(headerLefts, headerRights1, headerRights2);
+            this.Header = this.GetHeader(headerLefts1, headerLefts2, headerRights1, headerRights2);
             //this.Body = this.GetBody(bodyColumn, bodyData, totalData);
             //this.BodyFooter = this.GetBodyFooter(footerHeaders, footerValues);
             //this.Footer = this.GetFooter(model.Date.AddHours(timeoffset), model.CreatedBy);
@@ -112,6 +112,54 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             return title;
         }
 
+        private PdfPTable GetHeader(List<string> headerLefts1, List<string> headerLefts2,  List<string> headerRights1, List<string> headerRights2)
+        {
+            PdfPTable header = new PdfPTable(2);
+            header.SetWidths(new float[] { 6f, 4f });
+            header.WidthPercentage = 100;
+            PdfPCell cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER };
+
+            PdfPCell subCellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER };
+
+            PdfPTable headerTable1 = new PdfPTable(1);
+            headerTable1.WidthPercentage = 100;
+
+            subCellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            for(int i = 0; i < headerLefts2.Count; i++)
+            {
+                subCellHeader.Phrase = new Phrase(headerLefts1[i], header_font);
+                headerTable1.AddCell(subCellHeader);
+
+                subCellHeader.Phrase = new Phrase(headerLefts2[i], header_font);
+                headerTable1.AddCell(subCellHeader);
+            }
+            //foreach (var subHeaderLeft in headerLefts1)
+            //{
+            //    subCellHeader.Phrase = new Phrase(subHeaderLeft, header_font);
+            //    headerTable1.AddCell(subCellHeader);
+            //}
+            cellHeader.AddElement(headerTable1);
+            header.AddCell(cellHeader);
+
+            PdfPTable headerTable2 = new PdfPTable(2);
+            headerTable2.SetWidths(new float[] { 30f, 40f });
+            headerTable2.WidthPercentage = 100;
+
+            for (int i = 0; i < headerRights1.Count; i++)
+            {
+                subCellHeader.Phrase = new Phrase(headerRights1[i], header_font);
+                headerTable2.AddCell(subCellHeader);
+
+                subCellHeader.Phrase = new Phrase(headerRights2[i], header_font);
+                headerTable2.AddCell(subCellHeader);
+            }
+            cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            cellHeader.AddElement(headerTable2);
+            header.AddCell(cellHeader);
+
+            return header;
+        }
+
         public MemoryStream GeneratePdfTemplate()
         {
 
@@ -121,7 +169,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             document.Open();
 
             document.Add(Title);
-            //document.Add(Header);
+            document.Add(Header);
             //document.Add(Body);
             //document.Add(BodyFooter);
             //document.Add(Footer);
