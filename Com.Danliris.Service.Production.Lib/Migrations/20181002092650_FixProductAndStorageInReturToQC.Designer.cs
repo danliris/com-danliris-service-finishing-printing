@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181002092650_FixProductAndStorageInReturToQC")]
+    partial class FixProductAndStorageInReturToQC
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1582,15 +1584,11 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<string>("Product");
 
-                    b.Property<string>("ProductCode");
-
                     b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
 
                     b.Property<string>("Remark");
-
-                    b.Property<string>("Uom");
 
                     b.Property<int>("UomId");
 

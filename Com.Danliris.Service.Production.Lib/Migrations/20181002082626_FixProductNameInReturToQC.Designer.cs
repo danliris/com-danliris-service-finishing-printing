@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181002082626_FixProductNameInReturToQC")]
+    partial class FixProductNameInReturToQC
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1582,15 +1584,11 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<string>("Product");
 
-                    b.Property<string>("ProductCode");
-
                     b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
 
                     b.Property<string>("Remark");
-
-                    b.Property<string>("Uom");
 
                     b.Property<int>("UomId");
 
@@ -1752,26 +1750,20 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<double>("Length");
 
-                    b.Property<string>("ProductCode");
-
                     b.Property<int>("ProductId");
 
                     b.Property<string>("ProductName");
 
-                    b.Property<double>("QuantityBefore");
+                    b.Property<int>("QuantityBefore");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(500);
 
-                    b.Property<double>("ReturQuantity");
+                    b.Property<int>("ReturQuantity");
 
                     b.Property<int>("ReturToQCItemId");
 
-                    b.Property<string>("StorageCode");
-
                     b.Property<int>("StorageId");
-
-                    b.Property<string>("StorageName");
 
                     b.Property<int>("UOMId");
 

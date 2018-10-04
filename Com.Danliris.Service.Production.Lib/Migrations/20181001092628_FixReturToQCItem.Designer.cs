@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Production.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181001092628_FixReturToQCItem")]
+    partial class FixReturToQCItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1530,79 +1532,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.ToTable("Packings");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt.PackingReceiptItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<int>("AvailableQuantity");
-
-                    b.Property<string>("CreatedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<bool>("IsDelivered");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("Length");
-
-                    b.Property<string>("Notes");
-
-                    b.Property<int>("PackingReceiptId");
-
-                    b.Property<string>("Product");
-
-                    b.Property<string>("ProductCode");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int>("Quantity");
-
-                    b.Property<string>("Remark");
-
-                    b.Property<string>("Uom");
-
-                    b.Property<int>("UomId");
-
-                    b.Property<int>("Weight");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PackingReceiptId");
-
-                    b.ToTable("PackingReceiptItem");
-                });
-
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt.PackingReceiptModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1613,15 +1542,7 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("Buyer");
-
                     b.Property<string>("Code");
-
-                    b.Property<string>("ColorName");
-
-                    b.Property<string>("ColorType");
-
-                    b.Property<string>("Construction");
 
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
@@ -1647,10 +1568,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<string>("DesignCode");
-
-                    b.Property<string>("DesignNumber");
-
                     b.Property<bool>("IsDeleted");
 
                     b.Property<bool>("IsVoid");
@@ -1665,39 +1582,11 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<string>("MaterialWidthFinish");
-
-                    b.Property<string>("OrderType");
-
                     b.Property<string>("PackingCode");
 
                     b.Property<int>("PackingId");
 
-                    b.Property<string>("PackingUom");
-
-                    b.Property<string>("ProductionOrderNo");
-
-                    b.Property<string>("ReferenceNo");
-
-                    b.Property<string>("ReferenceType");
-
                     b.Property<string>("Remark");
-
-                    b.Property<string>("StorageCode");
-
-                    b.Property<string>("StorageDivisionCode");
-
-                    b.Property<string>("StorageDivisionName");
-
-                    b.Property<int>("StorageId");
-
-                    b.Property<string>("StorageName");
-
-                    b.Property<string>("StorageUnitCode");
-
-                    b.Property<string>("StorageUnitName");
-
-                    b.Property<string>("Type");
 
                     b.HasKey("Id");
 
@@ -1752,26 +1641,20 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
 
                     b.Property<double>("Length");
 
-                    b.Property<string>("ProductCode");
-
                     b.Property<int>("ProductId");
 
-                    b.Property<string>("ProductName");
+                    b.Property<int>("ProductName");
 
-                    b.Property<double>("QuantityBefore");
+                    b.Property<int>("QuantityBefore");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(500);
 
-                    b.Property<double>("ReturQuantity");
+                    b.Property<int>("ReturQuantity");
 
                     b.Property<int>("ReturToQCItemId");
 
-                    b.Property<string>("StorageCode");
-
                     b.Property<int>("StorageId");
-
-                    b.Property<string>("StorageName");
 
                     b.Property<int>("UOMId");
 
@@ -2434,14 +2317,6 @@ namespace Com.Danliris.Service.Production.Lib.Migrations
                     b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingModel", "Packing")
                         .WithMany("PackingDetails")
                         .HasForeignKey("PackingId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt.PackingReceiptItem", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt.PackingReceiptModel", "PackingReceipt")
-                        .WithMany("Items")
-                        .HasForeignKey("PackingReceiptId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
