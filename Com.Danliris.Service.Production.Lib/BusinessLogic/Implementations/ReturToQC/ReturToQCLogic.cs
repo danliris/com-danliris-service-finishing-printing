@@ -119,7 +119,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             {
                 try
                 {
-                    var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents/multi"));
+                    string server = APIEndpoint.Inventory;
+                    string relativePath = "inventory-documents/multi";
+                    Uri serverUri = new Uri(server);
+                    Uri relativePathUri = new Uri(relativePath, UriKind.Relative);
+                    var uri = new Uri(serverUri, relativePathUri);
 
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
                     var listContainer = new List<StringContent>();
