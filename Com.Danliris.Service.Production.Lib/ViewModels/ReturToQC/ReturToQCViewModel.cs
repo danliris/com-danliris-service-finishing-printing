@@ -3,6 +3,7 @@ using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC
 {
@@ -63,6 +64,44 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC
 
             if(string.IsNullOrWhiteSpace(MaterialWidthFinish))
                 yield return new ValidationResult("MaterialWidthFinish harus diisi", new List<string> { "MaterialWidthFinish" });
+
+            foreach(var item in Items)
+            {
+                if (item.ProductionOrder == null)
+                    yield return new ValidationResult("ProductionOrderNo tidak boleh kosong", new List<string> { "ProductionOrder" });
+                else
+                {
+                    if (item.ProductionOrder.Id == null || item.ProductionOrder.Id == 0)
+                        yield return new ValidationResult("ProductionOrderNo tidak boleh kosong", new List<string> { "ProductionOrder" });
+                }
+
+                if (item.Details == null || item.Details.Count <= 0)
+                    yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "Details" });
+
+                bool flag = item.Details.All(x => x.ReturQuantity <= 0);
+
+                if (flag)
+                {
+                    foreach (var detail in item.Details)
+                    {
+                        if (detail.QuantityBefore > 0)
+                            yield return new ValidationResult("ReturQuantity tidak boleh lebih dari stockQuantity", new List<string> { "Details" });
+                    }
+                }
+                
+
+                foreach (var detail in item.Details)
+                {
+                    if (detail.QuantityBefore < detail.ReturQuantity)
+                        yield return new ValidationResult("ReturQuantity tidak boleh lebih dari stockQuantity", new List<string> { "ReturQuantity" });
+
+                    if (string.IsNullOrWhiteSpace(detail.Remark))
+                        yield return new ValidationResult("Remark tidak boleh kosong", new List<string> { "Remark" });
+
+                    if (detail.Length <= 0)
+                        yield return new ValidationResult("Length tidak boleh kosong", new List<string> { "Length" });
+                }
+            }
         }
     }
 }

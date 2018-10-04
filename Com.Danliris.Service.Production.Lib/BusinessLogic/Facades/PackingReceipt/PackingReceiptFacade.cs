@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             this.packingReceiptLogic.CreateModel(model);
 
             await this.packingReceiptLogic.UpdatePacking(model, true);
-            //await this.packingReceiptLogic.CreateInventory(model);
+            await this.packingReceiptLogic.CreateInventory(model);
 
             return await dbContext.SaveChangesAsync();
         }
@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         {
             packingReceiptLogic.UpdateModelAsync(id, model);
             await this.packingReceiptLogic.UpdatePacking(model, false);
-            //await this.packingReceiptLogic.UpdateInventory(model);
+            await this.packingReceiptLogic.UpdateInventory(model);
             return await dbContext.SaveChangesAsync();
         }
     }

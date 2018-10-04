@@ -1,9 +1,9 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
@@ -82,15 +82,57 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             #endregion
 
             #region Body Footer
-            List<string> bodyFooter = new List<string> { string.Format("[{0} {1} {2}]",KODE_BARANG, SPLITTER, model.Destination), model.Remark };
+            List<string> bodyFooter = new List<string> { string.Format("[{0} {1} {2}]", KODE_BARANG, SPLITTER, model.Destination), model.Remark };
             #endregion
 
 
-            //this.Title = this.GetTitle();
+            Title = GetTitle();
             //this.Header = this.GetHeader(headerLefts, headerRights1, headerRights2);
             //this.Body = this.GetBody(bodyColumn, bodyData, totalData);
             //this.BodyFooter = this.GetBodyFooter(footerHeaders, footerValues);
             //this.Footer = this.GetFooter(model.Date.AddHours(timeoffset), model.CreatedBy);
+        }
+
+        private PdfPTable GetTitle()
+        {
+            PdfPTable title = new PdfPTable(1)
+            {
+                WidthPercentage = 100
+            };
+            PdfPCell cellTitle = new PdfPCell()
+            {
+                Border = Rectangle.NO_BORDER,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingBottom = 10f
+            };
+            cellTitle.Phrase = new Phrase(TITLE, title_font);
+            title.AddCell(cellTitle);
+            
+            return title;
+        }
+
+        public MemoryStream GeneratePdfTemplate()
+        {
+
+            Document document = new Document(PageSize.A6.Rotate(), MARGIN, MARGIN, MARGIN, MARGIN);
+            MemoryStream stream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, stream);
+            document.Open();
+
+            document.Add(Title);
+            //document.Add(Header);
+            //document.Add(Body);
+            //document.Add(BodyFooter);
+            //document.Add(Footer);
+
+            document.Close();
+
+            byte[] byteInfo = stream.ToArray();
+            stream.Write(byteInfo, 0, byteInfo.Length);
+            stream.Position = 0;
+
+            return stream;
         }
     }
 }

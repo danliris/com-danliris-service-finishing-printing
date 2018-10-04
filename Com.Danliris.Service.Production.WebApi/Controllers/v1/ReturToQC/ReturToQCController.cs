@@ -13,6 +13,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
+using Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.ReturToQC
 {
@@ -27,37 +28,37 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.ReturToQ
 
         }
 
-        //[HttpGet("pdf/{Id}")]
-        //public new async Task<IActionResult> GetById([FromRoute] int id)
-        //{
-        //    try
-        //    {
-        //        ReturToQCModel model = await Facade.ReadByIdAsync(id);
-        //        if (model == null)
-        //        {
-        //            Dictionary<string, object> Result =
-        //                new ResultFormatter(ApiVersion, General.NOT_FOUND_STATUS_CODE, General.NOT_FOUND_MESSAGE)
-        //                .Fail();
-        //            return NotFound(Result);
-        //        }
-        //        else
-        //        {
-        //            int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-        //            PackingPdfTemplate pdfTemplate = new PackingPdfTemplate(model, timeoffsset);
-        //            MemoryStream stream = pdfTemplate.GeneratePdfTemplate();
-        //            return new FileStreamResult(stream, "application/pdf")
-        //            {
-        //                FileDownloadName = string.Format("{0}.pdf", model.ReturNo)
-        //            };
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Dictionary<string, object> Result =
-        //            new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-        //            .Fail();
-        //        return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
-        //    }
-        //}
+        [HttpGet("pdf/{Id}")]
+        public new async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            try
+            {
+                ReturToQCModel model = await Facade.ReadByIdAsync(id);
+                if (model == null)
+                {
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.NOT_FOUND_STATUS_CODE, General.NOT_FOUND_MESSAGE)
+                        .Fail();
+                    return NotFound(Result);
+                }
+                else
+                {
+                    int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                    ReturToQCPdfTemplate pdfTemplate = new ReturToQCPdfTemplate(model, timeoffsset);
+                    MemoryStream stream = pdfTemplate.GeneratePdfTemplate();
+                    return new FileStreamResult(stream, "application/pdf")
+                    {
+                        FileDownloadName = string.Format("{0}.pdf", model.ReturNo)
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

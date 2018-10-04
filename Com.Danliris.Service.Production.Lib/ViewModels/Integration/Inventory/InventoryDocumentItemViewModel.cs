@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory
 {
-    public class InventoryDocumentItemViewModel
+    public class InventoryDocumentItemViewModel : BaseViewModel
     {
         public int productId { get; set; }
         public string productCode { get; set; }

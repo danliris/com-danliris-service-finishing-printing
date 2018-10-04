@@ -80,28 +80,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
                 inventoryDoc.remark = " ";
                 inventoryDoc.type = "IN";
-                inventoryDoc.date = DateTimeOffset.UtcNow;
-                inventoryDoc.storageId = model.StorageId;
+                inventoryDoc.date = DateTime.UtcNow;
+                inventoryDoc.storageId = (model.StorageId);
+                inventoryDoc.storageCode = (model.StorageCode);
+                inventoryDoc.storageName = model.StorageName;
 
                 inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
 
                 foreach (var item in model.Items)
                 {
-                    var data = new InventoryDocumentItemViewModel
-                    {
-                        productCode = "",
-                        productName = item.Product,
-                        productId = item.ProductId,
-                        remark = item.Remark,
-                        quantity = item.Quantity,
-                        uomId = item.UomId,
-                        stockPlanning = 0,
-                        uom = "",
-                    };
+                    var data = new InventoryDocumentItemViewModel();
+                    data.productCode = item.ProductCode;
+                    data.productName = item.Product;
+                    data.productId = item.ProductId;
+                    data.remark = item.Remark;
+                    data.quantity = item.Quantity;
+                    data.uomId = item.UomId;
+                    data.stockPlanning = 0;
+                    data.uom = item.Uom;
                     inventoryDoc.items.Add(data);
                 }
 
-                var myContentJson = JsonConvert.SerializeObject(inventoryDoc);
+                var myContentJson = JsonConvert.SerializeObject(inventoryDoc, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(uri, myContent);
                 response.EnsureSuccessStatusCode();
@@ -120,24 +120,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
                 inventoryDoc.remark = "VOID PACKING RECEIPT";
                 inventoryDoc.type = "OUT";
-                inventoryDoc.date = DateTimeOffset.UtcNow;
-                inventoryDoc.storageId = model.StorageId;
+                inventoryDoc.date = DateTime.UtcNow;
+                inventoryDoc.storageId = (model.StorageId);
 
                 inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
 
                 foreach (var item in model.Items)
                 {
-                    var data = new InventoryDocumentItemViewModel
-                    {
-                        productCode = "",
-                        productName = item.Product,
-                        productId = item.ProductId,
-                        remark = item.Remark,
-                        quantity = item.Quantity,
-                        uomId = item.UomId,
-                        stockPlanning = 0,
-                        uom = "",
-                    };
+                    var data = new InventoryDocumentItemViewModel();
+                    data.productCode = item.ProductCode;
+                    data.productName = item.Product;
+                    data.productId = item.ProductId;
+                    data.remark = item.Remark;
+                    data.quantity = item.Quantity;
+                    data.uomId = item.UomId;
+                    data.stockPlanning = 0;
+                    data.uom = item.Uom;
                     inventoryDoc.items.Add(data);
                 }
 

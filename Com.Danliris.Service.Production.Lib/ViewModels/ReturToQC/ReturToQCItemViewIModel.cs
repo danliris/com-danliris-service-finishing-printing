@@ -40,6 +40,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC
                 if(item.QuantityBefore > 0)
                     yield return new ValidationResult("ReturQuantity tidak boleh lebih dari stockQuantity", new List<string> { "Details" });
             }
+
+            foreach(var item in Details)
+            {
+                item.Validate(validationContext);
+            }
         }
     }
 }
