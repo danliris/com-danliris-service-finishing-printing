@@ -117,11 +117,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             using (var client = new HttpClient() { Timeout = Timeout.InfiniteTimeSpan })
             {
+                string relativePath = "inventory-documents/multi";
                 try
                 {
-                    string server = APIEndpoint.Inventory;
-                    string relativePath = "inventory-documents/multi";
-                    Uri serverUri = new Uri(server);
+                    Uri serverUri = new Uri(APIEndpoint.Inventory);
                     Uri relativePathUri = new Uri(relativePath, UriKind.Relative);
                     var uri = new Uri(serverUri, relativePathUri);
 
@@ -165,6 +164,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         var response = await client.PostAsync(uri, myContent);
                         response.EnsureSuccessStatusCode();
                     }
+                }
+                catch (UriFormatException)
+                {
+                    throw new UriFormatException(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
                 }
                 catch (Exception e)
                 {
