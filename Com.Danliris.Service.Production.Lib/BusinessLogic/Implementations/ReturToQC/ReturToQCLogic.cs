@@ -171,7 +171,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    throw new Exception(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
                 }
             }
         }
