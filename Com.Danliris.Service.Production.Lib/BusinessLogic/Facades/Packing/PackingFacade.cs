@@ -200,7 +200,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "Date", "PackingDetails","OrderTypeName","BuyerName", "ProductionOrderNo", "ColorName", "Construction", "DesignNumber", "Accepted","MaterialWidthFinish","PackingUom", "ProductionOrderId"
+
+                "Id", "Code", "Date", "PackingDetails","OrderTypeName","BuyerName", "ProductionOrderNo", "ColorName","ColorType", "Construction", "DesignNumber", "Accepted","MaterialWidthFinish","PackingUom"
+
             };
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);

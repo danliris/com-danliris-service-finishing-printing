@@ -40,6 +40,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.PackingReceipt
 
             if (this.Date == null)
                 yield return new ValidationResult("Tanggal harus diisi", new List<string> { "Date" });
+            if (this.PackingId.Equals(0))
+            {
+                yield return new ValidationResult("packing harus diisi", new List<string> { "PackingId" });
+            }
+            if (this.Storage == null)
+            {
+                yield return new ValidationResult("Storage harus diisi", new List<string> { "Storage" });
+            }
+            if (this.Items.Count == 0)
+            {
+                yield return new ValidationResult("Items harus diisi", new List<string> { "Items" });
+            }
         }
     }
 }
