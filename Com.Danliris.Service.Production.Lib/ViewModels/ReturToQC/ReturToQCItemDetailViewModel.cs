@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC
 
         public string DesignCode { get; set; }
 
-        public int DesignNumber { get; set; }
+        public string DesignNumber { get; set; }
         
         public double Length { get; set; }
 

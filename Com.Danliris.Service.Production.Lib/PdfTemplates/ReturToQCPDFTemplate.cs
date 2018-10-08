@@ -61,7 +61,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             List<List<string>> bodyData = new List<List<string>>
             {
                 returToQCItemDetail.Select(x => x.ProductName).ToList(),
-                returToQCItemDetail.Select(x => string.IsNullOrWhiteSpace(x.DesignCode) && x.DesignNumber == 0
+                returToQCItemDetail.Select(x => string.IsNullOrWhiteSpace(x.DesignCode) && string.IsNullOrWhiteSpace(x.DesignNumber)
                     ? "-" : string.Format("{0} - {1}", x.DesignCode, x.DesignNumber)).ToList(),
                 returToQCItemDetail.Select(x => x.Remark).ToList(),
                 returToQCItemDetail.Select(x => x.ReturToQCItem.ProductionOrderNo).ToList(),
