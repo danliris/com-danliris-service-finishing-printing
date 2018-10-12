@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                     info = new
                     {
                         Count = data.Count,
-                        Orded = data.Order,
+                        Order = data.Order,
                         Selected = data.Selected
                     },
                     message = General.OK_MESSAGE,
