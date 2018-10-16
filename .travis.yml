@@ -18,9 +18,9 @@ before_script:
     - sleep 60
 
 script:
-    - dotnet restore Com.Danliris.Service.Production.Test/Com.DanLiris.Service.Finishing.Printing.Test.csproj
-    - dotnet build Com.Danliris.Service.Production.Test/Com.DanLiris.Service.Finishing.Printing.Test.csproj
-    - dotnet test Com.Danliris.Service.Production.Test/Com.DanLiris.Service.Finishing.Printing.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+    - dotnet restore Com.Danliris.Service.Production.Test/Com.Danliris.Service.Finishing.Printing.Test.csproj
+    - dotnet build Com.Danliris.Service.Production.Test/Com.Danliris.Service.Finishing.Printing.Test.csproj
+    - dotnet test Com.Danliris.Service.Production.Test/Com.Danliris.Service.Finishing.Printing.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
 
 after_success:
     - curl -s https://codecov.io/bash > codecov
