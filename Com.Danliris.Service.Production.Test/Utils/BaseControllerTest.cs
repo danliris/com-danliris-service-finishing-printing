@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         {
             Mock<IServiceProvider> serviceProvider = new Mock<IServiceProvider>();
             List<ValidationResult> validationResults = new List<ValidationResult>();
-            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(this.ViewModel, serviceProvider.Object, null);
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(ViewModel, serviceProvider.Object, null);
             return new ServiceValidationException(validationContext, validationResults);
         }
 
@@ -87,124 +87,124 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
 
         private int GetStatusCodeGet((Mock<IIdentityService> IdentityService, Mock<IValidateService> ValidateService, Mock<IFacade> Facade, Mock<IMapper> Mapper) mocks)
         {
-            TController controller = this.GetController(mocks);
+            TController controller = GetController(mocks);
             IActionResult response = controller.Get();
 
-            return this.GetStatusCode(response);
+            return GetStatusCode(response);
         }
 
         [Fact]
         public void Get_WithoutException_ReturnOK()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.Facade.Setup(f => f.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new ReadResponse<TModel>(new List<TModel>(), 0, new Dictionary<string, string>(), new List<string>()));
-            mocks.Mapper.Setup(f => f.Map<List<TViewModel>>(It.IsAny<List<TModel>>())).Returns(this.ViewModels);
+            mocks.Mapper.Setup(f => f.Map<List<TViewModel>>(It.IsAny<List<TModel>>())).Returns(ViewModels);
 
-            int statusCode = this.GetStatusCodeGet(mocks);
+            int statusCode = GetStatusCodeGet(mocks);
             Assert.Equal((int)HttpStatusCode.OK, statusCode);
         }
 
         [Fact]
         public void Get_ReadThrowException_ReturnInternalServerError()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.Facade.Setup(f => f.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
 
-            int statusCode = this.GetStatusCodeGet(mocks);
+            int statusCode = GetStatusCodeGet(mocks);
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
         }
 
         private async Task<int> GetStatusCodePost((Mock<IIdentityService> IdentityService, Mock<IValidateService> ValidateService, Mock<IFacade> Facade, Mock<IMapper> Mapper) mocks)
         {
-            TController controller = this.GetController(mocks);
-            IActionResult response = await controller.Post(this.ViewModel);
+            TController controller = GetController(mocks);
+            IActionResult response = await controller.Post(ViewModel);
 
-            return this.GetStatusCode(response);
+            return GetStatusCode(response);
         }
 
         [Fact]
         public async Task Post_WithoutException_ReturnCreated()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Verifiable();
             mocks.Facade.Setup(s => s.CreateAsync(It.IsAny<TModel>())).ReturnsAsync(1);
 
-            int statusCode = await this.GetStatusCodePost(mocks);
+            int statusCode = await GetStatusCodePost(mocks);
             Assert.Equal((int)HttpStatusCode.Created, statusCode);
         }
 
         [Fact]
         public async Task Post_ThrowServiceValidationExeption_ReturnBadRequest()
         {
-            var mocks = this.GetMocks();
-            mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Throws(this.GetServiceValidationExeption());
+            var mocks = GetMocks();
+            mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Throws(GetServiceValidationExeption());
 
-            int statusCode = await this.GetStatusCodePost(mocks);
+            int statusCode = await GetStatusCodePost(mocks);
             Assert.Equal((int)HttpStatusCode.BadRequest, statusCode);
         }
 
         [Fact]
         public async Task Post_ThrowException_ReturnInternalServerError()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Verifiable();
             mocks.Facade.Setup(s => s.CreateAsync(It.IsAny<TModel>())).ThrowsAsync(new Exception());
 
-            int statusCode = await this.GetStatusCodePost(mocks);
+            int statusCode = await GetStatusCodePost(mocks);
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
         }
 
         private async Task<int> GetStatusCodeGetById((Mock<IIdentityService> IdentityService, Mock<IValidateService> ValidateService, Mock<IFacade> Facade, Mock<IMapper> Mapper) mocks)
         {
-            TController controller = this.GetController(mocks);
+            TController controller = GetController(mocks);
             IActionResult response = await controller.GetById(1);
 
-            return this.GetStatusCode(response);
+            return GetStatusCode(response);
         }
 
         [Fact]
         public async Task GetById_NotNullModel_ReturnOK()
         {
-            var mocks = this.GetMocks();
-            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(this.Model);
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
 
-            int statusCode = await this.GetStatusCodeGetById(mocks);
+            int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.OK, statusCode);
         }
 
         [Fact]
         public async Task GetById_NullModel_ReturnNotFound()
         {
-            var mocks = this.GetMocks();
-            mocks.Mapper.Setup(f => f.Map<TViewModel>(It.IsAny<TModel>())).Returns(this.ViewModel);
+            var mocks = GetMocks();
+            mocks.Mapper.Setup(f => f.Map<TViewModel>(It.IsAny<TModel>())).Returns(ViewModel);
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync((TModel)null);
 
-            int statusCode = await this.GetStatusCodeGetById(mocks);
+            int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.NotFound, statusCode);
         }
 
         [Fact]
         public async Task GetById_ThrowException_ReturnInternalServerError()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ThrowsAsync(new Exception());
 
-            int statusCode = await this.GetStatusCodeGetById(mocks);
+            int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
         }
 
         private async Task<int> GetStatusCodePut((Mock<IIdentityService> IdentityService, Mock<IValidateService> ValidateService, Mock<IFacade> Facade, Mock<IMapper> Mapper) mocks, int id, TViewModel viewModel)
         {
-            TController controller = this.GetController(mocks);
+            TController controller = GetController(mocks);
             IActionResult response = await controller.Put(id, viewModel);
 
-            return this.GetStatusCode(response);
+            return GetStatusCode(response);
         }
 
         [Fact]
         public async Task Put_InvalidId_ReturnBadRequest()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.ValidateService.Setup(vs => vs.Validate(It.IsAny<TViewModel>())).Verifiable();
             var id = 1;
             var viewModel = new TViewModel()
@@ -212,14 +212,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
                 Id = id + 1
             };
 
-            int statusCode = await this.GetStatusCodePut(mocks, id, viewModel);
+            int statusCode = await GetStatusCodePut(mocks, id, viewModel);
             Assert.Equal((int)HttpStatusCode.BadRequest, statusCode);
         }
 
         [Fact]
         public async Task Put_ValidId_ReturnNoContent()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.ValidateService.Setup(vs => vs.Validate(It.IsAny<TViewModel>())).Verifiable();
             var id = 1;
             var viewModel = new TViewModel()
@@ -229,24 +229,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
             mocks.Mapper.Setup(m => m.Map<TViewModel>(It.IsAny<TModel>())).Returns(viewModel);
             mocks.Facade.Setup(f => f.UpdateAsync(It.IsAny<int>(), It.IsAny<TModel>())).ReturnsAsync(1);
 
-            int statusCode = await this.GetStatusCodePut(mocks, id, viewModel);
+            int statusCode = await GetStatusCodePut(mocks, id, viewModel);
             Assert.Equal((int)HttpStatusCode.NoContent, statusCode);
         }
 
         [Fact]
         public async Task Put_ThrowServiceValidationExeption_ReturnBadRequest()
         {
-            var mocks = this.GetMocks();
-            mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Throws(this.GetServiceValidationExeption());
+            var mocks = GetMocks();
+            mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Throws(GetServiceValidationExeption());
 
-            int statusCode = await this.GetStatusCodePut(mocks, 1, this.ViewModel);
+            int statusCode = await GetStatusCodePut(mocks, 1, ViewModel);
             Assert.Equal((int)HttpStatusCode.BadRequest, statusCode);
         }
 
         [Fact]
         public async Task Put_ThrowException_ReturnInternalServerError()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.ValidateService.Setup(vs => vs.Validate(It.IsAny<TViewModel>())).Verifiable();
             var id = 1;
             var viewModel = new TViewModel()
@@ -256,34 +256,34 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
             mocks.Mapper.Setup(m => m.Map<TViewModel>(It.IsAny<TModel>())).Returns(viewModel);
             mocks.Facade.Setup(f => f.UpdateAsync(It.IsAny<int>(), It.IsAny<TModel>())).ThrowsAsync(new Exception());
 
-            int statusCode = await this.GetStatusCodePut(mocks, id, viewModel);
+            int statusCode = await GetStatusCodePut(mocks, id, viewModel);
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
         }
 
         private async Task<int> GetStatusCodeDelete((Mock<IIdentityService> IdentityService, Mock<IValidateService> ValidateService, Mock<IFacade> Facade, Mock<IMapper> Mapper) mocks)
         {
-            TController controller = this.GetController(mocks);
+            TController controller = GetController(mocks);
             IActionResult response = await controller.Delete(1);
-            return this.GetStatusCode(response);
+            return GetStatusCode(response);
         }
 
         [Fact]
         public async Task Delete_WithoutException_ReturnNoContent()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.Facade.Setup(f => f.DeleteAsync(It.IsAny<int>())).ReturnsAsync(1);
 
-            int statusCode = await this.GetStatusCodeDelete(mocks);
+            int statusCode = await GetStatusCodeDelete(mocks);
             Assert.Equal((int)HttpStatusCode.NoContent, statusCode);
         }
 
         [Fact]
         public async Task Delete_ThrowException_ReturnInternalStatusError()
         {
-            var mocks = this.GetMocks();
+            var mocks = GetMocks();
             mocks.Facade.Setup(f => f.DeleteAsync(It.IsAny<int>())).ThrowsAsync(new Exception());
 
-            int statusCode = await this.GetStatusCodeDelete(mocks);
+            int statusCode = await GetStatusCodeDelete(mocks);
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
         }
     }
