@@ -18,11 +18,11 @@ before_script:
     - sleep 60
 
 script:
-    - dotnet restore Com.DanLiris.Service.Production.Test/Com.DanLiris.Service.Production.Test.csproj
-    - dotnet build Com.DanLiris.Service.Production.Test/Com.DanLiris.Service.Production.Test.csproj
-    - dotnet test Com.DanLiris.Service.Production.Test/Com.DanLiris.Service.Production.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+    - dotnet restore Com.DanLiris.Service.Finishing.Printing.Test/Com.DanLiris.Service.Finishing.Printing.Test.csproj
+    - dotnet build Com.DanLiris.Service.Finishing.Printing.Test/Com.DanLiris.Service.Finishing.Printing.Test.csproj
+    - dotnet test Com.DanLiris.Service.Finishing.Printing.Test/Com.DanLiris.Service.Finishing.Printing.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
 
 after_success:
     - curl -s https://codecov.io/bash > codecov
     - chmod +x codecov
-    - ./codecov -f "/home/travis/build/danliris/com-danliris-service-finishing-printing/Com.DanLiris.Service.Production.Test/coverage.info"
+    - ./codecov -f "/home/travis/build/danliris/com-danliris-service-finishing-printing/Com.DanLiris.Service.Finishing.Printing.Test/coverage.info"
