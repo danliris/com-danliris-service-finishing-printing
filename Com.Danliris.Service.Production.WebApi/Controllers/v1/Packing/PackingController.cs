@@ -28,7 +28,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
         }
 
         [HttpGet("pdf/{Id}")]
-        public new async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<IActionResult> GetPdfById([FromRoute] int id)
         {
             try
             {
