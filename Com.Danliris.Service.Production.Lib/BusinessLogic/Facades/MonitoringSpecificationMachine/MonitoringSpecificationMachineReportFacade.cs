@@ -1,8 +1,10 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Production.Lib;
+using Com.Danliris.Service.Production.Lib.Utilities;
 using Com.Moonlay.NetCore.Lib;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -13,11 +15,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine
 {
     
-    public class MonitoringSpecificationMachineReportFacade
+    public class MonitoringSpecificationMachineReportFacade : IMonitoringSpecificationMachineReportFacade
     {
         private readonly ProductionDbContext DbContext;
         private readonly DbSet<MonitoringSpecificationMachineModel> DbSet;
@@ -128,6 +131,31 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") }, true);
+        }
+
+        public ReadResponse<MonitoringSpecificationMachineModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CreateAsync(MonitoringSpecificationMachineModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MonitoringSpecificationMachineModel> ReadByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateAsync(int id, MonitoringSpecificationMachineModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

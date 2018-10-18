@@ -89,7 +89,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMachineTypeFacade, MachineTypeFacade>()
                 .AddTransient<IMachineFacade, MachineFacade>()
                 .AddTransient<IMonitoringSpecificationMachineFacade, MonitoringSpecificationMachineFacade>()
-                .AddTransient<MonitoringSpecificationMachineReportFacade>()
+                .AddTransient<IMonitoringSpecificationMachineReportFacade, MonitoringSpecificationMachineReportFacade>()
                 .AddTransient<IMonitoringEventFacade, MonitoringEventFacade>()
                 .AddTransient<IMachineEventFacade, MachineEventFacade>()
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
@@ -99,10 +99,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IPackingFacade, PackingFacade>()
                 .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>()
                 .AddTransient<MachineEventFacade>()
-                .AddTransient<MonitoringEventReportFacade>()
+                .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
                 .AddTransient<IPackingReceiptFacade,PackingReceiptFacade>()
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>();
-
         }
 
         private void RegisterLogics(IServiceCollection services)

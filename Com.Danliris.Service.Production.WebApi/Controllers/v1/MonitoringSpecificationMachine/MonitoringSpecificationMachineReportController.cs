@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
 using Com.Danliris.Service.Production.WebApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +18,15 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Monitori
     public class MonitoringSpecificationMachineReportController : Controller
     {
         private string ApiVersion = "1.0.0";
-        private readonly MonitoringSpecificationMachineReportFacade _facade;
+        public readonly IServiceProvider serviceProvider;
+        private readonly IMapper mapper;
+        private readonly IMonitoringSpecificationMachineReportFacade facade;
         //private readonly IdentityService identityService;
-        public MonitoringSpecificationMachineReportController(MonitoringSpecificationMachineReportFacade facade)//, IdentityService identityService)
+        public MonitoringSpecificationMachineReportController(IServiceProvider serviceProvider, IMapper mapper, IMonitoringSpecificationMachineReportFacade facade)
         {
-            _facade = facade;
-            //this.identityService = identityService;
+            this.serviceProvider = serviceProvider;
+            this.mapper = mapper;
+            this.facade = facade;
         }
 
         [HttpGet]
@@ -33,7 +38,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Monitori
             try
             {
 
-                var data = _facade.GetReport(machineId, productionOrderNo, dateFrom, dateTo, page, size, Order, offset);
+                var data = facade.GetReport(machineId, productionOrderNo, dateFrom, dateTo, page, size, Order, offset);
 
                 return Ok(new
                 {
@@ -64,7 +69,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Monitori
                 DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
                 DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-                var xls = _facade.GenerateExcel(machineId, productionOrderNo, dateFrom, dateTo, offset);
+                var xls = facade.GenerateExcel(machineId, productionOrderNo, dateFrom, dateTo, offset);
 
                 string filename = String.Format("Laporan Monitoring Spesifikasi Mesin - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 

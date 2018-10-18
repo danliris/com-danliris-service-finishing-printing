@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
@@ -12,7 +13,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Com.Danliris.Service.Sales.WebApi.Controllers
+namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.MonitoringEvent
 {
     [Produces("application/json")]
     [ApiVersion("1.0")]
@@ -21,14 +22,14 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
     public class MonitoringEventReportController : Controller
     {
         private string ApiVersion = "1.0.0";
-        private readonly MonitoringEventReportFacade _facade;
+        public readonly IServiceProvider serviceProvider;
         private readonly IMapper mapper;
-        //private readonly IdentityService identityService;
-        public MonitoringEventReportController(MonitoringEventReportFacade facade, IMapper mapper)//, IdentityService identityService)
+        private readonly IMonitoringEventReportFacade facade;
+        public MonitoringEventReportController(IServiceProvider serviceProvider, IMapper mapper, IMonitoringEventReportFacade facade)
         {
-            _facade = facade;
+            this.serviceProvider = serviceProvider;
             this.mapper = mapper;
-            //this.identityService = identityService;
+            this.facade = facade;
         }
 
         [HttpGet]
@@ -44,7 +45,7 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
             try
             {
 
-                var data = _facade.GetReport(machineId, machineEventId, productionOrderNumber, dateFrom, dateTo, page, size, Order, offset);
+                var data = facade.GetReport(machineId, machineEventId, productionOrderNumber, dateFrom, dateTo, page, size, Order, offset);
 
                 return Ok(new
                 {
@@ -75,7 +76,7 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
                 DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
                 DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-                var xls = _facade.GenerateExcel(machineId, machineEventId, productionOrderNumber, dateFrom, dateTo, offset);
+                var xls = facade.GenerateExcel(machineId, machineEventId, productionOrderNumber, dateFrom, dateTo, offset);
 
                 string filename = String.Format("Laporan Monitoring Event - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 
@@ -96,7 +97,7 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
         [HttpGet("by-machine")]
         public IActionResult ByMachine(string keyword, int machineId)
         {
-            var Data = _facade.ReadByMachine(keyword, machineId);
+            var Data = facade.ReadByMachine(keyword, machineId);
 
             var newData = mapper.Map<List<MachineEventViewModel>>(Data);
 
@@ -132,7 +133,7 @@ namespace Com.Danliris.Service.Sales.WebApi.Controllers
 
             try
             {
-                var model = _facade.ReadMonitoringSpecMachine(id, productionOrderNumber, m);
+                var model = facade.ReadMonitoringSpecMachine(id, productionOrderNumber, m);
                 var viewModel = mapper.Map<MonitoringSpecificationMachineViewModel>(model);
 
                 return Ok(new
