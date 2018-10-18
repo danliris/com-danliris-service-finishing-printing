@@ -24,7 +24,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specificatio
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent
 {
-    public class MonitoringEventReportFacade
+    public class MonitoringEventReportFacade : IMonitoringEventReportFacade
     {
         private readonly ProductionDbContext DbContext;
         private readonly DbSet<MonitoringEventModel> DbSet;
@@ -180,6 +180,31 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
                 .FirstOrDefault();
 
             return Result;
+        }
+
+        public ReadResponse<MonitoringEventModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CreateAsync(MonitoringEventModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MonitoringEventModel> ReadByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateAsync(int id, MonitoringEventModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
