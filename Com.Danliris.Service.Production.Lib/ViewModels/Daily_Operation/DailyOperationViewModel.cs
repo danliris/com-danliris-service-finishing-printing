@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public ICollection<DailyOperationBadOutputReasonsViewModel> BadOutputReasons { get; set; }
 
+        public string BadOutputDescription { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -89,6 +90,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
             if (this.Type == "input")
             {
+                if (this.TimeInput == 0)
+                {
+                    yield return new ValidationResult("harus diisi", new List<string> { "TimeInput" });
+                }
+
                 if (this.Input <= 0)
                 {
                     yield return new ValidationResult("harus diisi", new List<string> { "Input" });
@@ -107,6 +113,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
             }
             else if (this.Type == "output")
             {
+                if (this.TimeOutput == 0)
+                {
+                    yield return new ValidationResult("harus diisi", new List<string> { "TimeOutput" });
+                }
+
                 if (this.GoodOutput <= 0)
                 {
                     yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "GoodOutput" });

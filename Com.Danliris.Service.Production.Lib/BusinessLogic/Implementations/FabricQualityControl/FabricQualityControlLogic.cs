@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             Result.FabricGradeTests = await FabricGradeTestDbSet.Where(e => e.FabricQualityControlId.Equals(id) && !e.IsDeleted).ToListAsync();
             foreach (var fabricGradeTest in Result.FabricGradeTests)
             {
-                fabricGradeTest.Criteria = await CriteriaDbSet.Where(w => w.FabricGradeTestId.Equals(fabricGradeTest.Id)).ToListAsync();
+                fabricGradeTest.Criteria = await CriteriaDbSet.Where(w => w.FabricGradeTestId.Equals(fabricGradeTest.Id)).OrderBy(o => o.Index).ToListAsync();
             }
             return Result;
             //return 

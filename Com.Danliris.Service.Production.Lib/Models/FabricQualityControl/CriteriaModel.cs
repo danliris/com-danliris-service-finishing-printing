@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string Code { get; set; }
         public string Group { get; set; }
+        public int Index { get; set; }
         public string Name { get; set; }
         public double ScoreA { get; set; }
         public double ScoreB { get; set; }

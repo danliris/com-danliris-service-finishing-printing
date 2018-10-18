@@ -42,6 +42,12 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packi
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -60,7 +66,7 @@ namespace Com.Danliris.Service.Production.WebApi
         public void RegisterEndpoint()
         {
             APIEndpoint.Core = Configuration.GetValue<string>("CoreEndpoint") ?? Configuration["CoreEndpoint"];
-            //APIEndpoint.Inventory = Configuration.GetValue<string>("InventoryEndpoint") ?? Configuration["InventoryEndpoint"];
+            APIEndpoint.Inventory = Configuration.GetValue<string>("InventoryEndpoint") ?? Configuration["InventoryEndpoint"];
             //APIEndpoint.Production = Configuration.GetValue<string>("ProductionEndpoint") ?? Configuration["ProductionEndpoint"];
             //APIEndpoint.Purchasing = Configuration.GetValue<string>("PurchasingEndpoint") ?? Configuration["PurchasingEndpoint"];
         }
@@ -93,7 +99,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IPackingFacade, PackingFacade>()
                 .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>()
                 .AddTransient<MachineEventFacade>()
-                .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>();
+                .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
+                .AddTransient<IPackingReceiptFacade,PackingReceiptFacade>()
+                .AddTransient<IReturToQCFacade, ReturToQCFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -117,7 +125,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<DailyOperationBadOutputReasonsLogic>()
                 .AddTransient<DailyOperationLogic>()
                 .AddTransient<PackingLogic>()
-                .AddTransient<FabricQualityControlLogic>();
+                .AddTransient<FabricQualityControlLogic>()
+                .AddTransient<PackingReceiptLogic>()
+                .AddTransient<ReturToQCLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
