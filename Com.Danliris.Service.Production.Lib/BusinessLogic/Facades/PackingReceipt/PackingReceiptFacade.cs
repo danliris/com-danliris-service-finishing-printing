@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             {
                 model.Code = CodeGenerator.Generate();
             }
-            while (dbSet.Any(d => d.Code.Equals(model.Code))) ;
+            while (dbSet.Any(d => d.Code.Equals(model.Code)));
             this.packingReceiptLogic.CreateModel(model);
 
             await this.packingReceiptLogic.UpdatePacking(model, true);
@@ -67,7 +67,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id","Code","Buyer","Storage","PackingCode","LastModifiedUtc","Date","ProductionOrderNo","ColorName","Construction","CreatedBy"
+                    "Id", "Code", "Buyer", "Storage", "PackingCode", "LastModifiedUtc", "Date", "ProductionOrderNo", "ColorName", "Construction", "CreatedBy", "Items", "ReferenceType", "ReferenceNo"
                 };
 
             query = query
@@ -77,12 +77,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                         Code = field.Code,
                         Buyer = field.Buyer,
                         StorageName = field.StorageName,
+                        StorageCode = field.StorageCode,
+                        StorageId = field.StorageId,
                         PackingCode = field.PackingCode,
                         Date = field.Date,
                         ProductionOrderNo = field.ProductionOrderNo,
                         ColorName = field.ColorName,
                         Construction = field.Construction,
                         LastModifiedUtc = field.LastModifiedUtc,
+                        ReferenceNo = field.ReferenceNo,
+                        ReferenceType = field.ReferenceType,
                         CreatedBy = field.CreatedBy,
                         Items = field.Items,
                     });
