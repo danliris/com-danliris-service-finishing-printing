@@ -11,6 +11,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specificatio
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step;
@@ -62,6 +63,10 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<ReturToQCModel> ReturToQCs { get; set; }
         public DbSet<ReturToQCItemModel> ReturToQCItems { get; set; }
         public DbSet<ReturToQCItemDetailModel> ReturToQCItemDetails { get; set; }
+        public DbSet<ShipmentDocumentModel> ShipmentDocuments { get; set; }
+        public DbSet<ShipmentDocumentDetailModel> ShipmentDocumentDetails { get; set; }
+        public DbSet<ShipmentDocumentItemModel> ShipmentDocumentItems { get; set; }
+        public DbSet<ShipmentDocumentPackingReceiptItemModel> ShipmentDocumentPackingReceiptItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
