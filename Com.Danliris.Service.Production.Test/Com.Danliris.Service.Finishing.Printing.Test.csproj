@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Com.Danliris.Service.Production.WebApi\Com.Danliris.Service.Finishing.Printing.WebApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataUtils\" />
-  </ItemGroup>
-
 </Project>

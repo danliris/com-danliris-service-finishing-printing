@@ -48,6 +48,9 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packi
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -71,11 +74,16 @@ namespace Com.Danliris.Service.Production.WebApi
             //APIEndpoint.Purchasing = Configuration.GetValue<string>("PurchasingEndpoint") ?? Configuration["PurchasingEndpoint"];
         }
 
-        private void RegisterServices(IServiceCollection services)
+        private void RegisterServices(IServiceCollection services, bool isTest)
         {
             services
                 .AddScoped<IIdentityService, IdentityService>()
                 .AddScoped<IValidateService, ValidateService>();
+
+            if (isTest == false)
+            {
+                services.AddScoped<IHttpClientService, HttpClientService>();
+            }
         }
 
         private void RegisterFacades(IServiceCollection services)
@@ -101,6 +109,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<MachineEventFacade>()
                 .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
                 .AddTransient<IPackingReceiptFacade,PackingReceiptFacade>()
+                .AddTransient<IShipmentDocumentService, ShipmentDocumentService>()
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>();
         }
 
@@ -134,11 +143,12 @@ namespace Com.Danliris.Service.Production.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString(Constant.DEFAULT_CONNECTION) ?? Configuration[Constant.DEFAULT_CONNECTION];
+            string env = Configuration.GetValue<string>(Constant.ASPNETCORE_ENVIRONMENT);
 
             #region Register
             services.AddDbContext<ProductionDbContext>(options => options.UseSqlServer(connectionString, c => c.CommandTimeout(60)));
 
-            RegisterServices(services);
+            RegisterServices(services, env.Equals("Test"));
 
             RegisterFacades(services);
 
