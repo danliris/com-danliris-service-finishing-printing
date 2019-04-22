@@ -7,6 +7,8 @@ namespace Com.Danliris.Service.Production.Lib.Models.Master.Step
 {
     public class StepModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Alias { get; set; }
         public string Code { get; set; }
         public string Process { get; set; }

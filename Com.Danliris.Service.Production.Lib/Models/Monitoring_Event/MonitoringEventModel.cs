@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event
 {
     public class MonitoringEventModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Code { get; set; }
         public DateTimeOffset DateStart { get; set; }
         public DateTimeOffset DateEnd { get; set; }

@@ -9,6 +9,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing
     [JsonObject(IsReference = true)]
     public class PackingModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
+
         [MaxLength(25)]
         public string Code { get; set; }
         

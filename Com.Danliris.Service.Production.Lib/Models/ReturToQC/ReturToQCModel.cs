@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC
 {
     public class ReturToQCModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
 
         public DateTimeOffset Date { get; set; }
 

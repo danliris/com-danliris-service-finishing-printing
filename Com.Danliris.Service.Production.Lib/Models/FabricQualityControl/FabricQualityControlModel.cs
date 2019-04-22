@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityContro
 {
     public class FabricQualityControlModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Buyer { get; set; }
         public string CartNo { get; set; }
         public string Code { get; set; }

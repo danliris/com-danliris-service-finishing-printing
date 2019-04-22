@@ -7,6 +7,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument
 {
     public class ShipmentDocumentModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public int BuyerId { get; set; }
         public string BuyerAddress { get; set; }
         [MaxLength(250)]
