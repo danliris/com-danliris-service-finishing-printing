@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing
 {
     public class PackingViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         [StringLength(25)]
         public string Code { get; set; }
         public int ProductionOrderId { get; set; }

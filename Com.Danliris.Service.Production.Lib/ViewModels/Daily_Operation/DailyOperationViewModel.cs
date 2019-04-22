@@ -18,6 +18,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
     public class DailyOperationViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Type { get; set; }
         public string Shift { get; set; }

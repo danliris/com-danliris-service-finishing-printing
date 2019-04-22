@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.BadOutpu
 {
     public class BadOutputViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Reason { get; set; }
         public ICollection<BadOutputMachineViewModel> MachineDetails { get; set; }

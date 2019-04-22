@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityCo
 {
     public class FabricQualityControlViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Buyer { get; set; }
         public string CartNo { get; set; }
         public string Code { get; set; }

@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
 {
     public class KanbanViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public double? BadOutput { get; set; }
         public CartViewModel Cart { get; set; }
         public string Code { get; set; }

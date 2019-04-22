@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.PackingReceipt
 {
     public class PackingReceiptViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Remark { get; set; }

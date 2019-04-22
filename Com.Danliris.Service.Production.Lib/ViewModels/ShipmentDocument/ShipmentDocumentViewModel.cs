@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocumen
 {
     public class ShipmentDocumentViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public BuyerIntegrationViewModel Buyer { get; set; }
         public string Code { get; set; }
         public string DeliveryCode { get; set; }

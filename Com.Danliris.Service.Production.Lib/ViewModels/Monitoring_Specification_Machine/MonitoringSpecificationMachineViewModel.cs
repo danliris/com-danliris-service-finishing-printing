@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Spec
 {
     public class MonitoringSpecificationMachineViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public DateTimeOffset? DateTimeInput { get; set; }
         public string CartNumber { get; set; }
