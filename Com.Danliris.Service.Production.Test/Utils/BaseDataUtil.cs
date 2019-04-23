@@ -21,9 +21,25 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Utils
             return Activator.CreateInstance(typeof(TModel)) as TModel;
         }
 
+        public virtual Task<TModel> GetNewDataAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+
         public async Task<TModel> GetTestData()
         {
-            var data = GetNewData();
+            TModel data;
+
+            try
+            {
+                data = await GetNewDataAsync();
+            }
+            catch (Exception)
+            {
+                data = GetNewData();
+            }
+
             await _facade.CreateAsync(data);
             return data;
         }

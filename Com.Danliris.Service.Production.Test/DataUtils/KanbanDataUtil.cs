@@ -19,9 +19,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             this.machineDataUtil = machineDataUtil;
         }
 
-        public override KanbanModel GetNewData()
+        public override async Task<KanbanModel> GetNewDataAsync()
         {
-            MachineModel machine = machineDataUtil.GetTestData().Result;
+            MachineModel machine = await machineDataUtil.GetTestData();
             KanbanModel model = new KanbanModel
             {
                 Instruction = new KanbanInstructionModel

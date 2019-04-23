@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
 {
@@ -16,9 +17,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             this.kanbanDataUtil = kanbanDataUtil;
         }
 
-        public override DailyOperationModel GetNewData()
+        public override async Task<DailyOperationModel> GetNewDataAsync()
         {
-            var kanbanData = kanbanDataUtil.GetTestData().Result;
+            var kanbanData = await kanbanDataUtil.GetTestData();
 
             DailyOperationModel model = new DailyOperationModel
             {

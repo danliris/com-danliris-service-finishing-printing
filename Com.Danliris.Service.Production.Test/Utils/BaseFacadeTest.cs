@@ -82,7 +82,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Utils
 
             TFacade facade = Activator.CreateInstance(typeof(TFacade), serviceProvider, dbContext) as TFacade;
 
-            var data = DataUtil(facade, dbContext).GetNewData();
+            TModel data;
+            try
+            {
+                data = await DataUtil(facade, dbContext).GetNewDataAsync();
+            }
+            catch (Exception)
+            {
+                data = DataUtil(facade, dbContext).GetNewData();
+            }
 
             var response = await facade.CreateAsync(data);
 
