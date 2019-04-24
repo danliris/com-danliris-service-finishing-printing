@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Master.Step
 {
     public class StepViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Alias { get; set; }
         public string Code { get; set; }
         public string Process { get; set; }

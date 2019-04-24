@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Even
 {
     public class MonitoringEventViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public DateTimeOffset? DateStart { get; set; }
         public DateTimeOffset? DateEnd { get; set; }

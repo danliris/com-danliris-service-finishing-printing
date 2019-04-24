@@ -10,6 +10,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine
 {
     public class MachineModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Process { get; set; }

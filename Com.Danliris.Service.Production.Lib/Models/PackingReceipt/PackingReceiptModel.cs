@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt
 {
     public class PackingReceiptModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Code { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Remark { get; set; }

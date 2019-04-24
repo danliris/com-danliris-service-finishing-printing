@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
 {
     public class KanbanModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public double BadOutput { get; set; }
         public string CartCartNumber { get; set; }
         public string CartCode { get; set; }

@@ -10,6 +10,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
 {
     public class DailyOperationModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Type { get; set; }
         public string Shift { get; set; }

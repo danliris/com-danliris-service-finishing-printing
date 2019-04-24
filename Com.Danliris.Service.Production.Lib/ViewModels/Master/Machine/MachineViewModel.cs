@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
 {
     public class MachineViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Process { get; set; }

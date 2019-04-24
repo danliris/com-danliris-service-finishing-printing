@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Master.DurationEstimati
 {
     public class DurationEstimationViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public ProcessTypeIntegrationViewModel ProcessType { get; set; }
         public List<DurationEstimationAreaViewModel> Areas { get; set; }

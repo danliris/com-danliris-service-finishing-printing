@@ -12,7 +12,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC
         public ReturToQCViewModel()
         {
         }
-        
+
+        public string UId { get; set; }
+
         public DateTimeOffset Date { get; set; }
 
         public string DeliveryOrderNo { get; set; }

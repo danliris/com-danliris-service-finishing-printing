@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.MachineT
 {
     public class MachineTypeViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
