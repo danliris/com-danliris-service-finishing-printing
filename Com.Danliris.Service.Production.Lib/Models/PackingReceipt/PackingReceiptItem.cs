@@ -12,8 +12,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt
         public string ProductCode { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public int Length { get; set; }
-        public int Weight { get; set; }
+        public double Length { get; set; }
+        public double Weight { get; set; }
         public string Remark { get; set; }
         public string Notes { get; set; }
         public int UomId { get; set; }

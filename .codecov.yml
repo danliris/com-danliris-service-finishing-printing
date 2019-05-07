@@ -1,2 +1,2 @@
 ignore:
-  - "Com.DanLiris.Service.Production.Lib/Migrations"
+  - "Com.Danliris.Service.Production.Lib/Migrations"
