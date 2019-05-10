@@ -131,12 +131,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         List<InventoryDocumentViewModel> postedModels = new List<InventoryDocumentViewModel>();
                         foreach (var item in model.ReturToQCItems)
                         {
-                            InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
-                            inventoryDoc.referenceNo = model.ReturNo + " - " + item.ProductionOrderNo;
-                            inventoryDoc.referenceType = "retur-to-qc";
-                            inventoryDoc.remark = "";
-                            inventoryDoc.type = model.IsVoid ? "IN" : "OUT";
-                            inventoryDoc.date = DateTimeOffset.UtcNow;
+                            InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel
+                            {
+                                referenceNo = model.ReturNo + " - " + item.ProductionOrderNo,
+                                referenceType = "retur-to-qc",
+                                remark = "",
+                                type = model.IsVoid ? "IN" : "OUT",
+                                date = DateTimeOffset.UtcNow
+                            };
                             var itemDetails = item.ReturToQCItemDetails.LastOrDefault();
 
                             if (itemDetails != null)
@@ -169,7 +171,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 {
                     throw new UriFormatException(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new Exception(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
                 }
