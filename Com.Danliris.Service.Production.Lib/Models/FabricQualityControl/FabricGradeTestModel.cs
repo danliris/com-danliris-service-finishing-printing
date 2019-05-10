@@ -22,6 +22,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityContro
         public string Type { get; set; }
         public double Width { get; set; }
 
+        public int ItemIndex { get; set; }
+
         public int FabricQualityControlId { get; set; }
         public virtual FabricQualityControlModel FabricQualityControl { get; set; }
     }
