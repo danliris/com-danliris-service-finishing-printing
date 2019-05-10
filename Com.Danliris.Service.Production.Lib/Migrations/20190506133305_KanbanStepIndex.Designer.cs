@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190506133305_KanbanStepIndex")]
+    partial class KanbanStepIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1405,7 +1407,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<double>("Length");
+                    b.Property<int>("Length");
 
                     b.Property<string>("Lot")
                         .HasMaxLength(250);
@@ -1417,7 +1419,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<string>("Remark")
                         .HasMaxLength(500);
 
-                    b.Property<double>("Weight");
+                    b.Property<int>("Weight");
 
                     b.HasKey("Id");
 
@@ -1603,7 +1605,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<double>("Length");
+                    b.Property<int>("Length");
 
                     b.Property<string>("Notes");
 
@@ -1623,7 +1625,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<int>("UomId");
 
-                    b.Property<double>("Weight");
+                    b.Property<int>("Weight");
 
                     b.HasKey("Id");
 
