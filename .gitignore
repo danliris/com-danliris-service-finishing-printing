@@ -1,0 +1,18 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Com.Danliris.Service.Production.Lib/bin/Debug/netcoreapp2.0
+/Com.Danliris.Service.Production.Lib/obj
+/Com.Danliris.Service.Production.Test/bin/Debug/netcoreapp2.0
+/Com.Danliris.Service.Production.Test/obj
+/Com.Danliris.Service.Production.WebApi/bin/Debug/netcoreapp2.0
+/Com.Danliris.Service.Production.WebApi/obj
+/Com.Danliris.Service.Production.WebApi/Properties
+/Com.Danliris.Service.Production.WebApi/wwwroot
+/Com.Danliris.Service.Production.WebApi/appsettings.Development.json
+/Com.Danliris.Service.Production.WebApi/appsettings.json
+/Com.Danliris.Service.Production.WebApi/bundleconfig.json
+.vscode/launch.json
+.vscode/tasks.json
