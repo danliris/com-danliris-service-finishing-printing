@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190504041851_Packing_Weight_Length_Double")]
+    partial class Packing_Weight_Length_Double
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -725,8 +727,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                         .HasMaxLength(500);
 
                     b.Property<int>("SelectedIndex");
-
-                    b.Property<int>("StepIndex");
 
                     b.HasKey("Id");
 
@@ -2543,8 +2543,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<int>("InstructionId");
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<int>("ItemIndex");
 
                     b.Property<string>("LastModifiedAgent")
                         .IsRequired()
