@@ -11,13 +11,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
 {
     public class MachineViewModel : BaseViewModel, IValidatableObject
     {
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Process { get; set; }
         public string Manufacture { get; set; }
-        public int Year { get; set; }
+        public int? Year { get; set; }
         public string Condition { get; set; }
-        public int MonthlyCapacity { get; set; }
+        public int? MonthlyCapacity { get; set; }
 
         public UnitViewModel Unit { get; set; }
         public MachineTypeViewModel MachineType { get; set; }

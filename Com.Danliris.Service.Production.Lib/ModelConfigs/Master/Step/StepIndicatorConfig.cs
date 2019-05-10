@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step
         {
             builder.Property(b => b.Name).HasMaxLength(500);
             builder.Property(b => b.Uom).HasMaxLength(500);
+            builder.Property(b => b.Value).HasMaxLength(150);
         }
     }
 }

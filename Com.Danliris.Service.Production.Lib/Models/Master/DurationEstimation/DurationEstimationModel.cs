@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Production.Lib.Models.Master.DurationEstimation
 {
     public class DurationEstimationModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Code { get; set; }
         public int OrderTypeId { get; set; }
         public string OrderTypeCode { get; set; }

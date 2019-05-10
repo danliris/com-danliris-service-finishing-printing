@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Production.WebApi.Controllers.v1.Master
 
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
-                    .Ok(Mapper, dataVM, page, size, read.Count, dataVM.Count, read.Order, read.Selected);
+                    .Ok(Mapper, dataVM, page, size, read.Count, read.Data.Count, read.Order, read.Selected);
                 return Ok(Result);
             }
             catch (Exception e)

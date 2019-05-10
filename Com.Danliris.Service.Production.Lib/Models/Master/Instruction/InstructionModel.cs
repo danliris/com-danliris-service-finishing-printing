@@ -9,6 +9,8 @@ namespace Com.Danliris.Service.Production.Lib.Models.Master.Instruction
 {
     public class InstructionModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public ICollection<InstructionStepModel> Steps { get; set; }

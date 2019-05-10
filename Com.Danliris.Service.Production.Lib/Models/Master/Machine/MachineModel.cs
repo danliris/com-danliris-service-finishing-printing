@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Production.Lib.Models.Master.Step;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Production.Lib.Models.Master.Step;
 using Com.Moonlay.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine
 {
     public class MachineModel : StandardEntity, IValidatableObject
     {
+        [MaxLength(255)]
+        public string UId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Process { get; set; }
@@ -30,7 +33,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine
         public string MachineTypeName { get; set; }
 
         public ICollection<MachineEventsModel> MachineEvents { get; set; }
-        public ICollection<StepModel> Steps { get; set; }
+        public ICollection<MachineStepModel> MachineSteps { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
