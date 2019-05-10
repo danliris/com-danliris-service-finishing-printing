@@ -20,6 +20,7 @@ using Com.Danliris.Service.Production.Lib.Models.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.Models.Master.Step;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Com.Danliris.Service.Production.Lib
 {
@@ -41,6 +42,8 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<MachineTypeIndicatorsModel> MachineTypeIndicators { get; set; }
         public DbSet<MachineModel> Machine { get; set; }
         public DbSet<MachineEventsModel> MachineEvents { get; set; }
+        public DbSet<MachineStepModel> MachineSteps { get; set; }
+        public DbSet<MonitoringSpecificationMachineModel> MonitoringSpecificationMachine { get; set; }
         public DbSet<MonitoringSpecificationMachineDetailsModel> MonitoringSpecificationMachineDetails { get; set; }
         public DbSet<KanbanModel> Kanbans { get; set; }
         public DbSet<KanbanInstructionModel> KanbanInstructions { get; set; }
@@ -66,6 +69,7 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<ShipmentDocumentPackingReceiptItemModel> ShipmentDocumentPackingReceiptItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             modelBuilder.ApplyConfiguration(new StepConfig());
             modelBuilder.ApplyConfiguration(new StepIndicatorConfig());
             modelBuilder.ApplyConfiguration(new InstructionConfig());

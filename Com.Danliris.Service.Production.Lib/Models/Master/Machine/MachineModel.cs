@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine
         public string MachineTypeName { get; set; }
 
         public ICollection<MachineEventsModel> MachineEvents { get; set; }
-        public ICollection<StepModel> Steps { get; set; }
+        public ICollection<MachineStepModel> MachineSteps { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             var row = await dbContext.SaveChangesAsync();
             if (row > 0)
             {
-                packingLogic.CreateProduct(model);
+                await packingLogic.CreateProduct(model);
             }
             return row;
         }
