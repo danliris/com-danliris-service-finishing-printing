@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master
             .ForPath(d => d.Unit.Id, opt => opt.MapFrom(s => s.UnitId))
             .ForPath(d => d.Unit.Name, opt => opt.MapFrom(s => s.UnitName))
             .ForPath(d => d.Unit.Code, opt => opt.MapFrom(s => s.UnitCode))
+            .ForPath(d => d.Unit.Division.Name, opt => opt.MapFrom(s => s.UnitDivisionName))
 
             .ForPath(d => d.MachineType.Id, opt => opt.MapFrom(s => s.MachineTypeId))
             .ForPath(d => d.MachineType.Name, opt => opt.MapFrom(s => s.MachineTypeName))

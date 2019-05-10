@@ -21,6 +21,36 @@ using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.D
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -36,11 +66,24 @@ namespace Com.Danliris.Service.Production.WebApi
 
         public IConfiguration Configuration { get; }
 
-        private void RegisterServices(IServiceCollection services)
+        public void RegisterEndpoint()
+        {
+            APIEndpoint.Core = Configuration.GetValue<string>("CoreEndpoint") ?? Configuration["CoreEndpoint"];
+            APIEndpoint.Inventory = Configuration.GetValue<string>("InventoryEndpoint") ?? Configuration["InventoryEndpoint"];
+            //APIEndpoint.Production = Configuration.GetValue<string>("ProductionEndpoint") ?? Configuration["ProductionEndpoint"];
+            //APIEndpoint.Purchasing = Configuration.GetValue<string>("PurchasingEndpoint") ?? Configuration["PurchasingEndpoint"];
+        }
+
+        private void RegisterServices(IServiceCollection services, bool isTest)
         {
             services
                 .AddScoped<IIdentityService, IdentityService>()
                 .AddScoped<IValidateService, ValidateService>();
+
+            if (isTest == false)
+            {
+                services.AddScoped<IHttpClientService, HttpClientService>();
+            }
         }
 
         private void RegisterFacades(IServiceCollection services)
@@ -50,7 +93,23 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
-                .AddTransient<IMachineTypeFacade, MachineTypeFacade>();
+                .AddTransient<IMachineTypeFacade, MachineTypeFacade>()
+                .AddTransient<IMachineFacade, MachineFacade>()
+                .AddTransient<IMonitoringSpecificationMachineFacade, MonitoringSpecificationMachineFacade>()
+                .AddTransient<IMonitoringSpecificationMachineReportFacade, MonitoringSpecificationMachineReportFacade>()
+                .AddTransient<IMonitoringEventFacade, MonitoringEventFacade>()
+                .AddTransient<IMachineEventFacade, MachineEventFacade>()
+                .AddTransient<IBadOutputFacade, BadOutputFacade>()
+                .AddScoped<IDailyOperationFacade, DailyOperationFacade>()
+                .AddTransient<IPackingFacade, PackingFacade>()
+                .AddTransient<IDailyOperationFacade, DailyOperationFacade>()
+                .AddTransient<IPackingFacade, PackingFacade>()
+                .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>()
+                .AddTransient<MachineEventFacade>()
+                .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
+                .AddTransient<IPackingReceiptFacade,PackingReceiptFacade>()
+                .AddTransient<IShipmentDocumentService, ShipmentDocumentService>()
+                .AddTransient<IReturToQCFacade, ReturToQCFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -61,22 +120,39 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<InstructionLogic>()
                 .AddTransient<DurationEstimationLogic>()
                 .AddTransient<MachineTypeLogic>()
-                .AddTransient<MachineTypeIndicatorsLogic>();
+                .AddTransient<MachineTypeIndicatorsLogic>()
+                .AddTransient<MachineEventLogic>()
+                .AddTransient<MachineLogic>()
+                .AddTransient<MachineStepLogic>()
+                .AddTransient<MonitoringSpecificationMachineLogic>()
+                .AddTransient<MonitoringSpecificationMachineDetailsLogic>()
+                .AddTransient<MonitoringEventLogic>()
+                .AddTransient<BadOutputLogic>()
+                .AddTransient<BadOutputMachineLogic>()
+                .AddTransient<DailyOperationBadOutputReasonsLogic>()
+                .AddTransient<DailyOperationLogic>()
+                .AddTransient<PackingLogic>()
+                .AddTransient<FabricQualityControlLogic>()
+                .AddTransient<PackingReceiptLogic>()
+                .AddTransient<ReturToQCLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString(Constant.DEFAULT_CONNECTION) ?? Configuration[Constant.DEFAULT_CONNECTION];
+            string env = Configuration.GetValue<string>(Constant.ASPNETCORE_ENVIRONMENT);
 
             #region Register
             services.AddDbContext<ProductionDbContext>(options => options.UseSqlServer(connectionString, c => c.CommandTimeout(60)));
 
-            RegisterServices(services);
+            RegisterServices(services, env.Equals("Test"));
 
             RegisterFacades(services);
 
             RegisterLogics(services);
+
+            RegisterEndpoint();
 
             services.AddAutoMapper();
             #endregion

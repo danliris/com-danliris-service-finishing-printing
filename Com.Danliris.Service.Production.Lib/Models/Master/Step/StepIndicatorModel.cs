@@ -10,7 +10,7 @@ namespace Com.Danliris.Service.Production.Lib.Models.Master.Step
     {
         public string Name { get; set; }
         public string Uom { get; set; }
-        public double Value { get; set; }
+        public string Value { get; set; }
         public int StepId { get; set; }
         public virtual StepModel Step { get; set; }
 

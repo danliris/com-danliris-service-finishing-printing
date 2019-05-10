@@ -7,7 +7,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specific
 {
     public class MonitoringSpecificationMachineModel : StandardEntity
     {
-        public DateTimeOffset DateTime { get; set; }
+        [MaxLength(255)]
+        public string UId { get; set; }
+        public string Code { get; set; }
+        public DateTimeOffset DateTimeInput { get; set; }
         public string CartNumber { get; set; }
     }
 }

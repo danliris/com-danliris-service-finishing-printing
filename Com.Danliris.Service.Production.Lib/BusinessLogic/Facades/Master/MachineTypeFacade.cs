@@ -30,6 +30,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
         public async Task<int> CreateAsync(MachineTypeModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
             this.MachineTypeLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }

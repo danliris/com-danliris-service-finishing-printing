@@ -30,6 +30,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
         public async Task<int> CreateAsync(MachineModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate();
+            }
+            while (DbSet.Any(d => d.Code.Equals(model.Code)));
             this.MachineLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
@@ -55,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","","MonthlyCapacity", "LastModifiedUtc"
+                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "LastModifiedUtc", "MachineEvents", "MachineSteps"
                 };
 
             query = query
@@ -68,15 +73,29 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
                         Manufacture = field.Manufacture,
                         Year = field.Year,
                         Condition = field.Condition,
+                        UnitName = field.UnitName,
+                        UnitDivisionName = field.UnitDivisionName,
+                        MachineTypeId = field.MachineTypeId,
+                        MachineTypeName = field.MachineTypeName,
                         MonthlyCapacity = field.MonthlyCapacity,
                         LastModifiedUtc = field.LastModifiedUtc,
                         MachineEvents = new List<MachineEventsModel>(field.MachineEvents.Select(i => new MachineEventsModel
                         {
+                            Id = i.Id,
                             Code = i.Code,
                             Name = i.Name,
                             No = i.No,
                             Category = i.Category,
                             MachineId = i.MachineId
+                        })),
+                        MachineSteps = new List<MachineStepModel>(field.MachineSteps.Select(d => new MachineStepModel
+                        {
+                            Id = d.Id,
+                            Code = d.Code,
+                            Alias = d.Alias,
+                            Process = d.Process,
+                            ProcessArea = d.ProcessArea,
+                            StepId = d.StepId,
                         }))
                     });
 

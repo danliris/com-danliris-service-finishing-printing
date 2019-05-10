@@ -7,7 +7,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Mas
 {
     public class UnitViewModel : BaseViewModel
     {
-        public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public DivisionViewModel Division { get; set; }
