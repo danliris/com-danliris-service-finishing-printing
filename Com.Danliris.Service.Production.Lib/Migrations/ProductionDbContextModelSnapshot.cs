@@ -2675,6 +2675,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<int?>("MachineModelId");
+
                     b.Property<string>("Process")
                         .HasMaxLength(500);
 
@@ -2764,7 +2766,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineEventsModel", b =>
                 {
-                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel", "Machine")
+                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel")
                         .WithMany("MachineEvents")
                         .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -2881,7 +2883,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                         .HasForeignKey("StepId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
-#pragma warning restore 612, 618
         }
     }
 }

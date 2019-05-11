@@ -89,7 +89,6 @@ namespace Com.Danliris.Service.Production.WebApi
         private void RegisterFacades(IServiceCollection services)
         {
             services
-                .AddTransient<IKanbanFacade, KanbanFacade>()
                 .AddTransient<IStepFacade, StepFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>()
@@ -116,7 +115,6 @@ namespace Com.Danliris.Service.Production.WebApi
         private void RegisterLogics(IServiceCollection services)
         {
             services
-                .AddTransient<KanbanLogic>()
                 .AddTransient<StepLogic>()
                 .AddTransient<StepIndicatorLogic>()
                 .AddTransient<InstructionLogic>()

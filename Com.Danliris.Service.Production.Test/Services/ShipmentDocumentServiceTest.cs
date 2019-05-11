@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
     {
         private const string ENTITY = "ShipmentDocument";
         //private PurchasingDocumentAcceptanceDataUtil pdaDataUtil;
-        private readonly IIdentityService identityService;
+        
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public string GetCurrentMethod()
