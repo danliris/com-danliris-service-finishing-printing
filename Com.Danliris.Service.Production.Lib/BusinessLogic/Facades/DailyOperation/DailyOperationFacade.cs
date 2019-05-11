@@ -57,54 +57,95 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             return await DbContext.SaveChangesAsync();
         }
 
+        //public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
+        //{
+        //    IQueryable<DailyOperationModel> query = DbSet;
+
+        //    List<string> searchAttributes = new List<string>()
+        //    {
+        //        "Code"
+        //    };
+        //    query = QueryHelper<DailyOperationModel>.Search(query, searchAttributes, keyword);
+
+
+        //    Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+        //    query = QueryHelper<DailyOperationModel>.Filter(query, filterDictionary);
+
+        //    List<string> selectedFields = new List<string>()
+        //        {
+        //            "Id","Type","GoodOutput","Step","BadOutput","Code","Machine","Kanban","Input","Shift","DateInput","DateOutput","LastModifiedUtc"
+        //        };
+
+
+
+
+        //    Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+        //    query = QueryHelper<DailyOperationModel>.Order(query, orderDictionary);
+
+        //    Pageable<DailyOperationModel> pageable = new Pageable<DailyOperationModel>(query, page - 1, size);
+        //    List<DailyOperationModel> data = pageable.Data.ToList();
+
+        //    data = (from daily in data
+        //            join machine in DbContext.Machine on daily.MachineId equals machine.Id
+        //            join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
+        //            select new DailyOperationModel
+        //            {
+        //                Id = daily.Id,
+        //                Code = daily.Code,
+        //                Type = daily.Type,
+        //                StepProcess = daily.StepProcess,
+        //                Shift = daily.Shift,
+        //                Kanban = kanban,
+        //                Machine = machine,
+        //                DateInput = daily.DateInput,
+        //                Input = daily.Input,
+        //                DateOutput = daily.DateOutput,
+        //                GoodOutput = daily.GoodOutput,
+        //                BadOutput = daily.BadOutput,
+        //                LastModifiedUtc = daily.LastModifiedUtc
+        //            }).ToList();
+        //    int totalData = pageable.TotalCount;
+
+        //    return new ReadResponse<DailyOperationModel>(data, totalData, orderDictionary, selectedFields);
+        //}
+
         public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
             IQueryable<DailyOperationModel> query = DbSet;
 
-            List<string> searchAttributes = new List<string>()
-            {
-                "Code"
-            };
-            query = QueryHelper<DailyOperationModel>.Search(query, searchAttributes, keyword);
+            query = (from daily in query
+                     join machine in DbContext.Machine on daily.MachineId equals machine.Id
+                     join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
+                     where !string.IsNullOrWhiteSpace(keyword) ? machine.Name.Contains(keyword) : true
+                     && !string.IsNullOrWhiteSpace(keyword) ? kanban.ProductionOrderOrderNo.Contains(keyword) : true
+                     && !string.IsNullOrWhiteSpace(keyword) ? daily.StepProcess.Contains(keyword) : true
+                     select new DailyOperationModel
+                     {
+                         Id = daily.Id,
+                         Code = daily.Code,
+                         Type = daily.Type,
+                         StepProcess = daily.StepProcess,
+                         Shift = daily.Shift,
+                         Kanban = kanban,
+                         Machine = machine,
+                         DateInput = daily.DateInput,
+                         Input = daily.Input,
+                         DateOutput = daily.DateOutput,
+                         GoodOutput = daily.GoodOutput,
+                         BadOutput = daily.BadOutput,
+                         LastModifiedUtc = daily.LastModifiedUtc
+                     });
 
-
-            Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<DailyOperationModel>.Filter(query, filterDictionary);
-
-            List<string> selectedFields = new List<string>()
-                {
-                    "Id","Type","GoodOutput","Step","BadOutput","Code","Machine","Kanban","Input","Shift","DateInput","DateOutput","LastModifiedUtc"
-                };
-
-            query = from daily in query
-                    join machine in DbContext.Machine on daily.MachineId equals machine.Id
-                    join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
-                    select new DailyOperationModel
-                    {
-                        Id = daily.Id,
-                        Code = daily.Code,
-                        Type = daily.Type,
-                        StepProcess = daily.StepProcess,
-                        Shift = daily.Shift,
-                        Kanban = kanban,
-                        Machine = machine,
-                        DateInput = daily.DateInput,
-                        Input = daily.Input,
-                        DateOutput = daily.DateOutput,
-                        GoodOutput = daily.GoodOutput,
-                        BadOutput = daily.BadOutput,
-                        LastModifiedUtc = daily.LastModifiedUtc
-                    };
-
-
+            var data = query.Skip((page - 1) * size).Take(size).ToList();
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<DailyOperationModel>.Order(query, orderDictionary);
 
-            Pageable<DailyOperationModel> pageable = new Pageable<DailyOperationModel>(query, page - 1, size);
-            List<DailyOperationModel> data = pageable.Data.ToList();
-            int totalData = pageable.TotalCount;
+            List<string> selectedFields = new List<string>()
+            {
+                "Id", "Type", "GoodOutput", "Step", "BadOutput", "Code", "Machine", "Kanban", "Input", "Shift", "DateInput", "DateOutput", "LastModifiedUtc"
+            };
 
-            return new ReadResponse<DailyOperationModel>(data, totalData, orderDictionary, selectedFields);
+            return new ReadResponse<DailyOperationModel>(data, query.Count(), orderDictionary, selectedFields);
         }
 
         public async Task<DailyOperationModel> ReadByIdAsync(int id)
@@ -200,11 +241,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     Process = x.StepProcess,
                     Id = x.StepId
                 },
-                
+
                 DateInput = x.DateInput,
-                
+
                 TimeInput = x.TimeInput,
-                
+
                 Input = x.Input,
                 Id = x.Id,
                 Active = x.Active,
@@ -217,7 +258,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
             }).ToList();
 
-            foreach(var dailyOperation in dailyOperations)
+            foreach (var dailyOperation in dailyOperations)
             {
                 var outputModel = GetOutputDailyOperationModel(dailyOperation.Kanban.Id, dailyOperation.Machine.Id, dailyOperation.Step.Id);
                 if (outputModel != null)
@@ -228,7 +269,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     dailyOperation.TimeOutput = outputModel.TimeOutput;
                     dailyOperation.BadOutputDescription = GetOutputBadDescription(outputModel);
                 }
-                
+
             }
             return dailyOperations;
         }
@@ -243,7 +284,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
         {
             List<string> badOutputDescription = new List<string>();
             int index = 1;
-            foreach(var model in outputModel.BadOutputReasons)
+            foreach (var model in outputModel.BadOutputReasons)
             {
                 badOutputDescription.Add(string.Format("{0}. {1} | {2}. {3}", index++, model.MachineName, model.BadOutputReason, model.Action));
             }
@@ -288,9 +329,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                 {
                     dt.Rows.Add(index++, item.Kanban.ProductionOrder.OrderNo, item.Kanban.Cart.CartNumber, item.Kanban.IsReprocess.ToString(), item.Machine.Name,
                         item.Step.Process, item.Kanban.ProductionOrder.Material.Name, item.Kanban.SelectedProductionOrderDetail.ColorRequest, item.Kanban.FinishWidth,
-                        item.Kanban.ProductionOrder.ProcessType.Name, item.DateInput == null ? "" : item.DateInput.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"), 
+                        item.Kanban.ProductionOrder.ProcessType.Name, item.DateInput == null ? "" : item.DateInput.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"),
                         item.TimeInput == null ? "" : item.TimeInput.GetValueOrDefault().ToString(), item.Input.GetValueOrDefault(),
-                        item.DateOutput == null ? "" : item.DateOutput.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"), item.TimeOutput == null ? "" : item.TimeOutput.GetValueOrDefault().ToString(), 
+                        item.DateOutput == null ? "" : item.DateOutput.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"), item.TimeOutput == null ? "" : item.TimeOutput.GetValueOrDefault().ToString(),
                         item.GoodOutput.GetValueOrDefault(), item.BadOutput.GetValueOrDefault(), "");
                 }
             }

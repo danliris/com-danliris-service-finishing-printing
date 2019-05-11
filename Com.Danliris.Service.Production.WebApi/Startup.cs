@@ -99,6 +99,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMonitoringSpecificationMachineReportFacade, MonitoringSpecificationMachineReportFacade>()
                 .AddTransient<IMonitoringEventFacade, MonitoringEventFacade>()
                 .AddTransient<IMachineEventFacade, MachineEventFacade>()
+                .AddTransient<IKanbanFacade, KanbanFacade>()
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
                 .AddScoped<IDailyOperationFacade, DailyOperationFacade>()
                 .AddTransient<IPackingFacade, PackingFacade>()
