@@ -67,11 +67,11 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                 var xls = Facade.GenerateExcel(kanban, machine, dateFrom, dateTo, offSet);
 
                 string fileName = "";
-                if(dateFrom == null && dateTo == null)
+                if (dateFrom == null && dateTo == null)
                     fileName = string.Format("Daily Operation Report");
-                else if(dateFrom != null && dateTo == null)
+                else if (dateFrom != null && dateTo == null)
                     fileName = string.Format("Daily Operation Report {0}", dateFrom.Value.ToString("dd/MM/yyyy"));
-                else if(dateFrom == null && dateTo != null)
+                else if (dateFrom == null && dateTo != null)
                     fileName = string.Format("Daily Operation Report {0}", dateTo.GetValueOrDefault().ToString("dd/MM/yyyy"));
                 else
                     fileName = string.Format("Daily Operation Report {0} - {1}", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
@@ -87,6 +87,47 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                   .Fail();
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
+        }
+
+        [HttpGet("by-selected-column")]
+        public IActionResult GetBySelectedColumn(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}", string columnToSearch = "")
+        {
+            try
+            {
+                var read = Facade.Read(page, size, order, select, keyword, filter, columnToSearch);
+
+                List<DailyOperationViewModel> dataVM = Mapper.Map<List<DailyOperationViewModel>>(read.Data);
+
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                    .Ok(Mapper, dataVM, page, size, read.Count, dataVM.Count, read.Order, read.Selected);
+                return Ok(Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("filter-options")]
+        public IActionResult GetFilterOptions()
+        {
+            return Ok(new
+            {
+                apiVersion = ApiVersion,
+                data = new List<string>()
+                    {
+                        "Nomor SPP",
+                        "Kereta",
+                        "Proses",
+                        "Mesin"
+                    },
+                message = General.OK_MESSAGE,
+                statusCode = General.OK_STATUS_CODE
+            });
         }
     }
 }

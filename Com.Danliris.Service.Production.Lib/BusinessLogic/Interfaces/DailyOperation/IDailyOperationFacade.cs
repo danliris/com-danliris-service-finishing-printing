@@ -16,5 +16,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
         List<DailyOperationViewModel> GetReport(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
         MemoryStream GenerateExcel(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet);
+
+        ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string selectedColumnToSearch);
     }
 }

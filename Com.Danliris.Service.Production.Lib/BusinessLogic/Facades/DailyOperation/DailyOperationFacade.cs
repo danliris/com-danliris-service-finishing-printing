@@ -136,9 +136,57 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                          LastModifiedUtc = daily.LastModifiedUtc
                      });
 
-            var data = query.Skip((page - 1) * size).Take(size).ToList();
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<DailyOperationModel>.Order(query, orderDictionary);
+
+            var data = query.Skip((page - 1) * size).Take(size).ToList();
+
+            List<string> selectedFields = new List<string>()
+            {
+                "Id", "Type", "GoodOutput", "Step", "BadOutput", "Code", "Machine", "Kanban", "Input", "Shift", "DateInput", "DateOutput", "LastModifiedUtc"
+            };
+
+            return new ReadResponse<DailyOperationModel>(data, query.Count(), orderDictionary, selectedFields);
+        }
+
+        public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string selectedColumnToSearch)
+        {
+            IQueryable<DailyOperationModel> query = DbSet;
+
+            //selected column to search options
+            //Nomor SPP
+            //Kereta
+            //Proses
+            //Mesin
+
+            query = (from daily in query
+                     join machine in DbContext.Machine on daily.MachineId equals machine.Id
+                     join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
+                     where !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Mesin") ? machine.Name.Contains(keyword) : true
+                     && !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Kereta") ? kanban.CartCartNumber.Contains(keyword) : true
+                     && !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Proses") ? daily.StepProcess.Contains(keyword) : true
+                     && !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Nomor SPP") ? kanban.ProductionOrderOrderNo.Contains(keyword) : true
+                     select new DailyOperationModel
+                     {
+                         Id = daily.Id,
+                         Code = daily.Code,
+                         Type = daily.Type,
+                         StepProcess = daily.StepProcess,
+                         Shift = daily.Shift,
+                         Kanban = kanban,
+                         Machine = machine,
+                         DateInput = daily.DateInput,
+                         Input = daily.Input,
+                         DateOutput = daily.DateOutput,
+                         GoodOutput = daily.GoodOutput,
+                         BadOutput = daily.BadOutput,
+                         LastModifiedUtc = daily.LastModifiedUtc
+                     });
+
+            Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DailyOperationModel>.Order(query, orderDictionary);
+
+            var data = query.Skip((page - 1) * size).Take(size).ToList();
 
             List<string> selectedFields = new List<string>()
             {
