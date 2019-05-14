@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "LastModifiedUtc", "MachineEvents", "MachineSteps"
+                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "LastModifiedUtc", "MachineEvents", "Steps"
                 };
 
             query = query
