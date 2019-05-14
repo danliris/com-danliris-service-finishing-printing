@@ -12,8 +12,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
     {
         [MaxLength(255)]
         public string UId { get; set; }
+        [MaxLength(255)]
         public string Code { get; set; }
+        [MaxLength(255)]
         public string Type { get; set; }
+        [MaxLength(255)]
         public string Shift { get; set; }
         public DateTimeOffset? DateInput { get; set; }
         public double? TimeInput { get; set; }
@@ -25,15 +28,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation
 
         //step
         public int StepId { get; set; }
+        [MaxLength(255)]
         public string StepProcess { get; set; }
 
         //kanban
         public int KanbanId { get; set; }
+        [MaxLength(255)]
         public string KanbanCode { get; set; }
         public virtual KanbanModel Kanban { get; set; }
 
         //machine
         public int MachineId { get; set; }
+        [MaxLength(255)]
         public string MachineCode { get; set; }
 
         public virtual MachineModel Machine { get; set; }
