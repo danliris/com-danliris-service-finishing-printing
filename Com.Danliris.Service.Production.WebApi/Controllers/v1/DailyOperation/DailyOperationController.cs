@@ -20,9 +20,13 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
     [Authorize]
     public class DailyOperationController : BaseController<DailyOperationModel, DailyOperationViewModel, IDailyOperationFacade>
     {
+        private readonly DateTime _StartDate;
+        private readonly DateTime _EndDate;
+
         public DailyOperationController(IIdentityService identityService, IValidateService validateService, IDailyOperationFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
-
+            _StartDate = DateTime.Now;
+            _EndDate = DateTime.Now.AddDays(-1);
         }
 
         [HttpGet("reports")]
@@ -90,11 +94,13 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
         }
 
         [HttpGet("by-selected-column")]
-        public IActionResult GetBySelectedColumn(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}", string columnToSearch = "")
+        public IActionResult GetBySelectedColumn(DateTime? startDate, DateTime? endDate, int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}", string machine = "", string orderNo = "", string cartNo = "", string stepProcess = "")
         {
+            startDate = startDate.HasValue ? startDate.Value : DateTime.Now.AddDays(-1);
+            endDate = endDate.HasValue ? endDate.Value : DateTime.Now;
             try
             {
-                var read = Facade.Read(page, size, order, select, keyword, filter, columnToSearch);
+                var read = Facade.Read(page, size, order, select, keyword, filter, machine, orderNo, cartNo, stepProcess, startDate.Value, endDate.Value);
 
                 List<DailyOperationViewModel> dataVM = Mapper.Map<List<DailyOperationViewModel>>(read.Data);
 

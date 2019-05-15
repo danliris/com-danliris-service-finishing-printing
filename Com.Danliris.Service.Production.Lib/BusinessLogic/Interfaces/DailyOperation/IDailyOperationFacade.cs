@@ -17,6 +17,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
 
         MemoryStream GenerateExcel(int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
-        ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string selectedColumnToSearch);
+        ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string machine, string orderNo, string cartNo, string stepProcess, DateTime startDate, DateTime endDate);
     }
 }
