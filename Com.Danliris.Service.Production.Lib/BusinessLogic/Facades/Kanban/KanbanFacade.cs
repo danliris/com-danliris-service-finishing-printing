@@ -18,6 +18,7 @@ using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
 using System.Data;
 using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban
 {
@@ -27,11 +28,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
         private readonly DbSet<KanbanModel> DbSet;
         private readonly KanbanLogic KanbanLogic;
 
+        public readonly DbSet<KanbanInstructionModel> KanbanInstructionDbSet;
+        private readonly DbSet<KanbanStepModel> KanbanStepDbSet;
+        private readonly DbSet<KanbanStepIndicatorModel> KanbanStepIndicatorDbSet;
+        private readonly DbSet<MachineModel> MachineDbSet;
+
         public KanbanFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
             DbContext = dbContext;
             DbSet = DbContext.Set<KanbanModel>();
             KanbanLogic = serviceProvider.GetService<KanbanLogic>();
+            KanbanInstructionDbSet = DbContext.Set<KanbanInstructionModel>();
+            KanbanStepDbSet = DbContext.Set<KanbanStepModel>();
+            KanbanStepIndicatorDbSet = DbContext.Set<KanbanStepIndicatorModel>();
+            MachineDbSet = DbContext.Set<MachineModel>();
         }
 
         public ReadResponse<KanbanModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
@@ -153,7 +163,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
         public async Task<KanbanModel> ReadByIdAsync(int id)
         {
-            return await KanbanLogic.ReadModelById(id);
+            var Result = await DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && !d.IsDeleted);
+            Result.Instruction = await KanbanInstructionDbSet.FirstOrDefaultAsync(e => e.KanbanId.Equals(id) && !e.IsDeleted);
+            Result.Instruction.Steps = await KanbanStepDbSet.Where(w => w.InstructionId.Equals(Result.Instruction.Id) && !w.IsDeleted).ToListAsync();
+            foreach (var step in Result.Instruction.Steps)
+            {
+                step.StepIndicators = await KanbanStepIndicatorDbSet.Where(w => w.StepId.Equals(step.Id) && !w.IsDeleted).ToListAsync();
+                step.Machine = await MachineDbSet.Where(w => w.Id.Equals(step.MachineId) && !w.IsDeleted).SingleOrDefaultAsync();
+            }
+            return Result;
         }
 
         public async Task<int> UpdateAsync(int id, KanbanModel model)
