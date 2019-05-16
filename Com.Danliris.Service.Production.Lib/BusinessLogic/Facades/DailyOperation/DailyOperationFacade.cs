@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             return new ReadResponse<DailyOperationModel>(data, query.Count(), orderDictionary, selectedFields);
         }
 
-        public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string selectedColumnToSearch)
+        public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string machine, string orderNo, string cartNo, string stepProcess, DateTime startDate, DateTime endDate)
         {
             IQueryable<DailyOperationModel> query = DbSet;
 
@@ -158,14 +158,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             //Kereta
             //Proses
             //Mesin
-
+            query = query.Where(w => w.LastModifiedUtc >= startDate && w.LastModifiedUtc <= endDate);
             query = (from daily in query
-                     join machine in DbContext.Machine on daily.MachineId equals machine.Id
-                     join kanban in DbContext.Kanbans on daily.KanbanId equals kanban.Id
-                     where !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Mesin") ? machine.Name.Contains(keyword) : true
-                     && !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Kereta") ? kanban.CartCartNumber.Contains(keyword) : true
-                     && !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Proses") ? daily.StepProcess.Contains(keyword) : true
-                     && !string.IsNullOrWhiteSpace(keyword) && selectedColumnToSearch.Equals("Nomor SPP") ? kanban.ProductionOrderOrderNo.Contains(keyword) : true
+                     join machines in DbContext.Machine on daily.MachineId equals machines.Id
+                     join kanbans in DbContext.Kanbans on daily.KanbanId equals kanbans.Id
+                     where
+                     !string.IsNullOrWhiteSpace(machine) ? machines.Name.Contains(machine) : true
+                     && !string.IsNullOrWhiteSpace(cartNo) ? kanbans.CartCartNumber.Contains(cartNo) : true
+                     && !string.IsNullOrWhiteSpace(stepProcess) ? daily.StepProcess.Contains(stepProcess) : true
+                     && !string.IsNullOrWhiteSpace(orderNo) ? kanbans.ProductionOrderOrderNo.Contains(orderNo) : true
                      select new DailyOperationModel
                      {
                          Id = daily.Id,
@@ -173,8 +174,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                          Type = daily.Type,
                          StepProcess = daily.StepProcess,
                          Shift = daily.Shift,
-                         Kanban = kanban,
-                         Machine = machine,
+                         Kanban = kanbans,
+                         Machine = machines,
                          DateInput = daily.DateInput,
                          Input = daily.Input,
                          DateOutput = daily.DateOutput,
