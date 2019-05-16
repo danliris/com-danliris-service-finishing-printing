@@ -69,6 +69,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
                         Id = field.Id,
                         //Name = field.Name,
                         CartNumber = field.CartNumber,
+                        ProductionOrderId = field.ProductionOrderId,
+                        MachineId = field.MachineId,
                         MachineName = field.MachineName,
                         ProductionOrderNo = field.ProductionOrderNo,
                         Code = field.Code,
