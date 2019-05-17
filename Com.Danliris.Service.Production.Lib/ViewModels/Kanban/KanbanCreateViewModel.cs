@@ -46,18 +46,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
                         ErrorCount++;
                         CartErrors += "CartNumber : 'Nomor Kereta harus diisi', ";
                     }
-
-                    if (Cart.Qty <= 0)
-                    {
-                        ErrorCount++;
-                        CartErrors += "Qty: 'Kuantiti harus lebih dari 0', ";
-                    }
-
-                    if (Cart.Pcs <= 0)
-                    {
-                        ErrorCount++;
-                        CartErrors += "Pcs: 'Pcs harus lebih dari 0', ";
-                    }
+                    
                     CartErrors += "}, ";
                 }
             }
