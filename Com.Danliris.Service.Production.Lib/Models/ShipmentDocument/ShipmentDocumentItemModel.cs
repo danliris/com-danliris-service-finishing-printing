@@ -16,6 +16,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument
         [MaxLength(250)]
         public string ReferenceType { get; set; }
         public int ShipmentDocumentDetailId { get; set; }
+
+        public int ItemIndex { get; set; }
+
         [ForeignKey("ShipmentDocumentDetailId")]
         public virtual ShipmentDocumentDetailModel ShipmentDocumentDetail { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

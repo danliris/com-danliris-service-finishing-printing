@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument
         [ForeignKey("ShipmentDocumentId")]
         public virtual ShipmentDocumentModel ShipmentDocument { get; set; }
         public ICollection<ShipmentDocumentItemModel> Items { get; set; }
+
+        public int DetailIndex { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             throw new System.NotImplementedException();
