@@ -33,20 +33,34 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
         public async Task<int> CreateAsync(PackingModel model)
         {
-            do
+            using(var transaction = dbContext.Database.BeginTransaction())
             {
-                model.Code = CodeGenerator.Generate();
-            }
-            while (dbSet.Any(d => d.Code.Equals(model.Code)));
+                try
+                {
+                    do
+                    {
+                        model.Code = CodeGenerator.Generate();
+                    }
+                    while (dbSet.Any(d => d.Code.Equals(model.Code)));
 
-            packingLogic.CreateModel(model);
+                    packingLogic.CreateModel(model);
 
-            var row = await dbContext.SaveChangesAsync();
-            if (row > 0)
-            {
-                await packingLogic.CreateProduct(model);
+                    var row = await dbContext.SaveChangesAsync();
+                    if (row > 0)
+                    {
+                        await packingLogic.CreateProduct(model);
+                    }
+                    transaction.Commit();
+                    return row;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
             }
-            return row;
+            
+            
         }
 
         public async Task<int> DeleteAsync(int id)
