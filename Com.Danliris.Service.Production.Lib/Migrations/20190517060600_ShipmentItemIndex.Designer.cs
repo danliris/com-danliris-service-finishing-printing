@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190517060600_ShipmentItemIndex")]
+    partial class ShipmentItemIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2255,8 +2257,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<double>("Length");
-
-                    b.Property<int>("PackingReceiptItemIndex");
 
                     b.Property<string>("ProductCode")
                         .HasMaxLength(250);

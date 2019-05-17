@@ -28,6 +28,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument
         public string UOMUnit { get; set; }
         public double Weight { get; set; }
         public int ShipmentDocumentItemId { get; set; }
+
+        public int PackingReceiptItemIndex { get; set; }
+
         [ForeignKey("ShipmentDocumentItemId")]
         public virtual ShipmentDocumentItemModel ShipmentDocumentItem { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
