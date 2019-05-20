@@ -30,10 +30,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Shipmen
 
             CreateMap<ShipmentDocumentDetailModel, ShipmentDocumentDetailViewModel>()
                 .ForPath(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
+                .ForPath(dest => dest.ProductionOrder.OrderNo, opt => opt.MapFrom(src => src.ProductionOrderNo))
+                .ForPath(dest => dest.ProductionOrder.Id, opt => opt.MapFrom(src => src.ProductionOrderId))
+                .ForPath(dest => dest.ProductionOrder.OrderType.Name, opt => opt.MapFrom(src => src.ProductionOrderType))
+                .ForPath(dest => dest.ProductionOrder.DesignCode, opt => opt.MapFrom(src => src.ProductionOrderDesignCode))
+                .ForPath(dest => dest.ProductionOrder.DesignNumber, opt => opt.MapFrom(src => src.ProductionOrderDesignNumber))
                 .ReverseMap();
 
             CreateMap<ShipmentDocumentItemModel, ShipmentDocumentItemViewModel>()
                 .ForPath(dest => dest.PackingReceiptItems, opt => opt.MapFrom(src => src.PackingReceiptItems))
+                .ReverseMap();
+
+            CreateMap<ShipmentDocumentPackingReceiptItemModel, ShipmentDocumentPackingReceiptItemViewModel>()
                 .ReverseMap();
         }
     }
