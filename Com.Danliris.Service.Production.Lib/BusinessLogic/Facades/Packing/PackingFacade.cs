@@ -236,8 +236,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
         public async Task<int> UpdateAsync(int id, PackingModel model)
         {
-            packingLogic.UpdateModelAsync(id, model);
-            return await dbContext.SaveChangesAsync();
+            using(var transaction = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    packingLogic.UpdateModelAsync(id, model);
+                    var row  = await dbContext.SaveChangesAsync();
+
+                    if (row > 0)
+                    {
+                        await packingLogic.CreateProduct(model);
+                    }
+                    transaction.Commit();
+
+                    return row;
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+            
         }
     }
 }
