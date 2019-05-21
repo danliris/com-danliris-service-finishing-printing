@@ -23,5 +23,31 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Master
         public DurationEstimationController(IIdentityService identityService, IValidateService validateService, IDurationEstimationFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
         }
+
+        [HttpGet("by-process-type/{processType}")]
+        public IActionResult GetByProcessType([FromRoute] string processType)
+        {
+            try
+            {
+                var model = Facade.ReadByProcessType(processType);
+
+
+                var viewModel = new DurationEstimationViewModel();
+                if (model != null)
+                    viewModel = Mapper.Map<DurationEstimationViewModel>(model);
+
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                    .Ok(Mapper, viewModel);
+                return Ok(Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

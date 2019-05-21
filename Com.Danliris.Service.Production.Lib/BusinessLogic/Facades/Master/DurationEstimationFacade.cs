@@ -102,5 +102,10 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             await DurationEstimationLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();
         }
+
+        public DurationEstimationModel ReadByProcessType(string processType)
+        {
+            return DbSet.Include(i => i.Areas).FirstOrDefault(f => f.ProcessTypeCode.Equals(processType));
+        }
     }
 }
