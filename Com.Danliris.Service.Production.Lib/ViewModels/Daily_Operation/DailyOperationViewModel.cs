@@ -134,11 +134,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
                 }
 
-                if (this.BadOutputReasons.Count.Equals(0) && this.BadOutput > 0)
+                if ((this.BadOutputReasons.Count.Equals(0) && this.BadOutput > 0) || (this.BadOutput > 0 && this.BadOutputReasons == null))
                 {
                     yield return new ValidationResult("BadOutputReasons harus di isi", new List<string> { "BadOutputReasons" });
                 }
-                else
+                else if (this.BadOutputReasons.Count > 0 && this.BadOutput > 0)
                 {
                     int Count = 0;
                     string BadOutputReasons = "[";
