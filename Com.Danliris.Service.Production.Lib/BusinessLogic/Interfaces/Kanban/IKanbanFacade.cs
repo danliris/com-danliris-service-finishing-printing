@@ -5,6 +5,7 @@ using Com.Danliris.Service.Production.Lib.Utilities.BaseInterface;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban
 {
@@ -15,5 +16,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.K
         MemoryStream GenerateExcel(bool? proses, int orderTypeId, int processTypeId, string orderNo, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
         List<KanbanViewModel> GetReport(bool? proses, int orderTypeId, int processTypeId, string orderNo, DateTime? dateFrom, DateTime? dateTo, int offSet);
+
+        Task<int> CompleteKanban(int id);
     }
 }

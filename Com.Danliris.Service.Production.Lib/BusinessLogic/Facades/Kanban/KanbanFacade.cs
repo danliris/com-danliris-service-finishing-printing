@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "ProductionOrder","CurrentStepIndex", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId"
+                "Id", "Code", "ProductionOrder","CurrentStepIndex", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId", "IsComplete", "IsInactive"
             };
 
 
@@ -350,6 +350,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             });
 
             return kanbans.ToList();
+        }
+
+        public Task<int> CompleteKanban(int id)
+        {
+            var kanban = DbSet.FirstOrDefault(f => f.Id.Equals(id));
+            kanban.IsComplete = true;
+            DbSet.Update(kanban);
+            return DbContext.SaveChangesAsync();
         }
     }
 }
