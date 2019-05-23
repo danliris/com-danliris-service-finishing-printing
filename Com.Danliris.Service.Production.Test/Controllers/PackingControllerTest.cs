@@ -13,7 +13,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
@@ -172,6 +174,60 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
             var response = controller.GetXls(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetPackingDetail_OK()
+        {
+            var mocks = GetMocks();
+            PackingModel model = new PackingModel()
+            {
+                PackingDetails = new List<PackingDetailModel>() { new PackingDetailModel() { Packing = new PackingModel()} }
+
+            };
+            mocks.Mapper.Setup(f => f.Map<List<PackingViewModel>>(It.IsAny<List<PackingModel>>())).Returns(ViewModels);
+            mocks.Facade.Setup(x => x.GetPackingDetail(It.IsAny<string>())).Returns(Task.FromResult(model.PackingDetails.FirstOrDefault()));
+
+            var controller = GetController(mocks);
+
+            var response = await controller.GetPackingDetail("");
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetPackingDetail_NotFound()
+        {
+            var mocks = GetMocks();
+            PackingModel model = new PackingModel()
+            {
+                PackingDetails = new List<PackingDetailModel>() { new PackingDetailModel() { Packing = new PackingModel() } }
+
+            };
+            mocks.Mapper.Setup(f => f.Map<List<PackingViewModel>>(It.IsAny<List<PackingModel>>())).Returns(ViewModels);
+            mocks.Facade.Setup(x => x.GetPackingDetail(It.IsAny<string>())).Returns(Task.FromResult(default(PackingDetailModel)));
+
+            var controller = GetController(mocks);
+
+            var response = await controller.GetPackingDetail("");
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetPackingDetail_Exception()
+        {
+            var mocks = GetMocks();
+            PackingModel model = new PackingModel()
+            {
+                PackingDetails = new List<PackingDetailModel>() { new PackingDetailModel() { Packing = new PackingModel() } }
+
+            };
+            mocks.Mapper.Setup(f => f.Map<List<PackingViewModel>>(It.IsAny<List<PackingModel>>())).Returns(ViewModels);
+            mocks.Facade.Setup(x => x.GetPackingDetail(It.IsAny<string>())).Throws(new Exception(""));
+
+            var controller = GetController(mocks);
+
+            var response = await controller.GetPackingDetail("");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
     }

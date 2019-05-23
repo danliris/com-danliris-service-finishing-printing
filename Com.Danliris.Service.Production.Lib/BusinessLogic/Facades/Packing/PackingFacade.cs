@@ -1,20 +1,20 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Utilities;
 using Com.Moonlay.NetCore.Lib;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
-using System.IO;
-using System.Data;
-using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing
 {
@@ -33,20 +33,34 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
         public async Task<int> CreateAsync(PackingModel model)
         {
-            do
+            using (var transaction = dbContext.Database.BeginTransaction())
             {
-                model.Code = CodeGenerator.Generate();
-            }
-            while (dbSet.Any(d => d.Code.Equals(model.Code)));
+                try
+                {
+                    do
+                    {
+                        model.Code = CodeGenerator.Generate();
+                    }
+                    while (dbSet.Any(d => d.Code.Equals(model.Code)));
 
-            packingLogic.CreateModel(model);
+                    packingLogic.CreateModel(model);
 
-            var row = await dbContext.SaveChangesAsync();
-            if (row > 0)
-            {
-                await packingLogic.CreateProduct(model);
+                    var row = await dbContext.SaveChangesAsync();
+                    if (row > 0)
+                    {
+                        await packingLogic.CreateProduct(model);
+                    }
+                    transaction.Commit();
+                    return row;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
             }
-            return row;
+
+
         }
 
         public async Task<int> DeleteAsync(int id)
@@ -104,6 +118,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Packing") }, true);
 
 
+        }
+
+        public Task<PackingDetailModel> GetPackingDetail(string productName)
+        {
+            var packingDetail = dbContext.PackingDetails.Include(x => x.Packing).FirstOrDefaultAsync(x => productName.Equals(
+                string.Format("{0}/{1}/{2}/{3}/{4}/{5}", x.Packing.ProductionOrderNo, x.Packing.ColorName, x.Packing.Construction, x.Lot, x.Grade, x.Length) +
+                                                        (string.IsNullOrWhiteSpace(x.Remark) ? "" : string.Format("/{0}", x.Remark)), StringComparison.OrdinalIgnoreCase));
+
+
+
+            return packingDetail;
         }
 
         public List<PackingViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
@@ -222,8 +247,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
         public async Task<int> UpdateAsync(int id, PackingModel model)
         {
-            packingLogic.UpdateModelAsync(id, model);
-            return await dbContext.SaveChangesAsync();
+            using (var transaction = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    packingLogic.UpdateModelAsync(id, model);
+                    var row = await dbContext.SaveChangesAsync();
+
+                    if (row > 0)
+                    {
+                        await packingLogic.CreateProduct(model);
+                    }
+                    transaction.Commit();
+
+                    return row;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
         }
     }
 }

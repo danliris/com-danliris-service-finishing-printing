@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocumen
         public int? ProductionOrderId { get; set; }
         public string ProductionOrderNo { get; set; }
         public string ProductionOrderType { get; set; }
+        public ProductionOrderIntegrationViewModel ProductionOrder { get; set; }
         public List<ShipmentDocumentItemViewModel> Items { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

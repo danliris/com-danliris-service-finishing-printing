@@ -122,6 +122,29 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
             }
         }
 
+        [HttpGet("complete/{Id}")]
+        public async Task<IActionResult> UpdateIsComplete([FromRoute] int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await Facade.CompleteKanban(Id);
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
         [HttpGet("reports")]
         public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, bool? proses = null, int orderTypeId = -1, int processTypeId = -1, string orderNo = null, int page = 1, int size = 25)
         {

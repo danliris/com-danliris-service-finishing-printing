@@ -135,6 +135,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<PackingLogic>()
                 .AddTransient<FabricQualityControlLogic>()
                 .AddTransient<PackingReceiptLogic>()
+                .AddTransient<KanbanLogic>()
                 .AddTransient<ReturToQCLogic>();
         }
 

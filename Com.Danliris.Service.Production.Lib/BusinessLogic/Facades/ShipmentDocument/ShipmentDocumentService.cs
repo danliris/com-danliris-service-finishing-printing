@@ -67,12 +67,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                 }
             }
             //UpdatePackingReceiptQuantity(model);
-            CreateInventoryDocumentOut(model);
+            await CreateInventoryDocumentOut(model);
 
             return await _DbContext.SaveChangesAsync();
         }
 
-        private void CreateInventoryDocumentIn(ShipmentDocumentModel model)
+        private async Task CreateInventoryDocumentIn(ShipmentDocumentModel model)
         {
             string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
             var inventoryDoc = new InventoryDocumentViewModel()
@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
             string dailyBankTransactionUri = "inventory-documents";
 
             var httpClient = (IHttpClientService)_ServiceProvider.GetService(typeof(IHttpClientService));
-            var response = httpClient.PostAsync($"{APIEndpoint.Inventory}{dailyBankTransactionUri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json")).Result;
+            var response = await httpClient.PostAsync($"{APIEndpoint.Inventory}{dailyBankTransactionUri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json"));
             response.EnsureSuccessStatusCode();
         }
 
@@ -209,11 +209,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                 }
             }
 
-            CreateInventoryDocumentIn(model);
+            await CreateInventoryDocumentIn(model);
             return await _DbContext.SaveChangesAsync();
         }
 
-        private void CreateInventoryDocumentOut(ShipmentDocumentModel model)
+        private async Task CreateInventoryDocumentOut(ShipmentDocumentModel model)
         {
             string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
             var inventoryDoc = new InventoryDocumentViewModel()
@@ -251,7 +251,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
             string dailyBankTransactionUri = "inventory-documents";
 
             var httpClient = (IHttpClientService)_ServiceProvider.GetService(typeof(IHttpClientService));
-            var response = httpClient.PostAsync($"{APIEndpoint.Inventory}{dailyBankTransactionUri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json")).Result;
+            var response = await httpClient.PostAsync($"{APIEndpoint.Inventory}{dailyBankTransactionUri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json"));
             response.EnsureSuccessStatusCode();
         }
     }
