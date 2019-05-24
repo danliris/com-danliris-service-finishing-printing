@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             return new ReadResponse<DailyOperationModel>(data, query.Count(), orderDictionary, selectedFields);
         }
 
-        public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string machine, string orderNo, string cartNo, string stepProcess, DateTime startDate, DateTime endDate)
+        public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string machine, string orderNo, string cartNo, string stepProcess, DateTime? startDate, DateTime? endDate)
         {
             IQueryable<DailyOperationModel> query = DbSet;
 
@@ -158,7 +158,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             //Kereta
             //Proses
             //Mesin
-            query = query.Where(w => w.LastModifiedUtc >= startDate && w.LastModifiedUtc <= endDate);
+            if (startDate.HasValue && endDate.HasValue)
+                query = query.Where(w => w.LastModifiedUtc >= startDate.Value && w.LastModifiedUtc <= endDate.Value);
+            else if (startDate.HasValue)
+                query = query.Where(w => w.LastModifiedUtc >= startDate.Value);
+            else if (endDate.HasValue)
+                query = query.Where(w => w.LastModifiedUtc <= endDate.Value);
+
             query = (from daily in query
                      join machines in DbContext.Machine on daily.MachineId equals machines.Id
                      join kanbans in DbContext.Kanbans on daily.KanbanId equals kanbans.Id
