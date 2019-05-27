@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOperation
@@ -96,11 +95,11 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
         [HttpGet("by-selected-column")]
         public IActionResult GetBySelectedColumn(DateTime? startDate, DateTime? endDate, int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}", string machine = "", string orderNo = "", string cartNo = "", string stepProcess = "")
         {
-            startDate = startDate.HasValue ? startDate.Value : DateTime.Now.AddDays(-1);
-            endDate = endDate.HasValue ? endDate.Value : DateTime.Now;
+            //startDate = startDate.HasValue ? startDate.Value : DateTime.Now.AddDays(-1);
+            //endDate = endDate.HasValue ? endDate.Value : DateTime.Now;
             try
             {
-                var read = Facade.Read(page, size, order, select, keyword, filter, machine, orderNo, cartNo, stepProcess, startDate.Value, endDate.Value);
+                var read = Facade.Read(page, size, order, select, keyword, filter, machine, orderNo, cartNo, stepProcess, startDate, endDate);
 
                 List<DailyOperationViewModel> dataVM = Mapper.Map<List<DailyOperationViewModel>>(read.Data);
 
@@ -134,6 +133,35 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                 message = General.OK_MESSAGE,
                 statusCode = General.OK_STATUS_CODE
             });
+        }
+
+        [HttpGet("production-order-report")]
+        public async Task<IActionResult> GetJoinKanbans(string no)
+        {
+            try
+            {
+                var data = await Facade.GetJoinKanban(no);
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data,
+                    info = new
+                    {
+                        data.Count
+                    },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, ex.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+
         }
     }
 }

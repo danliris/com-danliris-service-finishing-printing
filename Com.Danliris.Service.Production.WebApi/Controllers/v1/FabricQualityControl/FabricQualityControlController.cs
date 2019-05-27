@@ -135,5 +135,34 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.FabricQu
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
+        [HttpGet("production-order-report")]
+        public async Task<IActionResult> GetForSPP(string no)
+        {
+            try
+            {
+                var data = await Facade.GetForSPP(no);
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data,
+                    info = new
+                    {
+                        data.Count
+                    },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, ex.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+
+        }
     }
 }

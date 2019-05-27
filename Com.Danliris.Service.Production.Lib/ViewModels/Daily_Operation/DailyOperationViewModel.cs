@@ -66,12 +66,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                 }
                 else
                 {
-                    var stepProcess = this.Kanban.Instruction.Steps.Find(x => x.Process.Equals(this.Step.Process));
-                    var kanbanCurrentStepIndex = this.Kanban.CurrentStepIndex != null ? this.Kanban.CurrentStepIndex : 0;
-                    if (!(stepProcess.SelectedIndex > kanbanCurrentStepIndex))
+                    if (Kanban.CurrentStepIndex.HasValue && !(Kanban.CurrentStepIndex.Value + 1 > Kanban.Instruction.Steps.Count))
                     {
-                        yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
+                        var activeStep = Kanban.Instruction.Steps[Kanban.CurrentStepIndex.Value];
+                        if (!activeStep.Process.Equals(Step.Process))
+                        {
+                            yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
+                        }
                     }
+                    //var stepProcess = this.Kanban.Instruction.Steps.Find(x => x.Process.Equals(this.Step.Process));
+                    //var kanbanCurrentStepIndex = this.Kanban.CurrentStepIndex != null ? this.Kanban.CurrentStepIndex : 0;
+                    //if (!(stepProcess.SelectedIndex > kanbanCurrentStepIndex))
+                    //{
+                    //    yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
+                    //}
                 }
             }
             else if (this.Kanban == null)
