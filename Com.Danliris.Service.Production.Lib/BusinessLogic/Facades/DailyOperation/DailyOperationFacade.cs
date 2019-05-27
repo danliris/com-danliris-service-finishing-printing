@@ -427,7 +427,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
 
             }
-            return data.ToListAsync();
+            return data.AsNoTracking().ToListAsync();
         }
     }
 }
