@@ -9,6 +9,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -35,6 +37,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new FabricQualityControlLogic(identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public async Task GetForSPP_WithoutNo()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            FabricQualityControlFacade facade = Activator.CreateInstance(typeof(FabricQualityControlFacade), serviceProvider, dbContext) as FabricQualityControlFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.GetForSPP(null);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async Task GetJoinKanban_WithNo()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            FabricQualityControlFacade facade = Activator.CreateInstance(typeof(FabricQualityControlFacade), serviceProvider, dbContext) as FabricQualityControlFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.GetForSPP("a");
+
+            Assert.NotNull(Response);
         }
     }
 }

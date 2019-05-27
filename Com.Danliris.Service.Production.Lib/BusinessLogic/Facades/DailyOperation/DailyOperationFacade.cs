@@ -1,35 +1,33 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Utilities;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting;
+using Com.Moonlay.NetCore.Lib;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
-using System.Linq;
-using Newtonsoft.Json;
-using Com.Moonlay.NetCore.Lib;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
-using System.Linq.Dynamic.Core;
-using Microsoft.EntityFrameworkCore.Internal;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
-using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
-using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
-using System.IO;
 using System.Data;
-using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
+using System.IO;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation
 {
     public class DailyOperationFacade : IDailyOperationFacade
     {
-        private readonly ProductionDbContext DbContext;
+        public readonly ProductionDbContext DbContext;
         public readonly DbSet<DailyOperationModel> DbSet;
         private readonly DailyOperationLogic DailyOperationLogic;
         public DailyOperationFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
@@ -392,6 +390,44 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Daily Operation") }, true);
+        }
+
+        public Task<List<DailyOperationKanbanViewModel>> GetJoinKanban(string no)
+        {
+            IQueryable<DailyOperationKanbanViewModel> data;
+            if (string.IsNullOrEmpty(no))
+            {
+                data = from kanban in DbContext.Kanbans
+                       join daily in DbContext.DailyOperation on kanban.Id equals daily.KanbanId
+                       select new DailyOperationKanbanViewModel
+                       {
+                           OrderNo = kanban.ProductionOrderOrderNo,
+                           OrderQuantity = daily.Input.GetValueOrDefault()
+                       };
+
+
+            }
+            else
+            {
+                data = from kanban in DbContext.Kanbans
+                       join daily in DbContext.DailyOperation on kanban.Id equals daily.KanbanId
+                       join kanbanins in DbContext.KanbanInstructions on kanban.Id equals kanbanins.KanbanId
+                       join kanbansteps in DbContext.KanbanSteps on kanbanins.Id equals kanbansteps.InstructionId
+                       join machine in DbContext.Machine on kanbansteps.MachineId equals machine.Id
+                       where daily.Input.HasValue && (daily.Input.Value > 0) && kanban.ProductionOrderOrderNo == no
+                       select new DailyOperationKanbanViewModel
+                       {
+                           OrderNo = kanban.ProductionOrderOrderNo,
+                           OrderQuantity = daily.Input.GetValueOrDefault(),
+                           Area = kanbansteps.ProcessArea,
+                           Color = kanban.SelectedProductionOrderDetailColorRequest,
+                           Machine = machine.Name,
+                           Step = kanbansteps.Process
+                       };
+
+
+            }
+            return data.AsNoTracking().ToListAsync();
         }
     }
 }

@@ -14,6 +14,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -68,6 +70,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public async Task GetJoinKanban_WithoutNo()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.GetJoinKanban(null);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async Task GetJoinKanban_WithNo()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.GetJoinKanban("a");
+
+            Assert.NotNull(Response);
         }
     }
 }

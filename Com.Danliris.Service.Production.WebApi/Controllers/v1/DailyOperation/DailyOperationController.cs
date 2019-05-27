@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOperation
@@ -134,6 +133,35 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                 message = General.OK_MESSAGE,
                 statusCode = General.OK_STATUS_CODE
             });
+        }
+
+        [HttpGet("production-order-report")]
+        public async Task<IActionResult> GetJoinKanbans(string no)
+        {
+            try
+            {
+                var data = await Facade.GetJoinKanban(no);
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data,
+                    info = new
+                    {
+                        data.Count
+                    },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, ex.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+
         }
     }
 }
