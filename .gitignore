@@ -16,3 +16,4 @@
 /Com.Danliris.Service.Production.WebApi/bundleconfig.json
 .vscode/launch.json
 .vscode/tasks.json
+*.coverage
