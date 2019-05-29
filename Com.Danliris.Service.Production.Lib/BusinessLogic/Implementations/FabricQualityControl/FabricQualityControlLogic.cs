@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         public override async Task<FabricQualityControlModel> ReadModelById(int id)
         {
             var Result = await DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && !d.IsDeleted);
-            Result.FabricGradeTests = await FabricGradeTestDbSet.Where(e => e.FabricQualityControlId.Equals(id) && !e.IsDeleted).ToListAsync();
+            Result.FabricGradeTests = await FabricGradeTestDbSet.Where(e => e.FabricQualityControlId.Equals(id) && !e.IsDeleted).OrderBy(x => x.PcsNo).ToListAsync();
             foreach (var fabricGradeTest in Result.FabricGradeTests)
             {
                 fabricGradeTest.Criteria = await CriteriaDbSet.Where(w => w.FabricGradeTestId.Equals(fabricGradeTest.Id)).OrderBy(o => o.Index).ToListAsync();
