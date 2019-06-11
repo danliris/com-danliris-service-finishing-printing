@@ -84,7 +84,40 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var mockIdentityService = new Mock<IIdentityService>();
 
             var mockValidateService = new Mock<IValidateService>();
+            KanbanViewModel vm = new KanbanViewModel()
+            {
+                ProductionOrder = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel()
+                {
+                    Material = new Lib.ViewModels.Integration.Master.MaterialIntegrationViewModel(),
+                    Buyer = new Production.Lib.ViewModels.Integration.Master.BuyerIntegrationViewModel(),
+                    YarnMaterial = new Lib.ViewModels.Integration.Master.YarnMaterialIntegrationViewModel()
+                },
+                SelectedProductionOrderDetail = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderDetailIntegrationViewModel()
+                {
+                    ColorType = new Production.Lib.ViewModels.Integration.Master.ColorTypeIntegrationViewModel()
+                },
+                Cart = new CartViewModel()
+                {
 
+                },
+                Instruction = new KanbanInstructionViewModel()
+                {
+                    Steps = new List<KanbanStepViewModel>()
+                    {
+                        new KanbanStepViewModel()
+                        {
+                            StepIndicators = new List<Production.Lib.ViewModels.Master.Step.StepIndicatorViewModel>()
+                            {
+                                new Production.Lib.ViewModels.Master.Step.StepIndicatorViewModel()
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            mockMapper.Setup(s => s.Map<KanbanViewModel>(It.IsAny<KanbanModel>())).Returns(vm);
             KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
             {
                 ControllerContext = new ControllerContext()
