@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocumen
         public string ProductName { get; set; }
         public double? Quantity { get; set; }
         public string Remark { get; set; }
-        public int? UOM { get; set; }
+        public int? UOMId { get; set; }
         public string UOMUnit { get; set; }
         public double? Weight { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
