@@ -103,9 +103,9 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return await DbContext.SaveChangesAsync();
         }
 
-        public DurationEstimationModel ReadByProcessType(string processType)
+        public DurationEstimationModel ReadByProcessType(string processTypeCode)
         {
-            return DbSet.Include(i => i.Areas).FirstOrDefault(f => f.ProcessTypeCode.Equals(processType));
+            return DbSet.Include(i => i.Areas).FirstOrDefault(f => f.ProcessTypeCode.Equals(processTypeCode));
         }
     }
 }
