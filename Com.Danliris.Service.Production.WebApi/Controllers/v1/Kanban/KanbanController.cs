@@ -47,6 +47,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         Instruction = viewModel.Instruction,
                         OldKanbanId = viewModel.OldKanbanId,
                         ProductionOrder = viewModel.ProductionOrder,
+                        IsBadOutput = viewModel.IsBadOutput,
                         SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
                     };
 

@@ -42,10 +42,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
 
                 if (string.IsNullOrWhiteSpace(Cart.CartNumber))
                     yield return new ValidationResult("Nomor Kereta harus diisi", new List<string> { "CartNumber" });
-                if (Cart.Qty <= 0)
-                    yield return new ValidationResult("Panjang harus lebih dari 0", new List<string> { "Qty" });
-                if (Cart.Pcs <= 0)
-                    yield return new ValidationResult("Jumlah PCS harus diisi", new List<string> { "Pcs" });
+                //if (Cart.Qty <= 0)
+                //    yield return new ValidationResult("Panjang harus lebih dari 0", new List<string> { "Qty" });
+                //if (Cart.Pcs <= 0)
+                //    yield return new ValidationResult("Jumlah PCS harus diisi", new List<string> { "Pcs" });
             }
 
             int ErrorCount = 0;

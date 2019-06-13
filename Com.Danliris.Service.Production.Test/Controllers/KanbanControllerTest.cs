@@ -183,6 +183,101 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             Assert.NotNull(response);
         }
 
+
+        [Fact]
+        public async void CreateCarts_OK()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.CreateAsync(It.IsAny<KanbanModel>()))
+                .ReturnsAsync(1);
+
+            var mockMapper = new Mock<IMapper>();
+
+            mockMapper.Setup(x => x.Map<KanbanModel>(It.IsAny<KanbanViewModel>())).Returns(new KanbanModel());
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
+            //controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+            KanbanCreateViewModel vm = new KanbanCreateViewModel()
+            {
+                Carts = new List<CartViewModel>()
+                {
+                    new CartViewModel()
+                    {
+                        
+                    }
+                }
+            };
+            var response = await controller.Create(vm);
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void CreateCarts_BadRequest()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.CreateAsync(It.IsAny<KanbanModel>()))
+                .ReturnsAsync(1);
+
+            var mockMapper = new Mock<IMapper>();
+
+            mockMapper.Setup(x => x.Map<KanbanModel>(It.IsAny<KanbanViewModel>())).Returns(new KanbanModel());
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+            mockValidateService.Setup(x => x.Validate(It.IsAny<KanbanCreateViewModel>())).Throws(GetServiceValidationExeption());
+
+            KanbanController controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
+            //controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+            KanbanCreateViewModel vm = new KanbanCreateViewModel()
+            {
+                Carts = new List<CartViewModel>()
+                {
+                    new CartViewModel()
+                    {
+
+                    }
+                }
+            };
+            var response = await controller.Create(vm);
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void CreateCarts_InternalError()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.CreateAsync(It.IsAny<KanbanModel>()))
+                .ThrowsAsync(new Exception("eer"));
+
+            var mockMapper = new Mock<IMapper>();
+
+            mockMapper.Setup(x => x.Map<KanbanModel>(It.IsAny<KanbanViewModel>())).Returns(new KanbanModel());
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
+            //controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+            KanbanCreateViewModel vm = new KanbanCreateViewModel()
+            {
+                Carts = new List<CartViewModel>()
+                {
+                    new CartViewModel()
+                    {
+
+                    }
+                }
+            };
+            var response = await controller.Create(vm);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
         [Fact]
         public void GetReportExcel_WithException_ReturnError()
         {
