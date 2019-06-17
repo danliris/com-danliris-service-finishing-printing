@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (model.Type == "output")
             {
-                string flag = "update";
+                string flag = "delete";
                 foreach (var item in model.BadOutputReasons)
                 {
                     EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
