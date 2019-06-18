@@ -21,5 +21,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
         Task<List<DailyOperationKanbanViewModel>> GetJoinKanban(string no);
 
         ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string machine, string orderNo, string cartNo, string stepProcess, DateTime? startDate, DateTime? endDate);
+
+        Task<bool> HasOutput(int kanbanId, string stepProcess);
     }
 }
