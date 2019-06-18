@@ -69,7 +69,9 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                     //    viewModel.IsChangeable = false;
                     //}
 
-                    viewModel.IsChangeable = (stepCurrent.Process == viewModel.Step.Process) && (viewModel.Type == "output" || (viewModel.Type == "input" && !(await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process))));
+
+                    viewModel.IsChangeable = (stepCurrent == null) || ((stepCurrent.Process == viewModel.Step.Process) && (viewModel.Type == "output" || (viewModel.Type == "input" && !(await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process)))));
+
                     Dictionary<string, object> Result =
                         new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
                         .Ok<DailyOperationViewModel>(Mapper, viewModel);
