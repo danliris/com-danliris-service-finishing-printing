@@ -157,11 +157,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             //Proses
             //Mesin
             if (startDate.HasValue && endDate.HasValue)
-                query = query.Where(w => w.LastModifiedUtc >= startDate.Value && w.LastModifiedUtc <= endDate.Value);
+                query = query.Where(w => w.LastModifiedUtc.Date >= startDate.Value.Date && w.LastModifiedUtc.Date <= endDate.Value.Date);
             else if (startDate.HasValue)
-                query = query.Where(w => w.LastModifiedUtc >= startDate.Value);
+                query = query.Where(w => w.LastModifiedUtc.Date >= startDate.Value.Date);
             else if (endDate.HasValue)
-                query = query.Where(w => w.LastModifiedUtc <= endDate.Value);
+                query = query.Where(w => w.LastModifiedUtc.Date <= endDate.Value.Date);
 
             query = (from daily in query
                      join machines in DbContext.Machine on daily.MachineId equals machines.Id into dailyMachine
@@ -440,6 +440,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
             }
             return data.AsNoTracking().ToListAsync();
+        }
+
+        public Task<bool> HasOutput(int kanbanId, string stepProcess)
+        {
+            return DbSet.AnyAsync(x => x.KanbanId == kanbanId && x.StepProcess == stepProcess);
         }
     }
 }

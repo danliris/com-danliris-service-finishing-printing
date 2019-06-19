@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOperation
@@ -26,6 +27,64 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
         {
             _StartDate = DateTime.Now;
             _EndDate = DateTime.Now.AddDays(-1);
+        }
+
+        public override async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            try
+            {
+                DailyOperationModel model = await Facade.ReadByIdAsync(id);
+
+                if (model == null)
+                {
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.NOT_FOUND_STATUS_CODE, General.NOT_FOUND_MESSAGE)
+                        .Fail();
+                    return NotFound(Result);
+                }
+                else
+                {
+                    DailyOperationViewModel viewModel = Mapper.Map<DailyOperationViewModel>(model);
+                    var stepCurrent = viewModel.Kanban.Instruction.Steps.FirstOrDefault(s => s.SelectedIndex == viewModel.Kanban.CurrentStepIndex);
+                    //if (stepCurrent.Process == viewModel.Step.Process)
+                    //{
+                    //    if (viewModel.Type == "input")
+                    //    {
+                    //        if(await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process))
+                    //        {
+                    //            viewModel.IsChangeable = false;
+                    //        }
+                    //        else
+                    //        {
+                    //            viewModel.IsChangeable = true;
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        viewModel.IsChangeable = true;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    viewModel.IsChangeable = false;
+                    //}
+
+
+                    viewModel.IsChangeable = (stepCurrent == null) || ((stepCurrent.Process == viewModel.Step.Process) && (viewModel.Type == "output" || (viewModel.Type == "input" && !(await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process)))));
+
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                        .Ok<DailyOperationViewModel>(Mapper, viewModel);
+                    return Ok(Result);
+                }
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
         }
 
         [HttpGet("reports")]
