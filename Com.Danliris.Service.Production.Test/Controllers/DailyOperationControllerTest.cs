@@ -15,6 +15,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -37,7 +38,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                         {
                             new KanbanStepViewModel()
                             {
-                                SelectedIndex = 1
+                                SelectedIndex = 1,
+                                StepIndex = 0
                             }
                         }
                     }, 
@@ -49,7 +51,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 },
                 Type = "output"
             };
-
+            var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
 
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
