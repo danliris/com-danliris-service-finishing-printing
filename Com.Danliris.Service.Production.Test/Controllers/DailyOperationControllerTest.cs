@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils;
 using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOperation;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
@@ -13,8 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,6 +24,41 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 {
     public class DailyOperationControllerTest : BaseControllerTest<DailyOperationController, DailyOperationModel, DailyOperationViewModel, IDailyOperationFacade>
     {
+
+        public override async Task GetById_NotNullModel_ReturnOK()
+        {
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Kanban = new KanbanViewModel()
+                {
+                    CurrentStepIndex = 1,
+                    Instruction = new KanbanInstructionViewModel()
+                    {
+                        Steps = new List<KanbanStepViewModel>()
+                        {
+                            new KanbanStepViewModel()
+                            {
+                                SelectedIndex = 1,
+                                StepIndex = 0
+                            }
+                        }
+                    }, 
+                    Id = 1
+                },
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+                {
+                    Process = "a"
+                },
+                Type = "output"
+            };
+            var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
+
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
+            int statusCode = await GetStatusCodeGetById(mocks);
+            Assert.Equal((int)HttpStatusCode.OK, statusCode);
+        }
 
         [Fact]
         public void GetReport_WithoutException_ReturnOK()

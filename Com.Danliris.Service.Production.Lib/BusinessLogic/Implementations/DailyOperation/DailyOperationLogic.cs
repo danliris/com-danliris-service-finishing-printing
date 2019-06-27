@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (model.Type == "output")
             {
-                string flag = "update";
+                string flag = "delete";
                 foreach (var item in model.BadOutputReasons)
                 {
                     EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
@@ -106,6 +106,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             return DbSet.Include(d => d.Machine)
                 .Include(d => d.Kanban)
+                    .ThenInclude(d => d.Instruction)
+                        .ThenInclude(d => d.Steps)
                 .Include(d => d.BadOutputReasons)
                 .FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
         }

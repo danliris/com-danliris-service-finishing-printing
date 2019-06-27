@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     foreach (var detail in item.PackingDetails)
                     {
                         dt.Rows.Add(index++, item.Code, item.DeliveryType, item.ProductionOrderNo, item.OrderTypeName, item.FinishedProductType,
-                            item.BuyerName, item.Construction, item.DesignCode, item.ColorName, item.Date.AddHours(offSet).ToString("dd/MM/yyyy"),
+                            item.BuyerName, item.Construction, item.DesignCode, item.ColorName, item.Date.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"),
                             detail.Lot, detail.Grade, detail.Weight, detail.Length, detail.Quantity, (detail.Length * detail.Quantity), detail.Remark);
                     }
                 }

@@ -24,12 +24,12 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Master
         {
         }
 
-        [HttpGet("by-process-type/{processType}")]
-        public IActionResult GetByProcessType([FromRoute] string processType)
+        [HttpGet("by-process-type")]
+        public IActionResult GetByProcessType([FromQuery] string processTypeCode)
         {
             try
             {
-                var model = Facade.ReadByProcessType(processType);
+                var model = Facade.ReadByProcessType(processTypeCode);
 
 
                 var viewModel = new DurationEstimationViewModel();

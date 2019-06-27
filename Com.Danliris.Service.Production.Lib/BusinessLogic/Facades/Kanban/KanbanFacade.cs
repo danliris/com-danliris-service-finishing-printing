@@ -1,24 +1,24 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Utilities;
-using Microsoft.Extensions.DependencyInjection;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting;
+using Com.Moonlay.NetCore.Lib;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using Newtonsoft.Json;
-using Com.Moonlay.NetCore.Lib;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
-using System.IO;
-using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting;
-using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
 using System.Data;
-using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban
 {
@@ -88,44 +88,45 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
 
             query = query
-    .Select(field => new KanbanModel
-    {
-        Id = field.Id,
-        Code = field.Code,
-        CartCartNumber = field.CartCartNumber,
-        CurrentStepIndex = field.CurrentStepIndex,
-        CartQty = field.CartQty,
-        IsBadOutput = field.IsBadOutput,
-        IsComplete = field.IsComplete,
-        IsInactive = field.IsInactive,
-        IsReprocess = field.IsReprocess,
-        Instruction = new KanbanInstructionModel()
-        {
-            Id = field.Instruction.Id,
-            Name = field.Instruction.Name,
-            Steps = new List<KanbanStepModel>(field.Instruction.Steps.Select(i => new KanbanStepModel()
-            {
-                Id = i.Id,
-                Process = i.Process,
-                ProcessArea = i.ProcessArea,
-                SelectedIndex = i.SelectedIndex
-            }))
-        },
-        OldKanbanId = field.OldKanbanId,
-        LastModifiedUtc = field.LastModifiedUtc,
-        ProductionOrderMaterialName = field.ProductionOrderMaterialName,
-        ProductionOrderMaterialConstructionName = field.ProductionOrderMaterialConstructionName,
-        ProductionOrderYarnMaterialName = field.ProductionOrderYarnMaterialName,
-        FinishWidth = field.FinishWidth,
-        ProductionOrderOrderNo = field.ProductionOrderOrderNo,
-        SelectedProductionOrderDetailColorRequest = field.SelectedProductionOrderDetailColorRequest,
-        SelectedProductionOrderDetailColorTemplate = field.SelectedProductionOrderDetailColorTemplate,
-        SelectedProductionOrderDetailColorTypeCode = field.SelectedProductionOrderDetailColorTypeCode,
-        SelectedProductionOrderDetailColorTypeName = field.SelectedProductionOrderDetailColorTypeName,
-        SelectedProductionOrderDetailId = field.SelectedProductionOrderDetailId,
-        SelectedProductionOrderDetailQuantity = field.SelectedProductionOrderDetailQuantity,
-        SelectedProductionOrderDetailUomUnit = field.SelectedProductionOrderDetailUomUnit
-    });
+                .Select(field => new KanbanModel
+                {
+                    Id = field.Id,
+                    Code = field.Code,
+                    CartCartNumber = field.CartCartNumber,
+                    CurrentStepIndex = field.CurrentStepIndex,
+                    CartQty = field.CartQty,
+                    IsBadOutput = field.IsBadOutput,
+                    IsComplete = field.IsComplete,
+                    IsInactive = field.IsInactive,
+                    IsReprocess = field.IsReprocess,
+                    Instruction = new KanbanInstructionModel()
+                    {
+                        Id = field.Instruction.Id,
+                        Name = field.Instruction.Name,
+                        Steps = new List<KanbanStepModel>(field.Instruction.Steps.OrderBy(x => x.StepIndex).ThenBy(x => x.Id).Select(i => new KanbanStepModel()
+                        {
+                            Id = i.Id,
+                            Process = i.Process,
+                            ProcessArea = i.ProcessArea,
+                            SelectedIndex = i.SelectedIndex,
+                            StepIndex = i.StepIndex
+                        }))
+                    },
+                    OldKanbanId = field.OldKanbanId,
+                    LastModifiedUtc = field.LastModifiedUtc,
+                    ProductionOrderMaterialName = field.ProductionOrderMaterialName,
+                    ProductionOrderMaterialConstructionName = field.ProductionOrderMaterialConstructionName,
+                    ProductionOrderYarnMaterialName = field.ProductionOrderYarnMaterialName,
+                    FinishWidth = field.FinishWidth,
+                    ProductionOrderOrderNo = field.ProductionOrderOrderNo,
+                    SelectedProductionOrderDetailColorRequest = field.SelectedProductionOrderDetailColorRequest,
+                    SelectedProductionOrderDetailColorTemplate = field.SelectedProductionOrderDetailColorTemplate,
+                    SelectedProductionOrderDetailColorTypeCode = field.SelectedProductionOrderDetailColorTypeCode,
+                    SelectedProductionOrderDetailColorTypeName = field.SelectedProductionOrderDetailColorTypeName,
+                    SelectedProductionOrderDetailId = field.SelectedProductionOrderDetailId,
+                    SelectedProductionOrderDetailQuantity = field.SelectedProductionOrderDetailQuantity,
+                    SelectedProductionOrderDetailUomUnit = field.SelectedProductionOrderDetailUomUnit
+                });
 
 
 
@@ -146,10 +147,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 model.Code = CodeGenerator.Generate();
             }
             while (DbSet.Any(d => d.Code.Equals(model.Code)));
+            int index = 0;
             foreach (var step in model.Instruction.Steps)
             {
                 step.MachineId = step.Machine.Id;
                 step.Machine = null;
+                step.StepIndex = index;
+                index++;
             }
             KanbanLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
@@ -165,7 +169,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
         {
             var Result = await DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && !d.IsDeleted);
             Result.Instruction = await KanbanInstructionDbSet.FirstOrDefaultAsync(e => e.KanbanId.Equals(id) && !e.IsDeleted);
-            Result.Instruction.Steps = await KanbanStepDbSet.Where(w => w.InstructionId.Equals(Result.Instruction.Id) && !w.IsDeleted).ToListAsync();
+            Result.Instruction.Steps = await KanbanStepDbSet.Where(w => w.InstructionId.Equals(Result.Instruction.Id) && !w.IsDeleted).OrderBy(x => x.StepIndex).ThenBy(x => x.Id).ToListAsync();
             foreach (var step in Result.Instruction.Steps)
             {
                 step.StepIndicators = await KanbanStepIndicatorDbSet.Where(w => w.StepId.Equals(step.Id) && !w.IsDeleted).ToListAsync();
@@ -176,10 +180,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
         public async Task<int> UpdateAsync(int id, KanbanModel model)
         {
+            int index = 0;
             foreach (var step in model.Instruction.Steps)
             {
                 step.MachineId = step.Machine.Id;
                 step.Machine = null;
+                step.StepIndex = index;
+                index++;
             }
             KanbanLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
