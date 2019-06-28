@@ -12,8 +12,6 @@ using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -100,6 +98,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = await facade.GetJoinKanban("a");
 
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async Task GetReport()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetReport(-1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
+
+            Assert.NotEmpty(Response);
+        }
+
+        [Fact]
+        public async Task HasOutput_False()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.HasOutput(data.KanbanId, data.StepProcess);
+
+            Assert.False(Response);
         }
     }
 }
