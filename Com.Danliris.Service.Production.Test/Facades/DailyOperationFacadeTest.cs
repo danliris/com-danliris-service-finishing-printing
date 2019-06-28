@@ -101,5 +101,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotNull(Response);
         }
+
+        [Fact]
+        public async Task HasOutput_False()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.HasOutput(data.KanbanId, data.StepProcess);
+
+            Assert.False(Response);
+        }
     }
 }

@@ -444,7 +444,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
         public Task<bool> HasOutput(int kanbanId, string stepProcess)
         {
-            return DbSet.AnyAsync(x => x.KanbanId == kanbanId && x.StepProcess == stepProcess);
+            return DbSet.AnyAsync(x => x.KanbanId == kanbanId && x.StepProcess == stepProcess && x.Type.ToLower() == "output");
         }
     }
 }
