@@ -247,26 +247,26 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             if (dateFrom == null && dateTo == null)
             {
                 query = query
-                    .Where(x => DateTime.UtcNow.AddHours(offSet).Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= DateTime.UtcNow.AddHours(offSet).Date);
+                    .Where(x => DateTime.UtcNow.AddHours(offSet).Date.AddDays(-30) <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= DateTime.UtcNow.AddHours(offSet).Date);
             }
             else if (dateFrom == null && dateTo != null)
             {
                 query = query
-                    .Where(x => dateTo.Value.Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+                    .Where(x => dateTo.GetValueOrDefault().Date.AddDays(-30) <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= dateTo.GetValueOrDefault().Date);
             }
             else if (dateTo == null && dateFrom != null)
             {
                 query = query
-                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateFrom.Value.Date.AddDays(30));
+                    .Where(x => dateFrom.GetValueOrDefault().Date <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= dateFrom.GetValueOrDefault().Date.AddDays(30));
             }
             else
             {
                 query = query
-                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+                    .Where(x => dateFrom.GetValueOrDefault().Date <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= dateTo.GetValueOrDefault().Date);
             }
             dailyOperations = query.Select(x => new DailyOperationViewModel()
             {

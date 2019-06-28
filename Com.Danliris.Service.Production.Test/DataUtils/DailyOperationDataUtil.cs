@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             {
                 KanbanId = kanbanData.Id,
                 Type = "input",
+                DateInput = DateTimeOffset.UtcNow,
                 MachineId = kanbanData.Instruction.Steps.First().MachineId,
                 BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
                 {
