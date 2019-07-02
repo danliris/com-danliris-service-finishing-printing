@@ -7,6 +7,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.DirectLaborCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
@@ -70,6 +71,7 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<ShipmentDocumentPackingReceiptItemModel> ShipmentDocumentPackingReceiptItems { get; set; }
 
         public DbSet<DirectLaborCostModel> DirectLaborCosts { get; set; }
+        public DbSet<OperationalCostModel> OperationalCosts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,21 +1,24 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.DirectLaborCost;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.DirectLaborCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.OperationalCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.OperationalCost;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Text;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 {
-    public class DirectLaborCostFacadeTest : BaseFacadeTest<ProductionDbContext, DirectLaborCostFacade, DirectLaborCostLogic, DirectLaborCostModel, DirectLaborCostDataUtil>
+    public class OperationalCostFacadeTest : BaseFacadeTest<ProductionDbContext, OperationalCostFacade, OperationalCostLogic, OperationalCostModel, OperationalCostDataUtil>
     {
-        private const string ENTITY = "DirectLaborCost";
-        public DirectLaborCostFacadeTest() : base(ENTITY)
+        private const string ENTITY = "OperationalCost";
+
+        public OperationalCostFacadeTest() : base(ENTITY)
         {
         }
 
@@ -25,7 +28,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             var dbContext = DbContext(GetCurrentMethod());
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
-            DirectLaborCostFacade facade = new DirectLaborCostFacade(serviceProvider, dbContext);
+            OperationalCostFacade facade = new OperationalCostFacade(serviceProvider, dbContext);
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
@@ -40,7 +43,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             var dbContext = DbContext(GetCurrentMethod());
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
-            DirectLaborCostFacade facade = new DirectLaborCostFacade(serviceProvider, dbContext);
+            OperationalCostFacade facade = new OperationalCostFacade(serviceProvider, dbContext);
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
@@ -57,10 +60,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 
             DirectLaborCostFacade facade = new DirectLaborCostFacade(serviceProvider, dbContext);
 
-            var data = new DirectLaborCostViewModel()
+            var data = new OperationalCostViewModel()
             {
-                WageTotal = -1,
-                LaborTotal = -1
+
             };
             ValidationContext validationContext = new ValidationContext(data, serviceProvider, null);
             var response = data.Validate(validationContext);
