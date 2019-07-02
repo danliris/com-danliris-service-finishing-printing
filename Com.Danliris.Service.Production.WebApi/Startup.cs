@@ -51,6 +51,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -110,12 +111,14 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
                 .AddTransient<IPackingReceiptFacade,PackingReceiptFacade>()
                 .AddTransient<IShipmentDocumentService, ShipmentDocumentService>()
+                .AddTransient<IDirectLaborCostFacade, DirectLaborCostFacade>()
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
         {
             services
+                .AddTransient<DirectLaborCostLogic>()
                 .AddTransient<StepLogic>()
                 .AddTransient<StepIndicatorLogic>()
                 .AddTransient<InstructionLogic>()
