@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing
         public string MaterialConstructionFinishName { get; set; }
 
         public int? MaterialId { get; set; }
-        [StringLength(25)]
+        [StringLength(255)]
         public string Material { get; set; }
         [StringLength(25)]
         public string MaterialWidthFinish { get; set; }
