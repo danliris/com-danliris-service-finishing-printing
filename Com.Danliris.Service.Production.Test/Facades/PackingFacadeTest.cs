@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -27,7 +28,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             IIdentityService identityService = new IdentityService { Username = "Username" };
 
             serviceProviderMock
-                .Setup(x => x.GetService);
+                .Setup(x => x.GetService(typeof(IHttpClientService)))
+                .Returns(new HttpClientTestService());
 
             serviceProviderMock
                 .Setup(x => x.GetService(typeof(IdentityService)))

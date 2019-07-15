@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Utilities;
@@ -14,6 +15,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing
@@ -23,9 +26,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         private readonly ProductionDbContext dbContext;
         private readonly DbSet<PackingModel> dbSet;
         private readonly PackingLogic packingLogic;
+        private readonly IServiceProvider ServiceProvider;
 
         public PackingFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
+            ServiceProvider = serviceProvider;
             this.dbContext = dbContext;
             this.dbSet = dbContext.Set<PackingModel>();
             this.packingLogic = serviceProvider.GetService<PackingLogic>();
@@ -48,7 +53,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     var row = await dbContext.SaveChangesAsync();
                     if (row > 0)
                     {
-                        await packingLogic.CreateProduct(model);
+                        await CreateProduct(model);
                     }
                     transaction.Commit();
                     return row;
@@ -237,7 +242,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                 Date = x.Key,
                 Dyeing = x.Sum(y => y.Dyeing),
                 Jumlah = x.Sum(y => y.Jumlah),
-                Printing = x.Sum(y =>y.Printing),
+                Printing = x.Sum(y => y.Printing),
                 UlanganPrinting = x.Sum(y => y.UlanganPrinting),
                 UlanganSolid = x.Sum(y => y.UlanganSolid),
                 White = x.Sum(y => y.White)
@@ -369,7 +374,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
                     if (row > 0)
                     {
-                        await packingLogic.CreateProduct(model);
+                        await CreateProduct(model);
                     }
                     transaction.Commit();
 
@@ -381,6 +386,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     throw ex;
                 }
             }
+
+        }
+
+        public async Task CreateProduct(PackingModel model)
+        {
+            var client = (IHttpClientService)ServiceProvider.GetService(typeof(IHttpClientService));
+            var uri = string.Format("{0}{1}", Utilities.APIEndpoint.Core, "master/products/packing/create");
+            var myContentJson = JsonConvert.SerializeObject(model);
+            var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(uri, myContent);
+            response.EnsureSuccessStatusCode();
 
         }
     }
