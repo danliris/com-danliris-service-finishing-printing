@@ -10,6 +10,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -40,6 +41,66 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new PackingLogic(identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public async void GenerateExcel()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcel(data.Code, data.ProductionOrderId, null, null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async void GenerateExcelQCGudang()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcelQCGudang(null, null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async void GetReport()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetReport(1, 25, data.Code, data.ProductionOrderId, null, null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async void GetPackingDetail()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.GetPackingDetail("");
+
+            Assert.Null(Response);
         }
     }
 }
