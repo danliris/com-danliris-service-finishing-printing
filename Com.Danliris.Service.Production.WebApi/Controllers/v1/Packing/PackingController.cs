@@ -179,5 +179,63 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
             }
 
         }
+
+        [HttpGet("reports/qcgudang")]
+        public IActionResult GetReportQCGudang(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            try
+            {
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                //int offSet = 7;
+                var data = Facade.GetQCGudang(dateFrom, dateTo, offSet);
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data,
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                   .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("reports/qcgudang/downloads/xls")]
+        public IActionResult GetQCGudangXls(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            try
+            {
+                byte[] xlsInBytes;
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var xls = Facade.GenerateExcelQCGudang(dateFrom, dateTo, offSet);
+
+                string fileName = "";
+                if (dateFrom == null && dateTo == null)
+                    fileName = string.Format("QC To Gudang Report");
+                else if (dateFrom != null && dateTo == null)
+                    fileName = string.Format("QC To Gudang Report {0}", dateFrom.Value.ToString("dd/MM/yyyy"));
+                else if (dateFrom == null && dateTo != null)
+                    fileName = string.Format("QC To Gudang Report {0}", dateTo.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                else
+                    fileName = string.Format("QC To Gudang Report {0} - {1}", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

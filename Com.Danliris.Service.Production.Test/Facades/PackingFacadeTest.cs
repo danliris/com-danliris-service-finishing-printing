@@ -27,6 +27,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             IIdentityService identityService = new IdentityService { Username = "Username" };
 
             serviceProviderMock
+                .Setup(x => x.GetService);
+
+            serviceProviderMock
                 .Setup(x => x.GetService(typeof(IdentityService)))
                 .Returns(identityService);
 

@@ -120,6 +120,37 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
         }
 
+        public MemoryStream GenerateExcelQCGudang(DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            var data = GetQCGudang(dateFrom, dateTo, offSet);
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "UlanganSolid", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "White", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Dyeing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "UlanganPrinting", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Printing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jumlah", DataType = typeof(string) });
+
+            if (data.Count == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                int index = 1;
+                foreach (var item in data)
+                {
+                    dt.Rows.Add(index++, item.Date.GetValueOrDefault().ToString("dd/MM/yyyy"), item.UlanganSolid.ToString("n2"), item.White.ToString("n2"), item.Dyeing.ToString("n2"),
+                        item.UlanganPrinting.ToString("n2"), item.Printing.ToString("n2"), item.Jumlah.ToString("n2"));
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "QC Gudang") }, true);
+        }
+
         public Task<PackingDetailModel> GetPackingDetail(string productName)
         {
             var packingDetail = dbContext.PackingDetails.Include(x => x.Packing).FirstOrDefaultAsync(x => productName.Equals(
@@ -129,6 +160,88 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
 
             return packingDetail;
+        }
+
+        public List<PackingQCGudangViewModel> GetQCGudang(DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            IQueryable<PackingModel> query = dbContext.Packings.Include(x => x.PackingDetails);
+            if (dateFrom == null && dateTo == null)
+            {
+                query = query
+                    .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= DateTime.UtcNow.Date);
+            }
+            else if (dateFrom == null && dateTo != null)
+            {
+                query = query
+                    .Where(x => dateTo.Value.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+            else if (dateTo == null && dateFrom != null)
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
+            }
+            else
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+
+            List<PackingQCGudangViewModel> result = new List<PackingQCGudangViewModel>();
+            foreach (var item in query.ToList())
+            {
+                var vm = new PackingQCGudangViewModel()
+                {
+                    Date = item.Date.Date
+                };
+
+                if (item.DeliveryType.Equals("ULANGAN", StringComparison.OrdinalIgnoreCase) &&
+                    (item.FinishedProductType.Equals("WHITE", StringComparison.OrdinalIgnoreCase) || item.FinishedProductType.Equals("DYEING", StringComparison.OrdinalIgnoreCase)))
+                {
+                    vm.UlanganSolid = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("ULANGAN", StringComparison.OrdinalIgnoreCase) &&
+                   (item.FinishedProductType.Equals("BATIK", StringComparison.OrdinalIgnoreCase) || item.FinishedProductType.Equals("TEKSTIL", StringComparison.OrdinalIgnoreCase)))
+                {
+                    vm.UlanganPrinting = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("BARU", StringComparison.OrdinalIgnoreCase) && item.FinishedProductType.Equals("WHITE", StringComparison.OrdinalIgnoreCase))
+                {
+                    vm.White = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("BARU", StringComparison.OrdinalIgnoreCase) && item.FinishedProductType.Equals("DYEING", StringComparison.OrdinalIgnoreCase))
+                {
+                    vm.Dyeing = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("BARU", StringComparison.OrdinalIgnoreCase) &&
+                   (item.FinishedProductType.Equals("BATIK", StringComparison.OrdinalIgnoreCase) || item.FinishedProductType.Equals("TEKSTIL", StringComparison.OrdinalIgnoreCase)))
+                {
+                    vm.Printing = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                vm.Jumlah = vm.UlanganSolid + vm.Dyeing + vm.White + vm.UlanganPrinting + vm.Printing;
+
+                result.Add(vm);
+            }
+
+
+            return result.GroupBy(x => x.Date).Select(x => new PackingQCGudangViewModel()
+            {
+                Date = x.Key,
+                Dyeing = x.Sum(y => y.Dyeing),
+                Jumlah = x.Sum(y => y.Jumlah),
+                Printing = x.Sum(y =>y.Printing),
+                UlanganPrinting = x.Sum(y => y.UlanganPrinting),
+                UlanganSolid = x.Sum(y => y.UlanganSolid),
+                White = x.Sum(y => y.White)
+            }).OrderBy(x => x.Date).ToList();
         }
 
         public List<PackingViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
