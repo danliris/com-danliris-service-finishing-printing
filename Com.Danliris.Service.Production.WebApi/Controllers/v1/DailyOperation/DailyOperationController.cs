@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                 else
                 {
                     DailyOperationViewModel viewModel = Mapper.Map<DailyOperationViewModel>(model);
-                    var stepCurrent = viewModel.Kanban.Instruction.Steps.FirstOrDefault(s => s.SelectedIndex == viewModel.Kanban.CurrentStepIndex);
+                    var stepCurrent = viewModel.Kanban.Instruction.Steps.FirstOrDefault(s => s.StepIndex == viewModel.Kanban.CurrentStepIndex);
                     //if (stepCurrent.Process == viewModel.Step.Process)
                     //{
                     //    if (viewModel.Type == "input")
@@ -69,8 +69,8 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                     //    viewModel.IsChangeable = false;
                     //}
 
-
-                    viewModel.IsChangeable = (stepCurrent == null) || ((stepCurrent.Process == viewModel.Step.Process) && (viewModel.Type == "output" || (viewModel.Type == "input" && !(await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process)))));
+                    var hasOutput = await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process);
+                    viewModel.IsChangeable = (stepCurrent == null) || ((stepCurrent.Process == viewModel.Step.Process) && (viewModel.Type == "output" || (viewModel.Type == "input" && !hasOutput)));
 
                     Dictionary<string, object> Result =
                         new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
