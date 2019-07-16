@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                 else
                 {
                     DailyOperationViewModel viewModel = Mapper.Map<DailyOperationViewModel>(model);
-                    var stepCurrent = viewModel.Kanban.Instruction.Steps.FirstOrDefault(s => s.SelectedIndex == (viewModel.Kanban.CurrentStepIndex + 1));
+                    var stepCurrent = viewModel.Kanban.Instruction.Steps.FirstOrDefault(s => s.StepIndex == viewModel.Kanban.CurrentStepIndex);
                     //if (stepCurrent.Process == viewModel.Step.Process)
                     //{
                     //    if (viewModel.Type == "input")

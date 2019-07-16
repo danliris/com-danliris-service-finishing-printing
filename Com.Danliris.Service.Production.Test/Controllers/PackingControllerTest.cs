@@ -230,5 +230,57 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var response = await controller.GetPackingDetail("");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void GetReportQCGudang_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GetQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new List<PackingQCGudangViewModel>());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetReportQCGudang();
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetReportQCGudan_WithException_ReturnError()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GetQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetQCGudangXls();
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }

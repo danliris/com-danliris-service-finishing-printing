@@ -40,18 +40,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             DbSet.Add(model);
         }
 
-        public async Task CreateProduct(PackingModel model)
-        {
-            using (var client = new HttpClient())
-            {
-                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Core, "master/products/packing/create"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
-                var myContentJson = JsonConvert.SerializeObject(model);
-                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(uri, myContent);
-                response.EnsureSuccessStatusCode();
-            }
-        }
+        //public async Task CreateProduct(PackingModel model)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Core, "master/products/packing/create"));
+        //        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
+        //        var myContentJson = JsonConvert.SerializeObject(model);
+        //        var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+        //        var response = await client.PostAsync(uri, myContent);
+        //        response.EnsureSuccessStatusCode();
+        //    }
+        //}
 
         public override async Task DeleteModel(int id)
         {
