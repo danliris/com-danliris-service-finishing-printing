@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             !f.IsDeleted)))))));
         }
 
-        public override void UpdateModelAsync(int id, ReturToQCModel model)
+        public override async Task UpdateModelAsync(int id, ReturToQCModel model)
         {
             EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
             foreach (var item in model.ReturToQCItems)
@@ -111,6 +111,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
             }
             DbSet.Update(model);
+            await Task.CompletedTask;
         }
 
         public async Task CreateInventoryDocument(ReturToQCModel model)

@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public async Task<int> UpdateAsync(int id, DurationEstimationModel model)
         {
-            DurationEstimationLogic.UpdateModelAsync(id, model);
+            await DurationEstimationLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 

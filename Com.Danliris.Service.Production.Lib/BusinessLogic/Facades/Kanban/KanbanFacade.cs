@@ -188,7 +188,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 step.StepIndex = index;
                 index++;
             }
-            KanbanLogic.UpdateModelAsync(id, model);
+            await KanbanLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 

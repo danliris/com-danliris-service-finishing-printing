@@ -33,8 +33,9 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseClass
             return DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
         }
 
-        public virtual void UpdateModelAsync(int id, TModel model)
+        public virtual async Task UpdateModelAsync(int id, TModel model)
         {
+            TModel dbModel = await ReadModelById(id);
             EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
             DbSet.Update(model);
         }

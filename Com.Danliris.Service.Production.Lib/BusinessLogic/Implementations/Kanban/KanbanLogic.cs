@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             return Result;
         }
 
-        public override void UpdateModelAsync(int id, KanbanModel model)
+        public override async Task UpdateModelAsync(int id, KanbanModel model)
         {
             if (model.Instruction != null && model.Instruction.Steps != null)
             {
@@ -151,7 +151,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     }
                 }
             }
-            base.UpdateModelAsync(id, model);
+            await base.UpdateModelAsync(id, model);
         }
     }
 }

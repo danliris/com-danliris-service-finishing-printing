@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             //return 
         }
 
-        public override void UpdateModelAsync(int id, FabricQualityControlModel model)
+        public override async Task UpdateModelAsync(int id, FabricQualityControlModel model)
         {
             HashSet<int> fabricGradeTestIds = FabricGradeTestDbSet.Where(d => d.FabricQualityControlId == model.Id && !d.IsDeleted).Select(d => d.Id).ToHashSet();
 
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     }
                 }
             }
-            base.UpdateModelAsync(id, model);
+            await base.UpdateModelAsync(id, model);
         }
     }
 }
