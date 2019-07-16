@@ -305,7 +305,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
             {
                 try
                 {
-                    returToQCLogic.UpdateModelAsync(id, model);
+                    await returToQCLogic.UpdateModelAsync(id, model);
                     var modelID = await dbContext.SaveChangesAsync();
 
                     if (model.ReturToQCItems.Count > 0)

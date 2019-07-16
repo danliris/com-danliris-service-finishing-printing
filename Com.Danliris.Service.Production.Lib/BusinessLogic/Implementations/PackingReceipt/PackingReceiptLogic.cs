@@ -164,7 +164,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             DbSet.Update(model);
         }
 
-        public override void UpdateModelAsync(int id, PackingReceiptModel model)
+        public override async Task UpdateModelAsync(int id, PackingReceiptModel model)
         {
             if (model.Items != null)
             {
@@ -198,6 +198,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
             dbSet.Update(model);
+            await Task.CompletedTask;
         }
     }
 }

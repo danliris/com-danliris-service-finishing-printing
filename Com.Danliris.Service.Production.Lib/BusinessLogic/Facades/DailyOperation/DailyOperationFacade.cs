@@ -220,7 +220,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
         public async Task<int> UpdateAsync(int id, DailyOperationModel model)
         {
-            this.DailyOperationLogic.UpdateModelAsync(id, model);
+            await this.DailyOperationLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
