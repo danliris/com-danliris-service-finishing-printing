@@ -35,9 +35,10 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseClass
 
         public virtual async Task UpdateModelAsync(int id, TModel model)
         {
-            TModel dbModel = await ReadModelById(id);
+
             EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
             DbSet.Update(model);
+            await Task.CompletedTask;
         }
 
         public virtual async Task DeleteModel(int id)
