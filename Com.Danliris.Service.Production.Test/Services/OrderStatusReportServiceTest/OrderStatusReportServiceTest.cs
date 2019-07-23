@@ -119,6 +119,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.OrderStatusRepor
         }
 
         [Fact]
+        public async Task Should_Success_GetYearlyOrderStatusReportExcel()
+        {
+            var dbContext = _dbContext(GetCurrentMethod());
+
+            _kanbanDataUtil(dbContext).GetNewData();
+
+            var service = new OrderStatusReportService(dbContext, _serviceProviderYearly());
+
+            var response = await service.GetYearlyOrderStatusReportExcel(DateTime.Now.Year, 0, 0);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task Should_Success_GetMonthlyOrderStatusReport()
         {
             var dbContext = _dbContext(GetCurrentMethod());
@@ -132,6 +145,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.OrderStatusRepor
         }
 
         [Fact]
+        public async Task Should_Success_GetMonthlyOrderStatusReportExcel()
+        {
+            var dbContext = _dbContext(GetCurrentMethod());
+
+            _kanbanDataUtil(dbContext).GetNewData();
+
+            var service = new OrderStatusReportService(dbContext, _serviceProviderMonthly());
+
+            var response = await service.GetMonthlyOrderStatusReportExcel(DateTime.Now.Year, DateTime.Now.Month, 0, 0);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task Should_Success_GetProductionOrderStatusReport()
         {
             var dbContext = _dbContext(GetCurrentMethod());
@@ -141,6 +167,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.OrderStatusRepor
             var service = new OrderStatusReportService(dbContext, _serviceProviderMonthly());
 
             var response = await service.GetProductionOrderStatusReport(0);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetProductionOrderStatusReportExcel()
+        {
+            var dbContext = _dbContext(GetCurrentMethod());
+
+            _kanbanDataUtil(dbContext).GetNewData();
+
+            var service = new OrderStatusReportService(dbContext, _serviceProviderMonthly());
+
+            var response = await service.GetProductionOrderStatusReportExcel(0, 0);
             Assert.NotNull(response);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.OrderStatusReport;
+using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
@@ -14,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -152,7 +155,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Orde
         private async Task<List<MonthlyOrderQuantity>> GetMonthlyOrderQuantity(int year, int month, int orderTypeId)
         {
             var http = _serviceProvider.GetService<IHttpClientService>();
-            var getMonthlyQueryUrl = $"{APIEndpoint.Sales}/sales/production-orders/monthly-by-order-type?year={year}&month={month}&orderTypeId={orderTypeId}";
+            var getMonthlyQueryUrl = $"{Utilities.APIEndpoint.Sales}/sales/production-orders/monthly-by-order-type?year={year}&month={month}&orderTypeId={orderTypeId}";
             var requestResponse = await http.GetAsync(getMonthlyQueryUrl);
 
             var requestResult = new HttpDefaultResponse<List<MonthlyOrderQuantity>>();
@@ -183,6 +186,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Orde
                 {
                     cartNumber = kanban.CartCartNumber,
                     processArea = !kanban.IsComplete ? kanban.CurrentStepIndex != kanban.Instruction.Steps.Count && kanban.CurrentStepIndex != 0 ? kanban.Instruction.Steps.ToList()[kanban.CurrentStepIndex - 1].ProcessArea : kanban.CurrentStepIndex == 0 ? "PPIC" : kanban.Instruction.Steps.LastOrDefault().ProcessArea : "",
+                    process = !kanban.IsComplete ? kanban.CurrentStepIndex != kanban.Instruction.Steps.Count && kanban.CurrentStepIndex != 0 ? kanban.Instruction.Steps.ToList()[kanban.CurrentStepIndex - 1].Process : kanban.CurrentStepIndex == 0 ? "PPIC" : kanban.Instruction.Steps.LastOrDefault().Process : "",
                     quantity = kanban.CurrentQty,
                     status = kanban.IsInactive ? "Inactive" : kanban.IsComplete ? "Complete" : kanban.CurrentStepIndex > 0 && kanban.CurrentStepIndex <= kanban.Instruction.Steps.Count ? "Incomplete" : "Not yet started"
                 });
@@ -277,7 +281,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Orde
         private async Task<List<YearlyOrderQuantity>> GetYearlyOrderQuantity(int year, int orderTypeId)
         {
             var http = _serviceProvider.GetService<IHttpClientService>();
-            var getYearlyQueryUrl = $"{APIEndpoint.Sales}/sales/production-orders/by-year-and-order-type?year={year}&orderTypeId={orderTypeId}";
+            var getYearlyQueryUrl = $"{Utilities.APIEndpoint.Sales}/sales/production-orders/by-year-and-order-type?year={year}&orderTypeId={orderTypeId}";
             var requestResponse = await http.GetAsync(getYearlyQueryUrl);
 
             var requestResult = new HttpDefaultResponse<List<YearlyOrderQuantity>>();
@@ -287,6 +291,134 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Orde
             }
 
             return requestResult.data;
+        }
+
+        public async Task<MemoryStream> GetYearlyOrderStatusReportExcel(int year, int orderTypeId, int timeoffset)
+        {
+            var data = await GetYearlyOrderStatusReport(year, orderTypeId);
+
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "Bulan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Target Kirim ke Buyer", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Belum Produksi", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sedang Produksi", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sedang QC", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sudah Produksi", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sudah Dikirim ke Gudang", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sudah Dikirim ke Buyer", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Belum Turun Kanban", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Belum Dikirim ke Buyer", DataType = typeof(double) });
+
+            foreach (var datum in data)
+            {
+                dt.Rows.Add(
+                    datum.name,
+                    datum.orderQuantity,
+                    datum.preProductionQuantity,
+                    datum.onProductionQuantity,
+                    datum.inspectingQuantity,
+                    datum.afterProductionQuantity,
+                    datum.storageQuantity,
+                    datum.shipmentQuantity,
+                    datum.diffOrderKanbanQuantity,
+                    datum.diffOrderShipmentQuantity
+                    );
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Order Status") }, true);
+
+        }
+
+        public async Task<MemoryStream> GetMonthlyOrderStatusReportExcel(int year, int month, int orderTypeId, int timeoffset)
+        {
+            var data = await GetMonthlyOrderStatusReport(year, month, orderTypeId);
+
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Konstruksi", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Proses", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sales", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Terima Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Permintaan Delivery", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Posisi Kanban Terakhir", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Perubahan Tanggal Delivery", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Alasan Perubahan Tanggal Delivery", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang SPP", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Belum Turun Kanban", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Belum Produksi", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sedang Produksi", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sedang QC", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sudah Produksi", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sudah Dikirim ke Gudang", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sudah Dikirim ke Buyer", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Belum Dikirim ke Buyer", DataType = typeof(double) });
+
+            var index = 1;
+            foreach (var item in data)
+            {
+                dt.Rows.Add(
+                    index.ToString(),
+                    item.orderNo,
+                    item.constructionComposite,
+                    item.processType,
+                    item.designCode,
+                    item.colorRequest,
+                    item.buyerName,
+                    item.accountName,
+                    item._createdDate.AddHours(timeoffset).ToString("YYYY-MM-DD"),
+                    item.deliveryDate.AddHours(timeoffset).ToString("YYYY-MM-DD"),
+                    "",
+                    "",
+                    "",
+                    item.orderQuantity,
+                    item.notInKanbanQuantity,
+                    item.onProductionQuantity,
+                    item.inspectingQuantity,
+                    item.afterProductionQuantity,
+                    item.storageQuantity,
+                    item.shipmentQuantity,
+                    item.diffOrderShipmentQuantity
+                    );
+                index += 1;
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Order Status") }, true);
+        }
+
+        public async Task<MemoryStream> GetProductionOrderStatusReportExcel(int orderId, int timeoffset)
+        {
+            var data = await GetProductionOrderStatusReport(orderId);
+
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor Kereta", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Proses", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Area", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Kuantiti", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Status", DataType = typeof(string) });
+
+            var index = 0;
+            foreach (var datum in data)
+            {
+                dt.Rows.Add(
+                    index.ToString(),
+                    datum.cartNumber,
+                    datum.process,
+                    datum.processArea,
+                    datum.quantity,
+                    datum.status
+                    );
+                index += 1;
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Order Status") }, true);
         }
     }
 
