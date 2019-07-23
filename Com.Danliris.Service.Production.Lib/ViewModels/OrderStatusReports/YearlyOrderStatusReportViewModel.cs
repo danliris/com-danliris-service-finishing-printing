@@ -27,6 +27,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.OrderStatusRepo
     {
         public string cartNumber { get; set; }
         public string processArea { get; set; }
+        public string process { get; set; }
         public double quantity { get; set; }
         public string status { get; set; }
     }

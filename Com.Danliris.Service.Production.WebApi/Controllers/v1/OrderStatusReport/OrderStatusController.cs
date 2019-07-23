@@ -63,6 +63,37 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.OrderSta
             }
         }
 
+        [HttpGet("yearly/downloads/xls")]
+        public async Task<IActionResult> GetYearlyReportXls([FromQuery] int year = 0, [FromQuery] int orderTypeId = 0)
+        {
+            try
+            {
+                VerifyUser();
+
+                if (year == 0)
+                    year = DateTime.UtcNow.AddHours(_identityService.TimezoneOffset).Year;
+
+                byte[] xlsInBytes;
+                var xls = await _service.GetYearlyOrderStatusReportExcel(year, orderTypeId, _identityService.TimezoneOffset);
+
+                string fileName = $"LAPORAN BERDASARKAN DELIVERY TAHUN {year}";
+
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, new
+                {
+                    apiVersion = _apiVersion,
+                    message = e.Message,
+                    statusCode = General.INTERNAL_ERROR_STATUS_CODE
+                });
+            }
+        }
+
         [HttpGet("monthly")]
         public async Task<IActionResult> GetMonthlyReport([FromQuery] int year = 0, [FromQuery] int month = 0, [FromQuery] int orderTypeId = 0)
         {
@@ -96,6 +127,40 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.OrderSta
             }
         }
 
+        [HttpGet("monthly/downloads/xls")]
+        public async Task<IActionResult> GetMonthlyReportXls([FromQuery] int year = 0, [FromQuery] int month = 0, [FromQuery] int orderTypeId = 0)
+        {
+            try
+            {
+                VerifyUser();
+
+                if (year == 0)
+                    year = DateTime.UtcNow.AddHours(_identityService.TimezoneOffset).Year;
+
+                if (month == 0)
+                    month = DateTime.UtcNow.AddHours(_identityService.TimezoneOffset).Month;
+
+                byte[] xlsInBytes;
+                var xls = await _service.GetYearlyOrderStatusReportExcel(year, orderTypeId, _identityService.TimezoneOffset);
+
+                string fileName = $"LAPORAN BERDASARKAN DELIVERY BULAN {month} TAHUN {year}";
+
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
+            }
+            catch (Exception e)
+            {
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, new
+                {
+                    apiVersion = _apiVersion,
+                    message = e.Message,
+                    statusCode = General.INTERNAL_ERROR_STATUS_CODE
+                });
+            }
+        }
+
         [HttpGet("by-order-id")]
         public async Task<IActionResult> GetByOrderId([FromQuery] int orderId = 0)
         {
@@ -115,6 +180,34 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.OrderSta
                     },
                     statusCode = General.OK_STATUS_CODE
                 });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, new
+                {
+                    apiVersion = _apiVersion,
+                    message = e.Message,
+                    statusCode = General.INTERNAL_ERROR_STATUS_CODE
+                });
+            }
+        }
+
+        [HttpGet("by-order-id/downloads/xls")]
+        public async Task<IActionResult> GetByOrderIdXls([FromQuery] int orderId = 0)
+        {
+            try
+            {
+                VerifyUser();
+
+                byte[] xlsInBytes;
+                var xls = await _service.GetProductionOrderStatusReportExcel(orderId, _identityService.TimezoneOffset);
+
+                string fileName = $"LAPORAN BERDASARKAN DELIVERY SPP {orderId}";
+
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
             }
             catch (Exception e)
             {
