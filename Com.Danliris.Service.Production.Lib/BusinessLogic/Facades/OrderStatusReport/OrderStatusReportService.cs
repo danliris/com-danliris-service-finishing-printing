@@ -63,36 +63,47 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Orde
 
             var result = new List<MonthlyOrderStatusReportViewModel>();
 
-            var tasks = monthlyOrders.Select(async monthlyOrder =>
-            {
-                var monthlyOrderStatus = new MonthlyOrderStatusReportViewModel()
-                {
-                    accountName = monthlyOrder.accountName,
-                    afterProductionQuantity = await GetAfterProductionQuantity(new List<int>() { monthlyOrder.orderId }),
-                    buyerName = monthlyOrder.buyerName,
-                    colorRequest = monthlyOrder.colorRequest,
-                    constructionComposite = monthlyOrder.constructionComposite,
-                    deliveryDate = monthlyOrder.deliveryDate,
-                    designCode = monthlyOrder.designCode,
-                    inspectingQuantity = await GetInspectingQuantity(new List<int>() { monthlyOrder.orderId }),
-                    onProductionQuantity = await GetOnProductionQuantity(new List<int>() { monthlyOrder.orderId }),
-                    orderId = monthlyOrder.orderId,
-                    orderNo = monthlyOrder.orderNo,
-                    orderQuantity = monthlyOrder.orderQuantity,
-                    processType = monthlyOrder.processType,
-                    shipmentQuantity = await GetShipmentQuantity(new List<int>() { monthlyOrder.orderId }),
-                    storageQuantity = await GetInventoryQuantity(new List<int>() { monthlyOrder.orderId }),
-                    _createdDate = monthlyOrder._createdDate
-                };
+            var orderIds = monthlyOrders.Select(s => s.orderId).ToList();
 
-                monthlyOrderStatus.notInKanbanQuantity = monthlyOrder.orderQuantity - (await GetPreProductionQuantity(new List<int>() { monthlyOrder.orderId }) + monthlyOrderStatus.onProductionQuantity + monthlyOrderStatus.inspectingQuantity + monthlyOrderStatus.afterProductionQuantity);
-                monthlyOrderStatus.diffOrderShipmentQuantity = monthlyOrder.orderQuantity - monthlyOrderStatus.shipmentQuantity;
+            var afterProductionQuantityQueryResult = await GetAfterProductionQuantityQueryResult(orderIds);
+            var inspectingQuantityQueryResult = await GetInspectingQuantityQueryResult(orderIds);
+            var onProductionQuantityQueryResult = await GetOnProductionQuantityQueryResult(orderIds);
+            var shipmentQuantityQueryResult = await GetShipmentQuantityQueryResult(orderIds);
+            var inventoryQuantityQueryResult = await GetInventoryQuantityQueryResult(orderIds);
+            var preProductionQuantityQueryResult = await GetPreProductionQuantityQueryResult(orderIds);
 
-                result.Add(monthlyOrderStatus);
-            });
+            //var tasks = monthlyOrders.Select(async monthlyOrder =>
+            //{
+            //    var monthlyOrderStatus = new MonthlyOrderStatusReportViewModel()
+            //    {
+            //        accountName = monthlyOrder.accountName,
+            //        afterProductionQuantity = await GetAfterProductionQuantity(new List<int>() { monthlyOrder.orderId }),
+            //        buyerName = monthlyOrder.buyerName,
+            //        colorRequest = monthlyOrder.colorRequest,
+            //        constructionComposite = monthlyOrder.constructionComposite,
+            //        deliveryDate = monthlyOrder.deliveryDate,
+            //        designCode = monthlyOrder.designCode,
+            //        inspectingQuantity = await GetInspectingQuantity(new List<int>() { monthlyOrder.orderId }),
+            //        onProductionQuantity = await GetOnProductionQuantity(new List<int>() { monthlyOrder.orderId }),
+            //        orderId = monthlyOrder.orderId,
+            //        orderNo = monthlyOrder.orderNo,
+            //        orderQuantity = monthlyOrder.orderQuantity,
+            //        processType = monthlyOrder.processType,
+            //        shipmentQuantity = await GetShipmentQuantity(new List<int>() { monthlyOrder.orderId }),
+            //        storageQuantity = await GetInventoryQuantity(new List<int>() { monthlyOrder.orderId }),
+            //        _createdDate = monthlyOrder._createdDate
+            //    };
 
-            Task.WaitAll(tasks.ToArray());
+            //    monthlyOrderStatus.notInKanbanQuantity = monthlyOrder.orderQuantity - (await GetPreProductionQuantity(new List<int>() { monthlyOrder.orderId }) + monthlyOrderStatus.onProductionQuantity + monthlyOrderStatus.inspectingQuantity + monthlyOrderStatus.afterProductionQuantity);
+            //    monthlyOrderStatus.diffOrderShipmentQuantity = monthlyOrder.orderQuantity - monthlyOrderStatus.shipmentQuantity;
 
+            //    result.Add(monthlyOrderStatus);
+            //});
+
+            //Task.WaitAll(tasks.ToArray());
+
+
+            #region Temporary Dont Delete
             //Parallel.ForEach(monthlyOrders, async monthlyOrder =>
             //{
             //    var monthlyOrderStatus = new MonthlyOrderStatusReportViewModel()
@@ -121,35 +132,142 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Orde
             //    result.Add(monthlyOrderStatus);
             //});
 
-            //foreach (var monthlyOrder in monthlyOrders)
-            //{
-            //    var monthlyOrderStatus = new MonthlyOrderStatusReportViewModel()
-            //    {
-            //        accountName = monthlyOrder.accountName,
-            //        afterProductionQuantity = await GetAfterProductionQuantity(new List<int>() { monthlyOrder.orderId }),
-            //        buyerName = monthlyOrder.buyerName,
-            //        colorRequest = monthlyOrder.colorRequest,
-            //        constructionComposite = monthlyOrder.constructionComposite,
-            //        deliveryDate = monthlyOrder.deliveryDate,
-            //        designCode = monthlyOrder.designCode,
-            //        inspectingQuantity = await GetInspectingQuantity(new List<int>() { monthlyOrder.orderId }),
-            //        onProductionQuantity = await GetOnProductionQuantity(new List<int>() { monthlyOrder.orderId }),
-            //        orderId = monthlyOrder.orderId,
-            //        orderNo = monthlyOrder.orderNo,
-            //        orderQuantity = monthlyOrder.orderQuantity,
-            //        processType = monthlyOrder.processType,
-            //        shipmentQuantity = await GetShipmentQuantity(new List<int>() { monthlyOrder.orderId }),
-            //        storageQuantity = await GetInventoryQuantity(new List<int>() { monthlyOrder.orderId }),
-            //        _createdDate = monthlyOrder._createdDate
-            //    };
+            Parallel.ForEach(monthlyOrders, monthlyOrder =>
+            {
+                var afterProductionQuantity = afterProductionQuantityQueryResult.FirstOrDefault(f => f.OrderId == monthlyOrder.orderId);
+                var inspectingQuantity = inspectingQuantityQueryResult.FirstOrDefault(f => f.OrderId == monthlyOrder.orderId);
+                var onProductionQuantity = onProductionQuantityQueryResult.FirstOrDefault(f => f.OrderId == monthlyOrder.orderId);
+                var shipmentQuantity = shipmentQuantityQueryResult.FirstOrDefault(f => f.OrderId == monthlyOrder.orderId);
+                var inventoryQuantity = inventoryQuantityQueryResult.FirstOrDefault(f => f.OrderId == monthlyOrder.orderId);
+                var preProductionQuantity = preProductionQuantityQueryResult.FirstOrDefault(f => f.OrderId == monthlyOrder.orderId);
 
-            //    monthlyOrderStatus.notInKanbanQuantity = monthlyOrder.orderQuantity - (await GetPreProductionQuantity(new List<int>() { monthlyOrder.orderId }) + monthlyOrderStatus.onProductionQuantity + monthlyOrderStatus.inspectingQuantity + monthlyOrderStatus.afterProductionQuantity);
-            //    monthlyOrderStatus.diffOrderShipmentQuantity = monthlyOrder.orderQuantity - monthlyOrderStatus.shipmentQuantity;
+                var monthlyOrderStatus = new MonthlyOrderStatusReportViewModel()
+                {
+                    accountName = monthlyOrder.accountName,
+                    afterProductionQuantity = afterProductionQuantity != null ? afterProductionQuantity.Quantity : 0,
+                    buyerName = monthlyOrder.buyerName,
+                    colorRequest = monthlyOrder.colorRequest,
+                    constructionComposite = monthlyOrder.constructionComposite,
+                    deliveryDate = monthlyOrder.deliveryDate,
+                    designCode = monthlyOrder.designCode,
+                    inspectingQuantity = inspectingQuantity != null ? inspectingQuantity.Quantity : 0,
+                    onProductionQuantity = onProductionQuantity != null ? onProductionQuantity.Quantity : 0,
+                    orderId = monthlyOrder.orderId,
+                    orderNo = monthlyOrder.orderNo,
+                    orderQuantity = monthlyOrder.orderQuantity,
+                    processType = monthlyOrder.processType,
+                    shipmentQuantity = shipmentQuantity != null ? shipmentQuantity.Quantity : 0,
+                    storageQuantity = inventoryQuantity != null ? inventoryQuantity.Quantity : 0,
+                    _createdDate = monthlyOrder._createdDate
+                };
 
-            //    result.Add(monthlyOrderStatus);
-            //}
+                monthlyOrderStatus.notInKanbanQuantity = monthlyOrder.orderQuantity - (preProductionQuantity != null ? preProductionQuantity.Quantity : 0 + monthlyOrderStatus.onProductionQuantity + monthlyOrderStatus.inspectingQuantity + monthlyOrderStatus.afterProductionQuantity);
+                monthlyOrderStatus.diffOrderShipmentQuantity = monthlyOrder.orderQuantity - monthlyOrderStatus.shipmentQuantity;
+
+                result.Add(monthlyOrderStatus);
+            });
+            #endregion
 
             return result;
+        }
+
+        private Task<List<QuantityQueryResult>> GetPreProductionQuantityQueryResult(List<int> orderIds)
+        {
+            return _kanbanDbSet
+                .Where(kanban => !kanban.IsComplete && !kanban.IsInactive && kanban.CurrentStepIndex == 0 && orderIds.Contains(kanban.ProductionOrderId))
+                .GroupBy(kanban => kanban.ProductionOrderId)
+                .Select(s => new QuantityQueryResult()
+                {
+                    OrderId = s.Key,
+                    Quantity = s.Sum(sum => sum.CurrentQty)
+                })
+                .ToListAsync();
+        }
+
+        private async Task<List<QuantityQueryResult>> GetInventoryQuantityQueryResult(List<int> orderIds)
+        {
+            var packingQuery = _packingDbSet.Where(w => orderIds.Contains(w.ProductionOrderId));
+            var packings = await packingQuery.GroupBy(group => group.ProductionOrderId).Select(s => new { OrderId = s.Key, PackingIds = s.Select(select => select.Id).ToList()}).ToListAsync();
+            var packingIds = packings.SelectMany(s => s.PackingIds).ToList();
+
+            var packingReceipts = await _packingReceiptDbSet.Include(i => i.Items).Where(w => packingIds.Contains(w.PackingId)).Select(s => new { s.PackingId, Quantity = s.Items.Sum(sum => sum.Quantity * sum.Length)}).ToListAsync();
+
+
+            var result = new List<QuantityQueryResult>();
+            foreach (var packing in packings)
+            {
+                result.Add(new QuantityQueryResult()
+                {
+                    OrderId = packing.OrderId,
+                    Quantity = packingReceipts.Where(w => packing.PackingIds.Contains(w.PackingId)).Sum(sum => sum.Quantity)
+                });
+            }
+
+            return result;
+        }
+
+        private Task<List<QuantityQueryResult>> GetShipmentQuantityQueryResult(List<int> orderIds)
+        {
+            var shipmentHeaderIds = _shipmentDetailDbSet.Where(shipmentItem => orderIds.Contains(shipmentItem.ProductionOrderId)).Select(s => s.ShipmentDocumentId).ToList();
+            shipmentHeaderIds = _shipmentDbSet.Where(shipment => !shipment.IsVoid && shipmentHeaderIds.Contains(shipment.Id)).Select(s => s.Id).ToList();
+
+
+            return _shipmentDetailDbSet
+                .Include(shipmentDetail => shipmentDetail.Items)
+                .ThenInclude(shipmentItem => shipmentItem.PackingReceiptItems)
+                .Where(shipment => shipmentHeaderIds.Contains(shipment.ShipmentDocumentId))
+                .GroupBy(group => group.ProductionOrderId)
+                .Select(s => new QuantityQueryResult()
+                {
+                    OrderId = s.Key,
+                    Quantity = s.SelectMany(sm => sm.Items.SelectMany(smi => smi.PackingReceiptItems)).Sum(sum => sum.Length * sum.Quantity)
+                })
+                .ToListAsync();
+        }
+
+        private Task<List<QuantityQueryResult>> GetOnProductionQuantityQueryResult(List<int> orderIds)
+        {
+            return _kanbanDbSet
+                .Include(kanban => kanban.Instruction)
+                .ThenInclude(instruction => instruction.Steps)
+                .Where(kanban => !kanban.IsComplete && !kanban.IsInactive && kanban.CurrentStepIndex != 0 && kanban.CurrentStepIndex != kanban.Instruction.Steps.Count && orderIds.Contains(kanban.ProductionOrderId))
+                .GroupBy(kanban => kanban.ProductionOrderId)
+                .Select(s => new QuantityQueryResult()
+                {
+                    OrderId = s.Key,
+                    Quantity = s.Sum(sum => sum.CurrentQty)
+                })
+                .ToListAsync();
+        }
+
+        private Task<List<QuantityQueryResult>> GetInspectingQuantityQueryResult(List<int> orderIds)
+        {
+            return _kanbanDbSet
+                .Include(kanban => kanban.Instruction)
+                .ThenInclude(instruction => instruction.Steps)
+                .Where(kanban => !kanban.IsComplete && !kanban.IsInactive && kanban.CurrentStepIndex != 0 && kanban.CurrentStepIndex == kanban.Instruction.Steps.Count && orderIds.Contains(kanban.ProductionOrderId))
+                .GroupBy(kanban => kanban.ProductionOrderId)
+                .Select(s => new QuantityQueryResult
+                {
+                    OrderId = s.Key,
+                    Quantity = s.Sum(sum => sum.CurrentQty)
+                })
+                .ToListAsync();
+        }
+
+        private Task<List<QuantityQueryResult>> GetAfterProductionQuantityQueryResult(List<int> orderIds)
+        {
+            return _kanbanDbSet
+                .Include(kanban => kanban.Instruction)
+                .ThenInclude(instruction => instruction.Steps)
+                .Where(kanban => kanban.IsComplete && !kanban.IsInactive && kanban.CurrentStepIndex != 0 && kanban.CurrentStepIndex == kanban.Instruction.Steps.Count && orderIds.Contains(kanban.ProductionOrderId))
+                .GroupBy(kanban => kanban.ProductionOrderId)
+                .Select(s => new QuantityQueryResult()
+                {
+                    OrderId = s.Key,
+                    Quantity = s.Sum(sum => sum.CurrentQty)
+                })
+                .ToListAsync();
         }
 
         private async Task<List<MonthlyOrderQuantity>> GetMonthlyOrderQuantity(int year, int month, int orderTypeId)
@@ -427,5 +545,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Orde
         public int Month { get; set; }
         public List<int> OrderIds { get; set; }
         public double OrderQuantity { get; set; }
+    }
+
+    internal class QuantityQueryResult
+    {
+        public int OrderId { get; set; }
+        public double Quantity { get; set; }
     }
 }
