@@ -2,10 +2,8 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.MachineType;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using Com.Danliris.Service.Production.Lib.ViewModels.Master.Step;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
 {
@@ -19,6 +17,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
         public int? Year { get; set; }
         public string Condition { get; set; }
         public int? MonthlyCapacity { get; set; }
+        public double Electric { get; set; }
+        public double Steam { get; set; }
+        public double Water { get; set; }
+        public double Solar { get; set; }
+        public double LPG { get; set; }
 
         public UnitViewModel Unit { get; set; }
         public MachineTypeViewModel MachineType { get; set; }
@@ -27,7 +30,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(Name) || string.IsNullOrWhiteSpace(Name))
+                yield return new ValidationResult("Nama harus diisi", new List<string> { "Name" });
+
+            if (string.IsNullOrEmpty(Process) || string.IsNullOrWhiteSpace(Process))
+                yield return new ValidationResult("Proses harus diisi", new List<string> { "Process" });
         }
     }
 }
