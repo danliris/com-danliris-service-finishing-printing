@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
         public async Task<int> UpdateAsync(int id, MonitoringSpecificationMachineModel model)
         {
-            this.MonitoringSpecificationMachineLogic.UpdateModelAsync(id, model);
+            await this.MonitoringSpecificationMachineLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
     }

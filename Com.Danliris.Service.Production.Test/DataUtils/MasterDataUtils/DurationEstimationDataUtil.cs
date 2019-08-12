@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
         {
             DurationEstimationModel model = new DurationEstimationModel
             {
+                ProcessTypeCode ="test",
                 Areas = new List<DurationEstimationAreaModel>
                 {
                     new DurationEstimationAreaModel()

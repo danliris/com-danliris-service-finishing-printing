@@ -9,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 {
@@ -36,5 +37,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 
             return serviceProviderMock;
         }
+
+        [Fact]
+        public async void GetProcessType()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DurationEstimationFacade facade = Activator.CreateInstance(typeof(DurationEstimationFacade), serviceProvider, dbContext) as DurationEstimationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.ReadByProcessType(data.ProcessTypeCode);
+
+            Assert.NotNull(Response);
+        }
+
     }
 }

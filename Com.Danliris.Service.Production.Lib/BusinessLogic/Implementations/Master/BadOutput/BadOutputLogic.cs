@@ -35,7 +35,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             base.CreateModel(model);
         }
 
-        public override async void UpdateModelAsync(int id, BadOutputModel model)
+        public override async Task UpdateModelAsync(int id, BadOutputModel model)
         {
             if (model.MachineDetails != null)
             {
@@ -47,7 +47,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await BadOutputMachineLogic.DeleteModel(itemId);
                     else
                     {
-                        BadOutputMachineLogic.UpdateModelAsync(itemId, data);
+                        await BadOutputMachineLogic.UpdateModelAsync(itemId, data);
                     }
 
                     foreach (BadOutputMachineModel item in model.MachineDetails)

@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public async Task<int> UpdateAsync(int id, DurationEstimationModel model)
         {
-            DurationEstimationLogic.UpdateModelAsync(id, model);
+            await DurationEstimationLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
@@ -103,9 +103,9 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
             return await DbContext.SaveChangesAsync();
         }
 
-        public DurationEstimationModel ReadByProcessType(string processType)
+        public DurationEstimationModel ReadByProcessType(string processTypeCode)
         {
-            return DbSet.Include(i => i.Areas).FirstOrDefault(f => f.ProcessTypeCode.Equals(processType));
+            return DbSet.Include(i => i.Areas).FirstOrDefault(f => f.ProcessTypeCode.Equals(processTypeCode));
         }
     }
 }

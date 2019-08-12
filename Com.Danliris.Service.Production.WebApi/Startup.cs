@@ -53,6 +53,8 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Shipment
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.OperationalCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.OrderStatusReport;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.OrderStatusReport;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -72,7 +74,7 @@ namespace Com.Danliris.Service.Production.WebApi
         {
             APIEndpoint.Core = Configuration.GetValue<string>("CoreEndpoint") ?? Configuration["CoreEndpoint"];
             APIEndpoint.Inventory = Configuration.GetValue<string>("InventoryEndpoint") ?? Configuration["InventoryEndpoint"];
-            //APIEndpoint.Production = Configuration.GetValue<string>("ProductionEndpoint") ?? Configuration["ProductionEndpoint"];
+            APIEndpoint.Sales = Configuration.GetValue<string>("SalesEndpoint") ?? Configuration["SalesEndpoint"];
             //APIEndpoint.Purchasing = Configuration.GetValue<string>("PurchasingEndpoint") ?? Configuration["PurchasingEndpoint"];
         }
 
@@ -114,6 +116,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IShipmentDocumentService, ShipmentDocumentService>()
                 .AddTransient<IDirectLaborCostFacade, DirectLaborCostFacade>()
                 .AddTransient<IOperationalCostFacade, OperationalCostFacade>()
+                .AddTransient<IOrderStatusReportService, OrderStatusReportService>()
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>();
         }
 

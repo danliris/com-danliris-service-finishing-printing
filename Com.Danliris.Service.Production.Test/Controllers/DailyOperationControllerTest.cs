@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils;
 using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOperation;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
@@ -13,8 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,6 +24,200 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 {
     public class DailyOperationControllerTest : BaseControllerTest<DailyOperationController, DailyOperationModel, DailyOperationViewModel, IDailyOperationFacade>
     {
+        [Fact]
+        public async Task GetById_NotNullModel_ReturnOK_StepProcessNull()
+        {
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Kanban = new KanbanViewModel()
+                {
+                    CurrentStepIndex = 1,
+                    Instruction = new KanbanInstructionViewModel()
+                    {
+                        Steps = new List<KanbanStepViewModel>()
+                        {
+                            new KanbanStepViewModel()
+                            {
+                                SelectedIndex = 1,
+                                StepIndex = 0
+                            }
+                        }
+                    },
+                    Id = 1
+                },
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+                {
+                    Process = "a"
+                },
+                Type = "output"
+            };
+            var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
+
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
+            int statusCode = await GetStatusCodeGetById(mocks);
+            Assert.Equal((int)HttpStatusCode.OK, statusCode);
+
+        }
+
+        [Fact]
+        public async Task GetById_NotNullModel_ReturnOK_False()
+        {
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Kanban = new KanbanViewModel()
+                {
+                    CurrentStepIndex = 0,
+                    Instruction = new KanbanInstructionViewModel()
+                    {
+                        Steps = new List<KanbanStepViewModel>()
+                        {
+                            new KanbanStepViewModel()
+                            {
+                                SelectedIndex = 1,
+                                StepIndex = 0
+                            }
+                        }
+                    },
+                    Id = 1
+                },
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+                {
+                    Process = "a"
+                },
+                Type = "output"
+            };
+            var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
+
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(false);
+            mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
+            int statusCode = await GetStatusCodeGetById(mocks);
+            Assert.Equal((int)HttpStatusCode.OK, statusCode);
+
+        }
+
+
+
+        public override async Task GetById_NotNullModel_ReturnOK()
+        {
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Kanban = new KanbanViewModel()
+                {
+                    CurrentStepIndex = 0,
+                    Instruction = new KanbanInstructionViewModel()
+                    {
+                        Steps = new List<KanbanStepViewModel>()
+                        {
+                            new KanbanStepViewModel()
+                            {
+                                SelectedIndex = 1,
+                                StepIndex = 0, 
+                                Process = "a"
+                            }
+                        }
+                    }, 
+                    Id = 1
+                },
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+                {
+                    Process = "a"
+                },
+                Type = "output"
+            };
+            var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
+
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
+            int statusCode = await GetStatusCodeGetById(mocks);
+            Assert.Equal((int)HttpStatusCode.OK, statusCode);
+
+        }
+
+        
+
+        [Fact]
+        public async Task GetById_NotNullModel_ReturnOK_InputFalse()
+        {
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Kanban = new KanbanViewModel()
+                {
+                    CurrentStepIndex = 0,
+                    Instruction = new KanbanInstructionViewModel()
+                    {
+                        Steps = new List<KanbanStepViewModel>()
+                        {
+                            new KanbanStepViewModel()
+                            {
+                                SelectedIndex = 1,
+                                StepIndex = 0,
+                                Process = "a"
+                            }
+                        }
+                    },
+                    Id = 1
+                },
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+                {
+                    Process = "a"
+                },
+                Type = "input"
+            };
+            var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
+
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(false);
+            mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
+            int statusCode = await GetStatusCodeGetById(mocks);
+            Assert.Equal((int)HttpStatusCode.OK, statusCode);
+
+        }
+        [Fact]
+        public async Task GetById_NotNullModel_ReturnOK_InputTrue()
+        {
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Kanban = new KanbanViewModel()
+                {
+                    CurrentStepIndex = 0,
+                    Instruction = new KanbanInstructionViewModel()
+                    {
+                        Steps = new List<KanbanStepViewModel>()
+                        {
+                            new KanbanStepViewModel()
+                            {
+                                SelectedIndex = 1,
+                                StepIndex = 0,
+                                Process = "a"
+                            }
+                        }
+                    },
+                    Id = 1
+                },
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+                {
+                    Process = "a"
+                },
+                Type = "input"
+            };
+            var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
+
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
+            int statusCode = await GetStatusCodeGetById(mocks);
+            Assert.Equal((int)HttpStatusCode.OK, statusCode);
+
+        }
 
         [Fact]
         public void GetReport_WithoutException_ReturnOK()
@@ -175,6 +370,80 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             };
 
             var response = await controller.GetJoinKanbans(It.IsAny<string>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetFilterOptions_ReturnOK()
+        {
+            var mockFacade = new Mock<IDailyOperationFacade>();
+            mockFacade.Setup(x => x.GetJoinKanban(It.IsAny<string>()))
+                .ReturnsAsync(new List<DailyOperationKanbanViewModel>());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+
+            var response = controller.GetFilterOptions();
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetBySelectedColumn_ReturnOK()
+        {
+            var mockFacade = new Mock<IDailyOperationFacade>();
+            mockFacade.Setup(f => f.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                .Returns(new ReadResponse<DailyOperationModel>(new List<DailyOperationModel>(), 0, new Dictionary<string, string>(), new List<string>()));
+
+            var mockMapper = new Mock<IMapper>();
+            mockMapper.Setup(f => f.Map<List<DailyOperationViewModel>>(It.IsAny<List<DailyOperationModel>>())).Returns(ViewModels);
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+
+            var response = controller.GetBySelectedColumn(null, null);
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetBySelectedColumn_ReturnInternalServer()
+        {
+            var mockFacade = new Mock<IDailyOperationFacade>();
+            mockFacade.Setup(f => f.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+            mockMapper.Setup(f => f.Map<List<DailyOperationViewModel>>(It.IsAny<List<DailyOperationModel>>())).Returns(ViewModels);
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+
+            var response = controller.GetBySelectedColumn(null, null);
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
     }

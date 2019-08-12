@@ -94,7 +94,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public async Task<int> UpdateAsync(int id, InstructionModel model)
         {
-            InstructionLogic.UpdateModelAsync(id, model);
+            await InstructionLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 

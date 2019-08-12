@@ -124,7 +124,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
         public async Task<int> UpdateAsync(int id, MachineModel model)
         {
-            this.MachineLogic.UpdateModelAsync(id, model);
+            await this.MachineLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
     }

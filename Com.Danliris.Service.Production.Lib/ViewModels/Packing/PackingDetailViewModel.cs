@@ -13,18 +13,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing
         public string Lot { get; set; }
         [MaxLength(100)]
         public string Grade { get; set; }
-        public double Weight { get; set; }
-        public double Length { get; set; }
-        public int Quantity { get; set; }
+        public double? Weight { get; set; }
+        public double? Length { get; set; }
+        public int? Quantity { get; set; }
         [MaxLength(500)]
         public string Remark { get; set; }
 
-        public int PackingId { get; set; }
+        public int? PackingId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (string.IsNullOrWhiteSpace(Lot))
-                yield return new ValidationResult("Lot harus diisi", new List<string> { "Lot" });
+            throw new NotImplementedException();
         }
     }
 }

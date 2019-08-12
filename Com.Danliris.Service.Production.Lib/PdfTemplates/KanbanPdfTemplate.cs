@@ -151,16 +151,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             #region Table 1
             PdfPTable bodyTable1 = new PdfPTable(2);
+            bodyTable1.SplitLate = false;
             float[] bodyTable1Widths = new float[] { 50f, 50f };
             bodyTable1.SetWidths(bodyTable1Widths);
             bodyTable1.WidthPercentage = 100;
 
             PdfPTable bodyTable1Left = new PdfPTable(6);
+            bodyTable1Left.SplitLate = false;
             float[] bodyTable1LeftWidths = new float[] { 10f, 10f, 10f, 50f, 10f, 10f };
             bodyTable1Left.SetWidths(bodyTable1LeftWidths);
             bodyTable1Left.WidthPercentage = 100;
 
             PdfPTable bodyTable1Right = new PdfPTable(4);
+            bodyTable1Right.SplitLate = false;
             float[] bodyTable1RightWidths = new float[] { 30f, 20f, 30f, 20f };
             bodyTable1Right.SetWidths(bodyTable1RightWidths);
             bodyTable1Right.WidthPercentage = 100;

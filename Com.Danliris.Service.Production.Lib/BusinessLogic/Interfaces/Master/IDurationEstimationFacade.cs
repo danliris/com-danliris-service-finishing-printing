@@ -5,6 +5,6 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Interfaces.Master
 {
     public interface IDurationEstimationFacade : IBaseFacade<DurationEstimationModel>
     {
-        DurationEstimationModel ReadByProcessType(string processType);
+        DurationEstimationModel ReadByProcessType(string processTypeCode);
     }
 }
