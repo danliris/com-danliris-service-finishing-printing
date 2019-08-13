@@ -12,5 +12,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
         public int? SelectedIndex { get; set; }
         public int? MachineId { get; set; }
         public MachineViewModel Machine { get; set; }
+        public int StepIndex { get; set; }
     }
 }

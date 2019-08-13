@@ -18,5 +18,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.P
         MemoryStream GenerateExcel(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
         List<PackingViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
+        List<PackingQCGudangViewModel> GetQCGudang(DateTime? dateFrom, DateTime? dateTo, int offSet);
+        MemoryStream GenerateExcelQCGudang(DateTime? dateFrom, DateTime? dateTo, int offSet);
     }
 }

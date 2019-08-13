@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         public override async Task<FabricQualityControlModel> ReadModelById(int id)
         {
             var Result = await DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && !d.IsDeleted);
-            Result.FabricGradeTests = await FabricGradeTestDbSet.Where(e => e.FabricQualityControlId.Equals(id) && !e.IsDeleted).ToListAsync();
+            Result.FabricGradeTests = await FabricGradeTestDbSet.Where(e => e.FabricQualityControlId.Equals(id) && !e.IsDeleted).OrderBy(x => x.PcsNo).ToListAsync();
             foreach (var fabricGradeTest in Result.FabricGradeTests)
             {
                 fabricGradeTest.Criteria = await CriteriaDbSet.Where(w => w.FabricGradeTestId.Equals(fabricGradeTest.Id)).OrderBy(o => o.Index).ToListAsync();
@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             //return 
         }
 
-        public override void UpdateModelAsync(int id, FabricQualityControlModel model)
+        public override async Task UpdateModelAsync(int id, FabricQualityControlModel model)
         {
             HashSet<int> fabricGradeTestIds = FabricGradeTestDbSet.Where(d => d.FabricQualityControlId == model.Id && !d.IsDeleted).Select(d => d.Id).ToHashSet();
 
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     }
                 }
             }
-            base.UpdateModelAsync(id, model);
+            await base.UpdateModelAsync(id, model);
         }
     }
 }

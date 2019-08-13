@@ -157,20 +157,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             //Proses
             //Mesin
             if (startDate.HasValue && endDate.HasValue)
-                query = query.Where(w => w.LastModifiedUtc >= startDate.Value && w.LastModifiedUtc <= endDate.Value);
+                query = query.Where(w => w.LastModifiedUtc.Date >= startDate.Value.Date && w.LastModifiedUtc.Date <= endDate.Value.Date);
             else if (startDate.HasValue)
-                query = query.Where(w => w.LastModifiedUtc >= startDate.Value);
+                query = query.Where(w => w.LastModifiedUtc.Date >= startDate.Value.Date);
             else if (endDate.HasValue)
-                query = query.Where(w => w.LastModifiedUtc <= endDate.Value);
+                query = query.Where(w => w.LastModifiedUtc.Date <= endDate.Value.Date);
 
             query = (from daily in query
-                     join machines in DbContext.Machine on daily.MachineId equals machines.Id
-                     join kanbans in DbContext.Kanbans on daily.KanbanId equals kanbans.Id
-                     where
-                     !string.IsNullOrWhiteSpace(machine) ? machines.Name.Contains(machine) : true
-                     && !string.IsNullOrWhiteSpace(cartNo) ? kanbans.CartCartNumber.Contains(cartNo) : true
-                     && !string.IsNullOrWhiteSpace(stepProcess) ? daily.StepProcess.Contains(stepProcess) : true
-                     && !string.IsNullOrWhiteSpace(orderNo) ? kanbans.ProductionOrderOrderNo.Contains(orderNo) : true
+                     join machines in DbContext.Machine on daily.MachineId equals machines.Id into dailyMachine
+                     from machines in dailyMachine.DefaultIfEmpty()
+                     join kanbans in DbContext.Kanbans on daily.KanbanId equals kanbans.Id into dailyKanban
+                     from kanbans in dailyKanban.DefaultIfEmpty()
+                     //where
+                     //!string.IsNullOrWhiteSpace(machine) ? machines.Name.Contains(machine) : machines.Name.Equals(machines.Name)
+                     //&& !string.IsNullOrWhiteSpace(cartNo) ? kanbans.CartCartNumber.Contains(cartNo) : kanbans.CartCartNumber.Equals(kanbans.CartCartNumber)
+                     //&& !string.IsNullOrWhiteSpace(stepProcess) ? daily.StepProcess.Contains(stepProcess) : daily.StepProcess.Equals(daily.StepProcess)
+                     //&& !string.IsNullOrWhiteSpace(orderNo) ? kanbans.ProductionOrderOrderNo.Contains(orderNo) : kanbans.ProductionOrderOrderNo.Equals(kanbans.ProductionOrderOrderNo)
                      select new DailyOperationModel
                      {
                          Id = daily.Id,
@@ -187,6 +189,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                          BadOutput = daily.BadOutput,
                          LastModifiedUtc = daily.LastModifiedUtc
                      });
+
+            if (!string.IsNullOrWhiteSpace(machine))
+                query = query.Where(w => w.Machine.Name.Contains(machine));
+            if (!string.IsNullOrWhiteSpace(cartNo))
+                query = query.Where(w => w.Kanban.CartCartNumber.Contains(cartNo));
+            if (!string.IsNullOrWhiteSpace(stepProcess))
+                query = query.Where(w => w.StepProcess.Contains(stepProcess));
+            if (!string.IsNullOrWhiteSpace(orderNo))
+                query = query.Where(w => w.Kanban.ProductionOrderOrderNo.Contains(orderNo));
+
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<DailyOperationModel>.Order(query, orderDictionary);
@@ -208,7 +220,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
         public async Task<int> UpdateAsync(int id, DailyOperationModel model)
         {
-            this.DailyOperationLogic.UpdateModelAsync(id, model);
+            await this.DailyOperationLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
@@ -235,26 +247,26 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             if (dateFrom == null && dateTo == null)
             {
                 query = query
-                    .Where(x => DateTime.UtcNow.AddHours(offSet).Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= DateTime.UtcNow.AddHours(offSet).Date);
+                    .Where(x => DateTime.UtcNow.AddHours(offSet).Date.AddDays(-30) <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= DateTime.UtcNow.AddHours(offSet).Date);
             }
             else if (dateFrom == null && dateTo != null)
             {
                 query = query
-                    .Where(x => dateTo.Value.Date.AddDays(-30) <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+                    .Where(x => dateTo.GetValueOrDefault().Date.AddDays(-30) <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= dateTo.GetValueOrDefault().Date);
             }
             else if (dateTo == null && dateFrom != null)
             {
                 query = query
-                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateFrom.Value.Date.AddDays(30));
+                    .Where(x => dateFrom.GetValueOrDefault().Date <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= dateFrom.GetValueOrDefault().Date.AddDays(30));
             }
             else
             {
                 query = query
-                    .Where(x => dateFrom.Value.Date <= x.DateInput.Value.AddHours(offSet).Date
-                        && x.DateInput.Value.AddHours(offSet).Date <= dateTo.Value.Date);
+                    .Where(x => dateFrom.GetValueOrDefault().Date <= x.DateInput.GetValueOrDefault().AddHours(offSet).Date
+                        && x.DateInput.GetValueOrDefault().AddHours(offSet).Date <= dateTo.GetValueOrDefault().Date);
             }
             dailyOperations = query.Select(x => new DailyOperationViewModel()
             {
@@ -428,6 +440,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
             }
             return data.AsNoTracking().ToListAsync();
+        }
+
+        public Task<bool> HasOutput(int kanbanId, string stepProcess)
+        {
+            return DbSet.AnyAsync(x => x.KanbanId == kanbanId && x.StepProcess == stepProcess && x.Type.ToLower() == "output");
         }
     }
 }

@@ -997,7 +997,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<double>("Electric");
+
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<double>("LPG");
 
                     b.Property<string>("LastModifiedAgent")
                         .IsRequired()
@@ -1023,6 +1027,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<string>("Process");
 
+                    b.Property<double>("Solar");
+
+                    b.Property<double>("Steam");
+
                     b.Property<string>("UId")
                         .HasMaxLength(255);
 
@@ -1035,6 +1043,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<int>("UnitId");
 
                     b.Property<string>("UnitName");
+
+                    b.Property<double>("Water");
 
                     b.Property<int>("Year");
 

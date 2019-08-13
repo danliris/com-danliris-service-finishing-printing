@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Fabr
 
         public async Task<int> UpdateAsync(int id, FabricQualityControlModel model)
         {
-            FabricQualityControlLogic.UpdateModelAsync(id, model);
+            await FabricQualityControlLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 

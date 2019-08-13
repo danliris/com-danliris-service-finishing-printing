@@ -1,12 +1,19 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
+using Com.Danliris.Service.Production.Lib.ViewModels.Master.Step;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 {
@@ -36,6 +43,82 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
                 .Returns(new MachineLogic(machineEventLogic, machineStepLogic, identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public void Validate_ViewModel()
+        {
+            MachineViewModel vm = new MachineViewModel()
+            {
+                Code = "code",
+                Condition = "condition",
+                Electric = 1,
+                LPG = 1,
+                MachineEvents = new List<MachineEventViewModel>()
+                {
+                    new MachineEventViewModel()
+                    {
+                        Name = "name",
+                        No = "no"
+                    }
+                },
+                MachineType = new MachineTypeViewModel()
+                {
+                    Indicators = new List<MachineTypeIndicatorsViewModel>()
+                    {
+                        new MachineTypeIndicatorsViewModel()
+                        {
+                            DataType = "datatype",
+                            DefaultValue = "default",
+                            Indicator = "indicatpr",
+                            Uom = "uom"
+                            
+                        }
+                        
+                    },
+                    Description = "description",
+                    Name = "name"
+                },
+                Manufacture = "manufacture",
+                MonthlyCapacity = 1,
+                Name = "name",
+                Process = "process",
+                Solar = 1,
+                Steam = 1,
+                Steps = new List<StepViewModel>()
+                {
+                    new StepViewModel()
+                    {
+                        Alias = "alias",
+                        Process = "process",
+                        ProcessArea = "area",
+                        StepIndicators = new List<StepIndicatorViewModel>()
+                        {
+                            new StepIndicatorViewModel()
+                            {
+                                Name = "name",
+                                Uom = "uom",
+                                Value = "value"
+                            }
+                        }
+                    }
+                },
+                Unit = new UnitViewModel()
+                {
+                    Name = "name",
+                    Division = new DivisionViewModel()
+                    {
+                        Name = "name"
+                    }
+                },
+                Water = 1,
+                Year = 2019
+            };
+
+            Assert.Empty(vm.Validate(null));
+
+            MachineViewModel vm2 = new MachineViewModel();
+            Assert.NotEmpty(vm2.Validate(null));
         }
     }
 }

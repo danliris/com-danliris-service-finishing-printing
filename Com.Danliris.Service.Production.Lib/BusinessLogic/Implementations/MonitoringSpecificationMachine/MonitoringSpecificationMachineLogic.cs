@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             DbSet.Update(model);
         }
 
-        public override async void UpdateModelAsync(int id, MonitoringSpecificationMachineModel model)
+        public override async Task UpdateModelAsync(int id, MonitoringSpecificationMachineModel model)
         {
             if (model.Details != null)
             {
@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await MonitoringSpecificationMachineDetailsLogic.DeleteModel(itemId);
                     else
                     {
-                        MonitoringSpecificationMachineDetailsLogic.UpdateModelAsync(itemId, data);
+                        await MonitoringSpecificationMachineDetailsLogic.UpdateModelAsync(itemId, data);
                     }
 
                     foreach (MonitoringSpecificationMachineDetailsModel item in model.Details)

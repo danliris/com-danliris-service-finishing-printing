@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Utilities;
@@ -14,6 +15,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing
@@ -23,9 +26,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         private readonly ProductionDbContext dbContext;
         private readonly DbSet<PackingModel> dbSet;
         private readonly PackingLogic packingLogic;
+        private readonly IServiceProvider ServiceProvider;
 
         public PackingFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
+            ServiceProvider = serviceProvider;
             this.dbContext = dbContext;
             this.dbSet = dbContext.Set<PackingModel>();
             this.packingLogic = serviceProvider.GetService<PackingLogic>();
@@ -48,7 +53,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     var row = await dbContext.SaveChangesAsync();
                     if (row > 0)
                     {
-                        await packingLogic.CreateProduct(model);
+                        await CreateProduct(model);
                     }
                     transaction.Commit();
                     return row;
@@ -90,10 +95,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(String) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Lot", DataType = typeof(String) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(String) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Berat(kg)", DataType = typeof(Int32) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang(m)", DataType = typeof(Int32) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(Int32) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(Int32) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Berat(kg)", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang(m)", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(String) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(String) });
 
 
@@ -109,8 +114,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     foreach (var detail in item.PackingDetails)
                     {
                         dt.Rows.Add(index++, item.Code, item.DeliveryType, item.ProductionOrderNo, item.OrderTypeName, item.FinishedProductType,
-                            item.BuyerName, item.Construction, item.DesignCode, item.ColorName, item.Date.AddHours(offSet).ToString("dd/MM/yyyy"),
-                            detail.Lot, detail.Grade, detail.Weight, detail.Length, detail.Quantity, (detail.Length * detail.Quantity), detail.Remark);
+                            item.BuyerName, item.Construction, item.DesignCode, item.ColorName, item.Date.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"),
+                            detail.Lot, detail.Grade, detail.Weight.GetValueOrDefault().ToString("0.##"), detail.Length.GetValueOrDefault().ToString("0.##"), detail.Quantity.GetValueOrDefault().ToString("0.##"), (detail.Length.GetValueOrDefault() * detail.Quantity.GetValueOrDefault()).ToString("0.##"), detail.Remark);
                     }
                 }
             }
@@ -118,6 +123,37 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Packing") }, true);
 
 
+        }
+
+        public MemoryStream GenerateExcelQCGudang(DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            var data = GetQCGudang(dateFrom, dateTo, offSet);
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "UlanganSolid", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "White", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Dyeing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "UlanganPrinting", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Printing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jumlah", DataType = typeof(string) });
+
+            if (data.Count == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                int index = 1;
+                foreach (var item in data)
+                {
+                    dt.Rows.Add(index++, item.Date.GetValueOrDefault().ToString("dd/MM/yyyy"), item.UlanganSolid.ToString("0.##"), item.White.ToString("0.##"), item.Dyeing.ToString("0.##"),
+                        item.UlanganPrinting.ToString("0.##"), item.Printing.ToString("0.##"), item.Jumlah.ToString("0.##"));
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "QC Gudang") }, true);
         }
 
         public Task<PackingDetailModel> GetPackingDetail(string productName)
@@ -129,6 +165,88 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
 
             return packingDetail;
+        }
+
+        public List<PackingQCGudangViewModel> GetQCGudang(DateTime? dateFrom, DateTime? dateTo, int offSet)
+        {
+            IQueryable<PackingModel> query = dbContext.Packings.Include(x => x.PackingDetails);
+            if (dateFrom == null && dateTo == null)
+            {
+                query = query
+                    .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= DateTime.UtcNow.Date);
+            }
+            else if (dateFrom == null && dateTo != null)
+            {
+                query = query
+                    .Where(x => dateTo.Value.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+            else if (dateTo == null && dateFrom != null)
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
+            }
+            else
+            {
+                query = query
+                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+            }
+
+            List<PackingQCGudangViewModel> result = new List<PackingQCGudangViewModel>();
+            foreach (var item in query.ToList())
+            {
+                var vm = new PackingQCGudangViewModel()
+                {
+                    Date = item.Date.Date
+                };
+
+                if (item.DeliveryType.Equals("ULANGAN", StringComparison.OrdinalIgnoreCase) &&
+                    (item.FinishedProductType.Equals("WHITE", StringComparison.OrdinalIgnoreCase) || item.FinishedProductType.Equals("DYEING", StringComparison.OrdinalIgnoreCase)))
+                {
+                    vm.UlanganSolid = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("ULANGAN", StringComparison.OrdinalIgnoreCase) &&
+                   (item.FinishedProductType.Equals("BATIK", StringComparison.OrdinalIgnoreCase) || item.FinishedProductType.Equals("TEKSTIL", StringComparison.OrdinalIgnoreCase)))
+                {
+                    vm.UlanganPrinting = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("BARU", StringComparison.OrdinalIgnoreCase) && item.FinishedProductType.Equals("WHITE", StringComparison.OrdinalIgnoreCase))
+                {
+                    vm.White = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("BARU", StringComparison.OrdinalIgnoreCase) && item.FinishedProductType.Equals("DYEING", StringComparison.OrdinalIgnoreCase))
+                {
+                    vm.Dyeing = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                if (item.DeliveryType.Equals("BARU", StringComparison.OrdinalIgnoreCase) &&
+                   (item.FinishedProductType.Equals("BATIK", StringComparison.OrdinalIgnoreCase) || item.FinishedProductType.Equals("TEKSTIL", StringComparison.OrdinalIgnoreCase)))
+                {
+                    vm.Printing = item.PackingDetails.Sum(x => x.Length * x.Quantity);
+                }
+
+                vm.Jumlah = vm.UlanganSolid + vm.Dyeing + vm.White + vm.UlanganPrinting + vm.Printing;
+
+                result.Add(vm);
+            }
+
+
+            return result.GroupBy(x => x.Date).Select(x => new PackingQCGudangViewModel()
+            {
+                Date = x.Key,
+                Dyeing = x.Sum(y => y.Dyeing),
+                Jumlah = x.Sum(y => y.Jumlah),
+                Printing = x.Sum(y => y.Printing),
+                UlanganPrinting = x.Sum(y => y.UlanganPrinting),
+                UlanganSolid = x.Sum(y => y.UlanganSolid),
+                White = x.Sum(y => y.White)
+            }).OrderBy(x => x.Date).ToList();
         }
 
         public List<PackingViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
@@ -251,13 +369,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             {
                 try
                 {
-                    packingLogic.UpdateModelAsync(id, model);
+                    await packingLogic.UpdateModelAsync(id, model);
                     var row = await dbContext.SaveChangesAsync();
 
-                    if (row > 0)
-                    {
-                        await packingLogic.CreateProduct(model);
-                    }
+                    //if (row > 0)
+                    //{
+                    //    await CreateProduct(model);
+                    //}
                     transaction.Commit();
 
                     return row;
@@ -268,6 +386,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     throw ex;
                 }
             }
+
+        }
+
+        public async Task CreateProduct(PackingModel model)
+        {
+            var client = (IHttpClientService)ServiceProvider.GetService(typeof(IHttpClientService));
+            var uri = string.Format("{0}{1}", Utilities.APIEndpoint.Core, "master/products/packing/create");
+            var myContentJson = JsonConvert.SerializeObject(model);
+            var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(uri, myContent);
+            response.EnsureSuccessStatusCode();
 
         }
     }

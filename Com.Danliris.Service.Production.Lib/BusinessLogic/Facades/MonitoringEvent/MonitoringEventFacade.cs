@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Moni
 
         public async Task<int> UpdateAsync(int id, MonitoringEventModel model)
         {
-            this.MonitoringEventLogic.UpdateModelAsync(id, model);
+            await this.MonitoringEventLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
     }
