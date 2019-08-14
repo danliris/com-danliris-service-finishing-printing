@@ -19,11 +19,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine
         public int Year { get; set; }
         public string Condition { get; set; }
         public int MonthlyCapacity { get; set; }
-        public double Electric { get; set; }
-        public double Steam { get; set; }
-        public double Water { get; set; }
-        public double Solar { get; set; }
-        public double LPG { get; set; }
+        public decimal Electric { get; set; }
+        public decimal Steam { get; set; }
+        public decimal Water { get; set; }
+        public decimal Solar { get; set; }
+        public decimal LPG { get; set; }
 
         //unit
         public int UnitId { get; set; }
