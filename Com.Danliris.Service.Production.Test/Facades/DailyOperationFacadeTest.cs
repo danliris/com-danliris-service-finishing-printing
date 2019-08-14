@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
@@ -14,7 +13,7 @@ using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Moq;
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -155,17 +154,75 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             vm.Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel();
             Assert.NotEmpty(vm.Validate(context));
 
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+            {
+                CurrentStepIndex = 0,
+                Instruction = new Lib.ViewModels.Kanban.KanbanInstructionViewModel()
+                {
+                    Steps = new List<Lib.ViewModels.Kanban.KanbanStepViewModel>()
+                    {
+                        new Lib.ViewModels.Kanban.KanbanStepViewModel()
+                        {
+                            Process = "process"
+                        }
+                    }
+                }
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+
             vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel();
-            Assert.Empty(vm.Validate(context));
 
             vm.Type = "input";
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.DateInput = DateTime.Now.AddDays(1);
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.DateInput = null;
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Input = 0;
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.TimeInput = 0;
             Assert.NotEmpty(vm.Validate(context));
 
             vm.Type = "output";
             Assert.NotEmpty(vm.Validate(context));
 
+            vm.DateOutput = DateTime.Now;
+            vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>();
+            vm.BadOutput = 1;
+            Assert.NotEmpty(vm.Validate(context));
 
+            vm.DateOutput = DateTime.Now;
+            vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>();
+            vm.BadOutput = 1;
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>()
+            {
+                new DailyOperationBadOutputReasonsViewModel()
+                {
+                    Length = 0
+                }
+            };
+            vm.BadOutput = 1;
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.DateOutput = DateTime.Now.AddDays(1);
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.DateOutput = null;
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.GoodOutput = 0;
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.TimeOutput = 0;
+            Assert.NotEmpty(vm.Validate(context));
         }
-        
+
     }
 }
