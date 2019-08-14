@@ -1,10 +1,12 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
@@ -12,6 +14,7 @@ using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Moq;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -129,5 +132,40 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.False(Response);
         }
+
+        [Fact]
+        public void Validate_VM_NULL()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationViewModel vm = new DailyOperationViewModel();
+            System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Type = "s";
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Shift = "s";
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Machine = new Lib.ViewModels.Master.Machine.MachineViewModel();
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel();
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel();
+            Assert.Empty(vm.Validate(context));
+
+            vm.Type = "input";
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Type = "output";
+            Assert.NotEmpty(vm.Validate(context));
+
+
+        }
+        
     }
 }
