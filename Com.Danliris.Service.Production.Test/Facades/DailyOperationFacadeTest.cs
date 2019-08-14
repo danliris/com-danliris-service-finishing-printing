@@ -224,5 +224,33 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotEmpty(vm.Validate(context));
         }
 
+        [Fact]
+        public async Task Validate_VM_Exist()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Type = data.Type,
+                Shift = data.Shift,
+                Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+                {
+                    Id = data.KanbanId
+                },
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+                {
+                    StepId = data.StepId
+                },
+                Machine = new Lib.ViewModels.Master.Machine.MachineViewModel(),
+                
+            };
+            System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
+            Assert.NotEmpty(vm.Validate(context));
+        }
+
     }
 }
