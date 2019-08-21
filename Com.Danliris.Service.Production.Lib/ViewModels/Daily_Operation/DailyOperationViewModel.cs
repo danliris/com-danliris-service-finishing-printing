@@ -1,17 +1,11 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
-using Com.Danliris.Service.Production.Lib;
-using Microsoft.Extensions.DependencyInjection;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
+using System.Linq;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 {
@@ -57,6 +51,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
             if (string.IsNullOrEmpty(this.Shift))
                 yield return new ValidationResult("harus diisi", new List<string> { "Shift" });
 
+            if (this.Machine == null)
+            {
+                yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Machine" });
+            }
+
+            if (this.Step == null)
+            {
+                yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Step" });
+            }
             if (this.Kanban != null)
             {
                 if (!IsEdit.GetValueOrDefault())
@@ -67,8 +70,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
                     if (hasInput.Count > 0)
                     {
-                        yield return new ValidationResult("Data input tidak dapat disimpan karena ada data input yang belum dibuat output di mesin ini", new List<string> { "Machine" });
-                        yield return new ValidationResult("Data input tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
+                        if (!(Kanban.CurrentStepIndex.HasValue && Kanban.Instruction.Steps.Where(x => Step.Process.Equals(x.Process)).Select(x => x.StepIndex).Contains(Kanban.CurrentStepIndex.GetValueOrDefault())))
+                        {
+                            yield return new ValidationResult("Data input tidak dapat disimpan karena ada data input yang belum dibuat output di mesin ini", new List<string> { "Machine" });
+                            yield return new ValidationResult("Data input tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
+                        }
+
                     }
                     else
                     {
@@ -94,15 +101,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                 yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Kanban" });
             }
 
-            if (this.Machine == null)
-            {
-                yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Machine" });
-            }
 
-            if (this.Step == null)
-            {
-                yield return new ValidationResult(" tidak boleh kosong", new List<string> { "Step" });
-            }
 
             if (this.Type == "input")
             {
