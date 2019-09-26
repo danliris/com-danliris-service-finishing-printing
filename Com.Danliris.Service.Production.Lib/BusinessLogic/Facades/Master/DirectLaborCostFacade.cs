@@ -45,6 +45,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
             return await DbContext.SaveChangesAsync();
         }
 
+        public Task<DirectLaborCostModel> GetForCostCalculation(int month, int year)
+        {
+            return DbSet.FirstOrDefaultAsync(d => !d.IsDeleted && d.Month == month && d.Year == year);
+        }
+
         public ReadResponse<DirectLaborCostModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
             IQueryable<DirectLaborCostModel> query = DbSet;

@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
 
         public async Task<int> UpdateAsync(int id, PackingReceiptModel model)
         {
-            packingReceiptLogic.UpdateModelAsync(id, model);
+            await packingReceiptLogic.UpdateModelAsync(id, model);
             await this.packingReceiptLogic.UpdatePacking(model, false);
             await this.packingReceiptLogic.UpdateInventory(model);
             return await dbContext.SaveChangesAsync();

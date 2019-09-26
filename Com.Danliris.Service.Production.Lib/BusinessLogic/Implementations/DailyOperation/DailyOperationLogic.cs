@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             DbSet.Update(model);
         }
 
-        public override async void UpdateModelAsync(int id, DailyOperationModel model)
+        public override async Task UpdateModelAsync(int id, DailyOperationModel model)
         {
             if (model.Type == "output")
             {
@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await DailyOperationBadOutputReasonsLogic.DeleteModel(itemId);
                     else
                     {
-                        DailyOperationBadOutputReasonsLogic.UpdateModelAsync(itemId, data);
+                        await DailyOperationBadOutputReasonsLogic.UpdateModelAsync(itemId, data);
                     }
 
                     foreach (DailyOperationBadOutputReasonsModel item in model.BadOutputReasons)

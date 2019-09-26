@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190812081526_AddNewColumnInMachine")]
+    partial class AddNewColumnInMachine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -997,11 +999,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<decimal>("Electric");
+                    b.Property<double>("Electric");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<decimal>("LPG");
+                    b.Property<double>("LPG");
 
                     b.Property<string>("LastModifiedAgent")
                         .IsRequired()
@@ -1027,9 +1029,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<string>("Process");
 
-                    b.Property<decimal>("Solar");
+                    b.Property<double>("Solar");
 
-                    b.Property<decimal>("Steam");
+                    b.Property<double>("Steam");
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);
@@ -1044,7 +1046,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<string>("UnitName");
 
-                    b.Property<decimal>("Water");
+                    b.Property<double>("Water");
 
                     b.Property<int>("Year");
 

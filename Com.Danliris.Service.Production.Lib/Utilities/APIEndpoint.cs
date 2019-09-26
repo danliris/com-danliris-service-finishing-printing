@@ -6,5 +6,6 @@
         public static string Inventory { get; set; }
         public static string Production { get; set; }
         public static string Purchasing { get; set; }
+        public static string Sales { get; set; }
     }
 }

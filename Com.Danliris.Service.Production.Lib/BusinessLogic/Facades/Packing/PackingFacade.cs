@@ -95,10 +95,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(String) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Lot", DataType = typeof(String) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(String) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Berat(kg)", DataType = typeof(Int32) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang(m)", DataType = typeof(Int32) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(Int32) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(Int32) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Berat(kg)", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang(m)", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(String) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(String) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(String) });
 
 
@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                     {
                         dt.Rows.Add(index++, item.Code, item.DeliveryType, item.ProductionOrderNo, item.OrderTypeName, item.FinishedProductType,
                             item.BuyerName, item.Construction, item.DesignCode, item.ColorName, item.Date.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"),
-                            detail.Lot, detail.Grade, detail.Weight, detail.Length, detail.Quantity, (detail.Length * detail.Quantity), detail.Remark);
+                            detail.Lot, detail.Grade, detail.Weight.GetValueOrDefault().ToString("0.##"), detail.Length.GetValueOrDefault().ToString("0.##"), detail.Quantity.GetValueOrDefault().ToString("0.##"), (detail.Length.GetValueOrDefault() * detail.Quantity.GetValueOrDefault()).ToString("0.##"), detail.Remark);
                     }
                 }
             }
@@ -148,8 +148,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
                 int index = 1;
                 foreach (var item in data)
                 {
-                    dt.Rows.Add(index++, item.Date.GetValueOrDefault().ToString("dd/MM/yyyy"), item.UlanganSolid.ToString("n2"), item.White.ToString("n2"), item.Dyeing.ToString("n2"),
-                        item.UlanganPrinting.ToString("n2"), item.Printing.ToString("n2"), item.Jumlah.ToString("n2"));
+                    dt.Rows.Add(index++, item.Date.GetValueOrDefault().ToString("dd/MM/yyyy"), item.UlanganSolid.ToString("0.##"), item.White.ToString("0.##"), item.Dyeing.ToString("0.##"),
+                        item.UlanganPrinting.ToString("0.##"), item.Printing.ToString("0.##"), item.Jumlah.ToString("0.##"));
                 }
             }
 
@@ -369,13 +369,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             {
                 try
                 {
-                    packingLogic.UpdateModelAsync(id, model);
+                    await packingLogic.UpdateModelAsync(id, model);
                     var row = await dbContext.SaveChangesAsync();
 
-                    if (row > 0)
-                    {
-                        await CreateProduct(model);
-                    }
+                    //if (row > 0)
+                    //{
+                    //    await CreateProduct(model);
+                    //}
                     transaction.Commit();
 
                     return row;

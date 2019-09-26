@@ -62,7 +62,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             DbSet.Update(model);
         }
 
-        public override async void UpdateModelAsync(int id, MachineModel model)
+        public override async Task UpdateModelAsync(int id, MachineModel model)
         {
             if (model.MachineEvents != null)
             {
@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await MachineEventLogic.DeleteModel(itemId);
                     else
                     {
-                        MachineEventLogic.UpdateModelAsync(itemId, data);
+                        await MachineEventLogic.UpdateModelAsync(itemId, data);
                     }
 
                     foreach (MachineEventsModel item in model.MachineEvents)
@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await MachineStepLogic.DeleteModel(itemId);
                     else
                     {
-                        MachineStepLogic.UpdateModelAsync(itemId, data);
+                        await MachineStepLogic.UpdateModelAsync(itemId, data);
                     }
 
                     foreach (MachineStepModel item in model.MachineSteps)
