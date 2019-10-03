@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 .ReturnsAsync(1);
 
             var controller = GetController(identityServiceMock.Object, validateServiceMock.Object, serviceMock.Object);
-            var response = await controller.Post(new CostCalculationViewModel());
+            var response = await controller.Post(new CostCalculationViewModel() { Machines = new List<CostCalculationMachineViewModel>() { new CostCalculationMachineViewModel() { Chemicals = new List<CostCalculationChemicalViewModel>() { new CostCalculationChemicalViewModel() } } } });
             controller.Dispose();
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
         }
