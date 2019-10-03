@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
@@ -113,6 +114,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IDirectLaborCostFacade, DirectLaborCostFacade>()
                 .AddTransient<IOperationalCostFacade, OperationalCostFacade>()
                 .AddTransient<IOrderStatusReportService, OrderStatusReportService>()
+                .AddTransient<ICostCalculationService, CostCalculationService>()
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>();
         }
 
