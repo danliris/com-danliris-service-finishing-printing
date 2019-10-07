@@ -57,10 +57,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.CostCalculation
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (ProductionOrderId == 0)
-                yield return new ValidationResult("Nomor SPP harus diisi!", new List<string> { "Instruction" });
+                yield return new ValidationResult("Nomor SPP harus diisi!", new List<string> { "ProductionOrder" });
 
             if (InstructionId == 0)
-                yield return new ValidationResult("Instruksi harus diisi!", new List<string> { "ProductionOrder" });
+                yield return new ValidationResult("Instruksi harus diisi!", new List<string> { "Instruction" });
 
             if (PreparationValue <= 0)
                 yield return new ValidationResult("Preparasi harus lebih dari 0!", new List<string> { "PreparationValue" });
@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.CostCalculation
                 yield return new ValidationResult("Produksi Unit harus lebih dari 0!", new List<string> { "ProductionUnitValue" });
 
             if (TKLQuantity <= 0)
-                yield return new ValidationResult("Jumlah TKL harus lebih dari 0!", new List<string> { "TKLValue" });
+                yield return new ValidationResult("Jumlah TKL harus lebih dari 0!", new List<string> { "TKLQuantity" });
 
             if (GreigeId == 0)
                 yield return new ValidationResult("Greige harus diisi!", new List<string> { "Greige" });
