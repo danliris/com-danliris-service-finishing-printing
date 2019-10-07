@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
@@ -72,6 +73,10 @@ namespace Com.Danliris.Service.Production.Lib
 
         public DbSet<DirectLaborCostModel> DirectLaborCosts { get; set; }
         public DbSet<OperationalCostModel> OperationalCosts { get; set; }
+
+        public DbSet<CostCalculationModel> CostCalculations { get; set; }
+        public DbSet<CostCalculationMachineModel> CostCalculationMachines { get; set; }
+        public DbSet<CostCalculationChemicalModel> CostCalculationChemicals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
