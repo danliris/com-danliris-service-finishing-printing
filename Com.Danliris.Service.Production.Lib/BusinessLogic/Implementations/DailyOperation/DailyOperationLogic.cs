@@ -36,12 +36,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (model.Type == "output")
             {
-                string flag = "create";
                 foreach (DailyOperationBadOutputReasonsModel item in model.BadOutputReasons)
                 {
                     EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
                 }
-                this.UpdateKanban(model, flag);
+                this.SetKanbanCreate(model);
             }
 
             model.Kanban = null;
@@ -56,12 +55,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (model.Type == "output")
             {
-                string flag = "delete";
+                // string flag = "delete";
                 foreach (var item in model.BadOutputReasons)
                 {
                     EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
                 }
-                this.UpdateKanban(model, flag);
+                this.SetKanbanDelete(model);
             }
 
             model.Kanban = null;
@@ -74,7 +73,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             if (model.Type == "output")
             {
-                string flag = "update";
+                // string flag = "update";
                 HashSet<int> detailId = DailyOperationBadOutputReasonsLogic.DataId(id);
                 foreach (var itemId in detailId)
                 {
@@ -92,7 +91,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             DailyOperationBadOutputReasonsLogic.CreateModel(item);
                     }
                 }
-                this.UpdateKanban(model, flag);
+                // this.UpdateKanban(model, flag);
+                this.SetKanbanUpdate(model);
             }
 
             model.Kanban = null;
@@ -125,6 +125,78 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             EntityExtension.FlagForUpdate(kanban, IdentityService.Username, UserAgent);
             DbSetKanban.Update(kanban);
+        }
+
+        public void SetKanbanCreate(DailyOperationModel model)
+        {
+            var selectedKanban = this.DbSetKanban.Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
+            // var selectedKanbanInstruction = this.DbContext.KanbanInstructions.Where(kanbanInstruction => kanbanInstruction.KanbanId == selectedKanban.Id).SingleOrDefault();
+
+            if (model.Type.ToUpper() == "IN")
+            {
+                selectedKanban.CurrentStepIndex += 1;
+                selectedKanban.CurrentQty = model.Input.GetValueOrDefault();
+                model.KanbanStepIndex = selectedKanban.CurrentStepIndex;
+            }
+            else if (model.Type.ToUpper() == "OUT")
+            {
+                selectedKanban.CurrentQty = model.GoodOutput.GetValueOrDefault() + model.BadOutput.GetValueOrDefault();
+                selectedKanban.GoodOutput = model.GoodOutput.GetValueOrDefault();
+                selectedKanban.BadOutput = model.BadOutput.GetValueOrDefault();
+            }
+
+            DbContext.Kanbans.Update(selectedKanban);
+        }
+
+        public void SetKanbanUpdate(DailyOperationModel model)
+        {
+            var selectedKanban = this.DbSetKanban.Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
+            // var selectedKanbanInstruction = this.DbContext.KanbanInstructions.Where(kanbanInstruction => kanbanInstruction.KanbanId == selectedKanban.Id).SingleOrDefault();
+
+            if (model.Type.ToUpper() == "IN")
+            {
+                selectedKanban.CurrentQty = model.Input.GetValueOrDefault();
+            }
+            else if (model.Type.ToUpper() == "OUT")
+            {
+                selectedKanban.CurrentQty = model.GoodOutput.GetValueOrDefault() + model.BadOutput.GetValueOrDefault();
+                selectedKanban.GoodOutput = model.GoodOutput.GetValueOrDefault();
+                selectedKanban.BadOutput = model.BadOutput.GetValueOrDefault();
+            }
+
+            DbContext.Kanbans.Update(selectedKanban);
+        }
+
+        public void SetKanbanDelete(DailyOperationModel model)
+        {
+            var selectedKanban = this.DbSetKanban.Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
+
+            var previousState = GetPreviousState(model);
+
+            if (previousState.Type.ToUpper() == "IN")
+            {
+                selectedKanban.CurrentQty = previousState.Input.GetValueOrDefault();
+            }
+            else if (previousState.Type.ToUpper() == "OUT")
+            {
+                selectedKanban.CurrentQty = previousState.GoodOutput.GetValueOrDefault() + previousState.BadOutput.GetValueOrDefault();
+                selectedKanban.GoodOutput = previousState.GoodOutput.GetValueOrDefault();
+                selectedKanban.BadOutput = previousState.BadOutput.GetValueOrDefault();
+            }
+
+            DbContext.Kanbans.Update(selectedKanban);
+        }
+
+        public DailyOperationModel GetPreviousState(DailyOperationModel model)
+        {
+            if (model.Type.ToUpper() == "IN")
+            {
+                return DbSet.Where(dailyOperation => dailyOperation.KanbanId == model.KanbanId && dailyOperation.KanbanStepIndex == model.KanbanStepIndex - 1 && model.Type.ToUpper() == "OUT").SingleOrDefault();
+            }
+            else
+            {
+                return DbSet.Where(dailyOperation => dailyOperation.KanbanId == model.KanbanId && dailyOperation.KanbanStepIndex == model.KanbanStepIndex && model.Type.ToUpper() == "IN").SingleOrDefault();
+            }
         }
 
         public HashSet<int> hasInput(DailyOperationViewModel vm)
