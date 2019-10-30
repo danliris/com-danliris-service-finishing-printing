@@ -147,7 +147,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 model.Code = CodeGenerator.Generate();
             }
             while (DbSet.Any(d => d.Code.Equals(model.Code)));
-            int index = 0;
+            int index = 1;
             foreach (var step in model.Instruction.Steps)
             {
                 step.MachineId = step.Machine.Id;
@@ -180,7 +180,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
         public async Task<int> UpdateAsync(int id, KanbanModel model)
         {
-            int index = 0;
+            int index = 1;
             foreach (var step in model.Instruction.Steps)
             {
                 step.MachineId = step.Machine.Id;
