@@ -12,6 +12,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -57,6 +58,51 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new KanbanLogic(identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public virtual async void Get_Reports()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetReport(1, 25, null,0,0,null, null, null, 7);
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
+        public virtual async void Generate_Excels()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcel(null, 0, 0, null, null, null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public virtual async void Complete_Kanban()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.CompleteKanban(data.Id);
+
+            Assert.NotNull(Response);
         }
     }
 }

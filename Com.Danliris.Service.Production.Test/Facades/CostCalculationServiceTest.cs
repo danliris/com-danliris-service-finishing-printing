@@ -234,5 +234,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.True(result.Data.Count > 0);
         }
+
+        [Fact]
+        public async Task Should_IsDataExistsById_Success()
+        {
+            var dbContext = GetDbContext(GetCurrentMethod());
+
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider.GetService(typeof(IIdentityService)))
+                .Returns(new IdentityService() { TimezoneOffset = 1, Token = "token", Username = "username" });
+
+            var service = GetService(dbContext, serviceProviderMock.Object);
+
+            var result = await service.IsDataExistsById(0);
+
+            Assert.False(result);
+        }
     }
 }

@@ -110,9 +110,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var Response = facade.GetReport(-1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
+            var Response = facade.GetReport(1, 25, -1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
 
-            Assert.NotEmpty(Response);
+            Assert.NotEmpty(Response.Data);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var data = await DataUtil(facade, dbContext).GetTestData();
 
             var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
-            
+
             await facade.CreateAsync(outputData);
             Assert.NotNull(data);
         }
@@ -163,7 +163,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var data = await DataUtil(facade, dbContext).GetTestData();
 
             var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
-            
+
             await facade.CreateAsync(outputData);
             await facade.DeleteAsync(outputData.Id);
             Assert.NotNull(data);
@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var data = await DataUtil(facade, dbContext).GetTestData();
 
             var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
-            
+
             await facade.CreateAsync(outputData);
 
             outputData.BadOutput = 10;
@@ -191,6 +191,62 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotNull(data);
         }
 
+        [Fact]
+        public virtual async void Should_Success_Read()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+            var facade = new DailyOperationFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.Read(1, 25, "{}", new System.Collections.Generic.List<string>(), null, null, null, null, null, null, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30));
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
+        public async Task GenerateExcel()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcel(-1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetOutputBadDesc()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            outputData.BadOutputReasons.Add(new DailyOperationBadOutputReasonsModel()
+            {
+                MachineName = "name",
+                Action = "ac",
+                BadOutputReason = "reas"
+            });
+            await facade.CreateAsync(outputData);
+
+            outputData.BadOutput = 10;
+            var response = facade.GetOutputBadDescription(outputData);
+
+            Assert.NotNull(response);
+        }
     }
 }
