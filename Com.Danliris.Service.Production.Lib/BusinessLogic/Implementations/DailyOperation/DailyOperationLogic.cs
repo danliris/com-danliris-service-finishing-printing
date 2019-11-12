@@ -175,15 +175,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             var previousState = GetPreviousState(model);
 
-            if (previousState.Type.ToUpper() == "IN")
+            if (previousState != null)
             {
-                selectedKanban.CurrentQty = previousState.Input.GetValueOrDefault();
-            }
-            else if (previousState.Type.ToUpper() == "OUT")
-            {
-                selectedKanban.CurrentQty = previousState.GoodOutput.GetValueOrDefault() + previousState.BadOutput.GetValueOrDefault();
-                selectedKanban.GoodOutput = previousState.GoodOutput.GetValueOrDefault();
-                selectedKanban.BadOutput = previousState.BadOutput.GetValueOrDefault();
+                if (previousState.Type.ToUpper() == "IN")
+                {
+                    selectedKanban.CurrentQty = previousState.Input.GetValueOrDefault();
+                }
+                else if (previousState.Type.ToUpper() == "OUT")
+                {
+                    selectedKanban.CurrentQty = previousState.GoodOutput.GetValueOrDefault() + previousState.BadOutput.GetValueOrDefault();
+                    selectedKanban.GoodOutput = previousState.GoodOutput.GetValueOrDefault();
+                    selectedKanban.BadOutput = previousState.BadOutput.GetValueOrDefault();
+                }
             }
 
             DbContext.Kanbans.Update(selectedKanban);
