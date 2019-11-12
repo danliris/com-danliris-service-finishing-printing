@@ -196,11 +196,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             if (model.Type.ToUpper() == "INPUT")
             {
-                return DbSet.Where(dailyOperation => dailyOperation.KanbanId == model.KanbanId && dailyOperation.KanbanStepIndex == model.KanbanStepIndex - 1 && model.Type.ToUpper() == "OUT").SingleOrDefault();
+                return DbSet.Where(dailyOperation => dailyOperation.KanbanId == model.KanbanId && dailyOperation.KanbanStepIndex == model.KanbanStepIndex - 1 && model.Type.ToUpper() == "OUTPUT").SingleOrDefault();
             }
             else
             {
-                return DbSet.Where(dailyOperation => dailyOperation.KanbanId == model.KanbanId && dailyOperation.KanbanStepIndex == model.KanbanStepIndex && model.Type.ToUpper() == "IN").SingleOrDefault();
+                return DbSet.Where(dailyOperation => dailyOperation.KanbanId == model.KanbanId && dailyOperation.KanbanStepIndex == model.KanbanStepIndex && model.Type.ToUpper() == "INPUT").SingleOrDefault();
             }
         }
 
