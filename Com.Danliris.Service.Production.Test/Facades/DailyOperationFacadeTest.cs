@@ -169,6 +169,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotNull(data);
         }
 
+        [Fact]
+        public async Task Should_Success_Update()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            
+            await facade.CreateAsync(outputData);
+
+            outputData.BadOutput = 10;
+            await facade.UpdateAsync(outputData.Id, outputData);
+            Assert.NotNull(data);
+        }
+
 
     }
 }
