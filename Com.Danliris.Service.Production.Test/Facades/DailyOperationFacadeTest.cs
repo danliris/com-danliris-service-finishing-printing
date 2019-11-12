@@ -143,6 +143,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
             var data = await DataUtil(facade, dbContext).GetTestData();
 
+            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            
+            await facade.CreateAsync(outputData);
             Assert.NotNull(data);
         }
     }

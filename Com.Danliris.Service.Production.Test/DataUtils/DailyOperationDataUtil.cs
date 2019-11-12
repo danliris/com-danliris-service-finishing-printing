@@ -34,5 +34,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             };
             return model;
         }
+
+        public async Task<DailyOperationModel> GetNewDataOutAsync()
+        {
+            var kanbanData = await kanbanDataUtil.GetTestData();
+
+            DailyOperationModel model = new DailyOperationModel
+            {
+                KanbanId = kanbanData.Id,
+                Type = "output",
+                DateInput = DateTimeOffset.UtcNow,
+                MachineId = kanbanData.Instruction.Steps.First().MachineId,
+                BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
+                {
+                    new DailyOperationBadOutputReasonsModel()
+                }
+            };
+            return model;
+        }
     }
 }
