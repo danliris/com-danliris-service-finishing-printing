@@ -40,8 +40,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 {
                     EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
                 }
-                this.SetKanbanCreate(model);
             }
+
+            if (model.Type == "input")
+                this.SetKanbanCreate(model);
 
             model.Kanban = null;
             model.Machine = null;

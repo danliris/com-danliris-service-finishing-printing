@@ -129,5 +129,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.False(Response);
         }
+
+        [Fact]
+        public async Task Should_Success_Set_Kanban_Whem_Create_Daily_Operation()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            // Assert.NoT
+        }
     }
 }
