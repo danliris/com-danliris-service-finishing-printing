@@ -134,13 +134,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             var selectedKanban = this.DbSetKanban.Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
             // var selectedKanbanInstruction = this.DbContext.KanbanInstructions.Where(kanbanInstruction => kanbanInstruction.KanbanId == selectedKanban.Id).SingleOrDefault();
 
-            if (model.Type.ToUpper() == "IN")
+            if (model.Type.ToUpper() == "INPUT")
             {
                 selectedKanban.CurrentStepIndex += 1;
                 selectedKanban.CurrentQty = model.Input.GetValueOrDefault();
                 model.KanbanStepIndex = selectedKanban.CurrentStepIndex;
             }
-            else if (model.Type.ToUpper() == "OUT")
+            else if (model.Type.ToUpper() == "OUTPUT")
             {
                 selectedKanban.CurrentQty = model.GoodOutput.GetValueOrDefault() + model.BadOutput.GetValueOrDefault();
                 selectedKanban.GoodOutput = model.GoodOutput.GetValueOrDefault();
@@ -155,11 +155,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             var selectedKanban = this.DbSetKanban.Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
             // var selectedKanbanInstruction = this.DbContext.KanbanInstructions.Where(kanbanInstruction => kanbanInstruction.KanbanId == selectedKanban.Id).SingleOrDefault();
 
-            if (model.Type.ToUpper() == "IN")
+            if (model.Type.ToUpper() == "INPUT")
             {
                 selectedKanban.CurrentQty = model.Input.GetValueOrDefault();
             }
-            else if (model.Type.ToUpper() == "OUT")
+            else if (model.Type.ToUpper() == "OUTPUT")
             {
                 selectedKanban.CurrentQty = model.GoodOutput.GetValueOrDefault() + model.BadOutput.GetValueOrDefault();
                 selectedKanban.GoodOutput = model.GoodOutput.GetValueOrDefault();
@@ -177,11 +177,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (previousState != null)
             {
-                if (previousState.Type.ToUpper() == "IN")
+                if (previousState.Type.ToUpper() == "INPUT")
                 {
                     selectedKanban.CurrentQty = previousState.Input.GetValueOrDefault();
                 }
-                else if (previousState.Type.ToUpper() == "OUT")
+                else if (previousState.Type.ToUpper() == "OUTPUT")
                 {
                     selectedKanban.CurrentQty = previousState.GoodOutput.GetValueOrDefault() + previousState.BadOutput.GetValueOrDefault();
                     selectedKanban.GoodOutput = previousState.GoodOutput.GetValueOrDefault();
@@ -194,7 +194,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public DailyOperationModel GetPreviousState(DailyOperationModel model)
         {
-            if (model.Type.ToUpper() == "IN")
+            if (model.Type.ToUpper() == "INPUT")
             {
                 return DbSet.Where(dailyOperation => dailyOperation.KanbanId == model.KanbanId && dailyOperation.KanbanStepIndex == model.KanbanStepIndex - 1 && model.Type.ToUpper() == "OUT").SingleOrDefault();
             }
