@@ -7,6 +7,8 @@ using Com.Danliris.Service.Production.Lib.Models.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Moq;
 using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 {
@@ -33,6 +35,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
                 .Returns(new InstructionLogic(identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public async void Get_Read_VM()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            InstructionFacade facade = Activator.CreateInstance(typeof(InstructionFacade), serviceProvider, dbContext) as InstructionFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.ReadVM(1, 25, "{}", new List<string>(), "test", "{}");
+
+            Assert.NotEmpty(Response.Data);
         }
     }
 }
