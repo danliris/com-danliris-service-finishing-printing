@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "ProcessTypeName"
+                "Code", "ProcessTypeName", "ProcessTypeCode"
             };
             query = QueryHelper<DurationEstimationModel>.Search(query, searchAttributes, keyword);
 
