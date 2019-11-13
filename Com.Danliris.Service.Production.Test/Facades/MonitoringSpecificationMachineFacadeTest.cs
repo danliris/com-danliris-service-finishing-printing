@@ -9,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -37,6 +38,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new MonitoringSpecificationMachineLogic(monitoringSpecificationMachineDetailsLogic, identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public async void Get_Report()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineFacade facade = Activator.CreateInstance(typeof(MonitoringSpecificationMachineFacade), serviceProvider, dbContext) as MonitoringSpecificationMachineFacade;
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = reportFacade.GetReport(data.MachineId, data.ProductionOrderNo, DateTime.MinValue, null, 1, 25, "{}", 7);
+            Assert.NotEmpty(Response.Item1);
+        }
+
+        [Fact]
+        public async void GenerateExcel()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineFacade facade = Activator.CreateInstance(typeof(MonitoringSpecificationMachineFacade), serviceProvider, dbContext) as MonitoringSpecificationMachineFacade;
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = reportFacade.GenerateExcel(data.MachineId, data.ProductionOrderNo, DateTime.MinValue, null, 7);
+            Assert.NotNull(Response);
         }
     }
 }

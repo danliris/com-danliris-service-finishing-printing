@@ -67,5 +67,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 
             Assert.NotEmpty(response);
         }
+
+        [Fact]
+        public virtual async void Get_For_Cost_C()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DirectLaborCostFacade facade = new DirectLaborCostFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await  facade.GetForCostCalculation(data.Month, data.Year);
+
+            Assert.NotNull(Response);
+        }
     }
 }
