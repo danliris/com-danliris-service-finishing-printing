@@ -32,6 +32,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var mockIdentityService = new Mock<IIdentityService>();
 
             var mockValidateService = new Mock<IValidateService>();
+            FabricQualityControlViewModel vm = new FabricQualityControlViewModel()
+            {
+                DateIm = DateTimeOffset.UtcNow,
+                FabricGradeTests = new List<FabricGradeTestViewModel>()
+                {
+                    new FabricGradeTestViewModel()
+                }
+            };
+            mockMapper.Setup(x => x.Map<FabricQualityControlViewModel>(It.IsAny<FabricQualityControlModel>()))
+                .Returns(vm);
 
             FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
             {
