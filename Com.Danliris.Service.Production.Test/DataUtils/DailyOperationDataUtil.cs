@@ -30,7 +30,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
                 {
                     new DailyOperationBadOutputReasonsModel()
-                }
+                },
+                Shift = "shift"
             };
             return model;
         }
