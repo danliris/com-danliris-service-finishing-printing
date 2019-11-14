@@ -15,6 +15,9 @@ using Com.Moonlay.NetCore.Lib;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt
 {
@@ -23,10 +26,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         private readonly ProductionDbContext dbContext;
         private readonly DbSet<PackingReceiptModel> dbSet;
         private readonly PackingReceiptLogic packingReceiptLogic;
+        private readonly IServiceProvider ServiceProvider;
 
         public PackingReceiptFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
             this.dbContext = dbContext;
+            ServiceProvider = serviceProvider;
             this.dbSet = dbContext.Set<PackingReceiptModel>();
             this.packingReceiptLogic = serviceProvider.GetService<PackingReceiptLogic>();
         }
@@ -41,7 +46,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
             this.packingReceiptLogic.CreateModel(model);
 
             await this.packingReceiptLogic.UpdatePacking(model, true);
-            await this.packingReceiptLogic.CreateInventory(model);
+            await CreateInventory(model);
 
             return await dbContext.SaveChangesAsync();
         }
@@ -110,8 +115,88 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Pack
         {
             await packingReceiptLogic.UpdateModelAsync(id, model);
             await this.packingReceiptLogic.UpdatePacking(model, false);
-            await this.packingReceiptLogic.UpdateInventory(model);
+            await this.UpdateInventory(model);
             return await dbContext.SaveChangesAsync();
+        }
+
+        private async Task CreateInventory(PackingReceiptModel model)
+        {
+            var client = ServiceProvider.GetService<IHttpClientService>();
+
+            var uri = string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents");
+
+            InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
+            inventoryDoc.referenceNo = "RFNO" + " - " + model.Code;
+            string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
+            inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
+            inventoryDoc.remark = " ";
+            inventoryDoc.type = "IN";
+            inventoryDoc.date = DateTime.UtcNow;
+            inventoryDoc.storageId = (model.StorageId);
+            inventoryDoc.storageCode = (model.StorageCode);
+            inventoryDoc.storageName = model.StorageName;
+
+            inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
+
+            foreach (var item in model.Items)
+            {
+                var data = new InventoryDocumentItemViewModel
+                {
+                    productCode = item.ProductCode,
+                    productName = item.Product,
+                    productId = item.ProductId,
+                    remark = item.Remark,
+                    quantity = item.Quantity,
+                    uomId = item.UomId,
+                    stockPlanning = 0,
+                    uom = item.Uom
+                };
+                inventoryDoc.items.Add(data);
+            }
+
+            var myContentJson = JsonConvert.SerializeObject(inventoryDoc, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(uri, myContent);
+            response.EnsureSuccessStatusCode();
+
+        }
+
+        private async Task UpdateInventory(PackingReceiptModel model)
+        {
+            var client = ServiceProvider.GetService<IHttpClientService>();
+
+            var uri = string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents");
+           
+            InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
+            string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
+            inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
+            inventoryDoc.referenceNo = "RFNO" + " - " + model.Code;
+            inventoryDoc.remark = "VOID PACKING RECEIPT";
+            inventoryDoc.type = "OUT";
+            inventoryDoc.date = DateTime.UtcNow;
+            inventoryDoc.storageId = (model.StorageId);
+
+            inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
+
+            foreach (var item in model.Items)
+            {
+                var data = new InventoryDocumentItemViewModel();
+                data.productCode = item.ProductCode;
+                data.productName = item.Product;
+                data.productId = item.ProductId;
+                data.remark = item.Remark;
+                data.quantity = item.Quantity;
+                data.uomId = item.UomId;
+                data.stockPlanning = 0;
+                data.uom = item.Uom;
+                inventoryDoc.items.Add(data);
+            }
+
+            var myContentJson = JsonConvert.SerializeObject(inventoryDoc);
+            var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(uri, myContent);
+            response.EnsureSuccessStatusCode();
+
         }
     }
 }
