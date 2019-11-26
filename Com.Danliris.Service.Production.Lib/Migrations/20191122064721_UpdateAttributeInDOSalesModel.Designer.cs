@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191122064721_UpdateAttributeInDOSalesModel")]
+    partial class UpdateAttributeInDOSalesModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -529,6 +531,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                         .HasMaxLength(25);
 
                     b.Property<string>("Status")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("StorageCode")
                         .HasMaxLength(25);
 
                     b.Property<int>("StorageId");

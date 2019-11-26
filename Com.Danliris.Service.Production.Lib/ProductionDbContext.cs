@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
@@ -57,6 +58,8 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<BadOutputMachineModel> BadOutputMachine { get; set; }
         public DbSet<DailyOperationModel> DailyOperation { get; set; }
         public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasons { get; set; }
+        public DbSet<DOSalesModel> DOSalesItems { get; set; }
+        public DbSet<DOSalesDetailModel> DOSalesItemDetails { get; set; }
         public DbSet<PackingModel> Packings { get; set; }
         public DbSet<PackingDetailModel> PackingDetails { get; set; }
         public DbSet<FabricQualityControlModel> FabricQualityControls { get; set; }
