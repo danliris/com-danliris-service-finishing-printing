@@ -80,78 +80,78 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
             return doSalesDetail;
         }
 
-        public List<DOSalesViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
-        {
-            IQueryable<DOSalesModel> query = dbContext.DOSalesItems.Include(x => x.DOSalesDetails).AsQueryable();
+        //public List<DOSalesViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        //{
+        //    IQueryable<DOSalesModel> query = dbContext.DOSalesItems.Include(x => x.DOSalesDetails).AsQueryable();
 
-            IEnumerable<DOSalesViewModel> doSales;
+        //    IEnumerable<DOSalesViewModel> doSales;
 
-            if (!string.IsNullOrEmpty(code))
-                query = query.Where(x => x.Code == code);
+        //    if (!string.IsNullOrEmpty(code))
+        //        query = query.Where(x => x.Code == code);
 
-            if (productionOrderId != -1)
-                query = query.Where(x => x.ProductionOrderId == productionOrderId);
+        //    if (productionOrderId != -1)
+        //        query = query.Where(x => x.ProductionOrderId == productionOrderId);
 
 
-            if (dateFrom == null && dateTo == null)
-            {
-                query = query
-                    .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
-                        && x.Date.AddHours(offSet).Date <= DateTime.UtcNow.Date);
-            }
-            else if (dateFrom == null && dateTo != null)
-            {
-                query = query
-                    .Where(x => dateTo.Value.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
-                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
-            }
-            else if (dateTo == null && dateFrom != null)
-            {
-                query = query
-                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
-                        && x.Date.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
-            }
-            else
-            {
-                query = query
-                    .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
-                        && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
-            }
+        //    if (dateFrom == null && dateTo == null)
+        //    {
+        //        query = query
+        //            .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+        //                && x.Date.AddHours(offSet).Date <= DateTime.UtcNow.Date);
+        //    }
+        //    else if (dateFrom == null && dateTo != null)
+        //    {
+        //        query = query
+        //            .Where(x => dateTo.Value.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
+        //                && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+        //    }
+        //    else if (dateTo == null && dateFrom != null)
+        //    {
+        //        query = query
+        //            .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+        //                && x.Date.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
+        //    }
+        //    else
+        //    {
+        //        query = query
+        //            .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
+        //                && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
+        //    }
 
-            doSales = query.Select(x => new DOSalesViewModel()
-            {
-                Code = x.Code,
-                StorageName = x.StorageName,
-                ProductionOrderNo = x.ProductionOrderNo,
-                BuyerName = x.BuyerName,
-                Construction = x.Construction,
-                Date = x.Date,
-                DOSalesDetails = x.DOSalesDetails.Select(y => new DOSalesDetailViewModel()
-                {
-                    UnitName = y.UnitName,
-                    UnitCode = y.UnitCode,
-                    Weight = y.Weight,
-                    Length = y.Length,
-                    Quantity = y.Quantity,
-                    Remark = y.Remark,
-                    LastModifiedUtc = y.LastModifiedUtc
-                }).ToList(),
-                LastModifiedUtc = x.LastModifiedUtc
+        //    doSales = query.Select(x => new DOSalesViewModel()
+        //    {
+        //        Code = x.Code,
+        //        StorageName = x.StorageName,
+        //        ProductionOrderNo = x.ProductionOrderNo,
+        //        BuyerName = x.BuyerName,
+        //        Construction = x.Construction,
+        //        Date = x.Date,
+        //        DOSalesDetails = x.DOSalesDetails.Select(y => new DOSalesDetailViewModel()
+        //        {
+        //            UnitName = y.UnitName,
+        //            UnitCode = y.UnitCode,
+        //            Weight = y.Weight,
+        //            Length = y.Length,
+        //            Quantity = y.Quantity,
+        //            Remark = y.Remark,
+        //            LastModifiedUtc = y.LastModifiedUtc
+        //        }).ToList(),
+        //        LastModifiedUtc = x.LastModifiedUtc
 
-            });
+        //    });
 
-            return doSales.ToList();
-        }
+        //    return doSales.ToList();
+        //}
 
-        public ReadResponse<DOSalesViewModel> GetReport(int page, int size, string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
-        {
-            var queries = GetReport(code, productionOrderId, dateFrom, dateTo, offSet);
+        //public ReadResponse<DOSalesViewModel> GetReport(int page, int size, string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
+        //{
+        //    var queries = GetReport(code, productionOrderId, dateFrom, dateTo, offSet);
 
-            Pageable<DOSalesViewModel> pageable = new Pageable<DOSalesViewModel>(queries, page - 1, size);
-            List<DOSalesViewModel> data = pageable.Data.ToList();
+        //    Pageable<DOSalesViewModel> pageable = new Pageable<DOSalesViewModel>(queries, page - 1, size);
+        //    List<DOSalesViewModel> data = pageable.Data.ToList();
 
-            return new ReadResponse<DOSalesViewModel>(queries, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
-        }
+        //    return new ReadResponse<DOSalesViewModel>(queries, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
+        //}
 
         public ReadResponse<DOSalesModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {

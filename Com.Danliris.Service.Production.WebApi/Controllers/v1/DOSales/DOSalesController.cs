@@ -24,37 +24,37 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales
         {
         }
 
-        [HttpGet("reports")]
-        public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, int productionOrderId = -1, int page = 1, int size = 25)
-        {
-            try
-            {
-                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                //int offSet = 7;
-                var data = Facade.GetReport(page, size, code, productionOrderId, dateFrom, dateTo, offSet);
+        //[HttpGet("reports")]
+        //public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, int productionOrderId = -1, int page = 1, int size = 25)
+        //{
+        //    try
+        //    {
+        //        int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+        //        //int offSet = 7;
+        //        var data = Facade.GetReport(page, size, code, productionOrderId, dateFrom, dateTo, offSet);
 
-                return Ok(new
-                {
-                    apiVersion = ApiVersion,
-                    data = data.Data,
-                    info = new
-                    {
-                        Count = data.Count,
-                        Orded = data.Order,
-                        Selected = data.Selected
-                    },
-                    message = General.OK_MESSAGE,
-                    statusCode = General.OK_STATUS_CODE
-                });
-            }
-            catch (Exception e)
-            {
-                Dictionary<string, object> Result =
-                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-                   .Fail();
-                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
-            }
-        }
+        //        return Ok(new
+        //        {
+        //            apiVersion = ApiVersion,
+        //            data = data.Data,
+        //            info = new
+        //            {
+        //                Count = data.Count,
+        //                Orded = data.Order,
+        //                Selected = data.Selected
+        //            },
+        //            message = General.OK_MESSAGE,
+        //            statusCode = General.OK_STATUS_CODE
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Dictionary<string, object> Result =
+        //           new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+        //           .Fail();
+        //        return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+        //    }
+        //}
 
         [HttpGet("details/by-product-name")]
         public async Task<IActionResult> GetDOSalesDetail([FromQuery] string productName)

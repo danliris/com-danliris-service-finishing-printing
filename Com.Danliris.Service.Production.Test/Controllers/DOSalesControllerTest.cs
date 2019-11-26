@@ -21,57 +21,57 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 {
     public class DOSalesControllerTest : BaseControllerTest<DOSalesController, DOSalesModel, DOSalesViewModel, IDOSalesFacade>
     {
-        [Fact]
-        public void GetReport_WithoutException_ReturnOK()
-        {
-            var mockFacade = new Mock<IDOSalesFacade>();
-            mockFacade.Setup(x => x.GetReport(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
-                .Returns(new ReadResponse<DOSalesViewModel>(new List<DOSalesViewModel>(), 0, new Dictionary<string, string>(), new List<string>()));
+        //[Fact]
+        //public void GetReport_WithoutException_ReturnOK()
+        //{
+        //    var mockFacade = new Mock<IDOSalesFacade>();
+        //    mockFacade.Setup(x => x.GetReport(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+        //        .Returns(new ReadResponse<DOSalesViewModel>(new List<DOSalesViewModel>(), 0, new Dictionary<string, string>(), new List<string>()));
 
-            var mockMapper = new Mock<IMapper>();
+        //    var mockMapper = new Mock<IMapper>();
 
-            var mockIdentityService = new Mock<IIdentityService>();
+        //    var mockIdentityService = new Mock<IIdentityService>();
 
-            var mockValidateService = new Mock<IValidateService>();
+        //    var mockValidateService = new Mock<IValidateService>();
 
-            DOSalesController controller = new DOSalesController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext()
-                }
-            };
-            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+        //    DOSalesController controller = new DOSalesController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+        //    {
+        //        ControllerContext = new ControllerContext()
+        //        {
+        //            HttpContext = new DefaultHttpContext()
+        //        }
+        //    };
+        //    controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
-            var response = controller.GetReport(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
-        }
+        //    var response = controller.GetReport(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
+        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        //}
 
-        [Fact]
-        public void GetReport_WithException_ReturnError()
-        {
-            var mockFacade = new Mock<IDOSalesFacade>();
-            mockFacade.Setup(x => x.GetReport(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
-                .Throws(new Exception());
+        //[Fact]
+        //public void GetReport_WithException_ReturnError()
+        //{
+        //    var mockFacade = new Mock<IDOSalesFacade>();
+        //    mockFacade.Setup(x => x.GetReport(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+        //        .Throws(new Exception());
 
-            var mockMapper = new Mock<IMapper>();
+        //    var mockMapper = new Mock<IMapper>();
 
-            var mockIdentityService = new Mock<IIdentityService>();
+        //    var mockIdentityService = new Mock<IIdentityService>();
 
-            var mockValidateService = new Mock<IValidateService>();
+        //    var mockValidateService = new Mock<IValidateService>();
 
-            DOSalesController controller = new DOSalesController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext()
-                }
-            };
-            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+        //    DOSalesController controller = new DOSalesController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+        //    {
+        //        ControllerContext = new ControllerContext()
+        //        {
+        //            HttpContext = new DefaultHttpContext()
+        //        }
+        //    };
+        //    controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
-            var response = controller.GetReport(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
-            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
-        }
+        //    var response = controller.GetReport(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
+        //    Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        //}
 
         [Fact]
         public async void GetDOSalesDetail_OK()

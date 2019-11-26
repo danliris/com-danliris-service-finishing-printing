@@ -14,8 +14,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
     {
         Task<DOSalesDetailModel> GetDOSalesDetail(string productName);
 
-        ReadResponse<DOSalesViewModel> GetReport(int page, int size, string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
+        //ReadResponse<DOSalesViewModel> GetReport(int page, int size, string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
-        List<DOSalesViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
+        //List<DOSalesViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet);
     }
 }

@@ -43,20 +43,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             return serviceProviderMock;
         }
 
-        [Fact]
-        public async void GetReport()
-        {
-            var dbContext = DbContext(GetCurrentMethod());
-            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+        //[Fact]
+        //public async void GetReport()
+        //{
+        //    var dbContext = DbContext(GetCurrentMethod());
+        //    var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
-            var facade = Activator.CreateInstance(typeof(DOSalesFacade), serviceProvider, dbContext) as DOSalesFacade;
+        //    var facade = Activator.CreateInstance(typeof(DOSalesFacade), serviceProvider, dbContext) as DOSalesFacade;
 
-            var data = await DataUtil(facade, dbContext).GetTestData();
+        //    var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var Response = facade.GetReport(1, 25, data.Code, data.ProductionOrderId, null, null, 7);
+        //    var Response = facade.GetReport(1, 25, data.Code, data.ProductionOrderId, null, null, 7);
 
-            Assert.NotNull(Response);
-        }
+        //    Assert.NotNull(Response);
+        //}
 
         [Fact]
         public async void GetDOSalesDetail()
