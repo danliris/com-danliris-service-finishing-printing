@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191121050002_DOSales")]
+    partial class DOSales
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,8 +337,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<int>("KanbanId");
 
-                    b.Property<int>("KanbanStepIndex");
-
                     b.Property<string>("LastModifiedAgent")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -425,11 +425,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.Property<string>("Remark")
-                        .HasMaxLength(500);
+                    b.Property<string>("Status");
 
                     b.Property<string>("UnitCode")
-                        .HasMaxLength(25);
+                        .HasMaxLength(100);
 
                     b.Property<string>("UnitName")
                         .HasMaxLength(250);
@@ -497,6 +496,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<string>("DeliveryType")
+                        .HasMaxLength(25);
+
+                    b.Property<string>("FinishedProductType")
+                        .HasMaxLength(25);
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -532,11 +537,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<string>("Status")
                         .HasMaxLength(25);
-
-                    b.Property<int>("StorageId");
-
-                    b.Property<string>("StorageName")
-                        .HasMaxLength(250);
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);
