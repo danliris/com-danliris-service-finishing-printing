@@ -110,6 +110,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
             Assert.True(vm.Validate(null).Count() > 0);
         }
 
+        [Fact]
+        public void Should_Success_Create_New_View_Model()
+        {
+            var viewModel = new DOSalesViewModel()
+            {
+                DOSalesDetails = new List<DOSalesDetailViewModel>()
+                {
+                    new DOSalesDetailViewModel()
+                    {
+
+                    }
+                }
+            };
+
+            Assert.NotEmpty(viewModel.DOSalesDetails);
+        }
+
         //[Fact]
         //public async Task Should_Success_Update_Data()
         //{
