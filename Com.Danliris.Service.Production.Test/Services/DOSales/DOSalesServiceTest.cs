@@ -111,7 +111,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
         }
 
         [Fact]
-        public void Should_Success_Create_New_View_Model()
+        public void Should_Success_Validate_Invalid_Data()
         {
             var viewModel = new DOSalesViewModel()
             {
@@ -119,12 +119,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
                 {
                     new DOSalesDetailViewModel()
                     {
-
+                        DOSalesId = 0,
+                        Length = 1,
+                        Quantity = 1,
+                        Remark = "",
+                        UnitCode = "cide",
+                        UnitName = "name",
+                        Weight = 1
                     }
                 }
             };
 
-            Assert.NotEmpty(viewModel.DOSalesDetails);
+            Assert.True(viewModel.Validate(null).Count() > 0);
         }
 
         //[Fact]
