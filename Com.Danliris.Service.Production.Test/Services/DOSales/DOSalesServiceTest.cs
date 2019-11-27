@@ -120,11 +120,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
                     new DOSalesDetailViewModel()
                     {
                         DOSalesId = 0,
-                        Length = 1,
-                        Quantity = 1,
+                        Length = 0,
+                        Quantity = 0,
                         Remark = "",
-                        UnitCode = "cide",
-                        UnitName = "name",
+                        UnitCode = "",
+                        UnitName = "",
                         Weight = 1
                     }
                 }

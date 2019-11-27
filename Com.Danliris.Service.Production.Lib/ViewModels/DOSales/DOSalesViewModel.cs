@@ -65,7 +65,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
             if (!Date.HasValue || Date.Value > DateTimeOffset.Now)
                 yield return new ValidationResult("Tanggal Pengiriman harus diisi atau lebih kecil sama dengan hari ini", new List<string> { "Date" });
 
-            //if (!StorageId.HasValue || StorageId.Value.Equals(0))
             if (string.IsNullOrWhiteSpace(StorageName))
                 yield return new ValidationResult("Gudang harus diisi", new List<string> { "Storage" });
 

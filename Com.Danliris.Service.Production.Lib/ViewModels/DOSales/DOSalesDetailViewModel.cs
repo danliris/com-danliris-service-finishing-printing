@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
 {
-    public class DOSalesDetailViewModel : BaseViewModel, IValidatableObject
+    public class DOSalesDetailViewModel : BaseViewModel
     {
         [MaxLength(250)]
         public string UnitName { get; set; }
@@ -20,9 +20,5 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
 
         public int? DOSalesId { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
