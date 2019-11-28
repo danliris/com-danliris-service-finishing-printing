@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales
@@ -79,7 +78,6 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales
                         new DOSalesDetailModel()
                         {
                             UnitName = model.UnitName,
-                            UnitCode = model.UnitCode,
                             DOSalesId = model.DOSalesId,
                             Quantity = model.Quantity,
                             Weight = model.Weight,

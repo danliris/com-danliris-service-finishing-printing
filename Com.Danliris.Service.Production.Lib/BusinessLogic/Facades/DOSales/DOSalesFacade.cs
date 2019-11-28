@@ -1,9 +1,6 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DOSales;
-using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
-using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Utilities;
 using Com.Moonlay.NetCore.Lib;
@@ -12,11 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSales
@@ -51,10 +44,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
                     doSalesLogic.CreateModel(model);
 
                     var row = await dbContext.SaveChangesAsync();
-                    //if (row > 0)
-                    //{
-                    //    await CreateProduct(model);
-                    //}
+                    
                     transaction.Commit();
                     return row;
                 }

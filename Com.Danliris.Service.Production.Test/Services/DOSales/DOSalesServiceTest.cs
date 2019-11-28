@@ -123,7 +123,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
                         Length = 0,
                         Quantity = 0,
                         Remark = "",
-                        UnitCode = "",
                         UnitName = "",
                         Weight = 1
                     }

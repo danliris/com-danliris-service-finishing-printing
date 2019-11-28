@@ -250,6 +250,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotNull(response);
         }
+
+        [Fact]
         public void Validate_VM_NULL()
         {
             var dbContext = DbContext(GetCurrentMethod());
