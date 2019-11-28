@@ -1,5 +1,4 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSales;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
@@ -14,8 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
@@ -66,6 +63,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
             return serviceProvider;
         }
 
+        [Fact]
+        public void Should_Success_Validate_All_Null_Data()
+        {
+            var vm = new DOSalesViewModel();
+
+            Assert.True(vm.Validate(null).Count() > 0);
+        }
+
+        [Fact]
+        public void Should_Success_Validate_Invalid_Data()
+        {
+            var viewModel = new DOSalesViewModel()
+            {
+                DOSalesDetails = new List<DOSalesDetailViewModel>()
+                {
+                    new DOSalesDetailViewModel()
+                    {
+                        DOSalesId = 0,
+                        Weight = -1,
+                        Length = -1,
+                        Quantity = 0,
+                        Remark = "",
+                        UnitName = ""
+                    }
+                }
+            };
+
+            Assert.True(viewModel.Validate(null).Count() > 0);
+        }
+
         //[Fact]
         //public async Task Should_Success_Get_Data()
         //{
@@ -101,36 +128,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
 
         //    Assert.True(vm.Validate(null).Count() == 0);
         //}
-
-        [Fact]
-        public void Should_Success_Validate_All_Null_Data()
-        {
-            var vm = new DOSalesViewModel();
-
-            Assert.True(vm.Validate(null).Count() > 0);
-        }
-
-        [Fact]
-        public void Should_Success_Validate_Invalid_Data()
-        {
-            var viewModel = new DOSalesViewModel()
-            {
-                DOSalesDetails = new List<DOSalesDetailViewModel>()
-                {
-                    new DOSalesDetailViewModel()
-                    {
-                        DOSalesId = 0,
-                        Length = 0,
-                        Quantity = 0,
-                        Remark = "",
-                        UnitName = "",
-                        Weight = 1
-                    }
-                }
-            };
-
-            Assert.True(viewModel.Validate(null).Count() > 0);
-        }
 
         //[Fact]
         //public async Task Should_Success_Update_Data()
