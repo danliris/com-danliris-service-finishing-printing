@@ -78,7 +78,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         public void GetReportPdf_WithoutException_ReturnOK()
         {
             var mockFacade = new Mock<IPackingFacade>();
-            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            PackingModel model = new PackingModel()
+            {
+                OrderTypeName = "order",
+                PackingDetails = new List<PackingDetailModel>()
+                {
+                    new PackingDetailModel()
+                    {
+                        Grade = "a"
+                    }
+                }
+            };
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(model);
 
             var mockMapper = new Mock<IMapper>();
 

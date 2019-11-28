@@ -67,84 +67,84 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             }
         }
 
-        public async Task CreateInventory(PackingReceiptModel model)
-        {
-            using (var client = new HttpClient())
-            {
-                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
+        //public async Task CreateInventory(PackingReceiptModel model)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents"));
+        //        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
 
-                InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
-                inventoryDoc.referenceNo = "RFNO" + " - " + model.Code;
-                string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
-                inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
-                inventoryDoc.remark = " ";
-                inventoryDoc.type = "IN";
-                inventoryDoc.date = DateTime.UtcNow;
-                inventoryDoc.storageId = (model.StorageId);
-                inventoryDoc.storageCode = (model.StorageCode);
-                inventoryDoc.storageName = model.StorageName;
+        //        InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
+        //        inventoryDoc.referenceNo = "RFNO" + " - " + model.Code;
+        //        string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
+        //        inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
+        //        inventoryDoc.remark = " ";
+        //        inventoryDoc.type = "IN";
+        //        inventoryDoc.date = DateTime.UtcNow;
+        //        inventoryDoc.storageId = (model.StorageId);
+        //        inventoryDoc.storageCode = (model.StorageCode);
+        //        inventoryDoc.storageName = model.StorageName;
 
-                inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
+        //        inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
 
-                foreach (var item in model.Items)
-                {
-                    var data = new InventoryDocumentItemViewModel();
-                    data.productCode = item.ProductCode;
-                    data.productName = item.Product;
-                    data.productId = item.ProductId;
-                    data.remark = item.Remark;
-                    data.quantity = item.Quantity;
-                    data.uomId = item.UomId;
-                    data.stockPlanning = 0;
-                    data.uom = item.Uom;
-                    inventoryDoc.items.Add(data);
-                }
+        //        foreach (var item in model.Items)
+        //        {
+        //            var data = new InventoryDocumentItemViewModel();
+        //            data.productCode = item.ProductCode;
+        //            data.productName = item.Product;
+        //            data.productId = item.ProductId;
+        //            data.remark = item.Remark;
+        //            data.quantity = item.Quantity;
+        //            data.uomId = item.UomId;
+        //            data.stockPlanning = 0;
+        //            data.uom = item.Uom;
+        //            inventoryDoc.items.Add(data);
+        //        }
 
-                var myContentJson = JsonConvert.SerializeObject(inventoryDoc, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(uri, myContent);
-                response.EnsureSuccessStatusCode();
-            }
-        }
+        //        var myContentJson = JsonConvert.SerializeObject(inventoryDoc, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+        //        var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+        //        var response = await client.PostAsync(uri, myContent);
+        //        response.EnsureSuccessStatusCode();
+        //    }
+        //}
 
-        public async Task UpdateInventory(PackingReceiptModel model)
-        {
-            using (var client = new HttpClient())
-            {
-                var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
+        //public async Task UpdateInventory(PackingReceiptModel model)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        var uri = new Uri(string.Format("{0}{1}", APIEndpoint.Inventory, "inventory-documents"));
+        //        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
 
-                InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
-                string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
-                inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
-                inventoryDoc.remark = "VOID PACKING RECEIPT";
-                inventoryDoc.type = "OUT";
-                inventoryDoc.date = DateTime.UtcNow;
-                inventoryDoc.storageId = (model.StorageId);
+        //        InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
+        //        string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
+        //        inventoryDoc.referenceType = $"Penerimaan Packing {referenceType}";
+        //        inventoryDoc.remark = "VOID PACKING RECEIPT";
+        //        inventoryDoc.type = "OUT";
+        //        inventoryDoc.date = DateTime.UtcNow;
+        //        inventoryDoc.storageId = (model.StorageId);
 
-                inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
+        //        inventoryDoc.items = new List<InventoryDocumentItemViewModel>();
 
-                foreach (var item in model.Items)
-                {
-                    var data = new InventoryDocumentItemViewModel();
-                    data.productCode = item.ProductCode;
-                    data.productName = item.Product;
-                    data.productId = item.ProductId;
-                    data.remark = item.Remark;
-                    data.quantity = item.Quantity;
-                    data.uomId = item.UomId;
-                    data.stockPlanning = 0;
-                    data.uom = item.Uom;
-                    inventoryDoc.items.Add(data);
-                }
+        //        foreach (var item in model.Items)
+        //        {
+        //            var data = new InventoryDocumentItemViewModel();
+        //            data.productCode = item.ProductCode;
+        //            data.productName = item.Product;
+        //            data.productId = item.ProductId;
+        //            data.remark = item.Remark;
+        //            data.quantity = item.Quantity;
+        //            data.uomId = item.UomId;
+        //            data.stockPlanning = 0;
+        //            data.uom = item.Uom;
+        //            inventoryDoc.items.Add(data);
+        //        }
 
-                var myContentJson = JsonConvert.SerializeObject(inventoryDoc);
-                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(uri, myContent);
-                response.EnsureSuccessStatusCode();
-            }
-        }
+        //        var myContentJson = JsonConvert.SerializeObject(inventoryDoc);
+        //        var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+        //        var response = await client.PostAsync(uri, myContent);
+        //        response.EnsureSuccessStatusCode();
+        //    }
+        //}
 
         public override Task<PackingReceiptModel> ReadModelById(int id)
         {

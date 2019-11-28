@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
         {
             InstructionModel model = new InstructionModel
             {
+                Name = "test",
                 Steps = new List<InstructionStepModel>
                 {
                     new InstructionStepModel

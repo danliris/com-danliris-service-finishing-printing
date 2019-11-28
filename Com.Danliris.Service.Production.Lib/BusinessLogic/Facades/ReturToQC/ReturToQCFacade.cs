@@ -2,6 +2,8 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC;
 using Com.Danliris.Service.Production.Lib;
@@ -16,6 +18,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC
@@ -25,9 +29,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
         private readonly ProductionDbContext dbContext;
         private readonly DbSet<ReturToQCModel> dbSet;
         private readonly ReturToQCLogic returToQCLogic;
+        private readonly IServiceProvider ServiceProvider;
 
         public ReturToQCFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
+            ServiceProvider = serviceProvider;
             this.dbContext = dbContext;
             this.dbSet = dbContext.Set<ReturToQCModel>();
             this.returToQCLogic = serviceProvider.GetService<ReturToQCLogic>();
@@ -50,7 +56,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
 
                     if (model.ReturToQCItems.Count > 0)
                     {
-                        await returToQCLogic.CreateInventoryDocument(model);
+                        await CreateInventoryDocument(model);
                     }
                     transaction.Commit();
                     return id;
@@ -189,9 +195,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
                 Date = x.Date,
                 DeliveryOrderNo = x.DeliveryOrderNo,
                 Destination = x.Destination,
-                FinishedGoodCode= x.FinishedGoodCode,
+                FinishedGoodCode = x.FinishedGoodCode,
                 Id = x.Id,
-                IsVoid =x.IsVoid,
+                IsVoid = x.IsVoid,
                 IsDeleted = x.IsDeleted,
                 LastModifiedUtc = x.LastModifiedUtc,
                 Material = new MaterialIntegrationViewModel()
@@ -226,9 +232,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
                         Active = z.Active,
                         ColorWay = z.ColorWay,
                         DesignCode = z.DesignCode,
-                        DesignNumber =z.DesignNumber,
+                        DesignNumber = z.DesignNumber,
                         Id = z.Id,
-                        IsDeleted =z.IsDeleted,
+                        IsDeleted = z.IsDeleted,
                         LastModifiedUtc = z.LastModifiedUtc,
                         Length = z.Length,
                         ProductCode = z.ProductCode,
@@ -310,7 +316,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
 
                     if (model.ReturToQCItems.Count > 0)
                     {
-                        await returToQCLogic.CreateInventoryDocument(model);
+                        await CreateInventoryDocument(model);
                     }
 
                     transaction.Commit();
@@ -322,6 +328,69 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Retu
                     throw e;
                 }
             }
+        }
+
+        private async Task CreateInventoryDocument(ReturToQCModel model)
+        {
+            var client = ServiceProvider.GetService<IHttpClientService>();
+            string relativePath = "inventory-documents/multi";
+            try
+            {
+                //Uri serverUri = new Uri(Utilities.APIEndpoint.Inventory);
+                //Uri relativePathUri = new Uri(relativePath, UriKind.Relative);
+                //var uri = new Uri(serverUri, relativePathUri);
+                var uri = string.Format("{0}{1}", Utilities.APIEndpoint.Inventory, "inventory-documents/multi");
+                var listContainer = new List<StringContent>();
+                if (model.ReturToQCItems != null && model.ReturToQCItems.Count != 0)
+                {
+                    List<InventoryDocumentViewModel> postedModels = new List<InventoryDocumentViewModel>();
+                    foreach (var item in model.ReturToQCItems)
+                    {
+                        InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel
+                        {
+                            referenceNo = model.ReturNo + " - " + item.ProductionOrderNo,
+                            referenceType = "retur-to-qc",
+                            remark = "",
+                            type = model.IsVoid ? "IN" : "OUT",
+                            date = DateTimeOffset.UtcNow
+                        };
+                        var itemDetails = item.ReturToQCItemDetails.LastOrDefault();
+
+                        if (itemDetails != null)
+                        {
+                            inventoryDoc.storageId = itemDetails.StorageId;
+                            inventoryDoc.storageCode = itemDetails.StorageCode;
+                            inventoryDoc.storageName = itemDetails.StorageName;
+                        }
+
+                        inventoryDoc.items = item.ReturToQCItemDetails.Select(x => new InventoryDocumentItemViewModel()
+                        {
+                            productCode = x.ProductCode,
+                            productName = x.ProductName,
+                            productId = x.ProductId,
+                            remark = x.Remark,
+                            quantity = x.ReturQuantity,
+                            uomId = x.UOMId,
+                            uom = x.UOMUnit,
+                        }).ToList();
+
+                        postedModels.Add(inventoryDoc);
+                    }
+                    var myContentJson = JsonConvert.SerializeObject(postedModels, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync(uri.ToString(), myContent);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (UriFormatException)
+            {
+                throw new UriFormatException(string.Format("Error : {0}, {1}", Utilities.APIEndpoint.Inventory, relativePath));
+            }
+            catch (Exception)
+            {
+                throw new Exception(string.Format("Error : {0}, {1}", Utilities.APIEndpoint.Inventory, relativePath));
+            }
+
         }
     }
 }

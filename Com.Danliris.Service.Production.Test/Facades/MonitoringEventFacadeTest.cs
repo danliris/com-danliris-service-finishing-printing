@@ -9,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -35,6 +36,66 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new MonitoringEventLogic(identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public async void Get_Report()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventFacade facade = Activator.CreateInstance(typeof(MonitoringEventFacade), serviceProvider, dbContext) as MonitoringEventFacade;
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = reportFacade.GetReport(null, null, null, DateTime.MinValue, null, 1, 25, "{}", 7);
+            Assert.NotEmpty(Response.Item1);
+        }
+
+        [Fact]
+        public async void GenerateExcel()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventFacade facade = Activator.CreateInstance(typeof(MonitoringEventFacade), serviceProvider, dbContext) as MonitoringEventFacade;
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = reportFacade.GenerateExcel(null, null, null, DateTime.MinValue, null, 7);
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async void ReadByMachine()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventFacade facade = Activator.CreateInstance(typeof(MonitoringEventFacade), serviceProvider, dbContext) as MonitoringEventFacade;
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = reportFacade.ReadByMachine(null, data.MachineId);
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async void ReadByMachineSpec()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventFacade facade = Activator.CreateInstance(typeof(MonitoringEventFacade), serviceProvider, dbContext) as MonitoringEventFacade;
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = reportFacade.ReadMonitoringSpecMachine(data.MachineId, data.ProductionOrderOrderNo, DateTime.MaxValue);
+            Assert.Null(Response);
         }
     }
 }
