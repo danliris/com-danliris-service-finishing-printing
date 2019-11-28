@@ -5,10 +5,7 @@ using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DOSales
@@ -95,7 +92,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 var dbItem = dbmodel.DOSalesDetails.FirstOrDefault(x => x.Id == item.Id);
 
                 dbItem.UnitName = item.UnitName;
-                dbItem.UnitCode = item.UnitCode;
                 dbItem.Length = item.Length;
                 dbItem.Quantity = item.Quantity;
                 dbItem.Weight = item.Weight;

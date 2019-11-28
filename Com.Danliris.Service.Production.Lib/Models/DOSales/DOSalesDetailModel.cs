@@ -12,8 +12,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales
     {
         [MaxLength(250)]
         public string UnitName { get; set; }
-        [MaxLength(25)]
-        public string UnitCode { get; set; }
         public int Quantity { get; set; }
         public double Weight { get; set; }
         public double Length { get; set; }

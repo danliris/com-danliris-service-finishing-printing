@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
 {
@@ -104,42 +103,41 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
                         DetailErrors += "UnitName : 'Nama item harus diisi',";
                     }
 
-                    if (string.IsNullOrWhiteSpace(detail.UnitCode))
-                    {
-                        Count++;
-                        rowErrorCount++;
-                        DetailErrors += "UnitCode : 'Kode item harus diisi',";
-                    }
-
                     if (!detail.Quantity.HasValue || detail.Quantity.Value <= 0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "Quantity : 'Kuantitas harus lebih besar dari 0',";
+                        DetailErrors += "Quantity : 'Kuantitas harus lebih besar dari 0 & tidak boleh kosong',";
                     }
-                    if (!detail.Length.HasValue || detail.Length.Value <= 0)
+                    if (detail.Weight.Value < 0)
+                    {
+                        Count++;
+                        rowErrorCount++;
+                        DetailErrors += "Weight : 'Berat harus lebih besar dari 0',";
+                    }
+                    if (detail.Length.Value < 0)
                     {
                         Count++;
                         rowErrorCount++;
                         DetailErrors += "Length : 'Panjang harus lebih besar dari 0',";
                     }
-                    if (string.IsNullOrWhiteSpace(detail.Remark))
-                    {
-                        Count++;
-                        rowErrorCount++;
-                        DetailErrors += "Remark : 'Remark harus diisi',";
-                    }
 
                     if (rowErrorCount == 0)
                     {
-                        var duplicateDetails = DOSalesDetails.Where(f => f.UnitName.Equals(detail.UnitName) && f.UnitCode.Equals(detail.UnitCode) && f.Length.GetValueOrDefault().Equals(detail.Length.GetValueOrDefault())).ToList();
+                        var duplicateDetails = DOSalesDetails.Where(f => 
+                                f.UnitName.Equals(detail.UnitName) && 
+                                f.Quantity.GetValueOrDefault().Equals(detail.Quantity.GetValueOrDefault()) && 
+                                f.Weight.GetValueOrDefault().Equals(detail.Weight.GetValueOrDefault()) && 
+                                f.Length.GetValueOrDefault().Equals(detail.Length.GetValueOrDefault())
+                            ).ToList();
 
                         if (duplicateDetails.Count > 1)
                         {
                             Count++;
-                            DetailErrors += "UnitName : 'Nama Item, Kode Item, dan Panjang tidak boleh duplikat',";
-                            DetailErrors += "UnitCode : Nama Item, Kode Item, dan Panjang tidak boleh duplikat',";
-                            DetailErrors += "Length : 'Nama Item, Kode Item, dan Panjang tidak boleh duplikat',";
+                            DetailErrors += "UnitName : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
+                            DetailErrors += "Quantity : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
+                            DetailErrors += "Weight : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
+                            DetailErrors += "Length : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
                         }
                     }
                     DetailErrors += "}, ";
