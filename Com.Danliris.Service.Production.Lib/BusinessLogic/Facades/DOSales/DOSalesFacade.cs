@@ -161,7 +161,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
             List<string> selectedFields = new List<string>()
             {
 
-                "Id", "Code", "Date", "StorageName", "BuyerName", "DOSalesDetails", "ProductionOrderNo", "Construction", "Accepted", "MaterialWidthFinish", "PackingUom"
+                "Id", "Code", "Date", "StorageName", "BuyerId", "BuyerName", "DOSalesDetails", "ProductionOrderNo", "Construction", "Accepted", "MaterialWidthFinish", "PackingUom"
 
             };
 
