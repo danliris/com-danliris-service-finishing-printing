@@ -35,11 +35,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
             {
                 try
                 {
+                    int index = 0;
                     do
                     {
                         model.Code = CodeGenerator.Generate();
                     }
                     while (dbSet.Any(d => d.Code.Equals(model.Code)));
+
+                    DOSalesNumberGenerator(model, index);
 
                     doSalesLogic.CreateModel(model);
 
@@ -65,83 +68,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
         public Task<DOSalesDetailModel> GetDOSalesDetail(string productName)
         {
             var doSalesDetail = dbContext.DOSalesItemDetails.Include(x => x.DOSales).FirstOrDefaultAsync(x => productName.Equals(
-                string.Format("{0}/{1}/{2}", x.DOSales.ProductionOrderNo, x.DOSales.Construction, x.Length), StringComparison.OrdinalIgnoreCase));
+                string.Format("{0}/{1}/{2}", x.DOSales.DOSalesNo, x.DOSales.ProductionOrderNo, x.UnitCode), StringComparison.OrdinalIgnoreCase));
 
             return doSalesDetail;
         }
-
-        //public List<DOSalesViewModel> GetReport(string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
-        //{
-        //    IQueryable<DOSalesModel> query = dbContext.DOSalesItems.Include(x => x.DOSalesDetails).AsQueryable();
-
-        //    IEnumerable<DOSalesViewModel> doSales;
-
-        //    if (!string.IsNullOrEmpty(code))
-        //        query = query.Where(x => x.Code == code);
-
-        //    if (productionOrderId != -1)
-        //        query = query.Where(x => x.ProductionOrderId == productionOrderId);
-
-
-        //    if (dateFrom == null && dateTo == null)
-        //    {
-        //        query = query
-        //            .Where(x => DateTimeOffset.UtcNow.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
-        //                && x.Date.AddHours(offSet).Date <= DateTime.UtcNow.Date);
-        //    }
-        //    else if (dateFrom == null && dateTo != null)
-        //    {
-        //        query = query
-        //            .Where(x => dateTo.Value.AddDays(-30).Date <= x.Date.AddHours(offSet).Date
-        //                && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
-        //    }
-        //    else if (dateTo == null && dateFrom != null)
-        //    {
-        //        query = query
-        //            .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
-        //                && x.Date.AddHours(offSet).Date <= dateFrom.Value.AddDays(30).Date);
-        //    }
-        //    else
-        //    {
-        //        query = query
-        //            .Where(x => dateFrom.Value.Date <= x.Date.AddHours(offSet).Date
-        //                && x.Date.AddHours(offSet).Date <= dateTo.Value.Date);
-        //    }
-
-        //    doSales = query.Select(x => new DOSalesViewModel()
-        //    {
-        //        Code = x.Code,
-        //        StorageName = x.StorageName,
-        //        ProductionOrderNo = x.ProductionOrderNo,
-        //        BuyerName = x.BuyerName,
-        //        Construction = x.Construction,
-        //        Date = x.Date,
-        //        DOSalesDetails = x.DOSalesDetails.Select(y => new DOSalesDetailViewModel()
-        //        {
-        //            UnitName = y.UnitName,
-        //            UnitCode = y.UnitCode,
-        //            Weight = y.Weight,
-        //            Length = y.Length,
-        //            Quantity = y.Quantity,
-        //            Remark = y.Remark,
-        //            LastModifiedUtc = y.LastModifiedUtc
-        //        }).ToList(),
-        //        LastModifiedUtc = x.LastModifiedUtc
-
-        //    });
-
-        //    return doSales.ToList();
-        //}
-
-        //public ReadResponse<DOSalesViewModel> GetReport(int page, int size, string code, int productionOrderId, DateTime? dateFrom, DateTime? dateTo, int offSet)
-        //{
-        //    var queries = GetReport(code, productionOrderId, dateFrom, dateTo, offSet);
-
-        //    Pageable<DOSalesViewModel> pageable = new Pageable<DOSalesViewModel>(queries, page - 1, size);
-        //    List<DOSalesViewModel> data = pageable.Data.ToList();
-
-        //    return new ReadResponse<DOSalesViewModel>(queries, pageable.TotalCount, new Dictionary<string, string>(), new List<string>());
-        //}
 
         public ReadResponse<DOSalesModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
@@ -151,7 +81,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "StorageName", "BuyerName", "ProductionOrderNo", "Construction"
+                "DOSalesNo", "StorageName", "BuyerName", "DestinationBuyerName", "ProductionOrderNo", "Construction"
             };
             query = QueryHelper<DOSalesModel>.Search(query, searchAttributes, keyword);
 
@@ -161,7 +91,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
             List<string> selectedFields = new List<string>()
             {
 
-                "Id", "Code", "Date", "StorageName", "BuyerId", "BuyerName", "DOSalesDetails", "ProductionOrderNo", "Construction", "Accepted", "MaterialWidthFinish", "PackingUom"
+                "Id","DOSalesNo","DOSalesType","DOSalesDate","StorageId","StorageName","HeadOfStorage","ProductionOrderId","ProductionOrderNo","MaterialId","Material","MaterialWidthFinish","MaterialConstructionFinishId","DOSalesDetails","MaterialConstructionFinishName",
+                "BuyerId","BuyerCode","BuyerName","BuyerAddress","BuyerType","BuyerNPWP","DestinationBuyerId","DestinationBuyerCode","DestinationBuyerName","DestinationBuyerAddress","DestinationBuyerType","DestinationBuyerNPWP",
+                "PackingUom","ImperialUom","MetricUom","Disp","Op","Sc","Construction","Remark","Status"
 
             };
 
@@ -202,14 +134,58 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
 
         }
 
-        //private async Task CreateProduct(DOSalesModel model)
-        //{
-        //    var client = (IHttpClientService)ServiceProvider.GetService(typeof(IHttpClientService));
-        //    var uri = string.Format("{0}{1}", Utilities.APIEndpoint.Core, "master/products/do-sales/create");
-        //    var myContentJson = JsonConvert.SerializeObject(model);
-        //    var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
-        //    var response = await client.PostAsync(uri, myContent);
-        //    response.EnsureSuccessStatusCode();
-        //}
+        private void DOSalesNumberGenerator(DOSalesModel model, int index)
+        {
+            DOSalesModel lastData = dbSet.IgnoreQueryFilters().Where(w => w.DOSalesType.Equals(model.DOSalesType)).OrderByDescending(o => o.AutoIncreament).FirstOrDefault();
+
+            int YearNow = DateTime.Now.Year;
+
+            if (lastData == null)
+            {
+                if (model.DOSalesType == "UP")
+                {
+                    index = 28;
+                }
+                else if (model.DOSalesType == "US")
+                {
+                    index = 8;
+                }
+                else if (model.DOSalesType == "JS")
+                {
+                    index = 98;
+                }
+                else if (model.DOSalesType == "USS")
+                {
+                    index = 14;
+                }
+                else if (model.DOSalesType == "JB")
+                {
+                    index = 2;
+                }
+                else if (model.DOSalesType == "UPS")
+                {
+                    index = 19;
+                }
+                else
+                {
+                    index = 0;
+                }
+                model.AutoIncreament = 1 + index;
+                model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
+            }
+            else
+            {
+                if (YearNow > lastData.CreatedUtc.Year)
+                {
+                    model.AutoIncreament = 1 + index;
+                    model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
+                }
+                else
+                {
+                    model.AutoIncreament = lastData.AutoIncreament + (1 + index);
+                    model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
+                }
+            }
+        }
     }
 }

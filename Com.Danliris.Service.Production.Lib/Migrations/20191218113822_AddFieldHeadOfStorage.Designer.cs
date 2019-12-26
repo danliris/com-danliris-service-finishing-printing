@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191218113822_AddFieldHeadOfStorage")]
+    partial class AddFieldHeadOfStorage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -428,10 +430,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<double>("PackingQuantity");
 
                     b.Property<string>("UnitCode")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<string>("UnitName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.HasKey("Id");
 
@@ -450,30 +452,25 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<long>("AutoIncreament");
-
                     b.Property<string>("BuyerAddress")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(250);
 
                     b.Property<string>("BuyerCode")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<int>("BuyerId");
 
                     b.Property<string>("BuyerNPWP")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<string>("BuyerName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<string>("BuyerType")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<string>("Construction")
-                        .HasMaxLength(255);
+                        .HasMaxLength(300);
 
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
@@ -488,10 +485,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<DateTimeOffset>("DOSalesDate");
 
                     b.Property<string>("DOSalesNo")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("DOSalesType")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<bool>("Declined");
 
@@ -506,29 +500,29 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<DateTime>("DeletedUtc");
 
                     b.Property<string>("DestinationBuyerAddress")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(250);
 
                     b.Property<string>("DestinationBuyerCode")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<int>("DestinationBuyerId");
 
                     b.Property<string>("DestinationBuyerNPWP")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<string>("DestinationBuyerName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<string>("DestinationBuyerType")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<int>("Disp");
 
                     b.Property<string>("HeadOfStorage")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<string>("ImperialUom")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<bool>("IsDeleted");
 
@@ -543,43 +537,43 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<string>("Material")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<int>("MaterialConstructionFinishId");
 
                     b.Property<string>("MaterialConstructionFinishName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<int>("MaterialId");
 
                     b.Property<string>("MaterialWidthFinish")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<string>("MetricUom")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<int>("Op");
 
                     b.Property<string>("PackingUom")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<int>("ProductionOrderId");
 
                     b.Property<string>("ProductionOrderNo")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<string>("Remark")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(500);
 
                     b.Property<int>("Sc");
 
                     b.Property<string>("Status")
-                        .HasMaxLength(255);
+                        .HasMaxLength(25);
 
                     b.Property<int>("StorageId");
 
                     b.Property<string>("StorageName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(250);
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);

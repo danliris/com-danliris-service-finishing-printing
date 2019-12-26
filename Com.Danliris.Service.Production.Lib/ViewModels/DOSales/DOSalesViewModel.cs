@@ -10,48 +10,86 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
     {
         [MaxLength(255)]
         public string UId { get; set; }
-
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string Code { get; set; }
+        public long AutoIncreament { get; set; }
+        [MaxLength(255)]
+        public string DOSalesNo { get; set; }
+        [MaxLength(255)]
+        public string DOSalesType { get; set; }
+        public DateTimeOffset? DOSalesDate { get; set; }
 
-        public DateTimeOffset? Date { get; set; }
-
+        /* Storage */
         public int? StorageId { get; set; }
-        [MaxLength(250)]
+        [MaxLength(255)]
         public string StorageName { get; set; }
+        [MaxLength(255)]
+        public string HeadOfStorage { get; set; }
 
-        public int ProductionOrderId { get; set; }
-        [MaxLength(25)]
+
+        /* Production Order */
+        public int? ProductionOrderId { get; set; }
+        [MaxLength(255)]
         public string ProductionOrderNo { get; set; }
 
+        /* Material */
         public int? MaterialId { get; set; }
         [MaxLength(255)]
         public string Material { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string MaterialWidthFinish { get; set; }
 
+        /* Material Construction */
         public int? MaterialConstructionFinishId { get; set; }
-        [MaxLength(250)]
+        [MaxLength(255)]
         public string MaterialConstructionFinishName { get; set; }
 
+        /* Buyer */
         public int? BuyerId { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string BuyerCode { get; set; }
-        [MaxLength(250)]
+        [MaxLength(255)]
         public string BuyerName { get; set; }
-        [MaxLength(250)]
+        [MaxLength(1000)]
         public string BuyerAddress { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string BuyerType { get; set; }
+        [MaxLength(255)]
+        public string BuyerNPWP { get; set; }
 
+        /*Destination Buyer */
+        public int? DestinationBuyerId { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerCode { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerName { get; set; }
+        [MaxLength(1000)]
+        public string DestinationBuyerAddress { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerType { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerNPWP { get; set; }
 
-        [StringLength(25)]
+        /* Uom */
+        [MaxLength(255)]
         public string PackingUom { get; set; }
+        [MaxLength(255)]
+        public string ImperialUom { get; set; }
+        [MaxLength(255)]
+        public string MetricUom { get; set; }
 
-        [MaxLength(300)]
+        /* Footer Information */
+        public int? Disp { get; set; }
+        public int? Op { get; set; }
+        public int? Sc { get; set; }
+
+        [MaxLength(255)]
         public string Construction { get; set; }
+        [MaxLength(1000)]
+        public string Remark { get; set; }
 
-        [MaxLength(25)]
+        /* Status */
+        [MaxLength(255)]
         public string Status { get; set; }
         public bool Accepted { get; set; }
         public bool Declined { get; set; }
@@ -61,29 +99,44 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 
-            if (!Date.HasValue || Date.Value > DateTimeOffset.Now)
-                yield return new ValidationResult("Tanggal Pengiriman harus diisi atau lebih kecil sama dengan hari ini", new List<string> { "Date" });
+            if (string.IsNullOrWhiteSpace(DOSalesType))
+                yield return new ValidationResult("Kode DO Penjualan harus diisi", new List<string> { "DOSalesType" });
+
+            if (!DOSalesDate.HasValue || DOSalesDate.Value > DateTimeOffset.Now)
+                yield return new ValidationResult("Tgl penjualan harus diisi atau lebih kecil dari hari ini", new List<string> { "DOSalesDate" });
 
             if (string.IsNullOrWhiteSpace(StorageName))
                 yield return new ValidationResult("Gudang harus diisi", new List<string> { "Storage" });
+
+            if (string.IsNullOrWhiteSpace(HeadOfStorage))
+                yield return new ValidationResult("Nama Kepala Gudang harus diisi", new List<string> { "HeadOfStorage" });
 
             if (string.IsNullOrWhiteSpace(ProductionOrderNo))
                 yield return new ValidationResult("Nomor SPP harus diisi", new List<string> { "ProductionOrder" });
 
             if (!MaterialConstructionFinishId.HasValue || MaterialConstructionFinishId.Value.Equals(0))
-                yield return new ValidationResult("Konstruksi harus diisi", new List<string> { "MaterialConstructionFinish" });
+                yield return new ValidationResult("Konstruksi Finish harus diisi", new List<string> { "MaterialConstructionFinish" });
 
-            if (string.IsNullOrWhiteSpace(Material))
-                yield return new ValidationResult("Material harus diisi", new List<string> { "Material" });
-
-            if (string.IsNullOrWhiteSpace(MaterialWidthFinish))
-                yield return new ValidationResult("Lebar Finish harus diisi", new List<string> { "MaterialWidthFinish" });
-
-            if (!BuyerId.HasValue || BuyerId.Value.Equals(0))
-                yield return new ValidationResult("Buyer harus diisi", new List<string> { "Buyer" });
+            if (string.IsNullOrWhiteSpace(DestinationBuyerName))
+                yield return new ValidationResult("Buyer tujuan harus diisi", new List<string> { "Buyer" });
 
             if (string.IsNullOrWhiteSpace(PackingUom))
-                yield return new ValidationResult("Satuan harus diisi", new List<string> { "PackingUom" });
+                yield return new ValidationResult("Satuan packing harus diisi", new List<string> { "PackingUom" });
+            
+            if (string.IsNullOrWhiteSpace(ImperialUom))
+                yield return new ValidationResult("Satuan benang harus diisi", new List<string> { "ImperialUom" });
+            
+            if (string.IsNullOrWhiteSpace(MetricUom))
+                yield return new ValidationResult("Satuan metrik harus diisi", new List<string> { "MetricUom" });
+
+            if (!Disp.HasValue || Disp.Value.Equals(0))
+                yield return new ValidationResult("Disp harus diisi", new List<string> { "Disp" });
+
+            if (!Op.HasValue || Op.Value.Equals(0))
+                yield return new ValidationResult("Op harus diisi", new List<string> { "Op" });
+
+            if (!Sc.HasValue || Sc.Value.Equals(0))
+                yield return new ValidationResult("Sc harus diisi", new List<string> { "Sc" });
 
             int Count = 0;
             string DetailErrors = "[";
@@ -96,6 +149,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
 
                     var rowErrorCount = 0;
 
+                    if (string.IsNullOrWhiteSpace(detail.UnitCode))
+                    {
+                        Count++;
+                        rowErrorCount++;
+                        DetailErrors += "UnitCode : 'Kode item harus diisi',";
+                    }
+
                     if (string.IsNullOrWhiteSpace(detail.UnitName))
                     {
                         Count++;
@@ -103,41 +163,45 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
                         DetailErrors += "UnitName : 'Nama item harus diisi',";
                     }
 
-                    if (!detail.Quantity.HasValue || detail.Quantity.Value <= 0)
+                    if (detail.PackingQuantity < 0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "Quantity : 'Kuantitas harus lebih besar dari 0 & tidak boleh kosong',";
+                        DetailErrors += "PackingQuantity : 'Jumlah packing harus lebih besar sama dengan 0',";
                     }
-                    if (detail.Weight.Value < 0)
+                    if (detail.ImperialQuantity < 0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "Weight : 'Berat harus lebih besar dari 0',";
+                        DetailErrors += "ImperialQuantity : 'Jumlah benang harus lebih besar sama dengan 0',";
                     }
-                    if (detail.Length.Value < 0)
+                    if (detail.MetricQuantity < 0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "Length : 'Panjang harus lebih besar dari 0',";
+                        DetailErrors += "MetricQuantity : 'Jumlah metrik harus lebih besar sama dengan 0',";
                     }
-
+                    if (detail.PackingQuantity==0 && detail.ImperialQuantity==0  && detail.MetricQuantity==0)
+                    {
+                        Count++;
+                        rowErrorCount++;
+                        DetailErrors += "PackingQuantity: 'Jumlah packing, jumlah benang atau jumlah metrik harus diisi',";
+                        DetailErrors += "ImperialQuantity: 'Jumlah packing, jumlah benang atau jumlah metrik harus diisi',";
+                        DetailErrors += "MetricQuantity: 'Jumlah packing, jumlah benang atau jumlah metrik harus diisi',";
+                    }
+                
                     if (rowErrorCount == 0)
                     {
                         var duplicateDetails = DOSalesDetails.Where(f => 
-                                f.UnitName.Equals(detail.UnitName) && 
-                                f.Quantity.GetValueOrDefault().Equals(detail.Quantity.GetValueOrDefault()) && 
-                                f.Weight.GetValueOrDefault().Equals(detail.Weight.GetValueOrDefault()) && 
-                                f.Length.GetValueOrDefault().Equals(detail.Length.GetValueOrDefault())
+                                f.UnitCode.Equals(detail.UnitCode) &&
+                                f.UnitName.Equals(detail.UnitName)
                             ).ToList();
 
                         if (duplicateDetails.Count > 1)
                         {
                             Count++;
+                            DetailErrors += "UnitCode : 'Kode Item, Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
                             DetailErrors += "UnitName : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
-                            DetailErrors += "Quantity : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
-                            DetailErrors += "Weight : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
-                            DetailErrors += "Length : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
                         }
                     }
                     DetailErrors += "}, ";

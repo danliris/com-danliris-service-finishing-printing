@@ -4,11 +4,6 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils;
 using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales;
-using Com.Danliris.Service.Production.Lib.Services.IdentityService;
-using Com.Danliris.Service.Production.Lib.Services.ValidateService;
-using Com.Danliris.Service.Production.Lib.Utilities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -21,58 +16,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 {
     public class DOSalesControllerTest : BaseControllerTest<DOSalesController, DOSalesModel, DOSalesViewModel, IDOSalesFacade>
     {
-        //[Fact]
-        //public void GetReport_WithoutException_ReturnOK()
-        //{
-        //    var mockFacade = new Mock<IDOSalesFacade>();
-        //    mockFacade.Setup(x => x.GetReport(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
-        //        .Returns(new ReadResponse<DOSalesViewModel>(new List<DOSalesViewModel>(), 0, new Dictionary<string, string>(), new List<string>()));
-
-        //    var mockMapper = new Mock<IMapper>();
-
-        //    var mockIdentityService = new Mock<IIdentityService>();
-
-        //    var mockValidateService = new Mock<IValidateService>();
-
-        //    DOSalesController controller = new DOSalesController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
-        //    {
-        //        ControllerContext = new ControllerContext()
-        //        {
-        //            HttpContext = new DefaultHttpContext()
-        //        }
-        //    };
-        //    controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
-
-        //    var response = controller.GetReport(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
-        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
-        //}
-
-        //[Fact]
-        //public void GetReport_WithException_ReturnError()
-        //{
-        //    var mockFacade = new Mock<IDOSalesFacade>();
-        //    mockFacade.Setup(x => x.GetReport(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
-        //        .Throws(new Exception());
-
-        //    var mockMapper = new Mock<IMapper>();
-
-        //    var mockIdentityService = new Mock<IIdentityService>();
-
-        //    var mockValidateService = new Mock<IValidateService>();
-
-        //    DOSalesController controller = new DOSalesController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
-        //    {
-        //        ControllerContext = new ControllerContext()
-        //        {
-        //            HttpContext = new DefaultHttpContext()
-        //        }
-        //    };
-        //    controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
-
-        //    var response = controller.GetReport(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
-        //    Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
-        //}
-
         [Fact]
         public async void GetDOSalesDetail_OK()
         {
@@ -125,6 +68,73 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var response = await controller.GetDOSalesDetail("");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Get_PDF_Success()
+        {
+            var vm = new DOSalesViewModel()
+            {
+                DOSalesNo = "DOSalesNo",
+                DOSalesDate = DateTimeOffset.UtcNow,
+                HeadOfStorage = "HeadOfStorage",
+                StorageName = "StorageName",
+                BuyerName = "BuyerName",
+                PackingUom = "ROLL",
+                ImperialUom = "YDS",
+                MetricUom = "MTR",
+                Disp = 1,
+                Op = 1,
+                Sc = 1,
+                DestinationBuyerName = "DestinationBuyerName",
+                Remark = "Remark",
+                DOSalesDetails = new List<DOSalesDetailViewModel>()
+                {
+                    new DOSalesDetailViewModel()
+                    {
+                        PackingQuantity = 1,
+                        ImperialQuantity = 1,
+                        MetricQuantity = 1,
+                        UnitCode = "UnitCode",
+                        UnitName = "UnitName"
+                    }
+                }
+            };
+            var mocks = GetMocks();
+            mocks.Facade.Setup(x => x.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            mocks.Mapper.Setup(s => s.Map<DOSalesViewModel>(It.IsAny<DOSalesModel>()))
+                .Returns(vm);
+            var controller = GetController(mocks);
+            var response = controller.GetPDF(1).Result;
+
+            Assert.NotNull(response);
+
+        }
+
+        [Fact]
+        public void Get_PDF_NotFound()
+        {
+            var mocks = GetMocks();
+            mocks.Facade.Setup(x => x.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(default(DOSalesModel));
+            var controller = GetController(mocks);
+            var response = controller.GetPDF(1).Result;
+
+            int statusCode = this.GetStatusCode(response);
+            Assert.Equal((int)HttpStatusCode.NotFound, statusCode);
+
+        }
+
+        [Fact]
+        public void Get_PDF_Exception()
+        {
+            var mocks = GetMocks();
+            mocks.Facade.Setup(x => x.ReadByIdAsync(It.IsAny<int>())).ThrowsAsync(new Exception("error"));
+            var controller = GetController(mocks);
+            var response = controller.GetPDF(1).Result;
+
+            int statusCode = this.GetStatusCode(response);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
+
         }
     }
 }
