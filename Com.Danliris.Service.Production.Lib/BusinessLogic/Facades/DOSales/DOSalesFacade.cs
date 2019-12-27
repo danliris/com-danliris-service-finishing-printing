@@ -171,19 +171,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
                     index = 0;
                 }
                 model.AutoIncreament = 1 + index;
-                model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
+                model.DOSalesNo = $"{model.DOSalesType}/{YearNow}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
             }
             else
             {
                 if (YearNow > lastData.CreatedUtc.Year)
                 {
                     model.AutoIncreament = 1 + index;
-                    model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
+                    model.DOSalesNo = $"{model.DOSalesType}/{YearNow}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
                 }
                 else
                 {
                     model.AutoIncreament = lastData.AutoIncreament + (1 + index);
-                    model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
+                    model.DOSalesNo = $"{model.DOSalesType}/{YearNow}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
                 }
             }
         }
