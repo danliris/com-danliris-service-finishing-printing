@@ -1,10 +1,8 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
-using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
@@ -23,10 +21,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             DOSalesModel TestData = new DOSalesModel()
             {
                 UId = "UId",
-                Code = "Code",
-                Date = DateTimeOffset.UtcNow,
+                Code = "code",
+                AutoIncreament = 1,
+                DOSalesNo = "DOSalesNo",
+                DOSalesType = "DOSalesType",
+                DOSalesDate = DateTimeOffset.UtcNow,
                 StorageId = 1,
                 StorageName = "StorageName",
+                HeadOfStorage = "HeadOfStorage",
                 ProductionOrderId = 1,
                 ProductionOrderNo = "ProductionOrderNo",
                 MaterialId = 1,
@@ -34,56 +36,42 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 MaterialWidthFinish = "MaterialWidthFinish",
                 MaterialConstructionFinishId = 1,
                 MaterialConstructionFinishName = "MaterialConstructionFinishName",
-                BuyerId = 1,
-                BuyerCode = "BuyerCode",
-                BuyerName = "BuyerName",
                 BuyerAddress = "BuyerAddress",
+                BuyerCode = "BuyerCode",
+                BuyerId = 1,
+                BuyerName = "BuyerName",
+                BuyerNPWP = "BuyerNPWP",
                 BuyerType = "BuyerType",
-                PackingUom = "PCS",
+                DestinationBuyerAddress = "DestinationBuyerAddress",
+                DestinationBuyerCode = "DestinationBuyerCode",
+                DestinationBuyerId = 1,
+                DestinationBuyerName = "DestinationBuyerName",
+                DestinationBuyerNPWP = "DestinationBuyerNPWP",
+                DestinationBuyerType = "DestinationBuyerType",
+                PackingUom = "PackingUom",
+                ImperialUom = "ImperialUom",
+                MetricUom = "MetricUom",
+                Disp = 1,
+                Op = 1,
+                Sc = 1,
                 Construction = "Construction",
-                Status = "BELUM",
-                //Accepted = true,
-                //Declined = false,
+                Remark = "Remark",
+                Status = "Status",
+                //Accepted = false,
+                //Declined = true,
+
                 DOSalesDetails = new List<DOSalesDetailModel>
                 {
                     new DOSalesDetailModel()
+                    {
+                        UnitName = "UnitName",
+                        UnitCode = "UnitCode",
+                        PackingQuantity = 1,
+                        ImperialQuantity = 1,
+                        MetricQuantity = 1
+                    }
                 }
             };
-            return TestData;
-        }
-
-        public DOSalesViewModel GetDataToValidate()
-        {
-            DOSalesViewModel TestData = new DOSalesViewModel()
-            {
-                UId = "UId",
-                Code = "Code",
-                Date = DateTimeOffset.UtcNow,
-                StorageId = 1,
-                StorageName = "StorageName",
-                ProductionOrderId = 1,
-                ProductionOrderNo = "ProductionOrderNo",
-                MaterialId = 1,
-                Material = "Material",
-                MaterialWidthFinish = "MaterialWidthFinish",
-                MaterialConstructionFinishId = 1,
-                MaterialConstructionFinishName = "MaterialConstructionFinishName",
-                BuyerId = 1,
-                BuyerCode = "BuyerCode",
-                BuyerName = "BuyerName",
-                BuyerAddress = "BuyerAddress",
-                BuyerType = "BuyerType",
-                PackingUom = "PCS",
-                Construction = "Construction",
-                Status = "BELUM",
-                //Accepted = true,
-                //Declined = false,
-                DOSalesDetails = new List<DOSalesDetailViewModel>
-                {
-                    new DOSalesDetailViewModel()
-                }
-            };
-
             return TestData;
         }
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
+using Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Services.ValidateService;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales
@@ -23,37 +26,47 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales
         {
         }
 
-        //[HttpGet("reports")]
-        //public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, string code = null, int productionOrderId = -1, int page = 1, int size = 25)
-        //{
-        //    try
-        //    {
-        //        int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-        //        //int offSet = 7;
-        //        var data = Facade.GetReport(page, size, code, productionOrderId, dateFrom, dateTo, offSet);
+        [HttpGet("pdf/{Id}")]
+        public async Task<IActionResult> GetPDF([FromRoute] int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //        return Ok(new
-        //        {
-        //            apiVersion = ApiVersion,
-        //            data = data.Data,
-        //            info = new
-        //            {
-        //                Count = data.Count,
-        //                Orded = data.Order,
-        //                Selected = data.Selected
-        //            },
-        //            message = General.OK_MESSAGE,
-        //            statusCode = General.OK_STATUS_CODE
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Dictionary<string, object> Result =
-        //           new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-        //           .Fail();
-        //        return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
-        //    }
-        //}
+            try
+            {
+                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                DOSalesModel model = await Facade.ReadByIdAsync(Id);
+
+                if (model == null)
+                {
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.NOT_FOUND_STATUS_CODE, General.NOT_FOUND_MESSAGE)
+                        .Fail();
+                    return NotFound(Result);
+                }
+                else
+                {
+                    DOSalesViewModel viewModel = Mapper.Map<DOSalesViewModel>(model);
+
+                    DOSalesPdfTemplate PdfTemplate = new DOSalesPdfTemplate();
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(viewModel, timeoffsset);
+                    return new FileStreamResult(stream, "application/pdf")
+                    {
+                        FileDownloadName = "DO_Penjualan/" + viewModel.DOSalesNo + ".pdf"
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
 
         [HttpGet("details/by-product-name")]
         public async Task<IActionResult> GetDOSalesDetail([FromQuery] string productName)
@@ -77,16 +90,15 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales
                     {
                         new DOSalesDetailModel()
                         {
+                            UnitCode = model.UnitCode,
                             UnitName = model.UnitName,
                             DOSalesId = model.DOSalesId,
-                            Quantity = model.Quantity,
-                            Weight = model.Weight,
-                            Length = model.Length,
-                            Remark = model.Remark,
+                            PackingQuantity = model.PackingQuantity,
+                            ImperialQuantity = model.ImperialQuantity,
+                            MetricQuantity = model.MetricQuantity,
                             Id = model.Id
                         }
                     };
-
 
                     var viewModel = Mapper.Map<DOSalesViewModel>(data);
 

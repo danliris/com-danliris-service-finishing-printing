@@ -11,47 +11,86 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales
     {
         [MaxLength(255)]
         public string UId { get; set; }
-
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string Code { get; set; }
+        public long AutoIncreament { get; set; }
+        [MaxLength(255)]
+        public string DOSalesNo { get; set; }
+        [MaxLength(255)]
+        public string DOSalesType { get; set; }
+        public DateTimeOffset DOSalesDate { get; set; }
 
-        public DateTimeOffset Date { get; set; }
-
+        /* Storage */
         public int StorageId { get; set; }
-        [MaxLength(250)]
+        [MaxLength(255)]
         public string StorageName { get; set; }
+        [MaxLength(255)]
+        public string HeadOfStorage { get; set; }
 
+
+        /* Production Order */
         public int ProductionOrderId { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string ProductionOrderNo { get; set; }
 
+        /* Material */
         public int MaterialId { get; set; }
         [MaxLength(255)]
         public string Material { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string MaterialWidthFinish { get; set; }
 
+        /* Material Construction */
         public int MaterialConstructionFinishId { get; set; }
-        [MaxLength(250)]
+        [MaxLength(255)]
         public string MaterialConstructionFinishName { get; set; }
 
+        /* Buyer */
         public int BuyerId { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string BuyerCode { get; set; }
-        [MaxLength(250)]
+        [MaxLength(255)]
         public string BuyerName { get; set; }
-        [MaxLength(250)]
+        [MaxLength(1000)]
         public string BuyerAddress { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string BuyerType { get; set; }
+        [MaxLength(255)]
+        public string BuyerNPWP { get; set; }
 
-        [MaxLength(25)]
+        /*Destination Buyer */
+        public int DestinationBuyerId { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerCode { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerName { get; set; }
+        [MaxLength(1000)]
+        public string DestinationBuyerAddress { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerType { get; set; }
+        [MaxLength(255)]
+        public string DestinationBuyerNPWP { get; set; }
+
+        /* Uom */
+        [MaxLength(255)]
         public string PackingUom { get; set; }
+        [MaxLength(255)]
+        public string ImperialUom { get; set; }
+        [MaxLength(255)]
+        public string MetricUom { get; set; }
 
-        [MaxLength(300)]
+        /* Footer Information */
+        public int Disp { get; set; }
+        public int Op { get; set; }
+        public int Sc { get; set; }
+
+        [MaxLength(255)]
         public string Construction { get; set; }
+        [MaxLength(1000)]
+        public string Remark { get; set; }
 
-        [MaxLength(25)]
+        /* Status */
+        [MaxLength(255)]
         public string Status { get; set; }
         public bool Accepted { get; set; }
         public bool Declined { get; set; }

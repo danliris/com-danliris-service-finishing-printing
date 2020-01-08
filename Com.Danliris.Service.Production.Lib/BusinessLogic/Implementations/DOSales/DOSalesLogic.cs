@@ -59,28 +59,45 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             var dbmodel = await ReadModelById(id);
 
-            dbmodel.Accepted = model.Accepted;
+            dbmodel.UId = model.UId;
+            dbmodel.Code = model.Code;
+            dbmodel.AutoIncreament = model.AutoIncreament;
+            dbmodel.DOSalesNo = model.DOSalesNo;
+            dbmodel.DOSalesType = model.DOSalesType;
+            dbmodel.DOSalesDate = model.DOSalesDate;
+            dbmodel.StorageId = model.StorageId;
+            dbmodel.StorageName = model.StorageName;
+            dbmodel.HeadOfStorage = model.HeadOfStorage;
+            dbmodel.ProductionOrderId = model.ProductionOrderId;
+            dbmodel.ProductionOrderNo = model.ProductionOrderNo;
+            dbmodel.MaterialId = model.MaterialId;
+            dbmodel.Material = model.Material;
+            dbmodel.MaterialWidthFinish = model.MaterialWidthFinish;
+            dbmodel.MaterialConstructionFinishId = model.MaterialConstructionFinishId;
+            dbmodel.MaterialConstructionFinishName = model.MaterialConstructionFinishName;
             dbmodel.BuyerAddress = model.BuyerAddress;
             dbmodel.BuyerCode = model.BuyerCode;
             dbmodel.BuyerId = model.BuyerId;
             dbmodel.BuyerName = model.BuyerName;
+            dbmodel.BuyerNPWP = model.BuyerNPWP;
             dbmodel.BuyerType = model.BuyerType;
-            dbmodel.StorageId = model.StorageId;
-            dbmodel.StorageName = model.StorageName;
-            dbmodel.Code = model.Code;
-            dbmodel.Construction = string.Format("{0} / {1} / {2}", model.Material, model.MaterialConstructionFinishName, model.MaterialWidthFinish);
-            dbmodel.Date = model.Date;
-            dbmodel.Declined = model.Declined;
-            dbmodel.Material = model.Material;
-            dbmodel.MaterialConstructionFinishId = model.MaterialConstructionFinishId;
-            dbmodel.MaterialConstructionFinishName = model.MaterialConstructionFinishName;
-            dbmodel.MaterialId = model.MaterialId;
-            dbmodel.MaterialWidthFinish = model.MaterialWidthFinish;
+            dbmodel.DestinationBuyerAddress = model.DestinationBuyerAddress;
+            dbmodel.DestinationBuyerCode = model.DestinationBuyerCode;
+            dbmodel.DestinationBuyerId = model.DestinationBuyerId;
+            dbmodel.DestinationBuyerName = model.DestinationBuyerName;
+            dbmodel.DestinationBuyerNPWP = model.DestinationBuyerNPWP;
+            dbmodel.DestinationBuyerType = model.DestinationBuyerType;
             dbmodel.PackingUom = model.PackingUom;
-            dbmodel.ProductionOrderId = model.ProductionOrderId;
-            dbmodel.ProductionOrderNo = model.ProductionOrderNo;
-            dbmodel.Status = model.Status;
-            dbmodel.UId = model.UId;
+            dbmodel.ImperialUom = model.ImperialUom;
+            dbmodel.MetricUom = model.MetricUom;
+            dbmodel.Disp = model.Disp;
+            dbmodel.Op = model.Op;
+            dbmodel.Sc = model.Sc;
+            dbmodel.Construction = string.Format("{0} / {1} / {2}", model.Material, model.MaterialConstructionFinishName, model.MaterialWidthFinish);
+            dbmodel.Remark = model.Remark;
+            dbmodel.Status = model.Status; 
+            dbmodel.Accepted = model.Accepted;
+            dbmodel.Declined = model.Declined;
 
             EntityExtension.FlagForUpdate(dbmodel, IdentityService.Username, UserAgent);
             var addedDOSalesDetails = model.DOSalesDetails.Where(x => !dbmodel.DOSalesDetails.Any(y => y.Id == x.Id));
@@ -91,11 +108,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             {
                 var dbItem = dbmodel.DOSalesDetails.FirstOrDefault(x => x.Id == item.Id);
 
+                dbItem.UnitCode  = item.UnitCode;
                 dbItem.UnitName = item.UnitName;
-                dbItem.Length = item.Length;
-                dbItem.Quantity = item.Quantity;
-                dbItem.Weight = item.Weight;
-                dbItem.Remark = item.Remark;
+                dbItem.PackingQuantity = item.PackingQuantity;
+                dbItem.ImperialQuantity = item.ImperialQuantity;
+                dbItem.MetricQuantity = item.MetricQuantity;
 
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
             }
