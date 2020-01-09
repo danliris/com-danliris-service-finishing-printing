@@ -244,7 +244,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                         item.SelectedProductionOrderDetail.ColorRequest, item.ProductionOrder.HandlingStandard, item.ProductionOrder.FinishWidth,
                         item.ProductionOrder.Material.Name, item.ProductionOrder.MaterialConstruction.Name, item.ProductionOrder.YarnMaterial.Name,
                         item.Grade, item.Cart.CartNumber, item.Cart.Qty, item.Cart.Pcs, item.Cart.Uom.Unit, string.Format("{0} / {1}", item.CurrentStepIndex.GetValueOrDefault(), item.Instruction.Steps.Count),
-                        item.CurrentStepIndex.GetValueOrDefault() == 0 ? "-" : item.Instruction.Steps[item.CurrentStepIndex.GetValueOrDefault() - 1].Process,
+                        item.CurrentStepIndex.GetValueOrDefault() == 0 ? "-" : item.CurrentStepIndex.GetValueOrDefault() > item.Instruction.Steps.Count ? "REPROSES" : item.Instruction.Steps[item.CurrentStepIndex.GetValueOrDefault() - 1].Process,
                         item.IsComplete.GetValueOrDefault() ? "Complete" : item.CurrentStepIndex.GetValueOrDefault() == item.Instruction.Steps.Count ? "Pending" : "Incomplete",
                         item.IsReprocess.GetValueOrDefault() ? "Ya" : "Tidak");
                 }
