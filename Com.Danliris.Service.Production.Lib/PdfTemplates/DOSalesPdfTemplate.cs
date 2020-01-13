@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             headerTable2.AddCell(cellHeaderBody);
 
             cellHeaderBody.HorizontalAlignment = Element.ALIGN_CENTER;
-            cellHeaderBody.Phrase = new Phrase("Bag. " + viewModel.StorageName, normal_font);
+            cellHeaderBody.Phrase = new Phrase("Bag. " + viewModel.StorageName + " / Div. " + viewModel.StorageDivision, normal_font);
             headerTable2.AddCell(cellHeaderBody);
 
             cellHeaderBody.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -123,13 +123,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             bodyCell.Phrase = new Phrase("Kode Barang", bold_font);
             bodyTable.AddCell(bodyCell);
 
-            bodyCell.Phrase = new Phrase("Jumlah Packing\n(" + viewModel.PackingUom + ")", bold_font);
+            bodyCell.Phrase = new Phrase("Total Packing\n(" + viewModel.PackingUom + ")", bold_font);
             bodyTable.AddCell(bodyCell);
 
-            bodyCell.Phrase = new Phrase("Jumlah Benang\n(" + viewModel.ImperialUom + ")", bold_font);
+            bodyCell.Phrase = new Phrase("Total Panjang\n(" + viewModel.LengthUom + ")", bold_font);
             bodyTable.AddCell(bodyCell);
-            
-            bodyCell.Phrase = new Phrase("Jumlah Metrik\n(" + viewModel.MetricUom + ")", bold_font);
+
+            bodyCell.Phrase = new Phrase("Total Panjang\n( yard )", bold_font);
             bodyTable.AddCell(bodyCell);
 
             foreach (DOSalesDetailViewModel item in viewModel.DOSalesDetails)
@@ -140,7 +140,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 bodyTable.AddCell(bodyCell);
 
                 bodyCell.HorizontalAlignment = Element.ALIGN_LEFT;
-                bodyCell.Phrase = new Phrase(item.UnitName, normal_font);
+                bodyCell.Phrase = new Phrase(item.UnitName + " " + item.UnitRemark, normal_font);
                 bodyTable.AddCell(bodyCell);
 
                 bodyCell.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -148,24 +148,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 bodyTable.AddCell(bodyCell);
 
                 bodyCell.HorizontalAlignment = Element.ALIGN_RIGHT;
-                bodyCell.Phrase = new Phrase(string.Format("{0:n2}", item.PackingQuantity), normal_font);
+                bodyCell.Phrase = new Phrase(string.Format("{0:n2}", item.TotalPacking), normal_font);
                 bodyTable.AddCell(bodyCell);
 
                 bodyCell.HorizontalAlignment = Element.ALIGN_RIGHT;
-                bodyCell.Phrase = new Phrase(string.Format("{0:n2}", item.ImperialQuantity), normal_font);
+                bodyCell.Phrase = new Phrase(string.Format("{0:n2}", item.TotalLength), normal_font);
                 bodyTable.AddCell(bodyCell);
 
 
                 bodyCell.HorizontalAlignment = Element.ALIGN_RIGHT;
-                bodyCell.Phrase = new Phrase(string.Format("{0:n2}", item.MetricQuantity), normal_font);
+                bodyCell.Phrase = new Phrase(string.Format("{0:n2}", item.TotalLengthConversion), normal_font);
                 bodyTable.AddCell(bodyCell);          
             }
 
             foreach (DOSalesDetailViewModel total in viewModel.DOSalesDetails)
             {
-                totalPackingQuantity += total.PackingQuantity;
-                totalImperialQuantity += total.ImperialQuantity;
-                totalMetricQuantity += total.MetricQuantity;
+                totalPackingQuantity += total.TotalPacking;
+                totalImperialQuantity += total.TotalLength;
+                totalMetricQuantity += total.TotalLengthConversion;
             }
 
 

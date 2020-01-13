@@ -25,6 +25,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales
         [MaxLength(255)]
         public string StorageName { get; set; }
         [MaxLength(255)]
+        public string StorageDivision { get; set; }
+        [MaxLength(255)]
         public string HeadOfStorage { get; set; }
 
 
@@ -75,9 +77,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales
         [MaxLength(255)]
         public string PackingUom { get; set; }
         [MaxLength(255)]
-        public string ImperialUom { get; set; }
-        [MaxLength(255)]
-        public string MetricUom { get; set; }
+        public string LengthUom { get; set; }
 
         /* Footer Information */
         public int Disp { get; set; }

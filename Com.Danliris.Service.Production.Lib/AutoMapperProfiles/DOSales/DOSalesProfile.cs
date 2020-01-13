@@ -8,8 +8,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DOSales
     {
         public DOSalesProfile()
         {
-            CreateMap<DOSalesModel, DOSalesViewModel>().ReverseMap();
-            CreateMap<DOSalesDetailModel, DOSalesDetailViewModel>().ReverseMap();
+            CreateMap<DOSalesModel, DOSalesViewModel>()
+                .ReverseMap();
+
+            CreateMap<DOSalesDetailModel, DOSalesDetailViewModel>()
+                .ReverseMap();
         }
     }
 }

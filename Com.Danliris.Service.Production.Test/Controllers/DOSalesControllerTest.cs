@@ -79,10 +79,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 DOSalesDate = DateTimeOffset.UtcNow,
                 HeadOfStorage = "HeadOfStorage",
                 StorageName = "StorageName",
+                StorageDivision = "StorageDivision",
                 BuyerName = "BuyerName",
                 PackingUom = "ROLL",
-                ImperialUom = "YDS",
-                MetricUom = "MTR",
+                LengthUom = "MTR",
                 Disp = 1,
                 Op = 1,
                 Sc = 1,
@@ -92,11 +92,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 {
                     new DOSalesDetailViewModel()
                     {
-                        PackingQuantity = 1,
-                        ImperialQuantity = 1,
-                        MetricQuantity = 1,
+                        TotalPacking = 1,
+                        TotalLength = 1,
+                        TotalLengthConversion = 1,
                         UnitCode = "UnitCode",
-                        UnitName = "UnitName"
+                        UnitName = "UnitName",
+                        UnitRemark = "UnitRemark"
                     }
                 }
             };

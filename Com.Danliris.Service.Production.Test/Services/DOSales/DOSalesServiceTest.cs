@@ -34,6 +34,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
                 DOSalesDate = DateTimeOffset.UtcNow.AddDays(5),
                 StorageId = 0,
                 StorageName = "",
+                StorageDivision = "",
                 HeadOfStorage = "",
                 ProductionOrderId = 0,
                 ProductionOrderNo = "",
@@ -55,8 +56,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
                 DestinationBuyerNPWP = "",
                 DestinationBuyerType = "",
                 PackingUom = "",
-                ImperialUom = "",
-                MetricUom = "",
+                LengthUom = "",
                 Disp = -1,
                 Op = -1,
                 Sc = -1,
@@ -68,11 +68,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.DOSales
                     new DOSalesDetailViewModel()
                     {
                         DOSalesId = 0,
-                        PackingQuantity = -1,
-                        ImperialQuantity = -1,
-                        MetricQuantity = -1,
+                        TotalPacking = -1,
+                        TotalLength = -1,
+                        TotalLengthConversion = -1,
                         UnitCode = "",
-                        UnitName = ""
+                        UnitName = "",
+                        UnitRemark = ""
                     }
                 }
             };

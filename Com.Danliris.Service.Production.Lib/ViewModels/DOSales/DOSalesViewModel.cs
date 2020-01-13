@@ -24,6 +24,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
         [MaxLength(255)]
         public string StorageName { get; set; }
         [MaxLength(255)]
+        public string StorageDivision { get; set; }
+        [MaxLength(255)]
         public string HeadOfStorage { get; set; }
 
 
@@ -74,9 +76,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
         [MaxLength(255)]
         public string PackingUom { get; set; }
         [MaxLength(255)]
-        public string ImperialUom { get; set; }
-        [MaxLength(255)]
-        public string MetricUom { get; set; }
+        public string LengthUom { get; set; }
 
         /* Footer Information */
         public int? Disp { get; set; }
@@ -123,11 +123,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
             if (string.IsNullOrWhiteSpace(PackingUom))
                 yield return new ValidationResult("Satuan packing harus diisi", new List<string> { "PackingUom" });
             
-            if (string.IsNullOrWhiteSpace(ImperialUom))
-                yield return new ValidationResult("Satuan benang harus diisi", new List<string> { "ImperialUom" });
-            
-            if (string.IsNullOrWhiteSpace(MetricUom))
-                yield return new ValidationResult("Satuan metrik harus diisi", new List<string> { "MetricUom" });
+            if (string.IsNullOrWhiteSpace(LengthUom))
+                yield return new ValidationResult("Satuan panjang harus diisi", new List<string> { "LengthUom" });
 
             if (!Disp.HasValue || Disp.Value.Equals(0))
                 yield return new ValidationResult("Disp harus diisi", new List<string> { "Disp" });
@@ -163,31 +160,30 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
                         DetailErrors += "UnitName : 'Nama item harus diisi',";
                     }
 
-                    if (detail.PackingQuantity < 0)
+                    if (detail.TotalPacking < 0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "PackingQuantity : 'Jumlah packing harus lebih besar sama dengan 0',";
+                        DetailErrors += "TotalPacking : 'Total packing harus lebih besar dari 0',";
                     }
-                    if (detail.ImperialQuantity < 0)
+                    if (detail.TotalLength < 0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "ImperialQuantity : 'Jumlah benang harus lebih besar sama dengan 0',";
+                        DetailErrors += "TotalLength : 'Total panjang harus lebih besar dari 0',";
                     }
-                    if (detail.MetricQuantity < 0)
+                    if (detail.TotalLengthConversion < 0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "MetricQuantity : 'Jumlah metrik harus lebih besar sama dengan 0',";
+                        DetailErrors += "TotalLengthConversion : 'Total panjang harus diisi',";
                     }
-                    if (detail.PackingQuantity==0 && detail.ImperialQuantity==0  && detail.MetricQuantity==0)
+                    if (detail.TotalPacking==0 && detail.TotalLength==0)
                     {
                         Count++;
                         rowErrorCount++;
-                        DetailErrors += "PackingQuantity: 'Jumlah packing, jumlah benang atau jumlah metrik harus diisi',";
-                        DetailErrors += "ImperialQuantity: 'Jumlah packing, jumlah benang atau jumlah metrik harus diisi',";
-                        DetailErrors += "MetricQuantity: 'Jumlah packing, jumlah benang atau jumlah metrik harus diisi',";
+                        DetailErrors += "TotalPacking: 'Total packing dan total panjang harus diisi',";
+                        DetailErrors += "TotalLength: 'Total packing dan total panjang harus diisi',";
                     }
                 
                     if (rowErrorCount == 0)
@@ -200,8 +196,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
                         if (duplicateDetails.Count > 1)
                         {
                             Count++;
-                            DetailErrors += "UnitCode : 'Kode Item, Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
-                            DetailErrors += "UnitName : 'Nama Item, Kuantitas, Berat, dan Panjang tidak boleh duplikat',";
+                            DetailErrors += "UnitCode : 'Kode Item tidak boleh duplikat',";
+                            DetailErrors += "UnitName : 'ama Item tidak boleh duplikat',";
                         }
                     }
                     DetailErrors += "}, ";

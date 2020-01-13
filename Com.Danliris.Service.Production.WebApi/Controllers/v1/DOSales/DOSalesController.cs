@@ -92,10 +92,11 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DOSales
                         {
                             UnitCode = model.UnitCode,
                             UnitName = model.UnitName,
+                            UnitRemark = model.UnitRemark,
                             DOSalesId = model.DOSalesId,
-                            PackingQuantity = model.PackingQuantity,
-                            ImperialQuantity = model.ImperialQuantity,
-                            MetricQuantity = model.MetricQuantity,
+                            TotalPacking = model.TotalPacking,
+                            TotalLength = model.TotalLength,
+                            TotalLengthConversion = model.TotalLengthConversion,
                             Id = model.Id
                         }
                     };
