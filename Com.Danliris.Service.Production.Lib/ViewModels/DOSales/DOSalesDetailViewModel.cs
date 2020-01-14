@@ -10,11 +10,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DOSales
         public string UnitCode { get; set; }
         [MaxLength(255)]
         public string UnitName { get; set; }
+        [MaxLength(255)]
+        public string UnitRemark { get; set; }
 
         /* Quantity */
-        public double PackingQuantity { get; set; }
-        public double ImperialQuantity { get; set; }
-        public double MetricQuantity { get; set; }
+        public double TotalPacking { get; set; }
+        public double TotalLength { get; set; }
+        public double TotalLengthConversion { get; set; }
 
         public int? DOSalesId { get; set; }
 

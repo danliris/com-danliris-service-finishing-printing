@@ -67,6 +67,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbmodel.DOSalesDate = model.DOSalesDate;
             dbmodel.StorageId = model.StorageId;
             dbmodel.StorageName = model.StorageName;
+            dbmodel.StorageDivision = model.StorageDivision;
             dbmodel.HeadOfStorage = model.HeadOfStorage;
             dbmodel.ProductionOrderId = model.ProductionOrderId;
             dbmodel.ProductionOrderNo = model.ProductionOrderNo;
@@ -88,8 +89,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbmodel.DestinationBuyerNPWP = model.DestinationBuyerNPWP;
             dbmodel.DestinationBuyerType = model.DestinationBuyerType;
             dbmodel.PackingUom = model.PackingUom;
-            dbmodel.ImperialUom = model.ImperialUom;
-            dbmodel.MetricUom = model.MetricUom;
+            dbmodel.LengthUom = model.LengthUom;
             dbmodel.Disp = model.Disp;
             dbmodel.Op = model.Op;
             dbmodel.Sc = model.Sc;
@@ -110,9 +110,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
                 dbItem.UnitCode  = item.UnitCode;
                 dbItem.UnitName = item.UnitName;
-                dbItem.PackingQuantity = item.PackingQuantity;
-                dbItem.ImperialQuantity = item.ImperialQuantity;
-                dbItem.MetricQuantity = item.MetricQuantity;
+                dbItem.UnitRemark = item.UnitRemark;
+                dbItem.TotalPacking = item.TotalPacking;
+                dbItem.TotalLength = item.TotalLength;
+                dbItem.TotalLengthConversion = item.TotalLengthConversion;
 
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
             }

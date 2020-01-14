@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
 
             List<string> searchAttributes = new List<string>()
             {
-                "DOSalesNo", "StorageName", "BuyerName", "DestinationBuyerName", "ProductionOrderNo", "Construction"
+                "DOSalesNo", "StorageName", "StorageDivision", "BuyerName", "DestinationBuyerName", "ProductionOrderNo", "Construction"
             };
             query = QueryHelper<DOSalesModel>.Search(query, searchAttributes, keyword);
 
@@ -91,9 +91,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
             List<string> selectedFields = new List<string>()
             {
 
-                "Id","DOSalesNo","DOSalesType","DOSalesDate","StorageId","StorageName","HeadOfStorage","ProductionOrderId","ProductionOrderNo","MaterialId","Material","MaterialWidthFinish","MaterialConstructionFinishId","DOSalesDetails","MaterialConstructionFinishName",
+                "Id","DOSalesNo","DOSalesType","DOSalesDate","StorageId","StorageName","StorageDivision","HeadOfStorage","ProductionOrderId","ProductionOrderNo","MaterialId","Material","MaterialWidthFinish","MaterialConstructionFinishId","DOSalesDetails","MaterialConstructionFinishName",
                 "BuyerId","BuyerCode","BuyerName","BuyerAddress","BuyerType","BuyerNPWP","DestinationBuyerId","DestinationBuyerCode","DestinationBuyerName","DestinationBuyerAddress","DestinationBuyerType","DestinationBuyerNPWP",
-                "PackingUom","ImperialUom","MetricUom","Disp","Op","Sc","Construction","Remark","Status"
+                "PackingUom","LengthUom","Disp","Op","Sc","Construction","Remark","Status"
 
             };
 

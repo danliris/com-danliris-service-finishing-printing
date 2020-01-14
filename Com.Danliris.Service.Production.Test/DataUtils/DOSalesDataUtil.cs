@@ -24,10 +24,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 Code = "code",
                 AutoIncreament = 1,
                 DOSalesNo = "DOSalesNo",
-                DOSalesType = "DOSalesType",
+                DOSalesType = "UP",
                 DOSalesDate = DateTimeOffset.UtcNow,
                 StorageId = 1,
                 StorageName = "StorageName",
+                StorageDivision = "StorageDivision",
                 HeadOfStorage = "HeadOfStorage",
                 ProductionOrderId = 1,
                 ProductionOrderNo = "ProductionOrderNo",
@@ -48,9 +49,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 DestinationBuyerName = "DestinationBuyerName",
                 DestinationBuyerNPWP = "DestinationBuyerNPWP",
                 DestinationBuyerType = "DestinationBuyerType",
-                PackingUom = "PackingUom",
-                ImperialUom = "ImperialUom",
-                MetricUom = "MetricUom",
+                PackingUom = "PCS",
+                LengthUom = "MTR",
                 Disp = 1,
                 Op = 1,
                 Sc = 1,
@@ -66,9 +66,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                     {
                         UnitName = "UnitName",
                         UnitCode = "UnitCode",
-                        PackingQuantity = 1,
-                        ImperialQuantity = 1,
-                        MetricQuantity = 1
+                        UnitRemark = "UnitRemark",
+                        TotalPacking = 1,
+                        TotalLength = 1,
+                        TotalLengthConversion = 1
                     }
                 }
             };
