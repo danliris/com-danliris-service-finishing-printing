@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
@@ -369,6 +371,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
             Assert.NotEmpty(vm.Validate(context));
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DailyOperationProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            DailyOperationViewModel vm = new DailyOperationViewModel { Id = 1 };
+            DailyOperationModel model = mapper.Map<DailyOperationModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
 
     }

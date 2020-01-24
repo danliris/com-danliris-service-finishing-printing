@@ -1,7 +1,10 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -10,6 +13,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -39,6 +43,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new PackingReceiptLogic(identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<PackingReceiptProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            PackingReceiptViewModel vm = new PackingReceiptViewModel { Id = 1 };
+            PackingReceiptModel model = mapper.Map<PackingReceiptModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

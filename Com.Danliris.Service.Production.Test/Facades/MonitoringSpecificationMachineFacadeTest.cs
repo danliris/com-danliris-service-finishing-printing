@@ -1,6 +1,9 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -68,6 +71,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var Response = reportFacade.GenerateExcel(data.MachineId, data.ProductionOrderNo, DateTime.MinValue, null, 7);
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MonitoringSpecificationMachineProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            MonitoringSpecificationMachineViewModel vm = new MonitoringSpecificationMachineViewModel { Id = 1 };
+            MonitoringSpecificationMachineModel model = mapper.Map<MonitoringSpecificationMachineModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }
