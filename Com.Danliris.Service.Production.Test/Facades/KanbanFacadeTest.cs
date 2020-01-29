@@ -1,8 +1,11 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
@@ -103,6 +106,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = facade.CompleteKanban(data.Id);
 
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<KanbanProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            KanbanViewModel vm = new KanbanViewModel { Id = 1 };
+            KanbanModel model = mapper.Map<KanbanModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

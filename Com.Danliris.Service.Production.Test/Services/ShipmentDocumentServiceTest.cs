@@ -1,4 +1,7 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
@@ -142,6 +145,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
 
             var result = await service.GetShipmentProducts(createdModel.Details.FirstOrDefault().ProductionOrderId, createdModel.BuyerId);
             Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ShipmentDocumentProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            ShipmentDocumentViewModel vm = new ShipmentDocumentViewModel { Id = 1 };
+            ShipmentDocumentModel model = mapper.Map<ShipmentDocumentModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

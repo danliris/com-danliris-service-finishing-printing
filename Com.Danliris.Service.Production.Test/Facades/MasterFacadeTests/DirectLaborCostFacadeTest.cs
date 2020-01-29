@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.DirectLaborCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.DirectLaborCost;
@@ -62,7 +64,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
                 WageTotal = -1,
                 LaborTotal = -1
             };
-            ValidationContext validationContext = new ValidationContext(data, serviceProvider, null);
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             var response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
@@ -81,6 +83,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             var Response = await  facade.GetForCostCalculation(data.Month, data.Year);
 
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DirectLaborCostProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            DirectLaborCostViewModel vm = new DirectLaborCostViewModel { Id = 1 };
+            DirectLaborCostModel model = mapper.Map<DirectLaborCostModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }
