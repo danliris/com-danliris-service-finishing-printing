@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
@@ -112,9 +114,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var Response = facade.GetReport(-1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
+            var Response = facade.GetReport(1, 25, -1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
 
-            Assert.NotEmpty(Response);
+            Assert.NotEmpty(Response.Data);
         }
 
         [Fact]
@@ -130,6 +132,125 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = await facade.HasOutput(data.KanbanId, data.StepProcess);
 
             Assert.False(Response);
+        }
+
+        [Fact]
+        public async Task Should_Success_Set_Kanban_When_Create_Daily_Operation()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+
+            await facade.CreateAsync(outputData);
+            Assert.NotNull(data);
+        }
+
+        [Fact]
+        public async Task Should_Success_Delete()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+
+            await facade.CreateAsync(outputData);
+            await facade.DeleteAsync(outputData.Id);
+            Assert.NotNull(data);
+        }
+
+        [Fact]
+        public async Task Should_Success_Update()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+
+            await facade.CreateAsync(outputData);
+
+            outputData.BadOutput = 10;
+            await facade.UpdateAsync(outputData.Id, outputData);
+            Assert.NotNull(data);
+        }
+
+        [Fact]
+        public virtual async void Should_Success_Read()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = new DailyOperationFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.Read(1, 25, "{}", new System.Collections.Generic.List<string>(), null, null, null, null, null, null, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30));
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
+        public async Task GenerateExcel()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcel(-1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetOutputBadDesc()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            outputData.BadOutputReasons.Add(new DailyOperationBadOutputReasonsModel()
+            {
+                MachineName = "name",
+                Action = "ac",
+                BadOutputReason = "reas"
+            });
+            await facade.CreateAsync(outputData);
+
+            outputData.BadOutput = 10;
+            var response = facade.GetOutputBadDescription(outputData);
+
+            Assert.NotNull(response);
         }
 
         [Fact]
@@ -250,6 +371,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
             Assert.NotEmpty(vm.Validate(context));
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DailyOperationProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            DailyOperationViewModel vm = new DailyOperationViewModel { Id = 1 };
+            DailyOperationModel model = mapper.Map<DailyOperationModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
 
     }

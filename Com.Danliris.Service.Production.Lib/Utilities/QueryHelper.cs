@@ -8,7 +8,7 @@ using System.Linq.Dynamic.Core;
 namespace Com.Danliris.Service.Production.Lib.Utilities
 {
     public static class QueryHelper<TModel>
-        where TModel : StandardEntity, IValidatableObject
+        where TModel : StandardEntity
     {
         public static IQueryable<TModel> Filter(IQueryable<TModel> query, Dictionary<string, object> filterDictionary)
         {

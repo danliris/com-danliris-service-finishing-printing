@@ -1,11 +1,15 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.DirectLaborCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
@@ -54,6 +58,8 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<BadOutputMachineModel> BadOutputMachine { get; set; }
         public DbSet<DailyOperationModel> DailyOperation { get; set; }
         public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasons { get; set; }
+        public DbSet<DOSalesModel> DOSalesItems { get; set; }
+        public DbSet<DOSalesDetailModel> DOSalesItemDetails { get; set; }
         public DbSet<PackingModel> Packings { get; set; }
         public DbSet<PackingDetailModel> PackingDetails { get; set; }
         public DbSet<FabricQualityControlModel> FabricQualityControls { get; set; }
@@ -67,6 +73,13 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<ShipmentDocumentDetailModel> ShipmentDocumentDetails { get; set; }
         public DbSet<ShipmentDocumentItemModel> ShipmentDocumentItems { get; set; }
         public DbSet<ShipmentDocumentPackingReceiptItemModel> ShipmentDocumentPackingReceiptItems { get; set; }
+
+        public DbSet<DirectLaborCostModel> DirectLaborCosts { get; set; }
+        public DbSet<OperationalCostModel> OperationalCosts { get; set; }
+
+        public DbSet<CostCalculationModel> CostCalculations { get; set; }
+        public DbSet<CostCalculationMachineModel> CostCalculationMachines { get; set; }
+        public DbSet<CostCalculationChemicalModel> CostCalculationChemicals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

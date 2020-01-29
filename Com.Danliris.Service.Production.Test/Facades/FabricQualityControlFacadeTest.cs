@@ -1,6 +1,9 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -97,6 +100,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = facade.GenerateExcel(null, 0, null, null, null, null, null, 0);
 
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<FabricQualityControlProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            FabricQualityControlViewModel vm = new FabricQualityControlViewModel { Id = 1 };
+            FabricQualityControlModel model = mapper.Map<FabricQualityControlModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

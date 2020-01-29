@@ -1,7 +1,10 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -101,6 +104,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = await facade.GetPackingDetail("");
 
             Assert.Null(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<PackingProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            PackingViewModel vm = new PackingViewModel { Id = 1 };
+            PackingModel model = mapper.Map<PackingModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

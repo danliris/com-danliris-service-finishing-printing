@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public ReadResponse<InstructionModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
-            IQueryable<InstructionModel> query = DbSet;
+            IQueryable<InstructionModel> query = DbSet.Include(x => x.Steps).ThenInclude(y => y.StepIndicators).AsNoTracking();
 
             List<string> searchAttributes = new List<string>()
             {
@@ -46,25 +46,25 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
                 {
                     "Id", "Name", "Code", "Steps"
                 };
-            query = query
-                .Select(field => new InstructionModel
-                {
-                    Id = field.Id,
-                    Code = field.Code,
-                    Name = field.Name,
-                    Steps = new List<InstructionStepModel>(field.Steps.Select(i => new InstructionStepModel
-                    {
-                        Alias = i.Alias,
-                        Process = i.Process,
-                        ProcessArea = i.ProcessArea,
-                        StepIndicators = new List<InstructionStepIndicatorModel>(i.StepIndicators.Select(s => new InstructionStepIndicatorModel
-                        {
-                            Name = s.Name,
-                            Uom = s.Uom,
-                            Value = s.Value
-                        }))
-                    }))
-                });
+            //query = query
+            //    .Select(field => new InstructionModel
+            //    {
+            //        Id = field.Id,
+            //        Code = field.Code,
+            //        Name = field.Name,
+            //        Steps = new List<InstructionStepModel>(field.Steps.Select(i => new InstructionStepModel
+            //        {
+            //            Alias = i.Alias,
+            //            Process = i.Process,
+            //            ProcessArea = i.ProcessArea,
+            //            StepIndicators = new List<InstructionStepIndicatorModel>(i.StepIndicators.Select(s => new InstructionStepIndicatorModel
+            //            {
+            //                Name = s.Name,
+            //                Uom = s.Uom,
+            //                Value = s.Value
+            //            }))
+            //        }))
+            //    });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<InstructionModel>.Order(query, orderDictionary);

@@ -1,8 +1,11 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
@@ -12,6 +15,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 {
@@ -57,6 +61,67 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Returns(new KanbanLogic(identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public virtual async void Get_Reports()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetReport(1, 25, null,0,0,null, null, null, 7);
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
+        public virtual async void Generate_Excels()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcel(null, 0, 0, null, null, null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public virtual async void Complete_Kanban()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.CompleteKanban(data.Id);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<KanbanProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            KanbanViewModel vm = new KanbanViewModel { Id = 1 };
+            KanbanModel model = mapper.Map<KanbanModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }
