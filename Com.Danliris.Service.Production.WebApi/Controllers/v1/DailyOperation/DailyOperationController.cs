@@ -222,5 +222,22 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
             }
 
         }
+
+        [HttpGet("etl-kanban-steps")]
+        public async Task<IActionResult> ETLKanbanSteps()
+        {
+            try
+            {
+                var result = await Facade.ETLKanbanStepIndex();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, ex.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

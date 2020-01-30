@@ -446,5 +446,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
         {
             return DbSet.AnyAsync(x => x.KanbanId == kanbanId && x.StepProcess == stepProcess && x.Type.ToLower() == "output");
         }
+
+        public Task<int> ETLKanbanStepIndex()
+        {
+            return DailyOperationLogic.ETLKanbanStepIndex();
+        }
     }
 }

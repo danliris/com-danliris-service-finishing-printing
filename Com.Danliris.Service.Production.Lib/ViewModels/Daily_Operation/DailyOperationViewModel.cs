@@ -45,6 +45,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
         {
 
 
+            DailyOperationLogic service = (DailyOperationLogic)validationContext.GetService(typeof(DailyOperationLogic));
             if (string.IsNullOrEmpty(this.Type))
                 yield return new ValidationResult("harus diisi", new List<string> { "Type" });
 
@@ -64,36 +65,62 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
             {
                 if (!IsEdit.GetValueOrDefault())
                 {
-                    DailyOperationLogic service = (DailyOperationLogic)validationContext.GetService(typeof(DailyOperationLogic));
 
-                    HashSet<int> hasInput = service.hasInput(this);
-
-                    if (hasInput.Count > 0)
+                    if (!string.IsNullOrEmpty(Type) && Type.ToLower() == "output")
                     {
-                        if (!(Kanban.CurrentStepIndex.HasValue && Kanban.Instruction.Steps.Where(x => Step.Process.Equals(x.Process)).Select(x => x.StepIndex).Contains(Kanban.CurrentStepIndex.GetValueOrDefault())))
+                        if (service.ValidateCreateOutputDataCheckCurrentInput(this))
+                        {
+                            yield return new ValidationResult("Data output tidak dapat disimpan karena tidak ada data input yang sesuai di mesin ini", new List<string> { "Machine" });
+                            yield return new ValidationResult("Data output tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
+                        }
+
+                        if (service.ValidateCreateOutputDataCheckDuplicate(this))
+                        {
+                            yield return new ValidationResult("Data output tidak dapat disimpan karena sudah ada data dengan kanban dan step yang sama", new List<string> { "Machine" });
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(Type) && Type.ToLower() == "input")
+                    {
+                        if (service.ValidateCreateInputDataCheckPreviousOutput(this))
                         {
                             yield return new ValidationResult("Data input tidak dapat disimpan karena ada data input yang belum dibuat output di mesin ini", new List<string> { "Machine" });
                             yield return new ValidationResult("Data input tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
                         }
 
-                    }
-                    else
-                    {
-                        if (Kanban.CurrentStepIndex.HasValue && !(Kanban.CurrentStepIndex.Value + 1 > Kanban.Instruction.Steps.Count))
+                        if (service.ValidateCreateInputDataCheckDuplicate(this))
                         {
-                            var activeStep = Kanban.Instruction.Steps[Kanban.CurrentStepIndex.Value];
-                            if (!activeStep.Process.Equals(Step.Process))
-                            {
-                                yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
-                            }
+                            yield return new ValidationResult("Data input tidak dapat disimpan karena sudah ada data dengan kanban dan step yang sama", new List<string> { "Machine" });
                         }
-                        //var stepProcess = this.Kanban.Instruction.Steps.Find(x => x.Process.Equals(this.Step.Process));
-                        //var kanbanCurrentStepIndex = this.Kanban.CurrentStepIndex != null ? this.Kanban.CurrentStepIndex : 0;
-                        //if (!(stepProcess.SelectedIndex > kanbanCurrentStepIndex))
-                        //{
-                        //    yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
-                        //}
                     }
+
+                    //HashSet<int> hasInput = service.hasInput(this);
+
+                    //if (hasInput.Count > 0)
+                    //{
+                    //    if (!(Kanban.CurrentStepIndex.HasValue && Kanban.Instruction.Steps.Where(x => Step.Process.Equals(x.Process)).Select(x => x.StepIndex).Contains(Kanban.CurrentStepIndex.GetValueOrDefault())))
+                    //    {
+                    //        yield return new ValidationResult("Data input tidak dapat disimpan karena ada data input yang belum dibuat output di mesin ini", new List<string> { "Machine" });
+                    //        yield return new ValidationResult("Data input tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
+                    //    }
+
+                    //}
+                    //else
+                    //{
+                    if (Kanban.CurrentStepIndex.HasValue && !(Kanban.CurrentStepIndex.Value + 1 > Kanban.Instruction.Steps.Count))
+                    {
+                        var activeStep = Kanban.Instruction.Steps[Kanban.CurrentStepIndex.Value];
+                        if (!activeStep.Process.Equals(Step.Process))
+                        {
+                            yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
+                        }
+                    }
+                    //var stepProcess = this.Kanban.Instruction.Steps.Find(x => x.Process.Equals(this.Step.Process));
+                    //var kanbanCurrentStepIndex = this.Kanban.CurrentStepIndex != null ? this.Kanban.CurrentStepIndex : 0;
+                    //if (!(stepProcess.SelectedIndex > kanbanCurrentStepIndex))
+                    //{
+                    //    yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
+                    //}
+                    //}
                 }
             }
             else if (this.Kanban == null)
@@ -146,6 +173,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                 if (this.DateOutput > DateTime.Now)
                 {
                     yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
+                }
+
+                var inputData = service.GetInputDataForCurrentOutput(this);
+
+                if (inputData != null && DateOutput < inputData.DateInput)
+                {
+                    yield return new ValidationResult("date output harus lebih dari date input", new List<string> { "DateOutput" });
                 }
 
                 if ((this.BadOutputReasons.Count.Equals(0) && this.BadOutput > 0) || (this.BadOutput > 0 && this.BadOutputReasons == null))
