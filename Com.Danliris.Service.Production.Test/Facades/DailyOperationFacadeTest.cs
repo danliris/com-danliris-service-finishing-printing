@@ -259,7 +259,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var dbContext = DbContext(GetCurrentMethod());
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
-            DailyOperationViewModel vm = new DailyOperationViewModel();
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                IsEdit = false,
+                UId = "a",
+                BadOutputDescription = "a"
+            };
+
+            var fla = vm.IsChangeable;
+            var desc = vm.BadOutputDescription;
             System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
             Assert.NotEmpty(vm.Validate(context));
 
@@ -465,7 +473,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotEmpty(vm.Validate(context));
 
             vm.BadOutput = 1;
-            
+
             Assert.NotEmpty(vm.Validate(context));
 
             vm.BadOutput = 0;
@@ -478,7 +486,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             Assert.NotEmpty(vm.Validate(context));
 
-            
+
 
             vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
             {
