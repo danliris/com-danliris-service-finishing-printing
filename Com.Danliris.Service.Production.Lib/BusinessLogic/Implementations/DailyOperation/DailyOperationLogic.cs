@@ -115,20 +115,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 				.FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
 		}
 
-		public void UpdateKanban(DailyOperationModel model, string flag)
-		{
-			KanbanModel kanban = this.DbSetKanban.Where(k => k.Id.Equals(model.KanbanId)).SingleOrDefault();
+		//public void UpdateKanban(DailyOperationModel model, string flag)
+		//{
+		//	KanbanModel kanban = this.DbSetKanban.Where(k => k.Id.Equals(model.KanbanId)).SingleOrDefault();
 
-			int currentStepIndex = (flag == "create" ? kanban.CurrentStepIndex += 1 : flag == "update" ? kanban.CurrentStepIndex : kanban.CurrentStepIndex -= 1);
+		//	int currentStepIndex = (flag == "create" ? kanban.CurrentStepIndex += 1 : flag == "update" ? kanban.CurrentStepIndex : kanban.CurrentStepIndex -= 1);
 
-			kanban.CurrentQty = model.GoodOutput != null ? (double)model.GoodOutput : 0;
-			kanban.CurrentStepIndex = currentStepIndex;
-			kanban.GoodOutput = model.GoodOutput != null ? (double)model.GoodOutput : 0;
-			kanban.BadOutput = model.BadOutput != null ? (double)model.GoodOutput : 0;
+		//	kanban.CurrentQty = model.GoodOutput != null ? (double)model.GoodOutput : 0;
+		//	kanban.CurrentStepIndex = currentStepIndex;
+		//	kanban.GoodOutput = model.GoodOutput != null ? (double)model.GoodOutput : 0;
+		//	kanban.BadOutput = model.BadOutput != null ? (double)model.GoodOutput : 0;
 
-			EntityExtension.FlagForUpdate(kanban, IdentityService.Username, UserAgent);
-			DbSetKanban.Update(kanban);
-		}
+		//	EntityExtension.FlagForUpdate(kanban, IdentityService.Username, UserAgent);
+		//	DbSetKanban.Update(kanban);
+		//}
 
 		public void SetKanbanCreate(DailyOperationModel model)
 		{
