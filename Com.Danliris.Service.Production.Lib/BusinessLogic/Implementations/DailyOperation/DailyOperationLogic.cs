@@ -205,10 +205,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 			}
 		}
 
-		public HashSet<int> hasInput(DailyOperationViewModel vm)
-		{
-			return new HashSet<int>(DbSet.Where(d => d.Kanban.Id == vm.Kanban.Id && d.Type == vm.Type && d.StepId == vm.Step.StepId).Select(d => d.Id));
-		}
+		//public HashSet<int> hasInput(DailyOperationViewModel vm)
+		//{
+		//	return new HashSet<int>(DbSet.Where(d => d.Kanban.Id == vm.Kanban.Id && d.Type == vm.Type && d.StepId == vm.Step.StepId).Select(d => d.Id));
+		//}
 
 		public DailyOperationModel GetInputDataForCurrentOutput(DailyOperationViewModel vm)
 		{
