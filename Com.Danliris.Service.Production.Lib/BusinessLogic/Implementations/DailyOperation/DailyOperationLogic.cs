@@ -273,7 +273,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 			int result = 0;
 			using (var transaction = DbContext.Database.BeginTransaction())
 			{
-				foreach (var item in groupedData.GroupBy(s => new { s.KanbanId, s.StepProcess }).OrderBy(x => x.Key.KanbanId)/*.Skip((page - 1) * 50000).Take(50000)*/)
+				foreach (var item in groupedData.GroupBy(s => new { s.KanbanId, s.StepProcess }).OrderBy(x => x.Key.KanbanId).Skip((page - 1) * 50000).Take(50000))
 				//foreach (var item in groupedData.GroupBy(x => x.KanbanId).OrderBy(x => x.Key).Skip((page - 1) * 5000).Take(5000))
 				{
 					var dataInput = item.Where(x => x.Type.ToLower() == "input").OrderBy(x => x.DateInput).ThenBy(x => x.TimeInput);
