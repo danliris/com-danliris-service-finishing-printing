@@ -224,11 +224,11 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
         }
 
         [HttpGet("etl-kanban-steps")]
-        public async Task<IActionResult> ETLKanbanSteps()
+        public async Task<IActionResult> ETLKanbanSteps(int page)
         {
             try
             {
-                var result = await Facade.ETLKanbanStepIndex();
+                var result = await Facade.ETLKanbanStepIndex(page);
                 return Ok(result);
             }
             catch (Exception ex)
