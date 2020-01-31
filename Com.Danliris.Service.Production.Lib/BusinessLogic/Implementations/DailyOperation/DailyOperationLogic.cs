@@ -242,7 +242,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 		public async Task<int> ETLKanbanStepIndex(int page)
 		{
 
-			var groupedData = DbSet.IgnoreQueryFilters()
+			var groupedData = DbSet
 				//.Where(s => s.KanbanId == 133411)
 				.Select(x => new DailyOperationModel()
 				{
@@ -256,7 +256,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 					Type = x.Type
 				});
 
-			var kanbanStepData = DbContext.KanbanSteps.Include(x => x.Instruction).IgnoreQueryFilters()
+			var kanbanStepData = DbContext.KanbanSteps.Include(x => x.Instruction)
 				.Select(x => new KanbanStepModel()
 				{
 					Id = x.Id,
