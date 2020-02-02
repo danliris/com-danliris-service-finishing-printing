@@ -257,7 +257,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 					KanbanStepIndex = x.KanbanStepIndex
 				});
 
-			var kanbanStepData = DbContext.KanbanSteps.Include(x => x.Instruction).IgnoreQueryFilters()
+			var kanbanStepData = DbContext.KanbanSteps.Include(x => x.Instruction)
 				.Select(x => new KanbanStepModel()
 				{
 					Id = x.Id,
