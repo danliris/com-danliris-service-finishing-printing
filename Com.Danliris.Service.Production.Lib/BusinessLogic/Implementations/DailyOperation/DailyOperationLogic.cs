@@ -243,7 +243,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 		{
 
 			var groupedData = DbSet.IgnoreQueryFilters()
-				//.Where(s => s.KanbanId == 133411)
+				.Where(s => s.KanbanStepIndex != 0)
 				.Select(x => new DailyOperationModel()
 				{
 					Id = x.Id,
@@ -253,7 +253,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 					TimeInput = x.TimeInput,
 					DateOutput = x.DateOutput,
 					TimeOutput = x.TimeOutput,
-					Type = x.Type
+					Type = x.Type,
+					KanbanStepIndex = x.KanbanStepIndex
 				});
 
 			var kanbanStepData = DbContext.KanbanSteps.Include(x => x.Instruction).IgnoreQueryFilters()
@@ -273,7 +274,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 			int result = 0;
 			using (var transaction = DbContext.Database.BeginTransaction())
 			{
-				foreach (var item in groupedData.GroupBy(s => new { s.KanbanId, s.StepProcess }).OrderBy(x => x.Key.KanbanId).Skip((page - 1) * 50000).Take(50000))
+				foreach (var item in groupedData.GroupBy(s => new { s.KanbanId, s.StepProcess, s.KanbanStepIndex }).Where(x => x.Count() > 2).OrderBy(x => x.Key.KanbanId))
 				//foreach (var item in groupedData.GroupBy(x => x.KanbanId).OrderBy(x => x.Key).Skip((page - 1) * 5000).Take(5000))
 				{
 					var dataInput = item.Where(x => x.Type.ToLower() == "input").OrderBy(x => x.DateInput).ThenBy(x => x.TimeInput);
@@ -285,17 +286,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 					{
 						int idx = dataInput.ToList().FindIndex(x => x.Id == daily.Id);
 						var kanbanStep = steps.ToList().ElementAtOrDefault(idx);
+						var model = await DbSet.FirstOrDefaultAsync(x => x.Id == daily.Id);
 						if (kanbanStep != null)
 						{
-							var model = await DbSet.FirstOrDefaultAsync(x => x.Id == daily.Id);
+							
 							model.KanbanStepIndex = kanbanStep.StepIndex;
-							index++;
-							Debug.WriteLine(index);
+							
+						}
+						else
+						{
+							model.KanbanStepIndex = 0;
+							
+						}
+						index++;
+						Debug.WriteLine(index);
 
-							if (index % 10000 == 0)
-							{
-								result += await DbContext.SaveChangesAsync();
-							}
+						if (index % 10000 == 0)
+						{
+							result += await DbContext.SaveChangesAsync();
 						}
 					}
 
@@ -303,17 +311,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 					{
 						int idx = dataOutput.ToList().FindIndex(x => x.Id == daily.Id);
 						var kanbanStep = steps.ToList().ElementAtOrDefault(idx);
+						var model = await DbSet.FirstOrDefaultAsync(x => x.Id == daily.Id);
 						if (kanbanStep != null)
 						{
-							var model = await DbSet.FirstOrDefaultAsync(x => x.Id == daily.Id);
+							
 							model.KanbanStepIndex = kanbanStep.StepIndex;
-							index++;
-							Debug.WriteLine(index);
+							
+						}
+						else
+						{
+							model.KanbanStepIndex = 0;
+						}
+						index++;
+						Debug.WriteLine(index);
 
-							if (index % 10000 == 0)
-							{
-								result += await DbContext.SaveChangesAsync();
-							}
+						if (index % 10000 == 0)
+						{
+							result += await DbContext.SaveChangesAsync();
 						}
 					}
 					//foreach (var daily in data)
