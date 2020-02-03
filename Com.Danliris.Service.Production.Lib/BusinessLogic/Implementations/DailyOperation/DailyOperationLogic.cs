@@ -242,8 +242,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 		public async Task<int> ETLKanbanStepIndex(int page)
 		{
 
-			var groupedData = DbSet.IgnoreQueryFilters()
-				.Where(s => s.KanbanStepIndex != 0)
+			var groupedData = DbSet
 				.Select(x => new DailyOperationModel()
 				{
 					Id = x.Id,
@@ -255,8 +254,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 					TimeOutput = x.TimeOutput,
 					Type = x.Type,
 					KanbanStepIndex = x.KanbanStepIndex
-				});
+				}).GroupBy(s => new { s.KanbanId, s.StepProcess }).Where(x => x.Count() > 2).OrderBy(x => x.Key.KanbanId);
 
+
+			int dd = groupedData.Count();
 			var kanbanStepData = DbContext.KanbanSteps.Include(x => x.Instruction)
 				.Select(x => new KanbanStepModel()
 				{
@@ -274,7 +275,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 			int result = 0;
 			using (var transaction = DbContext.Database.BeginTransaction())
 			{
-				foreach (var item in groupedData.GroupBy(s => new { s.KanbanId, s.StepProcess, s.KanbanStepIndex }).Where(x => x.Count() > 2).OrderBy(x => x.Key.KanbanId))
+				foreach (var item in groupedData)
 				//foreach (var item in groupedData.GroupBy(x => x.KanbanId).OrderBy(x => x.Key).Skip((page - 1) * 5000).Take(5000))
 				{
 					var dataInput = item.Where(x => x.Type.ToLower() == "input").OrderBy(x => x.DateInput).ThenBy(x => x.TimeInput);
