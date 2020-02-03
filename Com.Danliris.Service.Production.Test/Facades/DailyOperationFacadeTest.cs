@@ -530,23 +530,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
         }
 
-        [Fact]
-        public async Task ETLKanbanStep()
-        {
-            var dbContext = DbContext(GetCurrentMethod());
-            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+        //[Fact]
+        //public async Task ETLKanbanStep()
+        //{
+        //    var dbContext = DbContext(GetCurrentMethod());
+        //    var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
-            var facade = new DailyOperationFacade(serviceProvider, dbContext);
+        //    var facade = new DailyOperationFacade(serviceProvider, dbContext);
 
-            var data = await DataUtil(facade, dbContext).GetTestData();
-            var dataO = await DataUtil(facade, dbContext).GetNewDataOutAsync();
-            dataO.KanbanId = data.KanbanId;
-            dataO.StepProcess = data.StepProcess;
-            await facade.CreateAsync(dataO);
+        //    var data = await DataUtil(facade, dbContext).GetTestData();
+        //    var dataO = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+        //    dataO.KanbanId = data.KanbanId;
+        //    dataO.StepProcess = data.StepProcess;
+        //    await facade.CreateAsync(dataO);
 
-            await facade.ETLKanbanStepIndex(1);
-            Assert.True(true);
-        }
+        //    await facade.ETLKanbanStepIndex(1);
+        //    Assert.True(true);
+        //}
 
     }
 }
