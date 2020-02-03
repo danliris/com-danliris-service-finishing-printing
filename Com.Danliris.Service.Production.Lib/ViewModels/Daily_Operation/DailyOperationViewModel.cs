@@ -213,7 +213,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     //{
                     if (Kanban.CurrentStepIndex.HasValue && !(Kanban.CurrentStepIndex.Value + 1 > Kanban.Instruction.Steps.Count))
                     {
-                        var activeStep = Kanban.Instruction.Steps.FirstOrDefault(x => x.StepIndex == Kanban.CurrentStepIndex.GetValueOrDefault());
+                        int checkedIndex = Type.ToLower() == "input" ? Kanban.CurrentStepIndex.GetValueOrDefault() + 1 : Kanban.CurrentStepIndex.GetValueOrDefault();
+                        var activeStep = Kanban.Instruction.Steps.FirstOrDefault(x => x.StepIndex == checkedIndex);
                         if (!activeStep.Process.Equals(Step.Process))
                         {
                             yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
