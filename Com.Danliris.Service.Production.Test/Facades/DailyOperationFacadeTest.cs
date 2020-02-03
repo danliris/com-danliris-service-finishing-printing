@@ -430,7 +430,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     {
                         new Lib.ViewModels.Kanban.KanbanStepViewModel()
                         {
-                            Process = "a"
+                            Process = "a",
+                            StepIndex = 1
                         }
                     }
                 }
@@ -504,7 +505,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     {
                         new Lib.ViewModels.Kanban.KanbanStepViewModel()
                         {
-                            Process = "a"
+                            Process = "a",
+                            StepIndex = 1
                         }
                     }
                 }
