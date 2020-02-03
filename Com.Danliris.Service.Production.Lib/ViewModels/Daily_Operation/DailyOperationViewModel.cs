@@ -180,7 +180,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                             yield return new ValidationResult("Data output tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
                         }
 
-                        
+
                     }
                     else if (!string.IsNullOrEmpty(Type) && Type.ToLower() == "input")
                     {
@@ -195,7 +195,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                             yield return new ValidationResult("Data input tidak dapat disimpan, Kereta harus melewati step " + this.Step.Process, new List<string> { "Kanban" });
                         }
 
-                        
+
                     }
 
                     //HashSet<int> hasInput = service.hasInput(this);
@@ -235,7 +235,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
 
 
-            
+
         }
 
     }
