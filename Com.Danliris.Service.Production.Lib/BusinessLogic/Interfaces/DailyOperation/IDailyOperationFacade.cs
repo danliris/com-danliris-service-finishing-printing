@@ -24,6 +24,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
 
         Task<bool> HasOutput(int kanbanId, string stepProcess);
 
-        Task<int> ETLKanbanStepIndex(int page);
+        //Task<int> ETLKanbanStepIndex(int page);
     }
 }
