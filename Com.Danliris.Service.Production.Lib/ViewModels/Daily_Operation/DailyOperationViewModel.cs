@@ -217,7 +217,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                         var activeStep = Kanban.Instruction.Steps.FirstOrDefault(x => x.StepIndex == checkedIndex);
                         if (!activeStep.Process.Equals(Step.Process))
                         {
-                            yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Kanban" });
+                            yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Step" });
                         }
                     }
                     //var stepProcess = this.Kanban.Instruction.Steps.Find(x => x.Process.Equals(this.Step.Process));
