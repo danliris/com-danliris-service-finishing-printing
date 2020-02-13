@@ -142,27 +142,39 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
 
             if (lastData == null)
             {
-                if (model.DOSalesType == "UP")
+                if (model.DOSalesType == "BL")
                 {
                     index = 28;
                 }
-                else if (model.DOSalesType == "US")
+                else if (model.DOSalesType == "GL")
                 {
                     index = 8;
                 }
-                else if (model.DOSalesType == "JS")
+                else if (model.DOSalesType == "AF")
                 {
                     index = 98;
                 }
-                else if (model.DOSalesType == "USS")
+                else if (model.DOSalesType == "CN")
                 {
                     index = 14;
                 }
-                else if (model.DOSalesType == "JB")
+                else if (model.DOSalesType == "US")
                 {
                     index = 2;
                 }
+                else if (model.DOSalesType == "USS")
+                {
+                    index = 19;
+                }
+                else if (model.DOSalesType == "UP")
+                {
+                    index = 19;
+                }
                 else if (model.DOSalesType == "UPS")
+                {
+                    index = 19;
+                }
+                else if (model.DOSalesType == "UK")
                 {
                     index = 19;
                 }
@@ -171,20 +183,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSa
                     index = 0;
                 }
                 model.AutoIncreament = 1 + index;
-                model.DOSalesNo = $"{model.DOSalesType}/{YearNow}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
+                model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
             }
             else
             {
-                if (YearNow > lastData.CreatedUtc.Year)
-                {
-                    model.AutoIncreament = 1 + index;
-                    model.DOSalesNo = $"{model.DOSalesType}/{YearNow}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
-                }
-                else
-                {
-                    model.AutoIncreament = lastData.AutoIncreament + (1 + index);
-                    model.DOSalesNo = $"{model.DOSalesType}/{YearNow}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
-                }
+                model.AutoIncreament = lastData.AutoIncreament + (1 + index);
+                model.DOSalesNo = $"{model.DOSalesType}/{model.AutoIncreament.ToString().PadLeft(6, '0')}";
             }
         }
     }
