@@ -209,5 +209,37 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
+        [HttpGet("old/{id}")]
+        public virtual async Task<IActionResult> GetOldKanbanById([FromRoute] int id)
+        {
+            try
+            {
+                var model = await Facade.ReadOldKanbanByIdAsync(id);
+
+                if (model == null)
+                {
+                    Dictionary<string, object> Result =
+                           new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                           .Ok<KanbanViewModel>(Mapper, new KanbanViewModel());
+                    return Ok(Result);
+                }
+                else
+                {
+                    var viewModel = Mapper.Map<KanbanViewModel>(model);
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                        .Ok<KanbanViewModel>(Mapper, viewModel);
+                    return Ok(Result);
+                }
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

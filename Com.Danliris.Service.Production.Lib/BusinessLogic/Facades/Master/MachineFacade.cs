@@ -43,6 +43,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
             return await DbContext.SaveChangesAsync();
         }
 
+        public ReadResponse<MachineModel> GetDyeingPrintingMachine(int page, int size, string order, List<string> select, string keyword, string filter)
+        {
+            IQueryable<MachineModel> query = DbSet.Include(x => x.MachineEvents).Include(x => x.MachineSteps)
+                .Where(x => x.UnitDivisionName.ToUpper() == "FINISHING & PRINTING" || x.UnitDivisionName.ToUpper() == "DYEING & PRINTING");
+
+            List<string> searchAttributes = new List<string>()
+            {
+                "Code", "Name"
+            };
+            query = QueryHelper<MachineModel>.Search(query, searchAttributes, keyword);
+
+            Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<MachineModel>.Filter(query, filterDictionary);
+
+            List<string> selectedFields = new List<string>()
+                {
+                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "Electric", "Steam",
+                    "Water", "Solar", "LPG", "LastModifiedUtc", "MachineEvents", "Steps"
+                };
+
+            Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<MachineModel>.Order(query, orderDictionary);
+
+            Pageable<MachineModel> pageable = new Pageable<MachineModel>(query, page - 1, size);
+            List<MachineModel> data = pageable.Data.ToList();
+            int totalData = pageable.TotalCount;
+
+            return new ReadResponse<MachineModel>(data, totalData, orderDictionary, selectedFields);
+        }
+
         public ReadResponse<MachineModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
             IQueryable<MachineModel> query = DbSet.Include(x => x.MachineEvents).Include(x => x.MachineSteps);

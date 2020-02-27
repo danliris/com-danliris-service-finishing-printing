@@ -167,15 +167,29 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
         public async Task<KanbanModel> ReadByIdAsync(int id)
         {
-            var Result = await DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && !d.IsDeleted);
-            Result.Instruction = await KanbanInstructionDbSet.FirstOrDefaultAsync(e => e.KanbanId.Equals(id) && !e.IsDeleted);
-            Result.Instruction.Steps = await KanbanStepDbSet.Where(w => w.InstructionId.Equals(Result.Instruction.Id) && !w.IsDeleted).OrderBy(x => x.StepIndex).ThenBy(x => x.Id).ToListAsync();
-            foreach (var step in Result.Instruction.Steps)
+
+            var result = await DbSet.Include(s => s.Instruction)
+                                        .ThenInclude(x => x.Steps)
+                                            .ThenInclude(a => a.Machine)
+                                    .Include(s => s.Instruction)
+                                        .ThenInclude(x => x.Steps)
+                                            .ThenInclude(a => a.StepIndicators)
+                                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result != null && result.Instruction != null)
             {
-                step.StepIndicators = await KanbanStepIndicatorDbSet.Where(w => w.StepId.Equals(step.Id) && !w.IsDeleted).ToListAsync();
-                step.Machine = await MachineDbSet.Where(w => w.Id.Equals(step.MachineId) && !w.IsDeleted).SingleOrDefaultAsync();
+                result.Instruction.Steps = result.Instruction.Steps.OrderBy(s => s.StepIndex).ThenBy(s => s.Id).ToList();
             }
-            return Result;
+            //var Result = await DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && !d.IsDeleted);
+            //Result.Instruction = await KanbanInstructionDbSet.FirstOrDefaultAsync(e => e.KanbanId.Equals(id) && !e.IsDeleted);
+            //Result.Instruction.Steps = await KanbanStepDbSet.Where(w => w.InstructionId.Equals(Result.Instruction.Id) && !w.IsDeleted).OrderBy(x => x.StepIndex).ThenBy(x => x.Id).ToListAsync();
+            //foreach (var step in Result.Instruction.Steps)
+            //{
+            //    step.StepIndicators = await KanbanStepIndicatorDbSet.Where(w => w.StepId.Equals(step.Id) && !w.IsDeleted).ToListAsync();
+            //    step.Machine = await MachineDbSet.Where(w => w.Id.Equals(step.MachineId) && !w.IsDeleted).SingleOrDefaultAsync();
+            //}
+            //return Result;
+            return result;
         }
 
         public async Task<int> UpdateAsync(int id, KanbanModel model)
@@ -365,6 +379,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             kanban.IsComplete = true;
             DbSet.Update(kanban);
             return DbContext.SaveChangesAsync();
+        }
+
+        public async Task<KanbanModel> ReadOldKanbanByIdAsync(int id)
+        {
+            var result = await DbSet.Include(s => s.Instruction)
+                                        .ThenInclude(x => x.Steps)
+                                            .ThenInclude(a => a.Machine)
+                                    .Include(s => s.Instruction)
+                                        .ThenInclude(x => x.Steps)
+                                            .ThenInclude(a => a.StepIndicators)
+                                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result != null && result.Instruction != null)
+            {
+                result.Instruction.Steps = result.Instruction.Steps.OrderBy(s => s.StepIndex).ThenBy(s => s.Id).ToList();
+            }
+           
+            return result;
         }
     }
 }

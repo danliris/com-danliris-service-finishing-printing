@@ -48,6 +48,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
         }
 
         [Fact]
+        public virtual async void GetDyeingPrinting_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MachineFacade facade = Activator.CreateInstance(typeof(MachineFacade), serviceProvider, dbContext) as MachineFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetDyeingPrintingMachine(1, 25, "{}", new List<string>(), "", "{}");
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
         public void Validate_ViewModel()
         {
             MachineViewModel vm = new MachineViewModel()
