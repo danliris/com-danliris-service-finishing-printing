@@ -22,7 +22,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
                 MachineSteps = new List<MachineStepModel>
                 {
                     new MachineStepModel()
-                }
+                },
+                UnitDivisionName = "dyeing & printing"
             };
             return model;
         }

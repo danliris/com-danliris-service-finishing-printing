@@ -123,20 +123,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
 
         public ReadResponse<ShipmentDocumentModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
-            IQueryable<ShipmentDocumentModel> Query = _DbSet;
+            IQueryable<ShipmentDocumentModel> Query = _DbSet.Include(x => x.Details).ThenInclude(x => x.Items).ThenInclude(x => x.PackingReceiptItems);
 
-            Query = Query
-                .Select(s => new ShipmentDocumentModel
-                {
-                    Id = s.Id,
-                    CreatedUtc = s.CreatedUtc,
-                    CreatedBy = s.CreatedBy,
-                    Code = s.Code,
-                    LastModifiedUtc = s.LastModifiedUtc,
-                    DeliveryDate = s.DeliveryDate,
-                    BuyerCode = s.BuyerCode,
-                    BuyerName = s.BuyerName
-                });
 
             List<string> searchAttributes = new List<string>()
             {
@@ -165,7 +153,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                    LastModifiedUtc = s.LastModifiedUtc,
                    DeliveryDate = s.DeliveryDate,
                    BuyerCode = s.BuyerCode,
-                   BuyerName = s.BuyerName
+                   BuyerName = s.BuyerName,
+                   Details = s.Details.Select(t => new ShipmentDocumentDetailModel
+                   {
+                       Items = t.Items.Select(u => new ShipmentDocumentItemModel
+                       {
+                           PackingReceiptItems = u.PackingReceiptItems.Select(v => new ShipmentDocumentPackingReceiptItemModel
+                           {
+                               ProductName = v.ProductName,
+                               ProductCode = v.ProductCode,
+                               Quantity = v.Quantity,
+                               Weight = v.Weight,
+                               Length = v.Length,
+                               UOMId = v.UOMId,
+                               UOMUnit = v.UOMUnit,
+
+                           }).ToList(),
+                       }).ToList(),
+                   }).ToList(),
                }).ToList()
             );
 
