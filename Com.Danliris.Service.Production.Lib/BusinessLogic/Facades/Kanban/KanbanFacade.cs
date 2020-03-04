@@ -19,6 +19,7 @@ using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
         private readonly DbSet<KanbanStepModel> KanbanStepDbSet;
         private readonly DbSet<KanbanStepIndicatorModel> KanbanStepIndicatorDbSet;
         private readonly DbSet<MachineModel> MachineDbSet;
+
+        private readonly string[] SnapshotDataCells = { "D", "E", "F", "G", "H", "I", "J", "K", "L", "M" };
 
         public KanbanFacade(IServiceProvider serviceProvider, ProductionDbContext dbContext)
         {
@@ -590,6 +593,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 sheet.Cells["L1:M1"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 sheet.Cells["A2"].LoadFromDataTable(item.Key, true, (styling == true) ? OfficeOpenXml.Table.TableStyles.Light16 : OfficeOpenXml.Table.TableStyles.None);
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+
+                for (var rowNum = 3; rowNum <= sheet.Dimension.End.Row; rowNum++)
+                {
+                    string startCell = "D" + rowNum.ToString();
+                    string endCell = "M" + rowNum.ToString();
+                    IEnumerable<string> valueAddress = SnapshotDataCells.Select(s => s + rowNum.ToString());
+                    IEnumerable<string> valueCells = valueAddress.Select(s => sheet.Cells[s].Value.ToString());
+
+                    sheet.Cells[startCell + ":" + endCell].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    if (valueCells.Contains("-"))
+                    {
+                        sheet.Cells[startCell + ":" + endCell].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                    }
+                    else
+                    {
+                        sheet.Cells[startCell + ":" + endCell].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                    }
+                }
             }
             MemoryStream stream = new MemoryStream();
             package.SaveAs(stream);
