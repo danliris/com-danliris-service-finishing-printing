@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
@@ -13,6 +14,8 @@ using Com.Moonlay.NetCore.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -395,8 +398,202 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             {
                 result.Instruction.Steps = result.Instruction.Steps.OrderBy(s => s.StepIndex).ThenBy(s => s.Id).ToList();
             }
-           
+
             return result;
+        }
+
+        private List<int> DODataByDay(DateTime searchDate)
+        {
+            var doData = DbContext.DailyOperation
+
+                .Where(s => (s.DateInput.HasValue && s.DateInput.Value.Date <= searchDate.Date) || (s.DateOutput.HasValue && s.DateOutput.Value.Date >= searchDate.Date))
+                .GroupBy(s => new { s.KanbanId, s.MachineId, s.StepId })
+                .Where(d => d.Count() == 2 && d.Count(e => e.Type == "input") == 1 && d.Count(e => e.Type == "output") == 1).Select(s => s.Key.KanbanId).Distinct().ToList();
+
+            return doData;
+        }
+
+        private List<int> DODataByMonth(DateTime searchDate)
+        {
+            var doData = DbContext.DailyOperation
+
+                .Where(s => (s.DateInput.HasValue && s.DateInput.Value.Month == searchDate.Month && s.DateInput.Value.Year == searchDate.Year)
+                                || (s.DateOutput.HasValue && s.DateOutput.Value.Month == searchDate.Month && s.DateOutput.Value.Year == searchDate.Year))
+                .GroupBy(s => new { s.KanbanId, s.MachineId, s.StepId })
+                .Where(d => d.Count() == 2 && d.Count(e => e.Type == "input") == 1 && d.Count(e => e.Type == "output") == 1).Select(s => s.Key.KanbanId).Distinct().ToList();
+
+            return doData;
+        }
+
+        private KeyValuePair<DataTable, string> GenerateDataTable(List<int> doData, DateTime searchDate, string title, bool isMonthly)
+        {
+            DataTable dt = new DataTable();
+            //dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(int) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nomor SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Pre Treatment Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Pre Treatment Day", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Dyeing Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Dyeing Day", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Printing Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Printing Day", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Finishing Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Finishing Day", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QC Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QC Day", DataType = typeof(string) });
+
+            var selectedKanbans = DbSet.Include(s => s.Instruction).ThenInclude(s => s.Steps).Where(s => doData.Contains(s.Id)).ToList();
+            var selectedDos = DbContext.DailyOperation.Where(s => doData.Contains(s.KanbanId)).GroupBy(s => s.KanbanId).ToList();
+            if (selectedDos.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                foreach (var item in selectedDos)
+                {
+                    List<DailyOperationModel> outDailyOperations = new List<DailyOperationModel>();
+
+                    if (isMonthly)
+                    {
+                        outDailyOperations = item.Where(s => s.Type.ToLower() == "output"
+                                                        && s.DateOutput.GetValueOrDefault().Month <= searchDate.Month &&
+                                                        s.DateOutput.GetValueOrDefault().Year <= searchDate.Year).ToList();
+                    }
+                    else
+                    {
+                        outDailyOperations = item.Where(s => s.Type.ToLower() == "output" && s.DateOutput.GetValueOrDefault().Date <= searchDate.Date).ToList();
+                    }
+
+                    var inDailyOperations = item.Where(s => s.Type.ToLower() == "input" && outDailyOperations.Any(y => y.StepId == s.StepId));
+                    var kanban = selectedKanbans.FirstOrDefault(s => s.Id == item.Key);
+                    var preTreatmentArea = kanban.Instruction.Steps.Where(s => s.ProcessArea != null && s.ProcessArea.ToLower() == "area pre treatment").OrderBy(s => s.StepIndex);
+                    var dyeingArea = kanban.Instruction.Steps.Where(s => s.ProcessArea != null && s.ProcessArea.ToLower() == "area dyeing").OrderBy(s => s.StepIndex);
+                    var printingArea = kanban.Instruction.Steps.Where(s => s.ProcessArea != null && s.ProcessArea.ToLower() == "area printing").OrderBy(s => s.StepIndex);
+                    var finishingArea = kanban.Instruction.Steps.Where(s => s.ProcessArea != null && s.ProcessArea.ToLower() == "area finishing").OrderBy(s => s.StepIndex);
+                    var qcArea = kanban.Instruction.Steps.Where(s => s.ProcessArea != null && s.ProcessArea.ToLower() == "area qc").OrderBy(s => s.StepIndex);
+
+                    double? preTreatmentQty = 0;
+                    double? dyeingQty = 0;
+                    double? printingQty = 0;
+                    double? finishingQty = 0;
+                    double? qcQty = 0;
+                    int preTreatmentDay = 0;
+                    int dyeingDay = 0;
+                    int printingDay = 0;
+                    int finishingDay = 0;
+                    int qcDay = 0;
+
+
+                    if (preTreatmentArea.Count() > 0)
+                    {
+                        var preTreatmentStart = inDailyOperations.OrderBy(s => s.DateInput).FirstOrDefault(s => preTreatmentArea.Any(y => y.Id == s.StepId));
+                        var preTreatmentDO = outDailyOperations.OrderBy(s => s.DateOutput).LastOrDefault(s => preTreatmentArea.Any(y => y.Id == s.StepId));
+                        preTreatmentQty = preTreatmentDO?.GoodOutput.GetValueOrDefault() + preTreatmentDO?.BadOutput.GetValueOrDefault();
+                        if (preTreatmentDO != null && preTreatmentStart != null)
+                            preTreatmentDay = (int)Math.Ceiling((preTreatmentDO.DateOutput.GetValueOrDefault() - preTreatmentStart.DateInput.GetValueOrDefault()).TotalDays);
+                    }
+                    if (dyeingArea.Count() > 0)
+                    {
+                        var dyeingStart = inDailyOperations.OrderBy(s => s.DateInput).FirstOrDefault(s => dyeingArea.Any(y => y.Id == s.StepId));
+                        var dyeingDO = outDailyOperations.OrderBy(s => s.DateOutput).LastOrDefault(s => dyeingArea.Any(y => y.Id == s.StepId));
+                        dyeingQty = dyeingDO?.GoodOutput.GetValueOrDefault() + dyeingDO?.BadOutput.GetValueOrDefault();
+                        if (dyeingDO != null && dyeingStart != null)
+                            dyeingDay = (int)Math.Ceiling((dyeingDO.DateOutput.GetValueOrDefault() - dyeingStart.DateInput.GetValueOrDefault()).TotalDays);
+                    }
+
+                    if (printingArea.Count() > 0)
+                    {
+                        var printingStart = inDailyOperations.OrderBy(s => s.DateInput).FirstOrDefault(s => printingArea.Any(y => y.Id == s.StepId));
+                        var printingDO = outDailyOperations.OrderBy(s => s.DateOutput).LastOrDefault(s => printingArea.Any(y => y.Id == s.StepId));
+                        printingQty = printingDO?.GoodOutput.GetValueOrDefault() + printingDO?.BadOutput.GetValueOrDefault();
+                        if (printingDO != null && printingStart != null)
+                            printingDay = (int)Math.Ceiling((printingDO.DateOutput.GetValueOrDefault() - printingStart.DateInput.GetValueOrDefault()).TotalDays);
+                    }
+
+                    if (finishingArea.Count() > 0)
+                    {
+                        var finishingStart = inDailyOperations.OrderBy(s => s.DateInput).FirstOrDefault(s => finishingArea.Any(y => y.Id == s.StepId));
+                        var finishingDO = outDailyOperations.OrderBy(s => s.DateOutput).LastOrDefault(s => finishingArea.Any(y => y.Id == s.StepId));
+                        finishingQty = finishingDO?.GoodOutput.GetValueOrDefault() + finishingDO?.BadOutput.GetValueOrDefault();
+                        if (finishingDO != null && finishingStart != null)
+                            finishingDay = (int)Math.Ceiling((finishingDO.DateOutput.GetValueOrDefault() - finishingStart.DateInput.GetValueOrDefault()).TotalDays);
+                    }
+
+                    if (qcArea.Count() > 0)
+                    {
+                        var qcStart = inDailyOperations.OrderBy(s => s.DateInput).FirstOrDefault(s => qcArea.Any(y => y.Id == s.StepId));
+                        var qcDO = outDailyOperations.OrderBy(s => s.DateOutput).LastOrDefault(s => qcArea.Any(y => y.Id == s.StepId));
+                        qcQty = qcDO?.GoodOutput.GetValueOrDefault() + qcDO?.BadOutput.GetValueOrDefault();
+                        if (qcDO != null && qcStart != null)
+                            qcDay = (int)Math.Ceiling((qcDO.DateOutput.GetValueOrDefault() - qcStart.DateInput.GetValueOrDefault()).TotalDays);
+                    }
+
+                    dt.Rows.Add(kanban.ProductionOrderBuyerName, kanban.ProductionOrderOrderNo, kanban.SelectedProductionOrderDetailQuantity,
+                        preTreatmentQty.GetValueOrDefault() == 0 ? "-" : preTreatmentQty.GetValueOrDefault().ToString(),
+                        preTreatmentDay == 0 ? "-" : preTreatmentDay.ToString(),
+                        dyeingQty.GetValueOrDefault() == 0 ? "-" : dyeingQty.GetValueOrDefault().ToString(),
+                        dyeingDay == 0 ? "-" : dyeingDay.ToString(),
+                        printingQty.GetValueOrDefault() == 0 ? "-" : printingQty.GetValueOrDefault().ToString(),
+                        printingDay == 0 ? "-" : printingDay.ToString(),
+                        finishingQty.GetValueOrDefault() == 0 ? "-" : finishingQty.GetValueOrDefault().ToString(),
+                        finishingDay == 0 ? "-" : finishingDay.ToString(),
+                        qcQty.GetValueOrDefault() == 0 ? "-" : qcQty.GetValueOrDefault().ToString(),
+                        qcDay == 0 ? "-" : qcDay.ToString());
+
+                }
+            }
+
+            return new KeyValuePair<DataTable, string>(dt, title);
+        }
+
+        public MemoryStream GenerateKanbanSnapshotExcel(DateTime searchDate)
+        {
+            var dayData = DODataByDay(searchDate);
+            var monthData = DODataByMonth(searchDate);
+
+            var dayDataTable = GenerateDataTable(dayData, searchDate, searchDate.Day.ToString(), false);
+            var monthDataTable = GenerateDataTable(monthData, searchDate, searchDate.ToString("MMMM"), true);
+
+
+            return CreateExcel(new List<KeyValuePair<DataTable, string>>() { monthDataTable, dayDataTable }, true);
+        }
+
+        private MemoryStream CreateExcel(List<KeyValuePair<DataTable, String>> dtSourceList, bool styling = false)
+        {
+            ExcelPackage package = new ExcelPackage();
+            foreach (KeyValuePair<DataTable, String> item in dtSourceList)
+            {
+                var sheet = package.Workbook.Worksheets.Add(item.Value);
+
+                sheet.Cells["A1:M1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                sheet.Cells["A1:M1"].Style.Font.Bold = true;
+
+                sheet.Cells["A1"].Value = "Kanban";
+                sheet.Cells["A1:C1"].Merge = true;
+                sheet.Cells["A1:C1"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells["D1"].Value = "Pre Treatment";
+                sheet.Cells["D1:E1"].Merge = true;
+                sheet.Cells["D1:E1"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells["F1"].Value = "Dyeing";
+                sheet.Cells["F1:G1"].Merge = true;
+                sheet.Cells["F1:G1"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells["H1"].Value = "Printing";
+                sheet.Cells["H1:I1"].Merge = true;
+                sheet.Cells["H1:I1"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells["J1"].Value = "Finishing";
+                sheet.Cells["J1:K1"].Merge = true;
+                sheet.Cells["J1:K1"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells["L1"].Value = "QC";
+                sheet.Cells["L1:M1"].Merge = true;
+                sheet.Cells["L1:M1"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells["A2"].LoadFromDataTable(item.Key, true, (styling == true) ? OfficeOpenXml.Table.TableStyles.Light16 : OfficeOpenXml.Table.TableStyles.None);
+                sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+            }
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+            return stream;
         }
     }
 }
