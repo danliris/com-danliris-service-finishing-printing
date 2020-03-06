@@ -599,7 +599,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                     string startCell = "D" + rowNum.ToString();
                     string endCell = "M" + rowNum.ToString();
                     IEnumerable<string> valueAddress = SnapshotDataCells.Select(s => s + rowNum.ToString());
-                    IEnumerable<string> valueCells = valueAddress.Select(s => sheet.Cells[s].Value.ToString());
+                    IEnumerable<string> valueCells = valueAddress.Select(s => sheet.Cells[s].Value?.ToString() );
 
                     sheet.Cells[startCell + ":" + endCell].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     if (valueCells.Contains("-"))
