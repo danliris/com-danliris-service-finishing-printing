@@ -174,5 +174,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotNull(Response);
         }
+
+        [Fact]
+        public virtual void Generate_Excels_Snapshot_Empty()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            KanbanFacade kanbanFacade = new KanbanFacade(serviceProvider, dbContext);
+            
+            var Response = kanbanFacade.GenerateKanbanSnapshotExcel(DateTime.UtcNow);
+
+            Assert.NotNull(Response);
+        }
     }
 }
