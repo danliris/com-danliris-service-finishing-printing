@@ -241,5 +241,33 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
+        [HttpGet("snapshot/downloads/xls")]
+        public IActionResult GetSnapshotXLS(DateTime searchDate)
+        {
+            try
+            {
+                byte[] xlsInBytes;
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var xls = Facade.GenerateKanbanSnapshotExcel(searchDate);
+
+                string fileName = "";
+
+                fileName = string.Format("Kanban " + searchDate.ToString("dd MMMM yyyy"));
+
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
+
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

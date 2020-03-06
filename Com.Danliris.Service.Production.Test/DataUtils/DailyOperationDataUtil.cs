@@ -27,6 +27,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 Type = "input",
                 DateInput = DateTimeOffset.UtcNow,
                 MachineId = kanbanData.Instruction.Steps.First().MachineId,
+                StepId = kanbanData.Instruction.Steps.First().Id,
                 BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
                 {
                     new DailyOperationBadOutputReasonsModel()
@@ -44,7 +45,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             {
                 KanbanId = kanbanData.Id,
                 Type = "output",
-                DateInput = DateTimeOffset.UtcNow,
+                DateOutput = DateTimeOffset.UtcNow,
+                StepId = kanbanData.Instruction.Steps.First().Id,
                 MachineId = kanbanData.Instruction.Steps.First().MachineId,
                 BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
                 {
