@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
@@ -13,7 +12,6 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingR
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
@@ -27,7 +25,6 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
@@ -113,7 +110,6 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
                 .AddScoped<IDailyOperationFacade, DailyOperationFacade>()
                 .AddTransient<IPackingFacade, PackingFacade>()
-                .AddTransient<IDOSalesFacade, DOSalesFacade>()
                 .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>()
                 .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
                 .AddTransient<IPackingReceiptFacade, PackingReceiptFacade>()
@@ -147,7 +143,6 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<DailyOperationBadOutputReasonsLogic>()
                 .AddTransient<DailyOperationLogic>()
                 .AddTransient<PackingLogic>()
-                .AddTransient<DOSalesLogic>()
                 .AddTransient<FabricQualityControlLogic>()
                 .AddTransient<PackingReceiptLogic>()
                 .AddTransient<KanbanLogic>()

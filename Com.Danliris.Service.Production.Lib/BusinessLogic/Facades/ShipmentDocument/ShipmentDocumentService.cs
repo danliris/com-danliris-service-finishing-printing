@@ -151,7 +151,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                    CreatedBy = s.CreatedBy,
                    Code = s.Code,
                    LastModifiedUtc = s.LastModifiedUtc,
+                   DeliveryCode = s.DeliveryCode,
                    DeliveryDate = s.DeliveryDate,
+                   BuyerId = s.BuyerId,
+                   BuyerAddress = s.BuyerAddress,
+                   BuyerNPWP = s.BuyerNPWP,
                    BuyerCode = s.BuyerCode,
                    BuyerName = s.BuyerName,
                    Details = s.Details.Select(t => new ShipmentDocumentDetailModel
