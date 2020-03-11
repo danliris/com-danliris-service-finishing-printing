@@ -1,6 +1,9 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -96,6 +99,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var Response = reportFacade.ReadMonitoringSpecMachine(data.MachineId, data.ProductionOrderOrderNo, DateTime.MaxValue);
             Assert.Null(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MonitoringEventProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            MonitoringEventViewModel vm = new MonitoringEventViewModel { Id = 1 };
+            MonitoringEventModel model = mapper.Map<MonitoringEventModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

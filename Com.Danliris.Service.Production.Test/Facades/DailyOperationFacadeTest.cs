@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
@@ -257,7 +259,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var dbContext = DbContext(GetCurrentMethod());
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
-            DailyOperationViewModel vm = new DailyOperationViewModel();
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                IsEdit = false,
+                UId = "a",
+                BadOutputDescription = "a"
+            };
+
+            var fla = vm.IsChangeable;
+            var desc = vm.BadOutputDescription;
             System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
             Assert.NotEmpty(vm.Validate(context));
 
@@ -365,11 +375,180 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     StepId = data.StepId
                 },
                 Machine = new Lib.ViewModels.Master.Machine.MachineViewModel(),
-                
+
             };
             System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
             Assert.NotEmpty(vm.Validate(context));
         }
+
+        [Fact]
+        public async Task ValidateVM_Input()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Type = "input",
+                Shift = "s",
+                Machine = new Lib.ViewModels.Master.Machine.MachineViewModel(),
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+            };
+            System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.TimeInput = 1;
+            Assert.NotEmpty(vm.Validate(context));
+            vm.Input = 1;
+            Assert.NotEmpty(vm.Validate(context));
+            vm.DateInput = DateTimeOffset.UtcNow.AddDays(1);
+            Assert.NotEmpty(vm.Validate(context));
+            vm.DateInput = DateTimeOffset.UtcNow.AddDays(-1);
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+            {
+                CurrentStepIndex = data.KanbanStepIndex,
+                Id = data.KanbanId
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+            {
+                CurrentStepIndex = 2,
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+            {
+                CurrentStepIndex = 0,
+                Instruction = new Lib.ViewModels.Kanban.KanbanInstructionViewModel()
+                {
+                    Steps = new List<Lib.ViewModels.Kanban.KanbanStepViewModel>()
+                    {
+                        new Lib.ViewModels.Kanban.KanbanStepViewModel()
+                        {
+                            Process = "a",
+                            StepIndex = 1
+                        }
+                    }
+                }
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+
+        }
+
+        [Fact]
+        public async Task ValidateVM_Output()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var dataO = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            await facade.CreateAsync(dataO);
+            DailyOperationViewModel vm = new DailyOperationViewModel()
+            {
+                Type = "output",
+                Shift = "s",
+                Machine = new Lib.ViewModels.Master.Machine.MachineViewModel(),
+                Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
+            };
+            System.ComponentModel.DataAnnotations.ValidationContext context = new System.ComponentModel.DataAnnotations.ValidationContext(vm, serviceProvider, null);
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.TimeOutput = 1;
+            Assert.NotEmpty(vm.Validate(context));
+            vm.GoodOutput = 1;
+            Assert.NotEmpty(vm.Validate(context));
+            vm.DateOutput = DateTimeOffset.UtcNow.AddDays(1);
+            Assert.NotEmpty(vm.Validate(context));
+            vm.DateOutput = DateTimeOffset.UtcNow.AddDays(-1);
+            vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>()
+            {
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.BadOutput = 1;
+
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.BadOutput = 0;
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+            {
+                CurrentStepIndex = data.KanbanStepIndex,
+                Id = data.KanbanId
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+
+
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+            {
+                CurrentStepIndex = dataO.KanbanStepIndex,
+                Id = dataO.KanbanId
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+            vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
+            {
+                CurrentStepIndex = 0,
+                Instruction = new Lib.ViewModels.Kanban.KanbanInstructionViewModel()
+                {
+                    Steps = new List<Lib.ViewModels.Kanban.KanbanStepViewModel>()
+                    {
+                        new Lib.ViewModels.Kanban.KanbanStepViewModel()
+                        {
+                            Process = "a",
+                            StepIndex = 1
+                        }
+                    }
+                }
+            };
+            Assert.NotEmpty(vm.Validate(context));
+
+
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DailyOperationProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            DailyOperationViewModel vm = new DailyOperationViewModel { Id = 1 };
+            DailyOperationModel model = mapper.Map<DailyOperationModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
+        }
+
+        //[Fact]
+        //public async Task ETLKanbanStep()
+        //{
+        //    var dbContext = DbContext(GetCurrentMethod());
+        //    var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+        //    var facade = new DailyOperationFacade(serviceProvider, dbContext);
+
+        //    var data = await DataUtil(facade, dbContext).GetTestData();
+        //    var dataO = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+        //    dataO.KanbanId = data.KanbanId;
+        //    dataO.StepProcess = data.StepProcess;
+        //    await facade.CreateAsync(dataO);
+
+        //    await facade.ETLKanbanStepIndex(1);
+        //    Assert.True(true);
+        //}
 
     }
 }

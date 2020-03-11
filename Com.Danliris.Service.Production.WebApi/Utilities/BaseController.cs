@@ -95,7 +95,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
             }
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("{id}")]
         public virtual async Task<IActionResult> GetById([FromRoute] int id)
         {
             try

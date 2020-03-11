@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
@@ -43,6 +45,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
                 .Returns(new MachineLogic(machineEventLogic, machineStepLogic, identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+        [Fact]
+        public virtual async void GetDyeingPrinting_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MachineFacade facade = Activator.CreateInstance(typeof(MachineFacade), serviceProvider, dbContext) as MachineFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetDyeingPrintingMachine(1, 25, "{}", new List<string>(), "", "{}");
+
+            Assert.NotEmpty(Response.Data);
         }
 
         [Fact]
@@ -119,6 +136,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 
             MachineViewModel vm2 = new MachineViewModel();
             Assert.NotEmpty(vm2.Validate(null));
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MachineProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            MachineViewModel vm = new MachineViewModel { Id = 1 };
+            MachineModel model = mapper.Map<MachineModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

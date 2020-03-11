@@ -132,6 +132,32 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         }
 
         [Fact]
+        public void GetReportPdf_GetNull()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>()))
+                 .ReturnsAsync(default(KanbanModel));
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetPDF(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response.Result));
+        }
+
+        [Fact]
         public void GetReportPdf_WithException_ReturnError()
         {
             var mockFacade = new Mock<IKanbanFacade>();
@@ -181,6 +207,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var response = controller.GetXls(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<bool?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>());
             Assert.NotNull(response);
+
+            response = controller.GetXls(DateTime.UtcNow, It.IsAny<DateTime?>(), It.IsAny<bool?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>());
+            Assert.NotNull(response);
+
+            response = controller.GetXls(It.IsAny<DateTime?>(), DateTime.UtcNow, It.IsAny<bool?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>());
+            Assert.NotNull(response);
+
+            response = controller.GetXls(DateTime.UtcNow, DateTime.UtcNow, It.IsAny<bool?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>());
+            Assert.NotNull(response);
         }
 
 
@@ -207,7 +242,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 {
                     new CartViewModel()
                     {
-                        
+
                     }
                 }
             };
@@ -302,6 +337,190 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var response = controller.GetXls(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<bool?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>());
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetByOldKanban_ReturnOK()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.ReadOldKanbanByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new KanbanModel());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = await controller.GetOldKanbanById(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetByOldKanban_ReturnOK_NULL()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.ReadOldKanbanByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(default(KanbanModel));
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = await controller.GetOldKanbanById(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetByOldKanban_ThrowException()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.ReadOldKanbanByIdAsync(It.IsAny<int>()))
+                .ThrowsAsync(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = await controller.GetOldKanbanById(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void UpdateIsComplete_ReturnNoContent()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.CompleteKanban(It.IsAny<int>()))
+                .ReturnsAsync(1);
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = await controller.UpdateIsComplete(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void UpdateIsComplete_ThrowException()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.CompleteKanban(It.IsAny<int>()))
+                .ThrowsAsync(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = await controller.UpdateIsComplete(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetSnapshotExcel_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<DateTime>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetSnapshotXLS(It.IsAny<DateTime>());
+            Assert.NotNull(response);
+
+        }
+
+        [Fact]
+        public void GetSnapshotExcel_ThrowException()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<DateTime>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetSnapshotXLS(It.IsAny<DateTime>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+
         }
     }
 }

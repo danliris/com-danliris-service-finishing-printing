@@ -18,5 +18,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.K
         List<KanbanViewModel> GetReport(bool? proses, int orderTypeId, int processTypeId, string orderNo, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
         Task<int> CompleteKanban(int id);
+
+        Task<KanbanModel> ReadOldKanbanByIdAsync(int id);
+
+        MemoryStream GenerateKanbanSnapshotExcel(DateTime searchDate);
     }
 }

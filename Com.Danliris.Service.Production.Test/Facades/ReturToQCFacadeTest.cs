@@ -1,7 +1,10 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -70,6 +73,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = facade.GenerateExcel(DateTime.MinValue, DateTime.MaxValue, null, null, null, null, 7);
 
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ReturToQCProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            ReturToQCViewModel vm = new ReturToQCViewModel { Id = 1 };
+            ReturToQCModel model = mapper.Map<ReturToQCModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

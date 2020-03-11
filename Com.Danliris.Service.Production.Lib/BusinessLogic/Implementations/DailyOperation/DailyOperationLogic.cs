@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Net.Http;
@@ -42,8 +43,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
             }
 
-            if (model.Type == "input")
-                this.SetKanbanCreate(model);
+            this.SetKanbanCreate(model);
 
             model.Kanban = null;
             model.Machine = null;
@@ -114,20 +114,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 .FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
         }
 
-        public void UpdateKanban(DailyOperationModel model, string flag)
-        {
-            KanbanModel kanban = this.DbSetKanban.Where(k => k.Id.Equals(model.KanbanId)).SingleOrDefault();
+        //public void UpdateKanban(DailyOperationModel model, string flag)
+        //{
+        //	KanbanModel kanban = this.DbSetKanban.Where(k => k.Id.Equals(model.KanbanId)).SingleOrDefault();
 
-            int currentStepIndex = (flag == "create" ? kanban.CurrentStepIndex += 1 : flag == "update" ? kanban.CurrentStepIndex : kanban.CurrentStepIndex -= 1);
+        //	int currentStepIndex = (flag == "create" ? kanban.CurrentStepIndex += 1 : flag == "update" ? kanban.CurrentStepIndex : kanban.CurrentStepIndex -= 1);
 
-            kanban.CurrentQty = model.GoodOutput != null ? (double)model.GoodOutput : 0;
-            kanban.CurrentStepIndex = currentStepIndex;
-            kanban.GoodOutput = model.GoodOutput != null ? (double)model.GoodOutput : 0;
-            kanban.BadOutput = model.BadOutput != null ? (double)model.GoodOutput : 0;
+        //	kanban.CurrentQty = model.GoodOutput != null ? (double)model.GoodOutput : 0;
+        //	kanban.CurrentStepIndex = currentStepIndex;
+        //	kanban.GoodOutput = model.GoodOutput != null ? (double)model.GoodOutput : 0;
+        //	kanban.BadOutput = model.BadOutput != null ? (double)model.GoodOutput : 0;
 
-            EntityExtension.FlagForUpdate(kanban, IdentityService.Username, UserAgent);
-            DbSetKanban.Update(kanban);
-        }
+        //	EntityExtension.FlagForUpdate(kanban, IdentityService.Username, UserAgent);
+        //	DbSetKanban.Update(kanban);
+        //}
 
         public void SetKanbanCreate(DailyOperationModel model)
         {
@@ -142,6 +142,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             }
             else if (model.Type.ToUpper() == "OUTPUT")
             {
+                model.KanbanStepIndex = selectedKanban.CurrentStepIndex;
                 selectedKanban.CurrentQty = model.GoodOutput.GetValueOrDefault() + model.BadOutput.GetValueOrDefault();
                 selectedKanban.GoodOutput = model.GoodOutput.GetValueOrDefault();
                 selectedKanban.BadOutput = model.BadOutput.GetValueOrDefault();
@@ -204,9 +205,156 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             }
         }
 
-        public HashSet<int> hasInput(DailyOperationViewModel vm)
+        //public HashSet<int> hasInput(DailyOperationViewModel vm)
+        //{
+        //	return new HashSet<int>(DbSet.Where(d => d.Kanban.Id == vm.Kanban.Id && d.Type == vm.Type && d.StepId == vm.Step.StepId).Select(d => d.Id));
+        //}
+
+        public DailyOperationModel GetInputDataForCurrentOutput(DailyOperationViewModel vm)
         {
-            return new HashSet<int>(DbSet.Where(d => d.Kanban.Id == vm.Kanban.Id && d.Type == vm.Type && d.StepId == vm.Step.StepId).Select(d => d.Id));
+            return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
         }
+
+        public bool ValidateCreateOutputDataCheckCurrentInput(DailyOperationViewModel vm)
+        {
+            return !DbSet.Any(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
+        }
+
+        public bool ValidateCreateOutputDataCheckDuplicate(DailyOperationViewModel vm)
+        {
+            return DbSet.Any(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
+        }
+
+        public bool ValidateCreateInputDataCheckPreviousOutput(DailyOperationViewModel vm)
+        {
+            if (vm.Kanban.CurrentStepIndex == 0)
+                return false;
+
+            return !DbSet.Any(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && (s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault()));
+        }
+
+        public bool ValidateCreateInputDataCheckDuplicate(DailyOperationViewModel vm)
+        {
+
+            return DbSet.Any(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.KanbanStepIndex == (vm.Kanban.CurrentStepIndex.GetValueOrDefault() + 1));
+        }
+
+        //public async Task<int> ETLKanbanStepIndex(int page)
+        //{
+
+        //	var groupedData = DbSet
+        //		.Select(x => new DailyOperationModel()
+        //		{
+        //			Id = x.Id,
+        //			KanbanId = x.KanbanId,
+        //			StepProcess = x.StepProcess,
+        //			DateInput = x.DateInput,
+        //			TimeInput = x.TimeInput,
+        //			DateOutput = x.DateOutput,
+        //			TimeOutput = x.TimeOutput,
+        //			Type = x.Type,
+        //			KanbanStepIndex = x.KanbanStepIndex
+        //		}).GroupBy(s => new { s.KanbanId, s.StepProcess }).Where(x => x.Count() > 2).OrderBy(x => x.Key.KanbanId);
+
+
+        //	int dd = groupedData.Count();
+        //	var kanbanStepData = DbContext.KanbanSteps.Include(x => x.Instruction)
+        //		.Select(x => new KanbanStepModel()
+        //		{
+        //			Id = x.Id,
+        //			Instruction = new KanbanInstructionModel()
+        //			{
+        //				Id = x.Instruction.Id,
+        //				KanbanId = x.Instruction.KanbanId
+        //			},
+        //			InstructionId = x.InstructionId,
+        //			StepIndex = x.StepIndex,
+        //			Process = x.Process
+        //		});
+        //	int index = 0;
+        //	int result = 0;
+        //	using (var transaction = DbContext.Database.BeginTransaction())
+        //	{
+        //		foreach (var item in groupedData)
+        //		//foreach (var item in groupedData.GroupBy(x => x.KanbanId).OrderBy(x => x.Key).Skip((page - 1) * 5000).Take(5000))
+        //		{
+        //			var dataInput = item.Where(x => x.Type.ToLower() == "input").OrderBy(x => x.DateInput).ThenBy(x => x.TimeInput);
+        //			var dataOutput = item.Where(x => x.Type.ToLower() == "output").OrderBy(x => x.DateOutput).ThenBy(x => x.TimeOutput);
+        //			//var data = item.OrderBy(x => x.CreatedUtc).ThenBy(x => x.Id);
+        //			var steps = kanbanStepData.Where(x => x.Instruction.KanbanId == item.Key.KanbanId && x.Process == item.Key.StepProcess).OrderBy(x => x.StepIndex);
+
+        //			foreach(var daily in dataInput)
+        //			{
+        //				int idx = dataInput.ToList().FindIndex(x => x.Id == daily.Id);
+        //				var kanbanStep = steps.ToList().ElementAtOrDefault(idx);
+        //				var model = await DbSet.FirstOrDefaultAsync(x => x.Id == daily.Id);
+        //				if (kanbanStep != null)
+        //				{
+
+        //					model.KanbanStepIndex = kanbanStep.StepIndex;
+
+        //				}
+        //				else
+        //				{
+        //					model.KanbanStepIndex = 0;
+
+        //				}
+        //				index++;
+        //				Debug.WriteLine(index);
+
+        //				if (index % 10000 == 0)
+        //				{
+        //					result += await DbContext.SaveChangesAsync();
+        //				}
+        //			}
+
+        //			foreach (var daily in dataOutput)
+        //			{
+        //				int idx = dataOutput.ToList().FindIndex(x => x.Id == daily.Id);
+        //				var kanbanStep = steps.ToList().ElementAtOrDefault(idx);
+        //				var model = await DbSet.FirstOrDefaultAsync(x => x.Id == daily.Id);
+        //				if (kanbanStep != null)
+        //				{
+
+        //					model.KanbanStepIndex = kanbanStep.StepIndex;
+
+        //				}
+        //				else
+        //				{
+        //					model.KanbanStepIndex = 0;
+        //				}
+        //				index++;
+        //				Debug.WriteLine(index);
+
+        //				if (index % 10000 == 0)
+        //				{
+        //					result += await DbContext.SaveChangesAsync();
+        //				}
+        //			}
+        //			//foreach (var daily in data)
+        //			//{
+        //			//	int idx = data.Where(x => x.StepProcess == daily.StepProcess).ToList().FindIndex(x => x.StepProcess == daily.StepProcess);
+        //			//	var kanbanStep = steps.Where(x => x.Process == daily.StepProcess).ToList().ElementAtOrDefault(idx);
+        //			//	if (kanbanStep != null)
+        //			//	{
+        //			//		var model = await DbSet.FirstOrDefaultAsync(x => x.Id == daily.Id);
+        //			//		model.KanbanStepIndex = kanbanStep.StepIndex;
+        //			//		index++;
+        //			//		Debug.WriteLine(index);
+
+        //			//		if (index % 10000 == 0)
+        //			//		{
+        //			//			result += await DbContext.SaveChangesAsync();
+        //			//		}
+        //			//	}
+
+        //			//}
+        //		}
+        //		result += await DbContext.SaveChangesAsync();
+        //		transaction.Commit();
+        //	}
+
+        //	return result;
+        //}
     }
 }

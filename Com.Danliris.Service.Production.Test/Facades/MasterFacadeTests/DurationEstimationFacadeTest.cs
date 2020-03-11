@@ -1,10 +1,13 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
+using Com.Danliris.Service.Production.Lib.AutoMapperProfiles.Master;
 using Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.Models.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
+using Com.Danliris.Service.Production.Lib.ViewModels.Master.DurationEstimation;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -51,6 +54,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             var Response = facade.ReadByProcessType(data.ProcessTypeCode);
 
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DurationEstimationProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            DurationEstimationViewModel vm = new DurationEstimationViewModel { Id = 1 };
+            DurationEstimationModel model = mapper.Map<DurationEstimationModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
 
     }

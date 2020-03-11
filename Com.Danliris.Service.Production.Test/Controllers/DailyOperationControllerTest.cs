@@ -298,6 +298,85 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         }
 
         [Fact]
+        public void GetReportExcel_WithoutExceptionDateFrom_ReturnOK()
+        {
+            var mockFacade = new Mock<IDailyOperationFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.UtcNow, It.IsAny<DateTime?>(), It.IsAny<int>(), It.IsAny<int>());
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_WithoutExceptionDateTo_ReturnOK()
+        {
+            var mockFacade = new Mock<IDailyOperationFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(It.IsAny<DateTime?>(), DateTime.UtcNow, It.IsAny<int>(), It.IsAny<int>());
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_WithoutExceptionDateFromTo_ReturnOK()
+        {
+            var mockFacade = new Mock<IDailyOperationFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.UtcNow, DateTime.UtcNow, It.IsAny<int>(), It.IsAny<int>());
+            Assert.NotNull(response);
+        }
+
+
+        [Fact]
         public void GetReportExcel_WithException_ReturnError()
         {
             var mockFacade = new Mock<IDailyOperationFacade>();
@@ -397,6 +476,56 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var response = controller.GetFilterOptions();
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
+
+        //[Fact]
+        //public async Task ETLKanban_ReturnOK()
+        //{
+        //    var mockFacade = new Mock<IDailyOperationFacade>();
+        //    mockFacade.Setup(x => x.ETLKanbanStepIndex(It.IsAny<int>()))
+        //        .ReturnsAsync(1);
+
+        //    var mockMapper = new Mock<IMapper>();
+
+        //    var mockIdentityService = new Mock<IIdentityService>();
+
+        //    var mockValidateService = new Mock<IValidateService>();
+
+        //    DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+        //    {
+        //        ControllerContext = new ControllerContext()
+        //        {
+        //            HttpContext = new DefaultHttpContext()
+        //        }
+        //    };
+
+        //    var response = await controller.ETLKanbanSteps(1);
+        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        //}
+
+        //[Fact]
+        //public async Task ETLKanban_ThrowError()
+        //{
+        //    var mockFacade = new Mock<IDailyOperationFacade>();
+        //    mockFacade.Setup(x => x.ETLKanbanStepIndex(It.IsAny<int>()))
+        //        .ThrowsAsync(new Exception("e"));
+
+        //    var mockMapper = new Mock<IMapper>();
+
+        //    var mockIdentityService = new Mock<IIdentityService>();
+
+        //    var mockValidateService = new Mock<IValidateService>();
+
+        //    DailyOperationController controller = new DailyOperationController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+        //    {
+        //        ControllerContext = new ControllerContext()
+        //        {
+        //            HttpContext = new DefaultHttpContext()
+        //        }
+        //    };
+
+        //    var response = await controller.ETLKanbanSteps(1);
+        //    Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        //}
 
         [Fact]
         public void GetBySelectedColumn_ReturnOK()
