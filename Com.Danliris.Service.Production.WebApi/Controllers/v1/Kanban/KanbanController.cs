@@ -243,17 +243,17 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
         }
 
         [HttpGet("snapshot/downloads/xls")]
-        public IActionResult GetSnapshotXLS(DateTime searchDate)
+        public IActionResult GetSnapshotXLS(int month, int year)
         {
             try
             {
                 byte[] xlsInBytes;
                 int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var xls = Facade.GenerateKanbanSnapshotExcel(searchDate);
+                var xls = Facade.GenerateKanbanSnapshotExcel(month, year);
 
                 string fileName = "";
-
-                fileName = string.Format("Kanban " + searchDate.ToString("dd MMMM yyyy"));
+                DateTime date = new DateTime(year, month, 1);
+                fileName = string.Format("Kanban " + date.ToString("MMMM yyyy"));
 
                 xlsInBytes = xls.ToArray();
 

@@ -170,7 +170,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             dataOut.StepId = kanban.Instruction.Steps.First().Id;
             dataOut.MachineId = kanban.Instruction.Steps.First().MachineId;
             var outModel = await facade.CreateAsync(dataOut);
-            var Response = kanbanFacade.GenerateKanbanSnapshotExcel(data.DateInput.GetValueOrDefault().DateTime);
+            var Response = kanbanFacade.GenerateKanbanSnapshotExcel(data.CreatedUtc.Month, data.CreatedUtc.Year);
 
             Assert.NotNull(Response);
         }
@@ -182,7 +182,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             KanbanFacade kanbanFacade = new KanbanFacade(serviceProvider, dbContext);
             
-            var Response = kanbanFacade.GenerateKanbanSnapshotExcel(DateTime.UtcNow);
+            var Response = kanbanFacade.GenerateKanbanSnapshotExcel(DateTime.UtcNow.Month, DateTime.UtcNow.Year);
 
             Assert.NotNull(Response);
         }
