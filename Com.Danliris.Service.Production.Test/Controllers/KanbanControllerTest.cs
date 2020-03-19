@@ -473,7 +473,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         public void GetSnapshotExcel_WithoutException_ReturnOK()
         {
             var mockFacade = new Mock<IKanbanFacade>();
-            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<DateTime>()))
+            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
 
             var mockMapper = new Mock<IMapper>();
@@ -491,7 +491,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             };
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
-            var response = controller.GetSnapshotXLS(It.IsAny<DateTime>());
+            var response = controller.GetSnapshotXLS(It.IsAny<int>(), It.IsAny<int>());
             Assert.NotNull(response);
 
         }
@@ -500,7 +500,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         public void GetSnapshotExcel_ThrowException()
         {
             var mockFacade = new Mock<IKanbanFacade>();
-            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<DateTime>()))
+            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<int>(), It.IsAny<int>()))
                 .Throws(new Exception());
 
             var mockMapper = new Mock<IMapper>();
@@ -518,7 +518,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             };
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
-            var response = controller.GetSnapshotXLS(It.IsAny<DateTime>());
+            var response = controller.GetSnapshotXLS(It.IsAny<int>(), It.IsAny<int>());
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
 
         }
