@@ -490,8 +490,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 }
             };
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
-
-            var response = controller.GetSnapshotXLS(It.IsAny<int>(), It.IsAny<int>());
+            
+            var response = controller.GetSnapshotXLS(DateTime.UtcNow.Month, DateTime.UtcNow.Year);
             Assert.NotNull(response);
 
         }
