@@ -6,6 +6,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.OrderStatusReport;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
@@ -30,6 +31,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanba
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.OrderStatusReport;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.PackingReceipt;
@@ -114,6 +116,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
                 .AddTransient<IPackingReceiptFacade, PackingReceiptFacade>()
                 .AddTransient<IShipmentDocumentService, ShipmentDocumentService>()
+                .AddTransient<INewShipmentDocumentService, NewShipmentDocumentService>()
                 .AddTransient<IDirectLaborCostFacade, DirectLaborCostFacade>()
                 .AddTransient<IOperationalCostFacade, OperationalCostFacade>()
                 .AddTransient<IOrderStatusReportService, OrderStatusReportService>()
