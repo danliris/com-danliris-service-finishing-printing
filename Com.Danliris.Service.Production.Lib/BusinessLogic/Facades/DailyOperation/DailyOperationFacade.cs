@@ -39,20 +39,65 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
         public async Task<int> CreateAsync(DailyOperationModel model)
         {
-            do
-            {
-                model.Code = CodeGenerator.Generate();
-            }
-            while (DbSet.Any(d => d.Code.Equals(model.Code)));
+            var internalTransaction = DbContext.Database.CurrentTransaction == null;
+            var transaction = !internalTransaction ? DbContext.Database.CurrentTransaction : DbContext.Database.BeginTransaction();
 
-            this.DailyOperationLogic.CreateModel(model);
-            return await DbContext.SaveChangesAsync();
+            try
+            {
+                int result = 0;
+                do
+                {
+                    model.Code = CodeGenerator.Generate();
+                }
+                while (DbSet.Any(d => d.Code.Equals(model.Code)));
+
+                this.DailyOperationLogic.CreateModel(model);
+                result = await DbContext.SaveChangesAsync();
+
+                DailyOperationLogic.CreateSnapshot(model);
+                result += await DbContext.SaveChangesAsync();
+
+                if (internalTransaction)
+                    transaction.Commit();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (internalTransaction)
+                    transaction.Rollback();
+                throw ex;
+            }
+
         }
 
         public async Task<int> DeleteAsync(int id)
         {
-            await DailyOperationLogic.DeleteModel(id);
-            return await DbContext.SaveChangesAsync();
+            var internalTransaction = DbContext.Database.CurrentTransaction == null;
+            var transaction = !internalTransaction ? DbContext.Database.CurrentTransaction : DbContext.Database.BeginTransaction();
+
+            try
+            {
+                int result = 0;
+
+                var model = await ReadByIdAsync(id);
+
+                DailyOperationLogic.DeleteSnapshot(model);
+                result = await DbContext.SaveChangesAsync();
+                await DailyOperationLogic.DeleteModel(id);
+                result += await DbContext.SaveChangesAsync();
+
+                transaction.Commit();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (internalTransaction)
+                    transaction.Rollback();
+                throw ex;
+            }
+
         }
 
         //public ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
@@ -168,11 +213,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                      from machines in dailyMachine.DefaultIfEmpty()
                      join kanbans in DbContext.Kanbans on daily.KanbanId equals kanbans.Id into dailyKanban
                      from kanbans in dailyKanban.DefaultIfEmpty()
-                     //where
-                     //!string.IsNullOrWhiteSpace(machine) ? machines.Name.Contains(machine) : machines.Name.Equals(machines.Name)
-                     //&& !string.IsNullOrWhiteSpace(cartNo) ? kanbans.CartCartNumber.Contains(cartNo) : kanbans.CartCartNumber.Equals(kanbans.CartCartNumber)
-                     //&& !string.IsNullOrWhiteSpace(stepProcess) ? daily.StepProcess.Contains(stepProcess) : daily.StepProcess.Equals(daily.StepProcess)
-                     //&& !string.IsNullOrWhiteSpace(orderNo) ? kanbans.ProductionOrderOrderNo.Contains(orderNo) : kanbans.ProductionOrderOrderNo.Equals(kanbans.ProductionOrderOrderNo)
+                         //where
+                         //!string.IsNullOrWhiteSpace(machine) ? machines.Name.Contains(machine) : machines.Name.Equals(machines.Name)
+                         //&& !string.IsNullOrWhiteSpace(cartNo) ? kanbans.CartCartNumber.Contains(cartNo) : kanbans.CartCartNumber.Equals(kanbans.CartCartNumber)
+                         //&& !string.IsNullOrWhiteSpace(stepProcess) ? daily.StepProcess.Contains(stepProcess) : daily.StepProcess.Equals(daily.StepProcess)
+                         //&& !string.IsNullOrWhiteSpace(orderNo) ? kanbans.ProductionOrderOrderNo.Contains(orderNo) : kanbans.ProductionOrderOrderNo.Equals(kanbans.ProductionOrderOrderNo)
                      select new DailyOperationModel
                      {
                          Id = daily.Id,
@@ -220,8 +265,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
         public async Task<int> UpdateAsync(int id, DailyOperationModel model)
         {
-            await this.DailyOperationLogic.UpdateModelAsync(id, model);
-            return await DbContext.SaveChangesAsync();
+            var internalTransaction = DbContext.Database.CurrentTransaction == null;
+            var transaction = !internalTransaction ? DbContext.Database.CurrentTransaction : DbContext.Database.BeginTransaction();
+            try
+            {
+                int result = 0;
+                await this.DailyOperationLogic.UpdateModelAsync(id, model);
+                result = await DbContext.SaveChangesAsync();
+
+                DailyOperationLogic.EditSnapshot(model);
+
+                result += await DbContext.SaveChangesAsync();
+
+                transaction.Commit();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (internalTransaction)
+                    transaction.Rollback();
+                throw ex;
+            }
         }
 
         public ReadResponse<DailyOperationViewModel> GetReport(int page, int size, int kanbanID, int machineID, DateTime? dateFrom, DateTime? dateTo, int offSet)

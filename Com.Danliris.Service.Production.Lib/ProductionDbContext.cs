@@ -77,6 +77,8 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<CostCalculationMachineModel> CostCalculationMachines { get; set; }
         public DbSet<CostCalculationChemicalModel> CostCalculationChemicals { get; set; }
 
+        public DbSet<KanbanSnapshotModel> KanbanSnapshots { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new StepConfig());

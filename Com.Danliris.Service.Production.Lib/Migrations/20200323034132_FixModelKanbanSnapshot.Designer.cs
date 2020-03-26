@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200323034132_FixModelKanbanSnapshot")]
+    partial class FixModelKanbanSnapshot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -834,9 +836,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<double?>("DyeingBadOutputQty");
 
-                    b.Property<string>("DyeingCartNumber")
-                        .HasMaxLength(1024);
-
                     b.Property<int>("DyeingDay");
 
                     b.Property<double?>("DyeingGoodOutputQty");
@@ -853,9 +852,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<int>("DyeingStepIndex");
 
                     b.Property<double?>("FinishingBadOutputQty");
-
-                    b.Property<string>("FinishingCartNumber")
-                        .HasMaxLength(1024);
 
                     b.Property<int>("FinishingDay");
 
@@ -879,9 +875,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<double?>("PreTreatmentBadOutputQty");
 
-                    b.Property<string>("PreTreatmentCartNumber")
-                        .HasMaxLength(1024);
-
                     b.Property<int>("PreTreatmentDay");
 
                     b.Property<double?>("PreTreatmentGoodOutputQty");
@@ -899,9 +892,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<double?>("PrintingBadOutputQty");
 
-                    b.Property<string>("PrintingCartNumber")
-                        .HasMaxLength(1024);
-
                     b.Property<int>("PrintingDay");
 
                     b.Property<double?>("PrintingGoodOutputQty");
@@ -918,9 +908,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<int>("PrintingStepIndex");
 
                     b.Property<double?>("QCBadOutputQty");
-
-                    b.Property<string>("QCCartNumber")
-                        .HasMaxLength(1024);
 
                     b.Property<int>("QCDay");
 
