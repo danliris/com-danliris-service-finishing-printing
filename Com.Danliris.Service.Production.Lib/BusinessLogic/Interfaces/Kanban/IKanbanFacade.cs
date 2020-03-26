@@ -21,6 +21,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.K
 
         Task<KanbanModel> ReadOldKanbanByIdAsync(int id);
 
-        MemoryStream GenerateKanbanSnapshotExcel(DateTime searchDate);
+        MemoryStream GenerateKanbanSnapshotExcel(int month, int year);
     }
 }
