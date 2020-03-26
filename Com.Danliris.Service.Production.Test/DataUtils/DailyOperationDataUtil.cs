@@ -28,6 +28,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 DateInput = DateTimeOffset.UtcNow,
                 MachineId = kanbanData.Instruction.Steps.First().MachineId,
                 StepId = kanbanData.Instruction.Steps.First().Id,
+                StepProcess = kanbanData.Instruction.Steps.First().Process,
                 BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
                 {
                     new DailyOperationBadOutputReasonsModel()
@@ -37,17 +38,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             return model;
         }
 
-        public async Task<DailyOperationModel> GetNewDataOutAsync()
+        public DailyOperationModel GetNewDataOut(DailyOperationModel dataInput)
         {
-            var kanbanData = await kanbanDataUtil.GetTestData();
 
             DailyOperationModel model = new DailyOperationModel
             {
-                KanbanId = kanbanData.Id,
+                KanbanId = dataInput.KanbanId,
                 Type = "output",
                 DateOutput = DateTimeOffset.UtcNow,
-                StepId = kanbanData.Instruction.Steps.First().Id,
-                MachineId = kanbanData.Instruction.Steps.First().MachineId,
+                StepId = dataInput.StepId,
+                MachineId = dataInput.MachineId,
+                StepProcess = dataInput.StepProcess,
                 BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
                 {
                     new DailyOperationBadOutputReasonsModel()

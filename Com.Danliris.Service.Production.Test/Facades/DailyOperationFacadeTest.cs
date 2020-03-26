@@ -129,7 +129,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var Response = await facade.HasOutput(data.KanbanId, data.StepProcess);
+            var Response = await facade.HasOutput(data.KanbanId, data.StepProcess, data.MachineId, data.KanbanStepIndex);
 
             Assert.False(Response);
         }
@@ -147,7 +147,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            var outputData = DataUtil(facade, dbContext).GetNewDataOut(data);
 
             await facade.CreateAsync(outputData);
             Assert.NotNull(data);
@@ -166,7 +166,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            var outputData = DataUtil(facade, dbContext).GetNewDataOut(data);
 
             await facade.CreateAsync(outputData);
             await facade.DeleteAsync(outputData.Id);
@@ -186,7 +186,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            var outputData = DataUtil(facade, dbContext).GetNewDataOut(data);
 
             await facade.CreateAsync(outputData);
 
@@ -238,7 +238,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var outputData = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            var outputData = DataUtil(facade, dbContext).GetNewDataOut(data);
             outputData.BadOutputReasons.Add(new DailyOperationBadOutputReasonsModel()
             {
                 MachineName = "name",
@@ -449,7 +449,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
 
             var data = await DataUtil(facade, dbContext).GetTestData();
-            var dataO = await DataUtil(facade, dbContext).GetNewDataOutAsync();
+            var dataO = DataUtil(facade, dbContext).GetNewDataOut(data);
+            dataO.KanbanId = data.KanbanId;
             await facade.CreateAsync(dataO);
             DailyOperationViewModel vm = new DailyOperationViewModel()
             {

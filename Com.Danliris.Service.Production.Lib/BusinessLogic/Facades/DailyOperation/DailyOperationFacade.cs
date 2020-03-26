@@ -507,9 +507,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             return data.AsNoTracking().ToListAsync();
         }
 
-        public Task<bool> HasOutput(int kanbanId, string stepProcess)
+        public Task<bool> HasOutput(int kanbanId, string stepProcess, int machineId, int stepIndex)
         {
-            return DbSet.AnyAsync(x => x.KanbanId == kanbanId && x.StepProcess == stepProcess && x.Type.ToLower() == "output");
+            return DbSet.AnyAsync(x => x.KanbanId == kanbanId && x.StepProcess == stepProcess && x.KanbanStepIndex == stepIndex && x.MachineId == machineId && x.Type.ToLower() == "output");
         }
 
         //public async Task<int> ETLKanbanStepIndex(int page)
