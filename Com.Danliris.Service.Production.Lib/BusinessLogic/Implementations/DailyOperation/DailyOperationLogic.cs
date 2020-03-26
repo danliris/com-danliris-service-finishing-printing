@@ -244,7 +244,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             var selectedKanban = DbSetKanban.Include(s => s.Instruction).ThenInclude(s => s.Steps)
                 .Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
-            var stepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == model.StepProcess);
+            var stepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == model.StepProcess && s.MachineId == model.MachineId);
             int stepIndex = stepData.StepIndex;
             string konstruksi = string.Format("{0} / {1} / {2}", selectedKanban.ProductionOrderMaterialName, selectedKanban.ProductionOrderMaterialConstructionName, selectedKanban.FinishWidth);
             var snapshotData = DbContext.KanbanSnapshots
@@ -798,7 +798,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             var selectedKanban = DbSetKanban.Include(s => s.Instruction).ThenInclude(s => s.Steps)
                .Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
-            var stepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == model.StepProcess);
+            var stepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == model.StepProcess && s.MachineId == model.MachineId);
             int stepIndex = stepData.StepIndex;
             var data = DbContext.KanbanSnapshots
                         .Where(s => s.KanbanId == model.KanbanId && s.DOCreatedUtcYear == model.CreatedUtc.Year && s.DOCreatedUtcMonth == model.CreatedUtc.Month);
@@ -959,7 +959,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
         {
             var selectedKanban = DbSetKanban.Include(s => s.Instruction).ThenInclude(s => s.Steps)
                .Where(kanban => kanban.Id == model.KanbanId).SingleOrDefault();
-            var stepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == model.StepProcess);
+            var stepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == model.StepProcess && s.MachineId == model.MachineId);
             int stepIndex = stepData.StepIndex;
             var data = DbContext.KanbanSnapshots
                         .Where(s => s.KanbanId == model.KanbanId && s.DOCreatedUtcYear == model.CreatedUtc.Year && s.DOCreatedUtcMonth == model.CreatedUtc.Month);
@@ -1016,7 +1016,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                                 outputData.PreTreatmentGoodOutputQty = previousDO.GoodOutput;
                                 outputData.PreTreatmentBadOutputQty = previousDO.BadOutput;
                                 outputData.PreTreatmentOutputDate = previousDO.CreatedUtc.Day;
-                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess);
+                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess && s.MachineId == previousDO.MachineId);
                                 int previousStepIndex = stepData.StepIndex;
                                 outputData.PreTreatmentOutputStepIndex = previousStepIndex;
                                 outputData.PreTreatmentDay = Math.Abs(previousDO.CreatedUtc.Day - inputData.PreTreatmentInputDate) + 1;
@@ -1086,7 +1086,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                                 outputData.DyeingGoodOutputQty = previousDO.GoodOutput;
                                 outputData.DyeingBadOutputQty = previousDO.BadOutput;
                                 outputData.DyeingOutputDate = previousDO.CreatedUtc.Day;
-                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess);
+                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess && s.MachineId == previousDO.MachineId);
                                 int previousStepIndex = stepData.StepIndex;
                                 outputData.DyeingOutputStepIndex = previousStepIndex;
                                 outputData.DyeingDay = Math.Abs(previousDO.CreatedUtc.Day - inputData.DyeingInputDate) + 1;
@@ -1156,7 +1156,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                                 outputData.PrintingGoodOutputQty = previousDO.GoodOutput;
                                 outputData.PrintingBadOutputQty = previousDO.BadOutput;
                                 outputData.PrintingOutputDate = previousDO.CreatedUtc.Day;
-                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess);
+                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess && s.MachineId == previousDO.MachineId);
                                 int previousStepIndex = stepData.StepIndex;
                                 outputData.PrintingOutputStepIndex = previousStepIndex;
                                 outputData.PrintingDay = Math.Abs(previousDO.CreatedUtc.Day - inputData.PrintingInputDate) + 1;
@@ -1227,7 +1227,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                                 outputData.FinishingGoodOutputQty = previousDO.GoodOutput;
                                 outputData.FinishingBadOutputQty = previousDO.BadOutput;
                                 outputData.FinishingOutputDate = previousDO.CreatedUtc.Day;
-                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess);
+                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess && s.MachineId == previousDO.MachineId);
                                 int previousStepIndex = stepData.StepIndex;
                                 outputData.FinishingOutputStepIndex = previousStepIndex;
                                 outputData.FinishingDay = Math.Abs(previousDO.CreatedUtc.Day - inputData.FinishingInputDate) + 1;
@@ -1298,7 +1298,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                                 outputData.QCGoodOutputQty = previousDO.GoodOutput;
                                 outputData.QCBadOutputQty = previousDO.BadOutput;
                                 outputData.QCOutputDate = previousDO.CreatedUtc.Day;
-                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess);
+                                var previousStepData = selectedKanban.Instruction.Steps.FirstOrDefault(s => s.Process == previousDO.StepProcess && s.MachineId == previousDO.MachineId);
                                 int previousStepIndex = stepData.StepIndex;
                                 outputData.QCOutputStepIndex = previousStepIndex;
                                 outputData.QCDay = Math.Abs(previousDO.CreatedUtc.Day - inputData.QCInputDate) + 1;
