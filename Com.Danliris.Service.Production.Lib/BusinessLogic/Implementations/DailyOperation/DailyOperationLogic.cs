@@ -1001,7 +1001,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             var stepIds = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area pre treatment").Select(s => s.Process);
                             var stepMachines = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area pre treatment").Select(s => s.MachineId);
 
-                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
+                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.Type.ToLower() == "output" && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
                                                             && stepMachines.Contains(s.MachineId))
                                 .OrderBy(s => s.CreatedUtc).LastOrDefault();
                            
@@ -1071,7 +1071,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             var stepIds = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area dyeing").Select(s => s.Process);
                             var stepMachines = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area dyeing").Select(s => s.MachineId);
 
-                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
+                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.Type.ToLower() == "output" && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
                                                             && stepMachines.Contains(s.MachineId))
                                 .OrderBy(s => s.CreatedUtc).LastOrDefault();
 
@@ -1141,7 +1141,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             var stepIds = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area printing").Select(s => s.Process);
                             var stepMachines = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area printing").Select(s => s.MachineId);
 
-                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
+                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.Type.ToLower() == "output" && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
                                                             && stepMachines.Contains(s.MachineId))
                                 .OrderBy(s => s.CreatedUtc).LastOrDefault();
 
@@ -1212,7 +1212,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             var stepIds = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area finishing").Select(s => s.Process);
                             var stepMachines = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area finishing").Select(s => s.MachineId);
 
-                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
+                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.Type.ToLower() == "output" && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
                                                             && stepMachines.Contains(s.MachineId))
                                 .OrderBy(s => s.CreatedUtc).LastOrDefault();
 
@@ -1283,7 +1283,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             var stepIds = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area qc").Select(s => s.Process);
                             var stepMachines = selectedKanban.Instruction.Steps.Where(s => s.ProcessArea.ToLower() == "area qc").Select(s => s.MachineId);
 
-                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
+                            var previousDO = DbSet.Where(s => s.Id != model.Id && s.Type.ToLower() == "output" && s.KanbanId == model.KanbanId && stepIds.Contains(s.StepProcess)
                                                             && stepMachines.Contains(s.MachineId))
                                 .OrderBy(s => s.CreatedUtc).LastOrDefault();
 
