@@ -38,6 +38,27 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             return model;
         }
 
+        public async Task<DailyOperationModel> GetNewDataInputDyeing()
+        {
+            var kanbanData = await kanbanDataUtil.GetTestData();
+
+            DailyOperationModel model = new DailyOperationModel
+            {
+                KanbanId = kanbanData.Id,
+                Type = "input",
+                DateInput = DateTimeOffset.UtcNow,
+                MachineId = kanbanData.Instruction.Steps.ElementAt(1).MachineId,
+                StepId = kanbanData.Instruction.Steps.ElementAt(1).Id,
+                StepProcess = kanbanData.Instruction.Steps.ElementAt(1).Process,
+                BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>
+                {
+                    new DailyOperationBadOutputReasonsModel()
+                },
+                Shift = "shift"
+            };
+            return model;
+        }
+
         public DailyOperationModel GetNewDataOut(DailyOperationModel dataInput)
         {
 

@@ -533,6 +533,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
         }
 
+        [Fact]
+        public async void CreateDyeingDO()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+            var data = await DataUtil(facade, dbContext).GetNewDataInputDyeing();
+
+            var result = await facade.CreateAsync(data);
+            Assert.NotEqual(0, result);
+
+            var outputData = DataUtil(facade, dbContext).GetNewDataOut(data);
+            var result2 = await facade.CreateAsync(outputData);
+            Assert.NotEqual(0, result2);
+        }
+
         //[Fact]
         //public async Task ETLKanbanStep()
         //{
