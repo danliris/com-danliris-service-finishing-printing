@@ -188,7 +188,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($"Sesuai DO. NO. : {model.DeliveryCode}", TEXT_FONT);
+            cell.Phrase = new Phrase($"Sesuai DO. NO. : {model.DOSalesNo}", TEXT_FONT);
             table.AddCell(cell);
 
             return table;

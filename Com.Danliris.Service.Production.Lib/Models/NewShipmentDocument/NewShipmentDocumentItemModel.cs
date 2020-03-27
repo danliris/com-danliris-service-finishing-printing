@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument
         public int ItemIndex { get; set; }
 
         [ForeignKey("ShipmentDocumentDetailId")]
-        public virtual NewShipmentDocumentDetailModel ShipmentDocumentDetail { get; set; }
+        public virtual NewShipmentDocumentDetailModel NewShipmentDocumentDetail { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             throw new System.NotImplementedException();

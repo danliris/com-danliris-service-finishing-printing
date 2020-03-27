@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument
         public string ProductionOrderType { get; set; }
         public int ShipmentDocumentId { get; set; }
         [ForeignKey("ShipmentDocumentId")]
-        public virtual NewShipmentDocumentModel ShipmentDocument { get; set; }
+        public virtual NewShipmentDocumentModel NewShipmentDocument { get; set; }
         public ICollection<NewShipmentDocumentItemModel> Items { get; set; }
 
         public int DetailIndex { get; set; }

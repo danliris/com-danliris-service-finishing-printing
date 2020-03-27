@@ -32,7 +32,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 BuyerNPWP = " BuyerNPWP",
                 BuyerTempo = "BuyerTempo",
                 BuyerType = "BuyerType",
-                DeliveryCode = "DeliveryCode",
+                DOSalesId = 1,
+                DOSalesNo = "DOSalesNo",
                 DeliveryDate = DateTimeOffset.Now,
                 DeliveryReference = "Reference",
                 Details = new List<NewShipmentDocumentDetailModel>()
@@ -68,7 +69,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                     Id = 1
                 },
                 DeliveryDate = DateTimeOffset.Now,
-                DeliveryCode = "DeliveryCode",
+                DOSales = new Lib.ViewModels.Integration.Sales.DOSales.DOSalesIntegrationViewModel()
+                {
+                    Id = 1,
+                    DOSalesNo = "DOSalesNo",
+                },
                 ProductIdentity = "ProductIdentity",
                 ShipmentNumber = "ShipmentNumber",
                 Details = new List<NewShipmentDocumentDetailViewModel>()

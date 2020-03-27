@@ -28,8 +28,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument
         public string BuyerType { get; set; }
         [MaxLength(250)]
         public string Code { get; set; }
-        [MaxLength(250)]
-        public string DeliveryCode { get; set; }
+        //[MaxLength(250)]
+        //public string DeliveryCode { get; set; }
+        public int DOSalesId { get; set; }
+        [MaxLength(255)]
+        public string DOSalesNo { get; set; }
         public DateTimeOffset DeliveryDate { get; set; }
         [MaxLength(250)]
         public string DeliveryReference { get; set; }

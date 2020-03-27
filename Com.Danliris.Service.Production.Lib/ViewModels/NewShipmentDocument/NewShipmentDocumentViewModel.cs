@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Sales.DOSales;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
 using System;
@@ -12,7 +13,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocu
         public string UId { get; set; }
         public BuyerIntegrationViewModel Buyer { get; set; }
         public string Code { get; set; }
-        public string DeliveryCode { get; set; }
+        //public string DeliveryCode { get; set; }
+        public DOSalesIntegrationViewModel DOSales { get; set; }
         public DateTimeOffset DeliveryDate { get; set; }
         public string DeliveryReference { get; set; }
         public List<NewShipmentDocumentDetailViewModel> Details { get; set; }
@@ -28,8 +30,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocu
             if (DeliveryDate == null || DeliveryDate > DateTimeOffset.UtcNow)
                 yield return new ValidationResult("Tanggal pengiriman harus diisi", new List<string> { "DeliveryDate" });
 
-            if (string.IsNullOrWhiteSpace(DeliveryCode))
-                yield return new ValidationResult("Kode pengiriman harus diisi", new List<string> { "DeliveryCode" });
+            if (DOSales == null || DOSales.Id.Equals(0))
+                yield return new ValidationResult("No. DO harus diisi", new List<string> { "DOSales" });
 
             if (string.IsNullOrWhiteSpace(ProductIdentity))
                 yield return new ValidationResult("Kode Produk harus diisi", new List<string> { "ProductIdentity" });

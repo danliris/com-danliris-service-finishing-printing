@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200326063930_CopyShipmentDocument")]
+    partial class CopyShipmentDocument
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1869,11 +1871,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<DateTime>("CreatedUtc");
 
-                    b.Property<int>("DOSalesId");
-
-                    b.Property<string>("DOSalesNo")
-                        .HasMaxLength(255);
-
                     b.Property<string>("DeletedAgent")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -1883,6 +1880,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("DeliveryCode")
+                        .HasMaxLength(250);
 
                     b.Property<DateTimeOffset>("DeliveryDate");
 
