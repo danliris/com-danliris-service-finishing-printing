@@ -69,7 +69,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                     //    viewModel.IsChangeable = false;
                     //}
 
-                    var hasOutput = await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process);
+                    var hasOutput = await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process, viewModel.Machine.Id, viewModel.Kanban.CurrentStepIndex.GetValueOrDefault());
                     viewModel.IsChangeable = (stepCurrent == null) || ((stepCurrent.Process == viewModel.Step.Process) && (viewModel.Type == "output" || (viewModel.Type == "input" && !hasOutput)));
 
                     Dictionary<string, object> Result =

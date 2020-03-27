@@ -164,7 +164,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             KanbanFacade kanbanFacade = new KanbanFacade(serviceProvider, dbContext);
             DailyOperationFacade facade = new DailyOperationFacade(serviceProvider, dbContext);
             var data = await DODataUtil(facade, kanbanFacade, dbContext).GetTestData();
-            var dataOut = await DODataUtil(facade, kanbanFacade, dbContext).GetNewDataOutAsync();
+            var dataOut =  DODataUtil(facade, kanbanFacade, dbContext).GetNewDataOut(data);
             var kanban = await kanbanFacade.ReadByIdAsync(data.KanbanId);
             dataOut.KanbanId = data.KanbanId;
             dataOut.StepId = kanban.Instruction.Steps.First().Id;
