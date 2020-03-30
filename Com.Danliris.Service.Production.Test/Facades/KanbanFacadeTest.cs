@@ -90,7 +90,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var Response = facade.GetReport(1, 25, null,0,0,null, null, null, 7);
+            var Response = facade.GetReport(1, 25, null,0,0,null, data.CreatedUtc.AddDays(-1), data.CreatedUtc.AddDays(1), 7);
 
             Assert.NotEmpty(Response.Data);
         }
@@ -105,7 +105,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var Response = facade.GenerateExcel(null, 0, 0, null, null, null, 7);
+            var Response = facade.GenerateExcel(null, 0, 0, null, data.CreatedUtc.AddDays(-1), data.CreatedUtc.AddDays(1), 7);
 
             Assert.NotNull(Response);
         }

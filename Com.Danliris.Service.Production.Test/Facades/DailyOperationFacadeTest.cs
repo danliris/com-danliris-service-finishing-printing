@@ -533,6 +533,228 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
         }
 
+        [Fact]
+        public async void Create_ThrowException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            await Assert.ThrowsAnyAsync<Exception>(() => facade.CreateAsync(null));
+        }
+
+        [Fact]
+        public async void Update_ThrowException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            await Assert.ThrowsAnyAsync<Exception>(() => facade.UpdateAsync(0, null));
+        }
+
+        [Fact]
+        public async void Delete_ThrowException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            await Assert.ThrowsAnyAsync<Exception>(() => facade.DeleteAsync(0));
+        }
+
+        [Fact]
+        public async void CreateDOFullKanban()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            result = await facade.CreateAsync(ptData);
+            Assert.NotEqual(0, result);
+
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            result = await facade.CreateAsync(outPTData);
+            Assert.NotEqual(0, result);
+
+
+            var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+            result = await facade.CreateAsync(dData);
+            Assert.NotEqual(0, result);
+
+            var outDData = DataUtil(facade, dbContext).GetNewDataOut(dData);
+            result = await facade.CreateAsync(outDData);
+            Assert.NotEqual(0, result);
+
+            var pData = DataUtil(facade, dbContext).GetNewDataInputPrinting(kanban);
+            result = await facade.CreateAsync(pData);
+            Assert.NotEqual(0, result);
+
+            var outPData = DataUtil(facade, dbContext).GetNewDataOut(pData);
+            result = await facade.CreateAsync(outPData);
+            Assert.NotEqual(0, result);
+
+            var fData = DataUtil(facade, dbContext).GetNewDataInputFinishing(kanban);
+            result = await facade.CreateAsync(fData);
+            Assert.NotEqual(0, result);
+
+            var outFData = DataUtil(facade, dbContext).GetNewDataOut(fData);
+            result = await facade.CreateAsync(outFData);
+            Assert.NotEqual(0, result);
+
+            var qData = DataUtil(facade, dbContext).GetNewDataInputQC(kanban);
+            result = await facade.CreateAsync(qData);
+            Assert.NotEqual(0, result);
+
+            var outQData = DataUtil(facade, dbContext).GetNewDataOut(qData);
+            result = await facade.CreateAsync(outQData);
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async void EditDOFullKanban()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            await facade.CreateAsync(ptData);
+            result = await facade.UpdateAsync(ptData.Id, ptData);
+            Assert.NotEqual(0, result);
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            await facade.CreateAsync(outPTData);
+            result = await facade.UpdateAsync(outPTData.Id, outPTData);
+            Assert.NotEqual(0, result);
+
+
+            var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+            await facade.CreateAsync(dData);
+            result = await facade.UpdateAsync(dData.Id, dData);
+            Assert.NotEqual(0, result);
+
+            var outDData = DataUtil(facade, dbContext).GetNewDataOut(dData);
+            await facade.CreateAsync(outDData);
+            result = await facade.UpdateAsync(outDData.Id, outDData);
+            Assert.NotEqual(0, result);
+
+            var pData = DataUtil(facade, dbContext).GetNewDataInputPrinting(kanban);
+            await facade.CreateAsync(pData);
+            result = await facade.UpdateAsync(pData.Id, pData);
+            Assert.NotEqual(0, result);
+
+            var outPData = DataUtil(facade, dbContext).GetNewDataOut(pData);
+            await facade.CreateAsync(outPData);
+            result = await facade.UpdateAsync(outPData.Id, outPData);
+            Assert.NotEqual(0, result);
+
+            var fData = DataUtil(facade, dbContext).GetNewDataInputFinishing(kanban);
+            await facade.CreateAsync(fData);
+            result = await facade.UpdateAsync(fData.Id, fData);
+            Assert.NotEqual(0, result);
+
+            var outFData = DataUtil(facade, dbContext).GetNewDataOut(fData);
+            await facade.CreateAsync(outFData);
+            result = await facade.UpdateAsync(outFData.Id, outFData);
+            Assert.NotEqual(0, result);
+
+            var qData = DataUtil(facade, dbContext).GetNewDataInputQC(kanban);
+            await facade.CreateAsync(qData);
+            result = await facade.UpdateAsync(qData.Id, qData);
+            Assert.NotEqual(0, result);
+
+            var outQData = DataUtil(facade, dbContext).GetNewDataOut(qData);
+            await facade.CreateAsync(outQData);
+            result = await facade.UpdateAsync(outQData.Id, outQData);
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async void DeleteDOFullKanban()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            await facade.CreateAsync(ptData);
+
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            await facade.CreateAsync(outPTData);
+
+
+            var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+            await facade.CreateAsync(dData);
+
+            var outDData = DataUtil(facade, dbContext).GetNewDataOut(dData);
+            await facade.CreateAsync(outDData);
+
+            var pData = DataUtil(facade, dbContext).GetNewDataInputPrinting(kanban);
+            await facade.CreateAsync(pData);
+
+            var outPData = DataUtil(facade, dbContext).GetNewDataOut(pData);
+            await facade.CreateAsync(outPData);
+
+            var fData = DataUtil(facade, dbContext).GetNewDataInputFinishing(kanban);
+            await facade.CreateAsync(fData);
+
+            var outFData = DataUtil(facade, dbContext).GetNewDataOut(fData);
+            await facade.CreateAsync(outFData);
+
+            var qData = DataUtil(facade, dbContext).GetNewDataInputQC(kanban);
+            await facade.CreateAsync(qData);
+
+            var outQData = DataUtil(facade, dbContext).GetNewDataOut(qData);
+            await facade.CreateAsync(outQData);
+
+
+            result = await facade.DeleteAsync(outQData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(qData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(outFData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(fData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(outPData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(pData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(outDData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(dData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(outPTData.Id);
+            Assert.NotEqual(0, result);
+
+            result = await facade.DeleteAsync(ptData.Id);
+            Assert.NotEqual(0, result);
+        }
+
         //[Fact]
         //public async Task ETLKanbanStep()
         //{

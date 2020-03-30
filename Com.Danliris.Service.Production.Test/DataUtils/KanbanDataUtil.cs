@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             MachineModel machine = await machineDataUtil.GetTestData();
             KanbanModel model = new KanbanModel
             {
+                CartCartNumber = "11",
                 Instruction = new KanbanInstructionModel
                 {
                     Steps = new List<KanbanStepModel>

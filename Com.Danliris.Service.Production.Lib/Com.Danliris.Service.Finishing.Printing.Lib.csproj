@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200311043528_DeleteDOSalesModule.cs" />
+    <Compile Remove="Migrations\20200311043528_DeleteDOSalesModule.Designer.cs" />
     <Compile Remove="ViewModels\Kanban\KanbanSnapshotViewModel.cs" />
   </ItemGroup>
 

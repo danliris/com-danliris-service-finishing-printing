@@ -272,7 +272,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                 int result = 0;
                 await this.DailyOperationLogic.UpdateModelAsync(id, model);
                 result = await DbContext.SaveChangesAsync();
-
                 DailyOperationLogic.EditSnapshot(model);
 
                 result += await DbContext.SaveChangesAsync();

@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
         public double? TimeOutput { get; set; }
         public double? GoodOutput { get; set; }
         public double? BadOutput { get; set; }
+        public int KanbanStepIndex { get; set; }
 
         public bool? IsEdit { get; set; }
 
