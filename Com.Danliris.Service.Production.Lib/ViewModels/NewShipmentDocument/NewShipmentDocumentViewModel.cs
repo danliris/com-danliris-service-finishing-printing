@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocu
         public string Code { get; set; }
         //public string DeliveryCode { get; set; }
         public DOSalesIntegrationViewModel DOSales { get; set; }
-        public DateTimeOffset DeliveryDate { get; set; }
+        public DateTimeOffset? DeliveryDate { get; set; }
         public string DeliveryReference { get; set; }
         public List<NewShipmentDocumentDetailViewModel> Details { get; set; }
         public bool? IsVoid { get; set; }

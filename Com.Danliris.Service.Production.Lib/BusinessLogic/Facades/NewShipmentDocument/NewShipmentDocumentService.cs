@@ -1,8 +1,10 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocument;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities;
@@ -28,6 +30,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewS
         public readonly DbSet<NewShipmentDocumentDetailModel> _DetailDbSet;
         public readonly DbSet<NewShipmentDocumentItemModel> _ItemDbSet;
         public readonly DbSet<NewShipmentDocumentPackingReceiptItemModel> _PackingReceiptItemDbSet;
+        public readonly DbSet<PackingReceiptModel> _PackingReceiptDbSet;
+
         public readonly IServiceProvider _ServiceProvider;
         protected IIdentityService _IdentityService;
 
@@ -297,6 +301,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewS
                 UOMUnit = s.First().UOMUnit,
                 Weight = s.First().Weight
             }).ToListAsync();
+        }
+
+        public Task<List<NewShipmentDocumentPackingReceiptItemProductViewModel>> GetProductNames(int shipmentDocumentId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -79,5 +79,29 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.NewShipm
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
+
+        [HttpGet("product-names/{shipmentDocumentId}")]
+        public async Task<IActionResult> GetProductNames(int shipmentDocumentId)
+        {
+            try
+            {
+                var shipmentDocumentPackingReceiptItems = await Facade.GetProductNames(shipmentDocumentId);
+
+                //List<TViewModel> dataVM = Mapper.Map<List<TViewModel>>(read.Data);
+
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                    .Ok(Mapper, shipmentDocumentPackingReceiptItems);
+                return Ok(Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

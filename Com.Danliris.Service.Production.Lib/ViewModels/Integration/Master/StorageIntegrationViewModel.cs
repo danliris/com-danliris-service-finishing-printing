@@ -7,19 +7,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Mas
 {
     public class StorageIntegrationViewModel : BaseViewModel
     {
-        public int _id { get; set; }
+        public int? _id { get; set; }
 
-        public bool _deleted { get; set; }
+        public bool? _deleted { get; set; }
 
-        public bool _active { get; set; }
+        public bool? _active { get; set; }
 
-        public DateTime _createdDate { get; set; }
+        public DateTime? _createdDate { get; set; }
 
         public string _createdBy { get; set; }
 
         public string _createAgent { get; set; }
 
-        public DateTime _updatedDate { get; set; }
+        public DateTime? _updatedDate { get; set; }
 
         public string _updatedBy { get; set; }
 
