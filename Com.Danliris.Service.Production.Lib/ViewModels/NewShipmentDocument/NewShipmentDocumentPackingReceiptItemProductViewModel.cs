@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocument
 {
-    public class NewShipmentDocumentPackingReceiptItemProductViewModel : BaseViewModel, IValidatableObject
+    public class NewShipmentDocumentPackingReceiptItemProductViewModel
     {
         public string ProductName { get; set; }
         public double? Quantity { get; set; }
@@ -12,9 +12,5 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocu
         public int? UOMId { get; set; }
         public string UOMUnit { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
