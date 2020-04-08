@@ -329,9 +329,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewS
 
                 var data = new NewShipmentDocumentPackingReceiptItemProductViewModel
                 {
-                    Length = item.PackingReceiptItems.Sum(s => s.Length),
                     Quantity = item.PackingReceiptItems.Sum(s => s.Quantity),
-                    ProductName = string.Format("{0} / {1}", packingReceiptData.Construction, packingReceiptData.ColorName)
+                    Total = item.PackingReceiptItems.Sum(s => s.Quantity) * item.PackingReceiptItems.Sum(s => s.Length),
+                    QuantityUOM = packingReceiptData.PackingUom,
+                    ProductName = string.Format("{0} / {1}", packingReceiptData.Construction, packingReceiptData.ColorName),
                 };
                 result.Add(data);
             }
