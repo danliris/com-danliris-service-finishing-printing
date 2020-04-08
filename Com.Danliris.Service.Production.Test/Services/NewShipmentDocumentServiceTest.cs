@@ -3,6 +3,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.NewShipment
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Sales.DOSales;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
@@ -159,6 +160,71 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
 
             Assert.Equal(vm.Id, model.Id);
 
+        }
+
+        [Fact]
+        public void Should_Success_Instanciate_DO_Sales_Integration_View_Model()
+        {
+
+            var viewModel = new DOSalesIntegrationViewModel()
+            {
+                Code = "code",
+                DOSalesNo = "DOSalesNo",
+                DOSalesType = "DOSalesType",
+                Status = "Status",
+                Accepted = false,
+                Declined = false,
+                Type = "Type",
+                Date = DateTimeOffset.UtcNow,
+                Buyer = new Production.Lib.ViewModels.Integration.Master.BuyerIntegrationViewModel()
+                {
+                    Address = "Address",
+                    City = "City",
+                    Code = "Code",
+                    Contact = "Contact",
+                    Country = "Country",
+                    Name = "Name",
+                    NPWP = "NPWP",
+                    Tempo = "Tempo",
+                    Type = "Type",
+                },
+                DestinationBuyerName = "DestinationBuyerName",
+                DestinationBuyerAddress = "DestinationBuyerAddress",
+                SalesName = "SalesName",
+                HeadOfStorage = "HeadOfStorage",
+                PackingUom = "PackingUom",
+                LengthUom = "LengthUom",
+                WeightUom = "WeightUom",
+                Disp = 1,
+                Op = 1,
+                Sc = 1,
+                DoneBy = "DoneBy",
+                FillEachBale = 100,
+                Remark = "Remark",
+            };
+
+            Assert.NotNull(viewModel.Code);
+            Assert.NotNull(viewModel.DOSalesNo);
+            Assert.NotNull(viewModel.DOSalesType);
+            Assert.NotNull(viewModel.Status);
+            Assert.NotNull(viewModel.Accepted);
+            Assert.NotNull(viewModel.Declined);
+            Assert.NotNull(viewModel.Type);
+            Assert.NotNull(viewModel.Date);
+            Assert.NotNull(viewModel.Buyer);
+            Assert.NotNull(viewModel.DestinationBuyerName);
+            Assert.NotNull(viewModel.DestinationBuyerAddress);
+            Assert.NotNull(viewModel.SalesName);
+            Assert.NotNull(viewModel.HeadOfStorage);
+            Assert.NotNull(viewModel.PackingUom);
+            Assert.NotNull(viewModel.LengthUom);
+            Assert.NotNull(viewModel.WeightUom);
+            Assert.NotNull(viewModel.Disp);
+            Assert.NotNull(viewModel.Op);
+            Assert.NotNull(viewModel.Sc);
+            Assert.NotNull(viewModel.DoneBy);
+            Assert.NotNull(viewModel.FillEachBale);
+            Assert.NotNull(viewModel.Remark);
         }
     }
 }
