@@ -11,6 +11,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
@@ -69,6 +70,10 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<ShipmentDocumentDetailModel> ShipmentDocumentDetails { get; set; }
         public DbSet<ShipmentDocumentItemModel> ShipmentDocumentItems { get; set; }
         public DbSet<ShipmentDocumentPackingReceiptItemModel> ShipmentDocumentPackingReceiptItems { get; set; }
+        public DbSet<NewShipmentDocumentModel> NewShipmentDocuments { get; set; }
+        public DbSet<NewShipmentDocumentDetailModel> NewShipmentDocumentDetails { get; set; }
+        public DbSet<NewShipmentDocumentItemModel> NewShipmentDocumentItems { get; set; }
+        public DbSet<NewShipmentDocumentPackingReceiptItemModel> NewShipmentDocumentPackingReceiptItems { get; set; }
 
         public DbSet<DirectLaborCostModel> DirectLaborCosts { get; set; }
         public DbSet<OperationalCostModel> OperationalCosts { get; set; }

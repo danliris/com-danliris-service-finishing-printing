@@ -11,22 +11,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Sal
         public int? Id { get; set; }
         [MaxLength(255)]
         public string Code { get; set; }
-        public long AutoIncreament { get; set; }
         [MaxLength(255)]
         public string DOSalesNo { get; set; }
         [MaxLength(255)]
         public string DOSalesType { get; set; }
         [MaxLength(255)]
         public string Status { get; set; }
-        public bool Accepted { get; set; }
-        public bool Declined { get; set; }
+        public bool? Accepted { get; set; }
+        public bool? Declined { get; set; }
         [MaxLength(255)]
         public string Type { get; set; }
         public DateTimeOffset? Date { get; set; }
-        public FinishingPrintingSalesContractIntegrationViewModel SalesContract { get; set; }
-        public MaterialIntegrationViewModel Material { get; set; }
-        public MaterialConstructionIntegrationViewModel MaterialConstruction { get; set; }
-        public CommodityIntegrationViewModel Commodity { get; set; }
+        //public FinishingPrintingSalesContractIntegrationViewModel SalesContract { get; set; }
+        //public MaterialIntegrationViewModel Material { get; set; }
+        //public MaterialConstructionIntegrationViewModel MaterialConstruction { get; set; }
+        //public CommodityIntegrationViewModel Commodity { get; set; }
         public BuyerIntegrationViewModel Buyer { get; set; }
         [MaxLength(255)]
         public string DestinationBuyerName { get; set; }

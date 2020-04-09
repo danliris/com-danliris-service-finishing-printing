@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                                     new NewShipmentDocumentPackingReceiptItemModel()
                                     {
                                         Quantity = 1,
-                                        Length =1,
+                                        Length = 1,
                                         Weight = 1
                                     }
                                 }
@@ -133,6 +133,43 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var response = await GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper)).GetShipmentProducts(It.IsAny<int>(), 2);
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_OK_When_Success_GetProductNames()
+        {
+            var mockFacade = new Mock<INewShipmentDocumentService>();
+            mockFacade.Setup(f => f.GetProductNames(It.IsAny<int>())).ReturnsAsync(new List<NewShipmentDocumentPackingReceiptItemProductViewModel>());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+            NewShipmentDocumentViewModel vm = new NewShipmentDocumentViewModel();
+            mockMapper.Setup(s => s.Map<NewShipmentDocumentViewModel>(It.IsAny<NewShipmentDocumentModel>())).Returns(vm);
+
+            var response = await GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper)).GetProductNames(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_InternalServerError_When_Fail_GetProductNames()
+        {
+            var mockFacade = new Mock<INewShipmentDocumentService>(); 
+            mockFacade.Setup(f => f.GetProductNames(It.IsAny<int>())).ThrowsAsync(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+            NewShipmentDocumentViewModel vm = new NewShipmentDocumentViewModel();
+            mockMapper.Setup(s => s.Map<NewShipmentDocumentViewModel>(It.IsAny<NewShipmentDocumentModel>())).Returns(vm);
+
+            var response = await GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper)).GetProductNames(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+
         }
     }
 }

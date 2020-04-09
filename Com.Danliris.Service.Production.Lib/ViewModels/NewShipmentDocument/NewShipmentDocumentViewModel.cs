@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocu
         public string Code { get; set; }
         //public string DeliveryCode { get; set; }
         public DOSalesIntegrationViewModel DOSales { get; set; }
-        public DateTimeOffset DeliveryDate { get; set; }
+        public DateTimeOffset? DeliveryDate { get; set; }
         public string DeliveryReference { get; set; }
         public List<NewShipmentDocumentDetailViewModel> Details { get; set; }
         public bool? IsVoid { get; set; }
@@ -30,8 +30,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocu
             if (DeliveryDate == null || DeliveryDate > DateTimeOffset.UtcNow)
                 yield return new ValidationResult("Tanggal pengiriman harus diisi", new List<string> { "DeliveryDate" });
 
-            if (DOSales == null || DOSales.Id.Equals(0))
-                yield return new ValidationResult("No. DO harus diisi", new List<string> { "DOSales" });
+            if (DOSales == null || string.IsNullOrWhiteSpace(DOSales.DOSalesNo))
+                yield return new ValidationResult("No. DO harus diisi", new List<string> { "DOSalesNo" });
 
             if (string.IsNullOrWhiteSpace(ProductIdentity))
                 yield return new ValidationResult("Kode Produk harus diisi", new List<string> { "ProductIdentity" });

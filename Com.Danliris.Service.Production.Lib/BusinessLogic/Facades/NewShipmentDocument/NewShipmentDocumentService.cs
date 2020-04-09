@@ -1,8 +1,10 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.NewShipmentDocument;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Utilities;
@@ -28,6 +30,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewS
         public readonly DbSet<NewShipmentDocumentDetailModel> _DetailDbSet;
         public readonly DbSet<NewShipmentDocumentItemModel> _ItemDbSet;
         public readonly DbSet<NewShipmentDocumentPackingReceiptItemModel> _PackingReceiptItemDbSet;
+        public readonly DbSet<PackingReceiptModel> _PackingReceiptDbSet;
+
         public readonly IServiceProvider _ServiceProvider;
         protected IIdentityService _IdentityService;
 
@@ -39,6 +43,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewS
             _DetailDbSet = _DbContext.Set<NewShipmentDocumentDetailModel>();
             _ItemDbSet = _DbContext.Set<NewShipmentDocumentItemModel>();
             _PackingReceiptItemDbSet = _DbContext.Set<NewShipmentDocumentPackingReceiptItemModel>();
+            _PackingReceiptDbSet = _DbContext.Set<PackingReceiptModel>();
             _IdentityService = _ServiceProvider.GetService<IIdentityService>();
         }
         public async Task<int> CreateAsync(NewShipmentDocumentModel model)
@@ -297,6 +302,42 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewS
                 UOMUnit = s.First().UOMUnit,
                 Weight = s.First().Weight
             }).ToListAsync();
+        }
+
+        public async Task<List<NewShipmentDocumentPackingReceiptItemProductViewModel>> GetProductNames(int shipmentDocumentId)
+        {
+            var shipmentDetails = _DetailDbSet.Where(s => s.ShipmentDocumentId == shipmentDocumentId).Select(d => d.Id);
+            var shipmentItem = _ItemDbSet.Include(d => d.PackingReceiptItems).Where(s => shipmentDetails.Contains(s.ShipmentDocumentDetailId));
+
+            //var query = (from shipment in shipmentItem
+            //             join shipmentPacking in _PackingReceiptItemDbSet
+            //             on shipment.Id equals shipmentPacking.ShipmentDocumentItemId
+            //             into shipmentData
+            //             from shipmentPacking in shipmentData.DefaultIfEmpty()
+            //             join packingReceipt in _PackingReceiptDbSet
+            //             on shipment.PackingReceiptId equals packingReceipt.Id
+            //             into result
+            //             from packingReceipt in result.DefaultIfEmpty()
+            //             select new NewShipmentDocumentPackingReceiptItemProductViewModel()
+            //             {
+            //                 Length = shipmentPacking.Length
+            //             });
+            List<NewShipmentDocumentPackingReceiptItemProductViewModel> result = new List<NewShipmentDocumentPackingReceiptItemProductViewModel>();
+            foreach (var item in shipmentItem)
+            {
+                var packingReceiptData = await _PackingReceiptDbSet.FirstOrDefaultAsync(s => s.Id == item.PackingReceiptId);
+
+                var data = new NewShipmentDocumentPackingReceiptItemProductViewModel
+                {
+                    Quantity = item.PackingReceiptItems.Sum(s => s.Quantity),
+                    Total = item.PackingReceiptItems.Sum(s => s.Quantity) * item.PackingReceiptItems.Sum(s => s.Length),
+                    QuantityUOM = packingReceiptData.PackingUom,
+                    ProductName = string.Format("{0} / {1}", packingReceiptData.Construction, packingReceiptData.ColorName),
+                };
+                result.Add(data);
+            }
+
+            return result;
         }
     }
 }
