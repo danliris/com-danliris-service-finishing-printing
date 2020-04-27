@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
@@ -80,6 +81,10 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<CostCalculationModel> CostCalculations { get; set; }
         public DbSet<CostCalculationMachineModel> CostCalculationMachines { get; set; }
         public DbSet<CostCalculationChemicalModel> CostCalculationChemicals { get; set; }
+
+        public DbSet<ColorReceiptModel> ColorReceipts { get; set; }
+        public DbSet<ColorReceiptItemModel> ColorReceiptItems { get; set; }
+        public DbSet<TechnicianModel> Technicians { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
