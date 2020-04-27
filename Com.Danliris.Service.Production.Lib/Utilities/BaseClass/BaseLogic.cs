@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseClass
     public abstract class BaseLogic<TModel> : IBaseLogic<TModel>
         where TModel : StandardEntity, IValidatableObject
     {
-        private const string UserAgent = "production-service";
+        protected const string UserAgent = "production-service";
         protected DbSet<TModel> DbSet;
         protected IIdentityService IdentityService;
 
