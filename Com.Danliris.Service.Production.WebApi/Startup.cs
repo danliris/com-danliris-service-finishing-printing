@@ -255,11 +255,11 @@ namespace Com.Danliris.Service.Production.WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    var context = serviceScope.ServiceProvider.GetService<ProductionDbContext>();
-            //    context.Database.Migrate();
-            //}
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<ProductionDbContext>();
+                context.Database.Migrate();
+            }
 
             app.UseAuthentication();
             app.UseCors(PRODUCTION_POLICY);
