@@ -19,7 +19,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 ColorName = "Test",
                 TechnicianId = 1,
                 TechnicianName = "a",
-                ColorCode = "Code"
+                ColorCode = "Code",
+                ColorReceiptItems = new List<ColorReceiptItemModel>()
+                {
+                    new ColorReceiptItemModel()
+                }
             };
         }
     }

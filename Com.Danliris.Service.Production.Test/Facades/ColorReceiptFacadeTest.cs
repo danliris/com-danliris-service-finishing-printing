@@ -21,14 +21,55 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
-        public async void Create_Exception()
+        public virtual async void Create_Technician()
         {
             var dbContext = DbContext(GetCurrentMethod());
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
-            var facade = new ColorReceiptFacade(serviceProvider, dbContext);
+            ColorReceiptFacade facade = new ColorReceiptFacade(serviceProvider, dbContext);
 
-            await Assert.ThrowsAnyAsync<Exception>(() => facade.CreateAsync(null));
+
+            var response = await facade.CreateTechnician("Test");
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public virtual async void Create_TechnicianDouble()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            ColorReceiptFacade facade = new ColorReceiptFacade(serviceProvider, dbContext);
+
+
+            await facade.CreateTechnician("Test");
+            var response = await facade.CreateTechnician("Test2");
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public virtual async void Update_Success_2()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            ColorReceiptFacade facade = new ColorReceiptFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            data.ColorReceiptItems = new List<ColorReceiptItemModel>()
+            {
+                new ColorReceiptItemModel()
+                {
+                    ProductId = 1,
+                    ProductCode ="c",
+                    ProductName = "a",
+                    Quantity = 1
+                }
+            };
+            var response = await facade.UpdateAsync((int)data.Id, data);
+
+            Assert.NotEqual(0, response);
         }
     }
 }
