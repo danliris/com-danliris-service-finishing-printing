@@ -1,6 +1,9 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ColorReceipt;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
@@ -70,6 +73,66 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var response = await facade.UpdateAsync((int)data.Id, data);
 
             Assert.NotEqual(0, response);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ColorReceiptProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            ColorReceiptViewModel vm = new ColorReceiptViewModel { Id = 1 };
+            ColorReceiptModel model = mapper.Map<ColorReceiptModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
+        }
+
+        [Fact]
+        public virtual void ValidateVM()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            ColorReceiptFacade facade = new ColorReceiptFacade(serviceProvider, dbContext);
+
+            var data = new ColorReceiptViewModel()
+            {
+                ColorCode = "test",
+                Remark = "test",
+                ColorReceiptItems = new List<ColorReceiptItemViewModel>()
+                {
+                    new ColorReceiptItemViewModel()
+                }
+            };
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            var response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+            data.ColorName = "test";
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.Technician = new TechnicianViewModel()
+            {
+                Name = "a",
+                IsDefault = true
+            };
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.ColorReceiptItems = new List<ColorReceiptItemViewModel>();
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
         }
     }
 }
