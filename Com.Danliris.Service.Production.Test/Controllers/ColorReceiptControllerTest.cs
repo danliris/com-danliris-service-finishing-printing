@@ -34,5 +34,32 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             int statusCode = GetStatusCode(response);
             Assert.Equal((int)HttpStatusCode.Created, statusCode);
         }
+
+        [Fact]
+        public virtual async Task GetDefaultTechnician_NotNullModel_ReturnOK()
+        {
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.GetDefaultTechnician()).ReturnsAsync(new TechnicianModel());
+
+            var controller = GetController(mocks);
+            var response = await controller.GetDefaultTechnician();
+
+            int statusCode = GetStatusCode(response);
+            Assert.Equal((int)HttpStatusCode.OK, statusCode);
+        }
+
+
+        [Fact]
+        public virtual async Task GetDefaultTechnician_ThrowException_ReturnInternalServerError()
+        {
+            var mocks = GetMocks();
+            mocks.Facade.Setup(f => f.GetDefaultTechnician()).ThrowsAsync(new Exception());
+
+            var controller = GetController(mocks);
+            var response = await controller.GetDefaultTechnician();
+
+            int statusCode = GetStatusCode(response);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
+        }
     }
 }

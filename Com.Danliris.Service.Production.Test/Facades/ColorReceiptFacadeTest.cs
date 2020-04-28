@@ -169,5 +169,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotEmpty(response);
             Assert.False(data.IsDefault);
         }
+
+        [Fact]
+        public virtual async void Get_Technician_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = new ColorReceiptFacade(serviceProvider, dbContext);
+            await facade.CreateTechnician("test");
+            var Response = await facade.GetDefaultTechnician();
+
+            Assert.NotEqual(0, Response.Id);
+        }
     }
 }
