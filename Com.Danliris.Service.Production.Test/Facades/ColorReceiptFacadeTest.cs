@@ -10,6 +10,7 @@ using Com.Danliris.Service.Production.Lib;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -61,17 +62,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             ColorReceiptFacade facade = new ColorReceiptFacade(serviceProvider, dbContext);
 
             var data = await DataUtil(facade, dbContext).GetTestData();
-            data.ColorReceiptItems = new List<ColorReceiptItemModel>()
+            var data2 = new ColorReceiptModel()
             {
-                new ColorReceiptItemModel()
+                ColorCode = data.ColorCode,
+                ColorName = data.ColorName,
+                Id = data.Id,
+                Remark = data.Remark,
+                TechnicianId = data.TechnicianId,
+                TechnicianName = data.TechnicianName,
+                ColorReceiptItems = data.ColorReceiptItems.Select(s => new ColorReceiptItemModel()
                 {
-                    ProductId = 1,
-                    ProductCode ="c",
-                    ProductName = "a",
-                    Quantity = 1
-                }
+                    ProductCode = s.ProductCode,
+                    ProductId = s.ProductId,
+                    ProductName = s.ProductName,
+                    Quantity = s.Quantity
+                }).ToList()
             };
-            var response = await facade.UpdateAsync((int)data.Id, data);
+            var response = await facade.UpdateAsync((int)data.Id, data2);
 
             Assert.NotEqual(0, response);
         }
