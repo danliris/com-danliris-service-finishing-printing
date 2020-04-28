@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ColorReceipt
         public string ColorName { get; set; }
         public string ColorCode { get; set; }
         public TechnicianViewModel Technician { get; set; }
+        public string NewTechnician { get; set; }
         public bool ChangeTechnician { get; set; }
         public string Remark { get; set; }
 
@@ -26,8 +27,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ColorReceipt
             if(string.IsNullOrEmpty(ColorName))
                 yield return new ValidationResult("Nama Warna harus diisi", new List<string> { "ColorName" });
 
-            if(Technician == null)
+            if(Technician == null && string.IsNullOrEmpty(NewTechnician))
                 yield return new ValidationResult("Teknisi harus diisi", new List<string> { "Technician" });
+
+            if(ChangeTechnician && string.IsNullOrEmpty(NewTechnician))
+                yield return new ValidationResult("Teknisi Baru harus diisi", new List<string> { "NewTechnician" });
 
             int Count = 0;
             string DetailErrors = "[";

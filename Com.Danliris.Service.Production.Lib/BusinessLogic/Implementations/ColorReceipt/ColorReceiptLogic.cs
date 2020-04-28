@@ -108,5 +108,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbContext.Technicians.Add(technician);
             return technician;
         }
+
+
+        public Task<TechnicianModel> GetDefaultTechnician()
+        {
+            return dbContext.Technicians.OrderByDescending(s => s.LastModifiedUtc).FirstOrDefaultAsync(s => s.IsDefault);
+        }
     }
 }

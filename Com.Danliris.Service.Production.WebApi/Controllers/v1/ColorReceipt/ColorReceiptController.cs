@@ -35,8 +35,12 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.ColorRec
                 if (viewModel.ChangeTechnician)
                 {
 
-                    var technician = await Facade.CreateTechnician(viewModel.Technician.Name);
-                    viewModel.Technician.Id = technician.Id;
+                    var technician = await Facade.CreateTechnician(viewModel.NewTechnician);
+                    viewModel.Technician = new TechnicianViewModel()
+                    {
+                        Id = technician.Id,
+                        Name = technician.Name
+                    };
 
                 }
                 ColorReceiptModel model = Mapper.Map<ColorReceiptModel>(viewModel);
@@ -53,6 +57,30 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.ColorRec
                     new ResultFormatter(ApiVersion, General.BAD_REQUEST_STATUS_CODE, General.BAD_REQUEST_MESSAGE)
                     .Fail(e);
                 return BadRequest(Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("technician/default")]
+        public virtual async Task<IActionResult> GetDefaultTechnician()
+        {
+            try
+            {
+                var model = await Facade.GetDefaultTechnician();
+
+
+                var viewModel = Mapper.Map<TechnicianViewModel>(model);
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                    .Ok<TechnicianViewModel>(Mapper, viewModel);
+                return Ok(Result);
+
             }
             catch (Exception e)
             {

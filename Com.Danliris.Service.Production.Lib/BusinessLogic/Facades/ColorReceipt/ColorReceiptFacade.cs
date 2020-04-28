@@ -57,6 +57,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Colo
             return await DbContext.SaveChangesAsync();
         }
 
+        public Task<TechnicianModel> GetDefaultTechnician()
+        {
+            return ColorReceiptLogic.GetDefaultTechnician();
+        }
+
         public ReadResponse<ColorReceiptModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
             IQueryable<ColorReceiptModel> query = DbSet.Include(s => s.ColorReceiptItems);
@@ -97,5 +102,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Colo
             await ColorReceiptLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
+
     }
 }

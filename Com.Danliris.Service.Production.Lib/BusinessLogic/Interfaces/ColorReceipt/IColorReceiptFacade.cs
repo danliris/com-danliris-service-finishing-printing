@@ -10,5 +10,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.C
     public interface IColorReceiptFacade : IBaseFacade<ColorReceiptModel>
     {
         Task<TechnicianModel> CreateTechnician(string name);
+        Task<TechnicianModel> GetDefaultTechnician();
     }
 }
