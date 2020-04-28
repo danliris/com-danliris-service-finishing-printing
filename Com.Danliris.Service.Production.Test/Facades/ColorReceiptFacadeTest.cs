@@ -54,7 +54,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         [Fact]
         public virtual async void Update_Success_2()
         {
-            var dbContext = DbContext(GetCurrentMethod());
+            string testName = GetCurrentMethod() + " Update_Success_2";
+            var dbContext = DbContext(testName);
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
             ColorReceiptFacade facade = new ColorReceiptFacade(serviceProvider, dbContext);
@@ -133,6 +134,33 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
+
+            ColorReceiptItemViewModel vmItem = new ColorReceiptItemViewModel()
+            {
+                Product = new Lib.ViewModels.Integration.Master.ProductIntegrationViewModel()
+                {
+                    Id = 1,
+                    Name = "a"
+                },
+                Quantity = 1
+            };
+
+            Assert.NotEqual(0, vmItem.Quantity);
+        }
+
+        [Fact]
+        public void Validate_Technician()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            ColorReceiptFacade facade = new ColorReceiptFacade(serviceProvider, dbContext);
+
+            var data = new TechnicianViewModel();
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            var response = data.Validate(validationContext);
+            Assert.NotEmpty(response);
+            Assert.False(data.IsDefault);
         }
     }
 }
