@@ -79,11 +79,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 }).ToList(),
                 Type = data.Type,
                 Cloth = data.Cloth,
-                DyeStuffReactives = data.DyeStuffReactives.Select(s => new ColorReceiptDyeStuffReactiveModel()
+                DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveModel>()
                 {
-                    Quantity = s.Quantity,
-                    Name = s.Name
-                }).ToList()
+                    new ColorReceiptDyeStuffReactiveModel()
+                    {
+                        Name = "test3",
+                        Quantity = 1
+                    }
+                }
             };
             var response = await facade.UpdateAsync((int)data.Id, data2);
 
