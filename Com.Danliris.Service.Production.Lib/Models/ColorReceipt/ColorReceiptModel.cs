@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt
         public ColorReceiptModel()
         {
             ColorReceiptItems = new HashSet<ColorReceiptItemModel>();
+            DyeStuffReactives = new HashSet<ColorReceiptDyeStuffReactiveModel>();
         }
 
         [MaxLength(512)]
@@ -22,6 +23,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt
         public string TechnicianName { get; set; }
         [MaxLength(4096)]
         public string Remark { get; set; }
+        [MaxLength(128)]
+        public string Cloth { get; set; }
+        [MaxLength(256)]
+        public string Type { get; set; }
+
+        public ICollection<ColorReceiptDyeStuffReactiveModel> DyeStuffReactives { get; set; }
 
         public ICollection<ColorReceiptItemModel> ColorReceiptItems { get; set; }
 
