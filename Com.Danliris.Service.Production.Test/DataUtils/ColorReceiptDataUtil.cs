@@ -23,7 +23,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 ColorReceiptItems = new List<ColorReceiptItemModel>()
                 {
                     new ColorReceiptItemModel()
-                }
+                    {
+                        ProductCode = "code",
+                        ProductId = 1,
+                        ProductName = "name",
+                        Quantity = 1
+                    }
+                },
+                DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveModel>()
+                {
+                    new ColorReceiptDyeStuffReactiveModel()
+                    {
+                        Name = "name",
+                        Quantity = 1
+                    }
+                },
+                Cloth = "cloth",
+                Type = "test",
+                Remark = "remark"
             };
         }
     }

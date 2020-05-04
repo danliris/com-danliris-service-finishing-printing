@@ -86,6 +86,7 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<KanbanSnapshotModel> KanbanSnapshots { get; set; }
         public DbSet<ColorReceiptModel> ColorReceipts { get; set; }
         public DbSet<ColorReceiptItemModel> ColorReceiptItems { get; set; }
+        public DbSet<ColorReceiptDyeStuffReactiveModel> ColorReceiptDyeStuffReactives { get; set; }
         public DbSet<TechnicianModel> Technicians { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -30,6 +30,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
             }
 
+            foreach(var item in model.DyeStuffReactives)
+            {
+                EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
+            }
+
             base.CreateModel(model);
         }
 
@@ -38,6 +43,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             var model = await ReadModelById(id);
             EntityExtension.FlagForDelete(model, IdentityService.Username, UserAgent, true);
             foreach (var item in model.ColorReceiptItems)
+            {
+                EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
+            }
+
+            foreach (var item in model.DyeStuffReactives)
             {
                 EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
             }
@@ -53,10 +63,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbModel.TechnicianId = model.TechnicianId;
             dbModel.TechnicianName = model.TechnicianName;
 
-            var addedItems = model.ColorReceiptItems.Where(x => !dbModel.ColorReceiptItems.Any(y => y.Id == x.Id));
-            var updatedItems = model.ColorReceiptItems.Where(x => dbModel.ColorReceiptItems.Any(y => y.Id == x.Id));
-            var deletedItems = dbModel.ColorReceiptItems.Where(x => !model.ColorReceiptItems.Any(y => y.Id == x.Id));
             EntityExtension.FlagForUpdate(dbModel, IdentityService.Username, UserAgent);
+
+            var addedItems = model.ColorReceiptItems.Where(x => !dbModel.ColorReceiptItems.Any(y => y.Id == x.Id)).ToList();
+            var updatedItems = model.ColorReceiptItems.Where(x => dbModel.ColorReceiptItems.Any(y => y.Id == x.Id)).ToList();
+            var deletedItems = dbModel.ColorReceiptItems.Where(x => !model.ColorReceiptItems.Any(y => y.Id == x.Id)).ToList();
             foreach (var item in updatedItems)
             {
                 var dbItem = dbModel.ColorReceiptItems.FirstOrDefault(x => x.Id == item.Id);
@@ -69,6 +80,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
             }
 
+
+            foreach (var item in deletedItems)
+            {
+                EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
+            }
+
             foreach (var item in addedItems)
             {
                 item.ColorReceiptId = id;
@@ -76,15 +93,38 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 dbModel.ColorReceiptItems.Add(item);
             }
 
-            foreach (var item in deletedItems)
+
+            var addedReactive = model.DyeStuffReactives.Where(x => !dbModel.DyeStuffReactives.Any(y => y.Name == x.Name)).ToList();
+            var updatedReactive = model.DyeStuffReactives.Where(x => dbModel.DyeStuffReactives.Any(y => y.Name == x.Name)).ToList();
+            var deletedReactive = dbModel.DyeStuffReactives.Where(x => !model.DyeStuffReactives.Any(y => y.Name == x.Name)).ToList();
+            foreach (var item in updatedReactive)
+            {
+                var dbItem = dbModel.DyeStuffReactives.FirstOrDefault(x => x.Name == item.Name);
+
+                dbItem.Name = item.Name;
+                dbItem.Quantity = item.Quantity;
+
+                EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
+            }
+
+
+            foreach (var item in deletedReactive)
             {
                 EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
             }
+
+            foreach (var item in addedReactive)
+            {
+                item.ColorReceiptId = id;
+                EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
+                dbModel.DyeStuffReactives.Add(item);
+            }
+
         }
 
         public override Task<ColorReceiptModel> ReadModelById(int id)
         {
-            return DbSet.Include(s => s.ColorReceiptItems).FirstOrDefaultAsync(s => s.Id == id);
+            return DbSet.Include(s => s.ColorReceiptItems).Include(s => s.DyeStuffReactives).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public void SetDefaultAllTechnician(bool flag)

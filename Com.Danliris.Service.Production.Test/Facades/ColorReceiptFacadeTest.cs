@@ -76,7 +76,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     ProductId = s.ProductId,
                     ProductName = s.ProductName,
                     Quantity = s.Quantity
-                }).ToList()
+                }).ToList(),
+                Type = data.Type,
+                Cloth = data.Cloth,
+                DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveModel>()
+                {
+                    new ColorReceiptDyeStuffReactiveModel()
+                    {
+                        Name = "test3",
+                        Quantity = 1
+                    }
+                }
             };
             var response = await facade.UpdateAsync((int)data.Id, data2);
 
@@ -136,7 +146,114 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotEmpty(response);
 
+            data.ChangeTechnician = true;
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.NewTechnician = "test";
+            data.Type = "type";
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
             data.ColorReceiptItems = new List<ColorReceiptItemViewModel>();
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.ColorReceiptItems = new List<ColorReceiptItemViewModel>()
+            {
+                new ColorReceiptItemViewModel()
+                {
+                    Product = new Lib.ViewModels.Integration.Master.ProductIntegrationViewModel()
+                    {
+                        Id = 1,
+                        Code = "code",
+                        Name = "name"
+                    },
+                    Quantity = 1001
+                }
+            };
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.ColorReceiptItems = new List<ColorReceiptItemViewModel>()
+            {
+                new ColorReceiptItemViewModel()
+                {
+                    Product = new Lib.ViewModels.Integration.Master.ProductIntegrationViewModel()
+                    {
+                        Id = 1,
+                        Code = "code",
+                        Name = "name"
+                    },
+                    Quantity = 3
+                }
+            };
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>();
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>()
+            {
+                new ColorReceiptDyeStuffReactiveViewModel()
+                {
+
+                },
+                new ColorReceiptDyeStuffReactiveViewModel()
+                {
+                    Name = "air",
+                    Quantity = -1
+                }
+            };
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>()
+            {
+                new ColorReceiptDyeStuffReactiveViewModel()
+                {
+
+                },
+                new ColorReceiptDyeStuffReactiveViewModel()
+                {
+                    Name = "air",
+                    Quantity = 1
+                }
+            };
+            validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>()
+            {
+                new ColorReceiptDyeStuffReactiveViewModel()
+                {
+                    Name = "test",
+                    Quantity = 1
+                },
+                new ColorReceiptDyeStuffReactiveViewModel()
+                {
+                    Name = "air",
+                    Quantity = 1
+                }
+            };
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
 

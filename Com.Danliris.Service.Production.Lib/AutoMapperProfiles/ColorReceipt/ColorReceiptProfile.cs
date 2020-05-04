@@ -20,6 +20,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ColorRe
                 .ForPath(dest => dest.Product.Code, opt => opt.MapFrom(src => src.ProductCode))
                 .ForPath(dest => dest.Product.Name, opt => opt.MapFrom(src => src.ProductName))
                 .ReverseMap();
+            CreateMap<ColorReceiptDyeStuffReactiveModel, ColorReceiptDyeStuffReactiveViewModel>()
+                .ReverseMap();
         }
     }
 }
