@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
     public class ColorReceiptFacadeTest
         : BaseFacadeTest<ProductionDbContext, ColorReceiptFacade, ColorReceiptLogic, ColorReceiptModel, ColorReceiptDataUtil>
     {
-        private const string ENTITY = "FabricQualityControl";
+        private const string ENTITY = "ColorReceipt";
         public ColorReceiptFacadeTest() : base(ENTITY)
         {
         }
@@ -121,6 +121,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             {
                 ColorCode = "test",
                 Remark = "test",
+                Cloth = "test",
                 ColorReceiptItems = new List<ColorReceiptItemViewModel>()
                 {
                     new ColorReceiptItemViewModel()
