@@ -17,6 +17,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.StrikeOff;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step;
@@ -88,6 +89,9 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<ColorReceiptItemModel> ColorReceiptItems { get; set; }
         public DbSet<ColorReceiptDyeStuffReactiveModel> ColorReceiptDyeStuffReactives { get; set; }
         public DbSet<TechnicianModel> Technicians { get; set; }
+
+        public DbSet<StrikeOffModel> StrikeOffs { get; set; }
+        public DbSet<StrikeOffItemModel> StrikeOffItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

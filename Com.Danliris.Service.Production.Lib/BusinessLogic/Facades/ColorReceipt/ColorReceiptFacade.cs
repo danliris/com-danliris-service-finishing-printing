@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Colo
             List<string> selectedFields = new List<string>()
             {
 
-                "Id","ColorName","ColorCode","Technician","Remark","LastModifiedUtc"
+                "Id","ColorName","ColorCode","Technician","Remark","LastModifiedUtc","ColorReceiptItems"
 
             };
 

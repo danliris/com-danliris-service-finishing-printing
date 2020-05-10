@@ -13,6 +13,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
@@ -27,6 +28,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
@@ -40,6 +42,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packi
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Production.Lib;
@@ -125,7 +128,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IOrderStatusReportService, OrderStatusReportService>()
                 .AddTransient<ICostCalculationService, CostCalculationService>()
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>()
-                .AddTransient<IColorReceiptFacade, ColorReceiptFacade>();
+                .AddTransient<IColorReceiptFacade, ColorReceiptFacade>()
+                .AddTransient<IStrikeOffFacade, StrikeOffFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -154,7 +158,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<PackingReceiptLogic>()
                 .AddTransient<KanbanLogic>()
                 .AddTransient<ReturToQCLogic>()
-                .AddTransient<ColorReceiptLogic>();
+                .AddTransient<ColorReceiptLogic>()
+                .AddTransient<StrikeOffLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
