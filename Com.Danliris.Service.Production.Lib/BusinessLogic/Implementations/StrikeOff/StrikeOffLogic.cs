@@ -157,13 +157,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             }
         }
 
-        public override Task<StrikeOffModel> ReadModelById(int id)
+        public override async Task<StrikeOffModel> ReadModelById(int id)
         {
-            var model = DbSet.Include(s => s.StrikeOffItems).ThenInclude(s => s.ChemicalItems)
+            var model = await DbSet.Include(s => s.StrikeOffItems).ThenInclude(s => s.ChemicalItems)
                 .Include(s => s.StrikeOffItems).ThenInclude(s => s.DyeStuffItems)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
-
+            foreach(var item in model.StrikeOffItems)
+            {
+                item.ChemicalItems = item.ChemicalItems.OrderBy(s => s.Index).ToList();
+            }
             return model;
         }
 

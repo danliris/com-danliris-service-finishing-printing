@@ -9,5 +9,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.StrikeOff
     {
         public string Name { get; set; }
         public double Quantity { get; set; }
+        public int Index { get; set; }
     }
 }

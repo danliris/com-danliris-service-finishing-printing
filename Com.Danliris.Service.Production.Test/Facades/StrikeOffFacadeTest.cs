@@ -236,7 +236,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                         new ChemicalItemViewModel()
                         {
                             Name = "air",
-                            Quantity = -100
+                            Quantity = -100,
+                            Index = 0
                         }
                     }
                 }
@@ -244,6 +245,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
+            Assert.Equal(0, data.StrikeOffItems.FirstOrDefault().ChemicalItems.FirstOrDefault().Index);
 
             data.StrikeOffItems = new List<StrikeOffItemViewModel>()
             {

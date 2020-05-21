@@ -12,6 +12,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.StrikeOff
         [MaxLength(2048)]
         public string Name { get; set; }
         public double Quantity { get; set; }
+        public int Index { get; set; }
 
         public int StrikeOffItemId { get; set; }
 

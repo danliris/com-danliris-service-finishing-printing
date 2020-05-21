@@ -33,7 +33,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                             new StrikeOffItemChemicalItemModel()
                             {
                                 Name = "name",
-                                Quantity = 1
+                                Quantity = 1,
+                                Index = 0
                             }
                         },
                         DyeStuffItems = new List<StrikeOffItemDyeStuffItemModel>()
