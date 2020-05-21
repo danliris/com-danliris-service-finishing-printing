@@ -28,15 +28,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         {
         }
 
-        protected override StrikeOffDataUtil DataUtil(StrikeOffFacade facade, ProductionDbContext dbContext = null)
-        {
-            IServiceProvider serviceProvider = GetServiceProviderMock(dbContext).Object;
-
-            ColorReceiptFacade colorReceiptFacade = new ColorReceiptFacade(serviceProvider, dbContext);
-            ColorReceiptDataUtil colorReceiptDataUtil = new ColorReceiptDataUtil(colorReceiptFacade);
-            var dataUtil = new StrikeOffDataUtil(colorReceiptDataUtil, facade);
-            return dataUtil;
-        }
 
         protected override Mock<IServiceProvider> GetServiceProviderMock(ProductionDbContext dbContext)
         {
@@ -52,8 +43,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 .Setup(x => x.GetService(typeof(StrikeOffLogic)))
                 .Returns(Activator.CreateInstance(typeof(StrikeOffLogic), identityService, dbContext) as StrikeOffLogic);
 
-            serviceProviderMock.Setup(s => s.GetService(typeof(ColorReceiptLogic)))
-                .Returns(new ColorReceiptLogic(identityService, dbContext));
 
             return serviceProviderMock;
         }
@@ -73,11 +62,63 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 Id = data.Id,
                 Remark = data.Remark,
                 Code = data.Code,
+                Cloth = data.Cloth,
+                Type = data.Type,
                 StrikeOffItems = data.StrikeOffItems.Select(s => new StrikeOffItemModel()
                 {
-                    ColorReceiptColorCode = s.ColorReceiptColorCode,
-                    ColorReceiptId = s.ColorReceiptId,
-                    ColorReceiptItems = s.ColorReceiptItems
+                    ColorCode = s.ColorCode,
+                    DyeStuffItems = s.DyeStuffItems.Select(d => new StrikeOffItemDyeStuffItemModel()
+                    {
+                        ProductCode = d.ProductCode,
+                        ProductId = d.ProductId,
+                        ProductName = d.ProductName,
+                        Quantity = d.Quantity,
+                    }).ToList(),
+                    ChemicalItems = s.ChemicalItems.Select(d => new StrikeOffItemChemicalItemModel()
+                    {
+                        Name = "New",
+                        Quantity = d.Quantity,
+                    }).ToList()
+                }).ToList()
+            };
+            var response = await facade.UpdateAsync((int)data.Id, data2);
+
+            Assert.NotEqual(0, response);
+        }
+
+        [Fact]
+        public virtual async void Update_Success_3()
+        {
+            string testName = GetCurrentMethod() + " Update_Success_3";
+            var dbContext = DbContext(testName);
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            StrikeOffFacade facade = new StrikeOffFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var data2 = new StrikeOffModel()
+            {
+                Id = data.Id,
+                Remark = data.Remark,
+                Code = data.Code,
+                Cloth = data.Cloth,
+                Type = data.Type,
+                StrikeOffItems = data.StrikeOffItems.Select(s => new StrikeOffItemModel()
+                {
+                    ColorCode = s.ColorCode,
+                    DyeStuffItems = s.DyeStuffItems.Select(d => new StrikeOffItemDyeStuffItemModel()
+                    {
+                        ProductCode = d.ProductCode,
+                        ProductId = d.ProductId,
+                        ProductName = d.ProductName,
+                        Quantity = d.Quantity,
+                    }).ToList(),
+                    ChemicalItems = s.ChemicalItems.Select(d => new StrikeOffItemChemicalItemModel()
+                    {
+                        Name = "New",
+                        Quantity = d.Quantity,
+                    }).ToList(),
+                    Id = s.Id
                 }).ToList()
             };
             var response = await facade.UpdateAsync((int)data.Id, data2);
@@ -109,7 +150,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = new StrikeOffViewModel()
             {
-                Remark = "test"
+                Remark = "test",
+                Cloth = "tes"
             };
             StrikeOffFacade facade = new StrikeOffFacade(serviceProvider, dbContext);
             System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
@@ -124,14 +166,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotEmpty(response);
 
-            data.Code = "testCodeNew"+Guid.NewGuid().ToString();
+            data.Code = "testCodeNew" + Guid.NewGuid().ToString();
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.Type = "type";
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
 
             data.StrikeOffItems = new List<StrikeOffItemViewModel>()
             {
-               
+
             };
             response = data.Validate(validationContext);
 
@@ -150,12 +197,102 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             {
                 new StrikeOffItemViewModel()
                 {
-                    ColorReceipt = new Lib.ViewModels.ColorReceipt.ColorReceiptViewModel()
+                    ColorCode = "code",
+                    DyeStuffItems = new List<DyeStuffItemViewModel>()
+                    {
+                        new DyeStuffItemViewModel()
+                        {
+                            Quantity = 500
+                        }
+                    },
+                    ChemicalItems = new List<ChemicalItemViewModel>()
+                    {
+                        new ChemicalItemViewModel()
+                        {
+                            Name = "air",
+                            Quantity = 100
+                        }
+                    }
                 }
             };
             response = data.Validate(validationContext);
 
-            Assert.Empty(response);
+            Assert.NotEmpty(response);
+
+            data.StrikeOffItems = new List<StrikeOffItemViewModel>()
+            {
+                new StrikeOffItemViewModel()
+                {
+                    ColorCode = "code",
+                    DyeStuffItems = new List<DyeStuffItemViewModel>()
+                    {
+                        new DyeStuffItemViewModel()
+                        {
+                            Quantity = 500
+                        }
+                    },
+                    ChemicalItems = new List<ChemicalItemViewModel>()
+                    {
+                        new ChemicalItemViewModel()
+                        {
+                            Name = "air",
+                            Quantity = -100
+                        }
+                    }
+                }
+            };
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.StrikeOffItems = new List<StrikeOffItemViewModel>()
+            {
+                new StrikeOffItemViewModel()
+                {
+                    ColorCode = "code",
+                    DyeStuffItems = new List<DyeStuffItemViewModel>()
+                    {
+                        new DyeStuffItemViewModel()
+                        {
+                            Quantity = 500
+                        }
+                    },
+                    ChemicalItems = new List<ChemicalItemViewModel>()
+                    {
+                        new ChemicalItemViewModel()
+                        {
+                        }
+                    }
+                }
+            };
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.StrikeOffItems = new List<StrikeOffItemViewModel>()
+            {
+                new StrikeOffItemViewModel()
+                {
+                    ColorCode = "code",
+                    DyeStuffItems = new List<DyeStuffItemViewModel>()
+                    {
+                        new DyeStuffItemViewModel()
+                        {
+                            Product = new Lib.ViewModels.Integration.Master.ProductIntegrationViewModel(),
+                            Quantity = 1001
+                        }
+                    },
+                    ChemicalItems = new List<ChemicalItemViewModel>()
+                    {
+                        new ChemicalItemViewModel()
+                        {
+                        }
+                    }
+                }
+            };
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
         }
     }
 }

@@ -11,29 +11,45 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
 {
     public class StrikeOffDataUtil : BaseDataUtil<StrikeOffFacade, StrikeOffModel>
     {
-        ColorReceiptDataUtil _colorReceiptDataUtil;
-        public StrikeOffDataUtil(ColorReceiptDataUtil colorReceiptDataUtil, StrikeOffFacade facade) : base(facade)
+        public StrikeOffDataUtil(StrikeOffFacade facade) : base(facade)
         {
-            _colorReceiptDataUtil = colorReceiptDataUtil;
         }
 
-        public override async Task<StrikeOffModel> GetNewDataAsync()
+        public override StrikeOffModel GetNewData()
         {
-            var data = await _colorReceiptDataUtil.GetTestData();
             return new StrikeOffModel()
             {
                 Code = "code",
+                Cloth = "cloth",
+                Type = "type",
                 Remark = "remark",
                 StrikeOffItems = new List<StrikeOffItemModel>()
                 {
                     new StrikeOffItemModel()
                     {
-                        ColorReceiptColorCode = data.ColorCode,
-                        ColorReceiptId = data.Id,
-                        ColorReceiptItems = data.ColorReceiptItems
+                        ColorCode = "colorCode",
+                        ChemicalItems = new List<StrikeOffItemChemicalItemModel>()
+                        {
+                            new StrikeOffItemChemicalItemModel()
+                            {
+                                Name = "name",
+                                Quantity = 1
+                            }
+                        },
+                        DyeStuffItems = new List<StrikeOffItemDyeStuffItemModel>()
+                        {
+                            new StrikeOffItemDyeStuffItemModel()
+                            {
+                                ProductCode = "coe",
+                                ProductId = 1,
+                                ProductName = "name",
+                                Quantity = 1
+                            }
+                        }
                     }
                 }
             };
         }
+
     }
 }

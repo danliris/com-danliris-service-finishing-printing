@@ -9,7 +9,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.StrikeOff
 {
     public class StrikeOffItemViewModel : BaseViewModel
     {
-        public ColorReceiptViewModel ColorReceipt { get; set; }
+        public StrikeOffItemViewModel()
+        {
+            ChemicalItems = new HashSet<ChemicalItemViewModel>();
+            DyeStuffItems = new HashSet<DyeStuffItemViewModel>();
+        }
+
+        public string ColorCode { get; set; }
+
+        public ICollection<ChemicalItemViewModel> ChemicalItems { get; set; }
+        public ICollection<DyeStuffItemViewModel> DyeStuffItems { get; set; }
 
     }
 }

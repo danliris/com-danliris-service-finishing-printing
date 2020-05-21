@@ -25,6 +25,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             foreach (var item in model.StrikeOffItems)
             {
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
+                foreach (var chemical in item.ChemicalItems)
+                {
+                    EntityExtension.FlagForCreate(chemical, IdentityService.Username, UserAgent);
+                }
+                foreach (var dyeStuff in item.DyeStuffItems)
+                {
+                    EntityExtension.FlagForCreate(dyeStuff, IdentityService.Username, UserAgent);
+                }
             }
 
             base.CreateModel(model);
@@ -37,6 +45,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             foreach (var item in model.StrikeOffItems)
             {
                 EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
+                foreach (var chemical in item.ChemicalItems)
+                {
+                    EntityExtension.FlagForDelete(chemical, IdentityService.Username, UserAgent);
+                }
+                foreach (var dyeStuff in item.DyeStuffItems)
+                {
+                    EntityExtension.FlagForDelete(dyeStuff, IdentityService.Username, UserAgent);
+                }
             }
             DbSet.Update(model);
         }
@@ -57,34 +73,96 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             {
                 var dbItem = dbModel.StrikeOffItems.FirstOrDefault(x => x.Id == item.Id);
 
-                dbItem.ColorReceiptId = item.ColorReceiptId;
-                dbItem.ColorReceiptColorCode = item.ColorReceiptColorCode;
+                dbItem.ColorCode = item.ColorCode;
 
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
+
+                var addedChemicals = item.ChemicalItems.Where(x => !dbItem.ChemicalItems.Any(y => y.Name == x.Name)).ToList();
+                var updatedChemicals = item.ChemicalItems.Where(x => dbItem.ChemicalItems.Any(y => y.Name == x.Name)).ToList();
+                var deletedChemicals = dbItem.ChemicalItems.Where(x => !item.ChemicalItems.Any(y => y.Name == x.Name)).ToList();
+
+                foreach (var chemical in updatedChemicals)
+                {
+                    var dbChemical = dbItem.ChemicalItems.FirstOrDefault(s => s.Name == chemical.Name);
+                    dbChemical.Quantity = chemical.Quantity;
+                    EntityExtension.FlagForUpdate(dbChemical, IdentityService.Username, UserAgent);
+                }
+
+                foreach(var chemical in deletedChemicals)
+                {
+                    EntityExtension.FlagForDelete(chemical, IdentityService.Username, UserAgent);
+                }
+
+                foreach(var chemical in addedChemicals)
+                {
+                    chemical.StrikeOffItemId = dbItem.Id;
+                    EntityExtension.FlagForCreate(chemical, IdentityService.Username, UserAgent);
+                    dbItem.ChemicalItems.Add(chemical);
+                }
+
+                var addedDyeStuffs = item.DyeStuffItems.Where(x => !dbItem.DyeStuffItems.Any(y => y.Id == x.Id)).ToList();
+                var updatedDyeStuffs = item.DyeStuffItems.Where(x => dbItem.DyeStuffItems.Any(y => y.Id == x.Id)).ToList();
+                var deletedDyeStuffs = dbItem.DyeStuffItems.Where(x => !item.DyeStuffItems.Any(y => y.Id == x.Id)).ToList();
+
+                foreach (var dyeStuff in updatedDyeStuffs)
+                {
+                    var dbDyeStuff = dbItem.DyeStuffItems.FirstOrDefault(s => s.Id == dyeStuff.Id);
+                    dbDyeStuff.ProductCode = dyeStuff.ProductCode;
+                    dbDyeStuff.ProductId = dyeStuff.ProductId;
+                    dbDyeStuff.ProductName = dyeStuff.ProductName;
+                    dbDyeStuff.Quantity = dyeStuff.Quantity;
+                    EntityExtension.FlagForUpdate(dbDyeStuff, IdentityService.Username, UserAgent);
+                }
+
+                foreach (var dyeStuff in deletedDyeStuffs)
+                {
+                    EntityExtension.FlagForDelete(dyeStuff, IdentityService.Username, UserAgent);
+                }
+
+                foreach (var dyeStuff in addedDyeStuffs)
+                {
+                    dyeStuff.StrikeOffItemId = dbItem.Id;
+                    EntityExtension.FlagForCreate(dyeStuff, IdentityService.Username, UserAgent);
+                    dbItem.DyeStuffItems.Add(dyeStuff);
+                }
             }
 
 
             foreach (var item in deletedItems)
             {
                 EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
+                foreach (var dyeStuff in item.DyeStuffItems)
+                {
+                    EntityExtension.FlagForDelete(dyeStuff, IdentityService.Username, UserAgent);
+                }
+                foreach (var chemical in item.ChemicalItems)
+                {
+                    EntityExtension.FlagForDelete(chemical, IdentityService.Username, UserAgent);
+                }
             }
 
             foreach (var item in addedItems)
             {
-                item.ColorReceiptId = id;
+                item.StrikeOffId = id;
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
+                foreach (var dyeStuff in item.DyeStuffItems)
+                {
+                    EntityExtension.FlagForCreate(dyeStuff, IdentityService.Username, UserAgent);
+                }
+                foreach (var chemical in item.ChemicalItems)
+                {
+                    EntityExtension.FlagForCreate(chemical, IdentityService.Username, UserAgent);
+                }
                 dbModel.StrikeOffItems.Add(item);
             }
         }
 
-        public override async Task<StrikeOffModel> ReadModelById(int id)
+        public override Task<StrikeOffModel> ReadModelById(int id)
         {
-            var model = await DbSet.Include(s => s.StrikeOffItems).FirstOrDefaultAsync(s => s.Id == id);
+            var model = DbSet.Include(s => s.StrikeOffItems).ThenInclude(s => s.ChemicalItems)
+                .Include(s => s.StrikeOffItems).ThenInclude(s => s.DyeStuffItems)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
-            foreach(var item in model.StrikeOffItems)
-            {
-                item.ColorReceiptItems = await _dbContext.ColorReceiptItems.Where(s => s.ColorReceiptId == item.ColorReceiptId).ToListAsync();
-            }
 
             return model;
         }

@@ -59,7 +59,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Stri
             List<string> selectedFields = new List<string>()
             {
 
-                "Id","Code","Remark","LastModifiedUtc","StrikeOffItems"
+                "Id","Code","Type","Cloth","Remark","LastModifiedUtc","StrikeOffItems"
 
             };
 

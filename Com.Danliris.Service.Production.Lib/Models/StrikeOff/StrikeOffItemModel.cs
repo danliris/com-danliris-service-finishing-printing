@@ -12,20 +12,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.StrikeOff
     {
         public StrikeOffItemModel()
         {
-            ColorReceiptItems = new HashSet<ColorReceiptItemModel>();
+            DyeStuffItems = new HashSet<StrikeOffItemDyeStuffItemModel>();
+            ChemicalItems = new HashSet<StrikeOffItemChemicalItemModel>();
         }
 
-        public int ColorReceiptId { get; set; }
         [MaxLength(2048)]
-        public string ColorReceiptColorCode { get; set; }
+        public string ColorCode { get; set; }
 
         public int StrikeOffId { get; set; }
 
         [ForeignKey("StrikeOffId")]
         public StrikeOffModel StrikeOff { get; set; }
 
-        [NotMapped]
-        public ICollection<ColorReceiptItemModel> ColorReceiptItems { get; set; }
+        public ICollection<StrikeOffItemDyeStuffItemModel> DyeStuffItems { get; set; }
+        public ICollection<StrikeOffItemChemicalItemModel> ChemicalItems { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
