@@ -18,6 +18,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.StrikeOff
         public string Code { get; set; }
         [MaxLength(4096)]
         public string Remark { get; set; }
+        [MaxLength(256)]
+        public string Type { get; set; }
+        [MaxLength(128)]
+        public string Cloth { get; set; }
 
         public ICollection<StrikeOffItemModel> StrikeOffItems { get; set; }
 

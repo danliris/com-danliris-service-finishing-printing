@@ -92,6 +92,8 @@ namespace Com.Danliris.Service.Production.Lib
 
         public DbSet<StrikeOffModel> StrikeOffs { get; set; }
         public DbSet<StrikeOffItemModel> StrikeOffItems { get; set; }
+        public DbSet<StrikeOffItemChemicalItemModel> StrikeOffItemChemicalItems { get; set; }
+        public DbSet<StrikeOffItemDyeStuffItemModel> StrikeOffItemDyeStuffItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
