@@ -3,6 +3,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
@@ -94,6 +95,10 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<StrikeOffItemModel> StrikeOffItems { get; set; }
         public DbSet<StrikeOffItemChemicalItemModel> StrikeOffItemChemicalItems { get; set; }
         public DbSet<StrikeOffItemDyeStuffItemModel> StrikeOffItemDyeStuffItems { get; set; }
+
+        public DbSet<DyestuffChemicalUsageReceiptModel> DyestuffChemicalUsageReceipts { get; set; }
+        public DbSet<DyestuffChemicalUsageReceiptItemModel> DyestuffChemicalUsageReceiptItems { get; set; }
+        public DbSet<DyestuffChemicalUsageReceiptItemDetailModel> dyestuffChemicalUsageReceiptItemDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

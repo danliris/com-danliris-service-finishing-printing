@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
@@ -16,6 +17,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Shipment
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
@@ -31,6 +33,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
@@ -129,7 +132,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<ICostCalculationService, CostCalculationService>()
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>()
                 .AddTransient<IColorReceiptFacade, ColorReceiptFacade>()
-                .AddTransient<IStrikeOffFacade, StrikeOffFacade>();
+                .AddTransient<IStrikeOffFacade, StrikeOffFacade>()
+                .AddTransient<IDyestuffChemicalUsageReceiptFacade, DyestuffChemicalUsageReceiptFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -159,7 +163,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<KanbanLogic>()
                 .AddTransient<ReturToQCLogic>()
                 .AddTransient<ColorReceiptLogic>()
-                .AddTransient<StrikeOffLogic>();
+                .AddTransient<StrikeOffLogic>()
+                .AddTransient<DyestuffChemicalUsageReceiptLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

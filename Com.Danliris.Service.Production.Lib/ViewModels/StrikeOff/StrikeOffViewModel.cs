@@ -65,10 +65,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.StrikeOff
                     {
                         if (item.DyeStuffItems != null && item.DyeStuffItems.Count > 0 && item.ChemicalItems != null && item.ChemicalItems.Count > 0)
                         {
-                            if (item.DyeStuffItems.Sum(s => s.Quantity) + item.ChemicalItems.Where(s => s.Name != null && s.Name.ToLower() != "vicositas").Sum(s => s.Quantity) != 1000)
+                            if (item.DyeStuffItems.Sum(s => s.Quantity) + item.ChemicalItems.Where(s => s.Name != null && s.Name.ToLower() != "viscositas").Sum(s => s.Quantity) != 1000)
                             {
                                 anyError = true;
-                                strikeOffItemsErrors += "ColorCode: 'Total Quantity dari Dye Stuff dan Chemical (Tanpa Vicositas) harus sama dengan 1000', ";
+                                strikeOffItemsErrors += "ColorCode: 'Total Quantity dari Dye Stuff dan Chemical (Tanpa Viscositas) harus sama dengan 1000', ";
                             }
                         }
                     }
