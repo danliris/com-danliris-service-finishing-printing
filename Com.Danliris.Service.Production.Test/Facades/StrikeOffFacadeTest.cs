@@ -143,6 +143,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public virtual async void GetForConsumptionReceipt_All_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = new StrikeOffFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.ReadForUsageReceipt(1, 25, "{}", new List<string>(), "", "{}");
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
         public async Task ValidateVM()
         {
             var dbContext = DbContext(GetCurrentMethod());

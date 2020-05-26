@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Newtonsoft.Json;
 using Com.Moonlay.NetCore.Lib;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.StrikeOff;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.StrikeOff
 {
@@ -76,6 +77,62 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Stri
         public Task<StrikeOffModel> ReadByIdAsync(int id)
         {
             return StrikeOffLogic.ReadModelById(id);
+        }
+
+        public ReadResponse<StrikeOffConsumptionViewModel> ReadForUsageReceipt(int page, int size, string order, List<string> select, string keyword, string filter)
+        {
+            IQueryable<StrikeOffModel> query = DbSet.Include(s => s.StrikeOffItems).ThenInclude(s => s.ChemicalItems)
+                .Include(s => s.StrikeOffItems).ThenInclude(d => d.DyeStuffItems);
+
+            List<string> searchAttributes = new List<string>()
+            {
+                "Code"
+            };
+            query = QueryHelper<StrikeOffModel>.Search(query, searchAttributes, keyword);
+
+            Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<StrikeOffModel>.Filter(query, filterDictionary);
+
+            List<string> selectedFields = new List<string>()
+            {
+
+                "Id","Code","Type","Cloth","Remark","LastModifiedUtc","StrikeOffItems"
+
+            };
+
+            Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<StrikeOffModel>.Order(query, orderDictionary);
+
+            Pageable<StrikeOffModel> pageable = new Pageable<StrikeOffModel>(query, page - 1, size);
+            List<StrikeOffModel> data = pageable.Data.ToList();
+            int totalData = pageable.TotalCount;
+            var vm = data.Select(s => new StrikeOffConsumptionViewModel()
+            {
+                Id = s.Id,
+                Code = s.Code,
+                Type = s.Type,
+                Cloth = s.Cloth,
+                LastModifiedUtc = s.LastModifiedUtc,
+                Remark = s.Remark,
+                StrikeOffItems = s.StrikeOffItems.Select(d => new StrikeOffConsumptionItemViewModel()
+                {
+                    Id = d.Id,
+                    ColorCode = d.ColorCode,
+                    StrikeOffItemDetails = d.DyeStuffItems.Select(e => new StrikeOffConsumptionDetailViewModel()
+                    {
+                        Id = e.Id,
+                        Name = e.ProductName,
+                        Quantity = e.Quantity
+                    }).Concat(d.ChemicalItems.OrderBy(e => e.Index).Select(e => new StrikeOffConsumptionDetailViewModel()
+                    {
+                        Id = e.Id,
+                        Name = e.Name,
+                        Quantity = e.Quantity,
+                    })).ToList()
+
+                }).ToList()
+            });
+            return new ReadResponse<StrikeOffConsumptionViewModel>(vm.ToList(), totalData, orderDictionary, selectedFields);
         }
 
         public async Task<int> UpdateAsync(int id, StrikeOffModel model)

@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200523155014_AddDyeStuffChemicalUsageReceipt")]
+    partial class AddDyeStuffChemicalUsageReceipt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -654,13 +656,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(2048);
 
+                    b.Property<DateTimeOffset>("Prod1Date");
+
                     b.Property<double>("Prod1Quantity");
+
+                    b.Property<DateTimeOffset>("Prod2Date");
 
                     b.Property<double>("Prod2Quantity");
 
+                    b.Property<DateTimeOffset>("Prod3Date");
+
                     b.Property<double>("Prod3Quantity");
 
+                    b.Property<DateTimeOffset>("Prod4Date");
+
                     b.Property<double>("Prod4Quantity");
+
+                    b.Property<DateTimeOffset>("Prod5Date");
 
                     b.Property<double>("Prod5Quantity");
 
@@ -717,16 +729,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<DateTimeOffset?>("Prod1Date");
-
-                    b.Property<DateTimeOffset?>("Prod2Date");
-
-                    b.Property<DateTimeOffset?>("Prod3Date");
-
-                    b.Property<DateTimeOffset?>("Prod4Date");
-
-                    b.Property<DateTimeOffset?>("Prod5Date");
 
                     b.HasKey("Id");
 
