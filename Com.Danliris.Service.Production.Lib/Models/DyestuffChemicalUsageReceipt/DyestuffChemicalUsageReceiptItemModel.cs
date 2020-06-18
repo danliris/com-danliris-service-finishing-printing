@@ -17,15 +17,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
         [MaxLength(2048)]
         public string ColorCode { get; set; }
 
-        public DateTimeOffset? Prod1Date { get; set; }
+        public DateTimeOffset? Adjs1Date { get; set; }
 
-        public DateTimeOffset? Prod2Date { get; set; }
+        public DateTimeOffset? Adjs2Date { get; set; }
 
-        public DateTimeOffset? Prod3Date { get; set; }
+        public DateTimeOffset? Adjs3Date { get; set; }
 
-        public DateTimeOffset? Prod4Date { get; set; }
+        public DateTimeOffset? Adjs4Date { get; set; }
 
-        public DateTimeOffset? Prod5Date { get; set; }
+        public DateTimeOffset? Adjs5Date { get; set; }
 
         public ICollection<DyestuffChemicalUsageReceiptItemDetailModel> DyestuffChemicalUsageReceiptItemDetails { get; set; }
 

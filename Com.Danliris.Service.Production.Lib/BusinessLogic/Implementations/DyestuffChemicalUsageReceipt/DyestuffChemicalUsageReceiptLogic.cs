@@ -74,11 +74,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 var dbItem = dbModel.DyestuffChemicalUsageReceiptItems.FirstOrDefault(x => x.Id == item.Id);
 
                 dbItem.ColorCode = item.ColorCode;
-                dbItem.Prod1Date = item.Prod1Date;
-                dbItem.Prod2Date = item.Prod2Date;
-                dbItem.Prod3Date = item.Prod3Date;
-                dbItem.Prod4Date = item.Prod4Date;
-                dbItem.Prod5Date = item.Prod5Date;
+                dbItem.Adjs1Date = item.Adjs1Date;
+                dbItem.Adjs2Date = item.Adjs2Date;
+                dbItem.Adjs3Date = item.Adjs3Date;
+                dbItem.Adjs4Date = item.Adjs4Date;
+                dbItem.Adjs5Date = item.Adjs5Date;
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
 
                 var addedDetails = item.DyestuffChemicalUsageReceiptItemDetails.Where(x => !dbItem.DyestuffChemicalUsageReceiptItemDetails.Any(y => y.Id == x.Id)).ToList();
@@ -92,11 +92,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     dbDetail.Index = detail.Index;
                     dbDetail.Name = detail.Name;
                     dbDetail.ReceiptQuantity = detail.ReceiptQuantity;
-                    dbDetail.Prod1Quantity = detail.Prod1Quantity;
-                    dbDetail.Prod2Quantity = detail.Prod2Quantity;
-                    dbDetail.Prod3Quantity = detail.Prod3Quantity;
-                    dbDetail.Prod4Quantity = detail.Prod4Quantity;
-                    dbDetail.Prod5Quantity = detail.Prod5Quantity;
+                    dbDetail.Adjs1Quantity = detail.Adjs1Quantity;
+                    dbDetail.Adjs2Quantity = detail.Adjs2Quantity;
+                    dbDetail.Adjs3Quantity = detail.Adjs3Quantity;
+                    dbDetail.Adjs4Quantity = detail.Adjs4Quantity;
+                    dbDetail.Adjs5Quantity = detail.Adjs5Quantity;
 
                     EntityExtension.FlagForUpdate(dbDetail, IdentityService.Username, UserAgent);
                 }
