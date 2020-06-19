@@ -51,20 +51,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
                 {
                     ColorCode = d.ColorCode,
-                    Prod1Date = d.Prod1Date,
-                    Prod2Date = d.Prod2Date,
-                    Prod3Date = d.Prod3Date,
-                    Prod4Date = d.Prod4Date,
-                    Prod5Date = d.Prod5Date,
+                    Adjs1Date = d.Adjs1Date,
+                    Adjs2Date = d.Adjs2Date,
+                    Adjs3Date = d.Adjs3Date,
+                    Adjs4Date = d.Adjs4Date,
+                    Adjs5Date = d.Adjs5Date,
                     DyestuffChemicalUsageReceiptItemDetails = d.DyestuffChemicalUsageReceiptItemDetails.Select(e => new DyestuffChemicalUsageReceiptItemDetailModel()
                     {
                         Index = e.Index,
                         Name = e.Name,
-                        Prod1Quantity = e.Prod1Quantity,
-                        Prod2Quantity = e.Prod2Quantity,
-                        Prod3Quantity = e.Prod3Quantity,
-                        Prod4Quantity = e.Prod4Quantity,
-                        Prod5Quantity = e.Prod5Quantity,
+                        Adjs1Quantity = e.Adjs1Quantity,
+                        Adjs2Quantity = e.Adjs2Quantity,
+                        Adjs3Quantity = e.Adjs3Quantity,
+                        Adjs4Quantity = e.Adjs4Quantity,
+                        Adjs5Quantity = e.Adjs5Quantity,
                         ReceiptQuantity = e.ReceiptQuantity
                     }).ToList(),
                 }).ToArray()
@@ -102,20 +102,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
                 {
                     ColorCode = d.ColorCode,
-                    Prod1Date = d.Prod1Date,
-                    Prod2Date = d.Prod2Date,
-                    Prod3Date = d.Prod3Date,
-                    Prod4Date = d.Prod4Date,
-                    Prod5Date = d.Prod5Date,
+                    Adjs1Date = d.Adjs1Date,
+                    Adjs2Date = d.Adjs2Date,
+                    Adjs3Date = d.Adjs3Date,
+                    Adjs4Date = d.Adjs4Date,
+                    Adjs5Date = d.Adjs5Date,
                     DyestuffChemicalUsageReceiptItemDetails = d.DyestuffChemicalUsageReceiptItemDetails.Select(e => new DyestuffChemicalUsageReceiptItemDetailModel()
                     {
                         Index = e.Index,
                         Name = e.Name,
-                        Prod1Quantity = e.Prod1Quantity,
-                        Prod2Quantity = e.Prod2Quantity,
-                        Prod3Quantity = e.Prod3Quantity,
-                        Prod4Quantity = e.Prod4Quantity,
-                        Prod5Quantity = e.Prod5Quantity,
+                        Adjs1Quantity = e.Adjs1Quantity,
+                        Adjs2Quantity = e.Adjs2Quantity,
+                        Adjs3Quantity = e.Adjs3Quantity,
+                        Adjs4Quantity = e.Adjs4Quantity,
+                        Adjs5Quantity = e.Adjs5Quantity,
                         ReceiptQuantity = e.ReceiptQuantity
                     }).ToList(),
                     Id = d.Id
@@ -155,21 +155,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     new DyestuffChemicalUsageReceiptItemViewModel()
                     {
                         ColorCode = "code",
-                        Prod1Date = DateTimeOffset.UtcNow,
-                        Prod2Date = DateTimeOffset.UtcNow,
-                        Prod3Date = DateTimeOffset.UtcNow,
-                        Prod4Date = DateTimeOffset.UtcNow,
-                        Prod5Date = DateTimeOffset.UtcNow,
+                        Adjs1Date = DateTimeOffset.UtcNow,
+                        Adjs2Date = DateTimeOffset.UtcNow,
+                        Adjs3Date = DateTimeOffset.UtcNow,
+                        Adjs4Date = DateTimeOffset.UtcNow,
+                        Adjs5Date = DateTimeOffset.UtcNow,
                         UsageReceiptDetails = new List<DyestuffChemicalUsageReceiptItemDetailViewModel>()
                         {
                             new DyestuffChemicalUsageReceiptItemDetailViewModel()
                             {
                                 Name = "name",
-                                Prod1Quantity = 1,
-                                Prod2Quantity = 1,
-                                Prod3Quantity = 1,
-                                Prod4Quantity = 1,
-                                Prod5Quantity = 1,
+                                Adjs1Quantity = 1,
+                                Adjs2Quantity = 1,
+                                Adjs3Quantity = 1,
+                                Adjs4Quantity = 1,
+                                Adjs5Quantity = 1,
                                 ReceiptQuantity = 1,
                             }
                         }

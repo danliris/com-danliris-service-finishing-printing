@@ -34,21 +34,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                     new DyestuffChemicalUsageReceiptItemModel()
                     {
                         ColorCode = "code",
-                        Prod1Date = DateTimeOffset.UtcNow,
-                        Prod2Date = DateTimeOffset.UtcNow,
-                        Prod3Date = DateTimeOffset.UtcNow,
-                        Prod4Date = DateTimeOffset.UtcNow,
-                        Prod5Date = DateTimeOffset.UtcNow,
+                        Adjs1Date = DateTimeOffset.UtcNow,
+                        Adjs2Date = DateTimeOffset.UtcNow,
+                        Adjs3Date = DateTimeOffset.UtcNow,
+                        Adjs4Date = DateTimeOffset.UtcNow,
+                        Adjs5Date = DateTimeOffset.UtcNow,
                         DyestuffChemicalUsageReceiptItemDetails = new List<DyestuffChemicalUsageReceiptItemDetailModel>()
                         {
                             new DyestuffChemicalUsageReceiptItemDetailModel()
                             {
                                 Name = "name",
-                                Prod1Quantity = 1,
-                                Prod2Quantity = 1,
-                                Prod3Quantity = 1,
-                                Prod4Quantity = 1,
-                                Prod5Quantity = 1,
+                                Adjs1Quantity = 1,
+                                Adjs2Quantity = 1,
+                                Adjs3Quantity = 1,
+                                Adjs4Quantity = 1,
+                                Adjs5Quantity = 1,
                                 ReceiptQuantity = 1,
                             }
                         }

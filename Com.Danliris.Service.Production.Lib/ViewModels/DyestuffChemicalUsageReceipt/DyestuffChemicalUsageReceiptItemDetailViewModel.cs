@@ -12,14 +12,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DyestuffChemica
 
         public double ReceiptQuantity { get; set; }
 
-        public double Prod1Quantity { get; set; }
+        public double Adjs1Quantity { get; set; }
 
-        public double Prod2Quantity { get; set; }
+        public double Adjs2Quantity { get; set; }
 
-        public double Prod3Quantity { get; set; }
+        public double Adjs3Quantity { get; set; }
 
-        public double Prod4Quantity { get; set; }
+        public double Adjs4Quantity { get; set; }
 
-        public double Prod5Quantity { get; set; }
+        public double Adjs5Quantity { get; set; }
     }
 }
