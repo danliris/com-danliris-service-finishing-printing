@@ -203,10 +203,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     Rowspan = 2
                 };
 
-                PdfPCell cellRight = new PdfPCell()
+                PdfPCell cellDate = new PdfPCell()
                 {
-                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
+                    MinimumHeight = 15f,
                 };
 
                 PdfPCell cellLeft = new PdfPCell()
@@ -215,12 +216,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     VerticalAlignment = Element.ALIGN_MIDDLE,
                 };
 
-                PdfPCell cellNoBorder = new PdfPCell()
-                {
-                    Border = Rectangle.NO_BORDER,
-                    Colspan = 8
-                    
-                };
 
                 cellCenter.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
                 table.AddCell(cellCenter);
@@ -243,20 +238,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 cellSubHeader.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
                 table.AddCell(cellSubHeader);
 
-                cellCenter.Phrase = new Phrase(item.Adjs1Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellDate.Phrase = new Phrase(item.Adjs1Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                table.AddCell(cellDate);
 
-                cellCenter.Phrase = new Phrase(item.Adjs2Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellDate.Phrase = new Phrase(item.Adjs2Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                table.AddCell(cellDate);
 
-                cellCenter.Phrase = new Phrase(item.Adjs3Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellDate.Phrase = new Phrase(item.Adjs3Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                table.AddCell(cellDate);
 
-                cellCenter.Phrase = new Phrase(item.Adjs4Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellDate.Phrase = new Phrase(item.Adjs4Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                table.AddCell(cellDate);
 
-                cellCenter.Phrase = new Phrase(item.Adjs5Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellDate.Phrase = new Phrase(item.Adjs5Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                table.AddCell(cellDate);
 
                 foreach(var detail in item.DyestuffChemicalUsageReceiptItemDetails)
                 {
