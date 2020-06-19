@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         {
             DOCUMENTISO = GetISO();
             Title = GetTitle();
-            DocumentInfo = GetDocumentInfo(model);
+            DocumentInfo = GetDocumentInfo(model, timeoffset);
             DocumentItems = GetDocumentItems(model, timeoffset);
         }
 
@@ -105,7 +105,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             return table;
         }
 
-        private PdfPTable GetDocumentInfo(DyestuffChemicalUsageReceiptModel model)
+        private PdfPTable GetDocumentInfo(DyestuffChemicalUsageReceiptModel model, int offset)
         {
             PdfPTable table = new PdfPTable(5)
             {
@@ -164,7 +164,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cell.Phrase = new Phrase("Tanggal", HEADER_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($": {model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", HEADER_FONT);
+            cell.Phrase = new Phrase($": {model.Date.AddHours(offset).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", HEADER_FONT);
             table.AddCell(cell);
 
 
@@ -238,19 +238,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 cellSubHeader.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
                 table.AddCell(cellSubHeader);
 
-                cellDate.Phrase = new Phrase(item.Adjs1Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                cellDate.Phrase = new Phrase(item.Adjs1Date.HasValue ? item.Adjs1Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs2Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                cellDate.Phrase = new Phrase(item.Adjs2Date.HasValue ? item.Adjs2Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs3Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                cellDate.Phrase = new Phrase(item.Adjs3Date.HasValue ? item.Adjs3Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs4Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                cellDate.Phrase = new Phrase(item.Adjs4Date.HasValue ? item.Adjs4Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs5Date?.ToString("dd-MMM-yyyy", new CultureInfo("id-ID")), TEXT_FONT_BOLD);
+                cellDate.Phrase = new Phrase(item.Adjs5Date.HasValue ? item.Adjs5Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
 
                 foreach(var detail in item.DyestuffChemicalUsageReceiptItemDetails)

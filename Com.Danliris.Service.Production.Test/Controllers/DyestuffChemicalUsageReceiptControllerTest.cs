@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
 
             var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
-            var response = await controller.GetPdfById(It.IsAny<int>());
+            var response = await controller.GetPdfById(It.IsAny<int>(),"7");
             Assert.NotNull(response);
         }
 
@@ -88,7 +88,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var mockValidateService = new Mock<IValidateService>();
 
             var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
-            var response = await controller.GetPdfById(It.IsAny<int>());
+            var response = await controller.GetPdfById(It.IsAny<int>(), "7");
             Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
 
 
@@ -107,7 +107,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var mockValidateService = new Mock<IValidateService>();
 
             var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
-            var response = await controller.GetPdfById(It.IsAny<int>());
+            var response = await controller.GetPdfById(It.IsAny<int>(), "7");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
     }
