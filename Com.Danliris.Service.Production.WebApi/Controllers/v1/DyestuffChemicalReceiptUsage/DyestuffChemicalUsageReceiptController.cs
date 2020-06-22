@@ -25,8 +25,8 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Dyestuff
         {
         }
 
-        [HttpGet("pdf/{Id}")]
-        public async Task<IActionResult> GetPdfById([FromRoute] int id)
+        [HttpGet("pdf/{id}")]
+        public async Task<IActionResult> GetPdfById([FromRoute] int id, [FromHeader(Name = "x-timezone-offset")] string timezone)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Dyestuff
                 }
                 else
                 {
-                    int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                    int timeoffsset = Convert.ToInt32(timezone);
                     var pdfTemplate = new DyestuffChemicalUsageReceiptPdfTemplate(model, timeoffsset);
                     var stream = pdfTemplate.GeneratePdfTemplate();
                     return new FileStreamResult(stream, "application/pdf")
