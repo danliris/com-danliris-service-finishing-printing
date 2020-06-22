@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels
+namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Specification_Machine
 {
     public class Monitoring_Specification_MachineTest
     {

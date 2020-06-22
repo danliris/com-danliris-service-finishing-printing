@@ -55,6 +55,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Packing
                 Status = "Status",
                 SalesContractNo = "SalesContractNo"
             };
+
+            Assert.Equal("BuyerCode", viewModel.BuyerCode);
+
         } 
         
         [Fact]
