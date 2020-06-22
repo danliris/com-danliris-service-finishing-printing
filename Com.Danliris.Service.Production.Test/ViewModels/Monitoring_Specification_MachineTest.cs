@@ -46,10 +46,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels
         public void validate_default()
         {
 
-            MonitoringSpecificationMachineViewModel viewModel = new MonitoringSpecificationMachineViewModel()
-            {
-               
-            };
+            MonitoringSpecificationMachineViewModel viewModel = new MonitoringSpecificationMachineViewModel();
+           
             var result = viewModel.Validate(null);
             Assert.True(0 < result.Count());
         }
