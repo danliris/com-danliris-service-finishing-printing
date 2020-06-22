@@ -5,10 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200311043528_DeleteDOSalesModule.cs" />
+    <Compile Remove="Migrations\20200311043528_DeleteDOSalesModule.Designer.cs" />
+    <Compile Remove="ViewModels\Kanban\KanbanSnapshotViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Com.Moonlay.Data.EntityFrameworkCore" Version="1.0.2" />
     <PackageReference Include="Com.Moonlay.NetCore.Lib" Version="1.0.0-alpha-20171102-001" />
-    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />

@@ -62,6 +62,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public async void GenerateExcel_DateFrom_DateTo()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcel(data.Code, data.ProductionOrderId, data.Date.DateTime.AddDays(-1), data.Date.DateTime.AddDays(11), 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
         public async void GenerateExcelQCGudang()
         {
             var dbContext = DbContext(GetCurrentMethod());

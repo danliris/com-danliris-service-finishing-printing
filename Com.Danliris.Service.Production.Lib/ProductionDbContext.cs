@@ -1,8 +1,9 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.DOSales;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
@@ -12,10 +13,12 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.StrikeOff;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step;
@@ -24,7 +27,6 @@ using Com.Danliris.Service.Production.Lib.Models.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.Models.Master.Step;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Com.Danliris.Service.Production.Lib
 {
@@ -58,8 +60,6 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<BadOutputMachineModel> BadOutputMachine { get; set; }
         public DbSet<DailyOperationModel> DailyOperation { get; set; }
         public DbSet<DailyOperationBadOutputReasonsModel> DailyOperationBadOutputReasons { get; set; }
-        public DbSet<DOSalesModel> DOSalesItems { get; set; }
-        public DbSet<DOSalesDetailModel> DOSalesItemDetails { get; set; }
         public DbSet<PackingModel> Packings { get; set; }
         public DbSet<PackingDetailModel> PackingDetails { get; set; }
         public DbSet<FabricQualityControlModel> FabricQualityControls { get; set; }
@@ -73,6 +73,10 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<ShipmentDocumentDetailModel> ShipmentDocumentDetails { get; set; }
         public DbSet<ShipmentDocumentItemModel> ShipmentDocumentItems { get; set; }
         public DbSet<ShipmentDocumentPackingReceiptItemModel> ShipmentDocumentPackingReceiptItems { get; set; }
+        public DbSet<NewShipmentDocumentModel> NewShipmentDocuments { get; set; }
+        public DbSet<NewShipmentDocumentDetailModel> NewShipmentDocumentDetails { get; set; }
+        public DbSet<NewShipmentDocumentItemModel> NewShipmentDocumentItems { get; set; }
+        public DbSet<NewShipmentDocumentPackingReceiptItemModel> NewShipmentDocumentPackingReceiptItems { get; set; }
 
         public DbSet<DirectLaborCostModel> DirectLaborCosts { get; set; }
         public DbSet<OperationalCostModel> OperationalCosts { get; set; }
@@ -80,6 +84,21 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<CostCalculationModel> CostCalculations { get; set; }
         public DbSet<CostCalculationMachineModel> CostCalculationMachines { get; set; }
         public DbSet<CostCalculationChemicalModel> CostCalculationChemicals { get; set; }
+
+        public DbSet<KanbanSnapshotModel> KanbanSnapshots { get; set; }
+        public DbSet<ColorReceiptModel> ColorReceipts { get; set; }
+        public DbSet<ColorReceiptItemModel> ColorReceiptItems { get; set; }
+        public DbSet<ColorReceiptDyeStuffReactiveModel> ColorReceiptDyeStuffReactives { get; set; }
+        public DbSet<TechnicianModel> Technicians { get; set; }
+
+        public DbSet<StrikeOffModel> StrikeOffs { get; set; }
+        public DbSet<StrikeOffItemModel> StrikeOffItems { get; set; }
+        public DbSet<StrikeOffItemChemicalItemModel> StrikeOffItemChemicalItems { get; set; }
+        public DbSet<StrikeOffItemDyeStuffItemModel> StrikeOffItemDyeStuffItems { get; set; }
+
+        public DbSet<DyestuffChemicalUsageReceiptModel> DyestuffChemicalUsageReceipts { get; set; }
+        public DbSet<DyestuffChemicalUsageReceiptItemModel> DyestuffChemicalUsageReceiptItems { get; set; }
+        public DbSet<DyestuffChemicalUsageReceiptItemDetailModel> dyestuffChemicalUsageReceiptItemDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

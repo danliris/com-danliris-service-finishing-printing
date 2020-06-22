@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             MachineModel machine = await machineDataUtil.GetTestData();
             KanbanModel model = new KanbanModel
             {
+                CartCartNumber = "11",
                 Instruction = new KanbanInstructionModel
                 {
                     Steps = new List<KanbanStepModel>
@@ -38,8 +39,61 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                             StepIndicators = new List<KanbanStepIndicatorModel>
                             {
                                 new KanbanStepIndicatorModel()
-                            }
-                        }
+                            },
+                            ProcessArea = "area pre treatment"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area dyeing"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area printing"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area finishing"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area qc"
+                        },
                     }
                 }
             };

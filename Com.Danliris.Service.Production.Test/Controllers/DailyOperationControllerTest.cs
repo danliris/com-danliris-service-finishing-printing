@@ -4,6 +4,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils;
 using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOperation;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
@@ -39,7 +40,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                             new KanbanStepViewModel()
                             {
                                 SelectedIndex = 1,
-                                StepIndex = 0
+                                StepIndex =1 
                             }
                         }
                     },
@@ -49,13 +50,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 {
                     Process = "a"
                 },
+                Machine = new MachineViewModel(),
                 Type = "output"
             };
             var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
 
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
-            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(true);
             mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
             int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.OK, statusCode);
@@ -87,13 +89,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 {
                     Process = "a"
                 },
+                Machine = new MachineViewModel(),
                 Type = "output"
             };
             var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
 
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
-            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(false);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(false);
             mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
             int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.OK, statusCode);
@@ -125,15 +128,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 },
                 Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
                 {
-                    Process = "a"
+                    Process = "a",
                 },
+                Machine = new MachineViewModel(),
                 Type = "output"
             };
             var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
 
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
-            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(true);
             mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
             int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.OK, statusCode);
@@ -164,6 +168,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                     },
                     Id = 1
                 },
+                Machine = new MachineViewModel(),
                 Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
                 {
                     Process = "a"
@@ -174,7 +179,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
-            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(false);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(false);
             mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
             int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.OK, statusCode);
@@ -202,6 +207,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                     },
                     Id = 1
                 },
+                Machine = new MachineViewModel(),
                 Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel()
                 {
                     Process = "a"
@@ -212,7 +218,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
-            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(true);
+            mocks.Facade.Setup(f => f.HasOutput(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(true);
             mocks.Mapper.Setup(s => s.Map<DailyOperationViewModel>(It.IsAny<DailyOperationModel>())).Returns(vm);
             int statusCode = await GetStatusCodeGetById(mocks);
             Assert.Equal((int)HttpStatusCode.OK, statusCode);

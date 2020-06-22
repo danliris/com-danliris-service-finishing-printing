@@ -1,19 +1,23 @@
 ﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DOSales;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.OrderStatusReport;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.StrikeOff;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DOSales;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
@@ -26,18 +30,22 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.StrikeOff;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DOSales;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.NewShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.OrderStatusReport;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Production.Lib;
@@ -113,16 +121,19 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
                 .AddScoped<IDailyOperationFacade, DailyOperationFacade>()
                 .AddTransient<IPackingFacade, PackingFacade>()
-                .AddTransient<IDOSalesFacade, DOSalesFacade>()
                 .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>()
                 .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
                 .AddTransient<IPackingReceiptFacade, PackingReceiptFacade>()
                 .AddTransient<IShipmentDocumentService, ShipmentDocumentService>()
+                .AddTransient<INewShipmentDocumentService, NewShipmentDocumentService>()
                 .AddTransient<IDirectLaborCostFacade, DirectLaborCostFacade>()
                 .AddTransient<IOperationalCostFacade, OperationalCostFacade>()
                 .AddTransient<IOrderStatusReportService, OrderStatusReportService>()
                 .AddTransient<ICostCalculationService, CostCalculationService>()
-                .AddTransient<IReturToQCFacade, ReturToQCFacade>();
+                .AddTransient<IReturToQCFacade, ReturToQCFacade>()
+                .AddTransient<IColorReceiptFacade, ColorReceiptFacade>()
+                .AddTransient<IStrikeOffFacade, StrikeOffFacade>()
+                .AddTransient<IDyestuffChemicalUsageReceiptFacade, DyestuffChemicalUsageReceiptFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
@@ -147,11 +158,13 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<DailyOperationBadOutputReasonsLogic>()
                 .AddTransient<DailyOperationLogic>()
                 .AddTransient<PackingLogic>()
-                .AddTransient<DOSalesLogic>()
                 .AddTransient<FabricQualityControlLogic>()
                 .AddTransient<PackingReceiptLogic>()
                 .AddTransient<KanbanLogic>()
-                .AddTransient<ReturToQCLogic>();
+                .AddTransient<ReturToQCLogic>()
+                .AddTransient<ColorReceiptLogic>()
+                .AddTransient<StrikeOffLogic>()
+                .AddTransient<DyestuffChemicalUsageReceiptLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

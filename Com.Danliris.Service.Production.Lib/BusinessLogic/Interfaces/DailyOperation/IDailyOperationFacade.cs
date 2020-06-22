@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
 
         ReadResponse<DailyOperationModel> Read(int page, int size, string order, List<string> select, string keyword, string filter, string machine, string orderNo, string cartNo, string stepProcess, DateTime? startDate, DateTime? endDate);
 
-        Task<bool> HasOutput(int kanbanId, string stepProcess);
+        Task<bool> HasOutput(int kanbanId, string stepProcess, int machineId, int stepIndex);
 
         //Task<int> ETLKanbanStepIndex(int page);
     }

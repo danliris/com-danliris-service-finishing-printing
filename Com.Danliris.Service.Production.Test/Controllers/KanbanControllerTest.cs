@@ -468,5 +468,59 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var response = await controller.UpdateIsComplete(It.IsAny<int>());
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void GetSnapshotExcel_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+            
+            var response = controller.GetSnapshotXLS(DateTime.UtcNow.Month, DateTime.UtcNow.Year);
+            Assert.NotNull(response);
+
+        }
+
+        [Fact]
+        public void GetSnapshotExcel_ThrowException()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.GenerateKanbanSnapshotExcel(It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetSnapshotXLS(It.IsAny<int>(), It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+
+        }
     }
 }
