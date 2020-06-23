@@ -24,7 +24,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Master.Step
                 Alias = "Alias",
                 Process = "Process",
                 ProcessArea = "ProcessArea",
-                StepIndicators = stepIndicators
+                StepIndicators = stepIndicators,
+                LastModifiedBy ="someone",
+                CreatedBy ="someone",
+                LastModifiedAgent ="someone"
+                
             };
 
             Assert.Equal("Code", viewModel.Code);
