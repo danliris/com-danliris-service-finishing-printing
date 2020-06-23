@@ -24,6 +24,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.ReturToQC
                 StorageName = "StorageName",
                 UOMId =1
             };
+            
+            Assert.Equal(1, viewModel.ProductId);
+            Assert.Equal("DesignCode", viewModel.DesignCode);
+            Assert.Equal("DesignNumber", viewModel.DesignNumber);
             Assert.Equal("ColorWay", viewModel.ColorWay);
             Assert.Equal(1, viewModel.StorageId);
             Assert.Equal("StorageCode", viewModel.StorageCode);
