@@ -23,9 +23,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.ShipmentDocume
                 UOMId =1,
                 UOMUnit = "UOMUnit",
                 Weight =1,
-                ProductId =1
+                ProductId =1,
+                DesignNumber = "DesignNumber"
             };
 
+            Assert.Equal("DesignNumber", viewModel.DesignNumber);
             Assert.Equal("ColorType", viewModel.ColorType);
             Assert.Equal("DesignCode", viewModel.DesignCode);
             Assert.Equal(1, viewModel.Length);
