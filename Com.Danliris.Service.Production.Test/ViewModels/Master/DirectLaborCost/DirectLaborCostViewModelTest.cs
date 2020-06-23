@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Master.DirectL
 
             Assert.Equal("Code", viewModel.Code);
             Assert.Equal(1, viewModel.Month);
-            Assert.Equal(1, viewModel.Year);
+            Assert.Equal(2020, viewModel.Year);
             Assert.Equal(1, viewModel.LaborTotal);
             Assert.Equal(1, viewModel.WageTotal);
         }
