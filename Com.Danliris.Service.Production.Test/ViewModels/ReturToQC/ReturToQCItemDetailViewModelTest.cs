@@ -29,6 +29,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.ReturToQC
             Assert.Equal("StorageCode", viewModel.StorageCode);
             Assert.Equal("StorageName", viewModel.StorageName);
             Assert.Equal(1, viewModel.UOMId);
+            Assert.Equal("ProductCode", viewModel.ProductCode);
         }
         [Fact]
         public void validate_default()
