@@ -13,6 +13,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
@@ -89,6 +90,39 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.Equal(vm.Id, model.Id);
 
+        }
+
+        [Fact]
+        public async Task CreateAsync_Throws_Exception()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(ReturToQCFacade), serviceProvider, dbContext) as ReturToQCFacade;
+
+            await Assert.ThrowsAsync<System.NullReferenceException>(() => facade.CreateAsync(null));
+        }
+
+        [Fact]
+        public async Task UpdateAsync_Throws_Exception()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(ReturToQCFacade), serviceProvider, dbContext) as ReturToQCFacade;
+
+            await Assert.ThrowsAsync<System.NullReferenceException>(() => facade.UpdateAsync(1,null));
+        }
+
+        [Fact]
+        public async Task DeleteAsync_Throws_Exception()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(ReturToQCFacade), serviceProvider, dbContext) as ReturToQCFacade;
+
+            await Assert.ThrowsAsync<System.NullReferenceException>(() => facade.DeleteAsync(-1));
         }
     }
 }
