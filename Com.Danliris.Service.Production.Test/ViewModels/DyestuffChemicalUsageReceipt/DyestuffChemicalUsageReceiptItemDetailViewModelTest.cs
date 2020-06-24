@@ -29,8 +29,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.DyestuffChemic
             Assert.Equal(1, viewModel.Adjs2Quantity);
             Assert.Equal(1, viewModel.Adjs3Quantity);
             Assert.Equal(1, viewModel.Adjs4Quantity);
-            Assert.Equal(1, viewModel.Adjs5Quantity = 1
-);
+            Assert.Equal(1, viewModel.Adjs5Quantity);
 
         }
         }

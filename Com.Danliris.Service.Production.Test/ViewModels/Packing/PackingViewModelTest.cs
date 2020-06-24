@@ -53,7 +53,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Packing
                 PackingUom = "PackingUom",
                 PackingDetails = packingDetails,
                 Status = "Status",
-                SalesContractNo = "SalesContractNo"
+                SalesContractNo = "SalesContractNo",
+                
             };
 
             Assert.Equal("BuyerCode", viewModel.BuyerCode);
