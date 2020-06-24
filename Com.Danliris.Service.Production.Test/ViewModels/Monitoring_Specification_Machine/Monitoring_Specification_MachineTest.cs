@@ -76,9 +76,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Spe
                 {
                     new MonitoringSpecificationMachineDetailsViewModel()
                     {
+                        Indicator ="Indicator",
                         DataType ="input skala angka",
                         Value = "4",
-                        DefaultValue ="4-1"
+                        DefaultValue ="4-1",
+                        Uom ="Uom"
                     }
                 },
             };
@@ -96,9 +98,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Spe
                 {
                     new MonitoringSpecificationMachineDetailsViewModel()
                     {
+                        MonitoringSpecificationMachineId =1,
+                        Indicator ="Indicator",
                         DataType ="input teks",
                         Value = "",
-                        DefaultValue ="1-4"
+                        DefaultValue ="1-4",
+                        Uom ="Uom"
                     }
                 },
             };
