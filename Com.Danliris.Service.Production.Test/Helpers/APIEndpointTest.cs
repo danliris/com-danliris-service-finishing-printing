@@ -11,18 +11,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Helpers
         [Fact]
         public void Should_Success_Instantiate()
         {
-            APIEndpoint.Core = "Core";
-            APIEndpoint.Inventory = "Inventory";
-            APIEndpoint.Core = "Core";
-            APIEndpoint.Purchasing = "Purchasing";
-            APIEndpoint.Sales = "Sales";
-            APIEndpoint.Production = "Production";
+            var Core = APIEndpoint.Core = "Core";
+            var Inventory = APIEndpoint.Inventory = "Inventory";
+            var Purchasing = APIEndpoint.Purchasing = "Purchasing";
+            var Sales = APIEndpoint.Sales = "Sales";
+            var Production =APIEndpoint.Production = "Production";
 
-            Assert.Equal("Core", APIEndpoint.Core);
-            Assert.Equal("Inventory", APIEndpoint.Inventory);
-            Assert.Equal("Production", APIEndpoint.Production);
-            Assert.Equal("Purchasing", APIEndpoint.Purchasing);
-            Assert.Equal("Sales", APIEndpoint.Sales);
+            Assert.Equal("Core", Core);
+            Assert.Equal("Inventory", Inventory);
+            Assert.Equal("Production", Production);
+            Assert.Equal("Purchasing", Purchasing);
+            Assert.Equal("Sales", Sales);
         }
         }
 }
