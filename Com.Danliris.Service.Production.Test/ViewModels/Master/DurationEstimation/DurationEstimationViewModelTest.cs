@@ -67,6 +67,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Master.Duratio
             {
                 new DurationEstimationAreaViewModel()
                 {
+                    Duration =0,
                     Name ="Name"
                 },
                 new DurationEstimationAreaViewModel()

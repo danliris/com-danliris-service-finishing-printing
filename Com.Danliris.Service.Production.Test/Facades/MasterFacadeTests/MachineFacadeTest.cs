@@ -67,6 +67,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
         {
             MachineViewModel vm = new MachineViewModel()
             {
+                UId = "UId",
                 Code = "code",
                 Condition = "condition",
                 Electric = 1,
