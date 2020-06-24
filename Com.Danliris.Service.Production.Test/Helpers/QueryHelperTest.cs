@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Helpers
             {
                 "Name"
             };
-            Dictionary<string, string> orderDictionary = new Dictionary<string, string>();
+           
            
             var result = QueryHelper<TechnicianModel>.Search(query, searchAttributes, "", true);
             Assert.NotNull(result);
