@@ -30,11 +30,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.NewShipmentDoc
             Assert.Equal("ProductionOrderColorType", viewModel.ProductionOrderColorType);
             Assert.Equal("ProductionOrderDesignCode", viewModel.ProductionOrderDesignCode);
             Assert.Equal("ProductionOrderDesignNumber", viewModel.ProductionOrderDesignNumber);
+            Assert.Equal("ProductionOrderType", viewModel.ProductionOrderType);
             Assert.Equal(1, viewModel.ProductionOrderId);
             Assert.Equal("ProductionOrderNo", viewModel.ProductionOrderNo);
             Assert.Equal(productionOrder, viewModel.ProductionOrder);
             Assert.Equal(items, viewModel.Items);
-          
+            
         }
         }
 }
