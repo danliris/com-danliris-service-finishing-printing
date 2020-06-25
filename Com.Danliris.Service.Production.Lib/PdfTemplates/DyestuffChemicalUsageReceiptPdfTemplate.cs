@@ -14,11 +14,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         public string DOCUMENT_TITLE = "RESEP PEMAKAIAN DYESTUFF & CHEMICAL UNTUK PASTA";
         public string ISO = "FM.FP-02-PR-06-09.1-009/R1";
 
-        public Font HEADER_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 16);
-        public Font HEADER_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 12);
-        public Font SUBHEADER_FONT_BOLD_UNDERLINED = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 12, Font.UNDERLINE);
-        public Font TEXT_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
-        public Font TEXT_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
+        public Font HEADER_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
+        public Font HEADER_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
+        public Font SUBHEADER_FONT_BOLD_UNDERLINED = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10, Font.UNDERLINE);
+        public Font TEXT_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+        public Font TEXT_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
         private readonly PdfPTable Title;
         private readonly PdfPTable DOCUMENTISO;
@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         {
             const int MARGIN = 30;
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, MARGIN, MARGIN);
+            Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, MARGIN, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -258,22 +258,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     cellLeft.Phrase = new Phrase(detail.Name, TEXT_FONT);
                     table.AddCell(cellLeft);
 
-                    cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    cellCenter.Phrase = new Phrase(detail.ReceiptQuantity == 0 ? "": detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs1Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    cellCenter.Phrase = new Phrase(detail.Adjs1Quantity == 0 ? "" : detail.Adjs1Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs2Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    cellCenter.Phrase = new Phrase(detail.Adjs2Quantity == 0 ? "" : detail.Adjs2Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs3Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    cellCenter.Phrase = new Phrase(detail.Adjs3Quantity == 0 ? "" : detail.Adjs3Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs4Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    cellCenter.Phrase = new Phrase(detail.Adjs4Quantity == 0 ? "" : detail.Adjs4Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs5Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    cellCenter.Phrase = new Phrase(detail.Adjs5Quantity == 0 ? "" : detail.Adjs5Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
                     var total = detail.ReceiptQuantity + detail.Adjs1Quantity + detail.Adjs2Quantity + detail.Adjs3Quantity + detail.Adjs4Quantity + detail.Adjs5Quantity;
