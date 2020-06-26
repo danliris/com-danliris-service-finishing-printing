@@ -37,7 +37,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                         {
                             new DyestuffChemicalUsageReceiptItemDetailModel()
                             {
-                                Name = "test"
+                                Name = "test",
+                                Adjs1Quantity = 1,
+                                Adjs2Quantity = 1,
+                                Adjs3Quantity = 3,
+                                Adjs4Quantity = 4,
+                                Adjs5Quantity = 4,
+                                ReceiptQuantity = 2
                             },
                             new DyestuffChemicalUsageReceiptItemDetailModel()
                             {
@@ -71,7 +77,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
 
             var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
-            var response = await controller.GetPdfById(It.IsAny<int>(),"7");
+            var response = await controller.GetPdfById(It.IsAny<int>(), "7");
             Assert.NotNull(response);
         }
 
