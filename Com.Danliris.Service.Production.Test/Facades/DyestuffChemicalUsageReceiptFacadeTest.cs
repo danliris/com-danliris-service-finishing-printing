@@ -187,6 +187,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotEmpty(response);
 
+            data.Date = DateTimeOffset.UtcNow;
+            data.ProductionOrder = null;
+
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.ProductionOrder = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel()
+            {
+                Id = 0
+            };
+
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
             data.ProductionOrder = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel()
             {
                 Id = 1
@@ -202,7 +218,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
-            Assert.NotEmpty(response);
+            Assert.Empty(response);
 
         }
 
