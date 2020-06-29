@@ -215,11 +215,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             data.StrikeOff = new Lib.ViewModels.StrikeOff.StrikeOffViewModel()
             {
-                Id = 1
+                Id = 0
             };
             response = data.Validate(validationContext);
 
-            Assert.Empty(response);
+            Assert.NotEmpty(response);
 
         }
 
@@ -254,7 +254,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
-        public async Task CoverageVM()
+        public void CoverageVM()
         {
             var dbContext = DbContext(GetCurrentMethod());
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
@@ -275,7 +275,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 }
             };
 
-            foreach(var item in data.UsageReceiptItems)
+            foreach (var item in data.UsageReceiptItems)
             {
                 Assert.Null(item.ReceiptDate);
                 Assert.Null(item.Adjs1Date);
@@ -283,7 +283,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 Assert.Null(item.Adjs3Date);
                 Assert.Null(item.Adjs4Date);
                 Assert.Null(item.ColorCode);
-                foreach(var detail in item.UsageReceiptDetails)
+                foreach (var detail in item.UsageReceiptDetails)
                 {
                     Assert.Null(detail.Name);
                     Assert.Equal(0, detail.Index);
@@ -294,6 +294,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     Assert.Equal(0, detail.Adjs4Quantity);
                 }
             }
+        }
+
+        [Fact]
+        public void CoverageModel()
+        {
+            var model = new DyestuffChemicalUsageReceiptModel();
+            Assert.ThrowsAny<NotImplementedException>(() => model.Validate(null));
+
+            var itemModel = new DyestuffChemicalUsageReceiptItemModel();
+            Assert.ThrowsAny<NotImplementedException>(() => itemModel.Validate(null));
+
+            var detailModel = new DyestuffChemicalUsageReceiptItemDetailModel();
+            Assert.ThrowsAny<NotImplementedException>(() => detailModel.Validate(null));
         }
     }
 }
