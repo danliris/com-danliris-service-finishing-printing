@@ -51,11 +51,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
                 {
                     ColorCode = d.ColorCode,
+                    ReceiptDate = d.ReceiptDate,
                     Adjs1Date = d.Adjs1Date,
                     Adjs2Date = d.Adjs2Date,
                     Adjs3Date = d.Adjs3Date,
                     Adjs4Date = d.Adjs4Date,
-                    Adjs5Date = d.Adjs5Date,
                     DyestuffChemicalUsageReceiptItemDetails = d.DyestuffChemicalUsageReceiptItemDetails.Select(e => new DyestuffChemicalUsageReceiptItemDetailModel()
                     {
                         Index = e.Index,
@@ -64,7 +64,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                         Adjs2Quantity = e.Adjs2Quantity,
                         Adjs3Quantity = e.Adjs3Quantity,
                         Adjs4Quantity = e.Adjs4Quantity,
-                        Adjs5Quantity = e.Adjs5Quantity,
                         ReceiptQuantity = e.ReceiptQuantity
                     }).ToList(),
                 }).ToArray()
@@ -102,11 +101,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
                 {
                     ColorCode = d.ColorCode,
+                    ReceiptDate = d.ReceiptDate,
                     Adjs1Date = d.Adjs1Date,
                     Adjs2Date = d.Adjs2Date,
                     Adjs3Date = d.Adjs3Date,
                     Adjs4Date = d.Adjs4Date,
-                    Adjs5Date = d.Adjs5Date,
                     DyestuffChemicalUsageReceiptItemDetails = d.DyestuffChemicalUsageReceiptItemDetails.Select(e => new DyestuffChemicalUsageReceiptItemDetailModel()
                     {
                         Index = e.Index,
@@ -115,7 +114,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                         Adjs2Quantity = e.Adjs2Quantity,
                         Adjs3Quantity = e.Adjs3Quantity,
                         Adjs4Quantity = e.Adjs4Quantity,
-                        Adjs5Quantity = e.Adjs5Quantity,
                         ReceiptQuantity = e.ReceiptQuantity
                     }).ToList(),
                     Id = d.Id
@@ -155,11 +153,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     new DyestuffChemicalUsageReceiptItemViewModel()
                     {
                         ColorCode = "code",
+                        ReceiptDate = DateTimeOffset.UtcNow,
                         Adjs1Date = DateTimeOffset.UtcNow,
                         Adjs2Date = DateTimeOffset.UtcNow,
                         Adjs3Date = DateTimeOffset.UtcNow,
                         Adjs4Date = DateTimeOffset.UtcNow,
-                        Adjs5Date = DateTimeOffset.UtcNow,
                         UsageReceiptDetails = new List<DyestuffChemicalUsageReceiptItemDetailViewModel>()
                         {
                             new DyestuffChemicalUsageReceiptItemDetailViewModel()
@@ -169,7 +167,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                                 Adjs2Quantity = 1,
                                 Adjs3Quantity = 1,
                                 Adjs4Quantity = 1,
-                                Adjs5Quantity = 1,
                                 ReceiptQuantity = 1,
                             }
                         }
@@ -204,7 +201,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
-            Assert.Empty(response);
+            Assert.NotEmpty(response);
 
         }
     }

@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DyestuffChemica
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Date == null)
+            if (Date == default(DateTimeOffset))
             {
                 yield return new ValidationResult("Tanggal Harus Diisi", new List<string> { "Date" });
             }

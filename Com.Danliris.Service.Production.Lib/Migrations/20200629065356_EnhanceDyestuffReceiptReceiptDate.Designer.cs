@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200629065356_EnhanceDyestuffReceiptReceiptDate")]
+    partial class EnhanceDyestuffReceiptReceiptDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -623,6 +625,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<double>("Adjs4Quantity");
 
+                    b.Property<double>("Adjs5Quantity");
+
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -668,7 +672,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.HasIndex("DyestuffChemicalUsageReceiptItemId");
 
-                    b.ToTable("DyestuffChemicalUsageReceiptItemDetails");
+                    b.ToTable("dyestuffChemicalUsageReceiptItemDetails");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsageReceipt.DyestuffChemicalUsageReceiptItemModel", b =>
@@ -686,6 +690,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<DateTimeOffset?>("Adjs3Date");
 
                     b.Property<DateTimeOffset?>("Adjs4Date");
+
+                    b.Property<DateTimeOffset?>("Adjs5Date");
 
                     b.Property<string>("ColorCode")
                         .HasMaxLength(2048);

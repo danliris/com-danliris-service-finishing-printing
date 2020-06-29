@@ -28,11 +28,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 {
                     new DyestuffChemicalUsageReceiptItemModel()
                     {
+                        ReceiptDate = DateTimeOffset.UtcNow,
                         Adjs1Date = DateTimeOffset.UtcNow,
                         Adjs2Date = DateTimeOffset.UtcNow,
                         Adjs3Date = DateTimeOffset.UtcNow,
                         Adjs4Date = DateTimeOffset.UtcNow,
-                        Adjs5Date = DateTimeOffset.UtcNow,
                         DyestuffChemicalUsageReceiptItemDetails = new List<DyestuffChemicalUsageReceiptItemDetailModel>()
                         {
                             new DyestuffChemicalUsageReceiptItemDetailModel()
@@ -42,7 +42,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                                 Adjs2Quantity = 1,
                                 Adjs3Quantity = 3,
                                 Adjs4Quantity = 4,
-                                Adjs5Quantity = 4,
                                 ReceiptQuantity = 2
                             },
                             new DyestuffChemicalUsageReceiptItemDetailModel()
