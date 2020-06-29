@@ -163,6 +163,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                         {
                             new DyestuffChemicalUsageReceiptItemDetailViewModel()
                             {
+                                Index = 1,
                                 Name = "name",
                                 Adjs1Quantity = 1,
                                 Adjs2Quantity = 1,
@@ -250,6 +251,49 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = await facade.GetDataByStrikeOff(data.StrikeOffId - 1);
 
             Assert.Null(Response);
+        }
+
+        [Fact]
+        public async Task CoverageVM()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DyestuffChemicalUsageReceiptFacade facade = new DyestuffChemicalUsageReceiptFacade(serviceProvider, dbContext);
+
+            var data = new DyestuffChemicalUsageReceiptViewModel()
+            {
+                UsageReceiptItems = new List<DyestuffChemicalUsageReceiptItemViewModel>()
+                {
+                    new DyestuffChemicalUsageReceiptItemViewModel()
+                    {
+                        UsageReceiptDetails = new List<DyestuffChemicalUsageReceiptItemDetailViewModel>()
+                        {
+                            new DyestuffChemicalUsageReceiptItemDetailViewModel()
+                        }
+                    }
+                }
+            };
+
+            foreach(var item in data.UsageReceiptItems)
+            {
+                Assert.Null(item.ReceiptDate);
+                Assert.Null(item.Adjs1Date);
+                Assert.Null(item.Adjs2Date);
+                Assert.Null(item.Adjs3Date);
+                Assert.Null(item.Adjs4Date);
+                Assert.Null(item.ColorCode);
+                foreach(var detail in item.UsageReceiptDetails)
+                {
+                    Assert.Null(detail.Name);
+                    Assert.Equal(0, detail.Index);
+                    Assert.Equal(0, detail.ReceiptQuantity);
+                    Assert.Equal(0, detail.Adjs1Quantity);
+                    Assert.Equal(0, detail.Adjs2Quantity);
+                    Assert.Equal(0, detail.Adjs3Quantity);
+                    Assert.Equal(0, detail.Adjs4Quantity);
+                }
+            }
         }
     }
 }
