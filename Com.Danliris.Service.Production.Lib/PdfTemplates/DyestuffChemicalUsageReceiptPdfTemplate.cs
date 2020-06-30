@@ -13,7 +13,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
     {
         public string DOCUMENT_TITLE = "RESEP PEMAKAIAN DYESTUFF & CHEMICAL UNTUK PASTA";
         public string ISO = "FM.FP-02-PR-06-09.1-009/R1";
-
         public Font HEADER_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
         public Font HEADER_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
         public Font SUBHEADER_FONT_BOLD_UNDERLINED = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10, Font.UNDERLINE);
@@ -37,7 +36,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
         public MemoryStream GeneratePdfTemplate()
         {
-            const int MARGIN = 30;
+            const int MARGIN = 25;
 
             Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, MARGIN, MARGIN);
             MemoryStream stream = new MemoryStream();
@@ -52,11 +51,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             document.Add(new Paragraph(" "));
             document.Add(DocumentInfo);
             document.Add(new Paragraph(" "));
+            int index = 1;
             foreach (var item in DocumentItems)
             {
                 document.Add(item);
-                document.Add(new Paragraph(" "));
+                if (index++ != DocumentItems.Count)
+                {
+                    document.Add(new Paragraph(" "));
+                }
             }
+            document.Add(new Paragraph("Dibuat Oleh : ..................................... ", HEADER_FONT));
             #endregion Header
 
             document.Close();
@@ -174,8 +178,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         private List<PdfPTable> GetDocumentItems(DyestuffChemicalUsageReceiptModel model, int offset)
         {
             List<PdfPTable> items = new List<PdfPTable>();
-            List<string> Adjss = new List<string>() { "Adjs 1", "Adjs 2", "Adjs 3" , "Adjs 4"};
-            foreach(var item in model.DyestuffChemicalUsageReceiptItems)
+            List<string> Adjss = new List<string>() { "Adjs 1", "Adjs 2", "Adjs 3", "Adjs 4" };
+            foreach (var item in model.DyestuffChemicalUsageReceiptItems)
             {
                 PdfPTable table = new PdfPTable(7)
                 {
@@ -229,7 +233,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 cellCenter.Phrase = new Phrase("Resep", TEXT_FONT_BOLD);
                 table.AddCell(cellCenter);
 
-                foreach(var adjsText in Adjss)
+                foreach (var adjsText in Adjss)
                 {
                     cellCenter.Phrase = new Phrase(adjsText, TEXT_FONT_BOLD);
                     table.AddCell(cellCenter);
@@ -253,12 +257,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 cellDate.Phrase = new Phrase(item.Adjs4Date.HasValue ? item.Adjs4Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
 
-                foreach(var detail in item.DyestuffChemicalUsageReceiptItemDetails)
+                foreach (var detail in item.DyestuffChemicalUsageReceiptItemDetails)
                 {
                     cellLeft.Phrase = new Phrase(detail.Name, TEXT_FONT);
                     table.AddCell(cellLeft);
 
-                    cellCenter.Phrase = new Phrase(detail.ReceiptQuantity == 0 ? "": detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
                     cellCenter.Phrase = new Phrase(detail.Adjs1Quantity == 0 ? "" : detail.Adjs1Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
@@ -275,7 +279,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                     var total = detail.ReceiptQuantity + detail.Adjs1Quantity + detail.Adjs2Quantity + detail.Adjs3Quantity + detail.Adjs4Quantity;
 
-                    if(detail.Name.ToLower() != "viscositas")
+                    if (detail.Name.ToLower() != "viscositas")
                     {
 
                         cellCenter.Phrase = new Phrase(total.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
@@ -287,6 +291,27 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                         table.AddCell(cellCenter);
                     }
                 }
+
+                cellLeft.Phrase = new Phrase("Pembuatan", TEXT_FONT);
+                table.AddCell(cellLeft);
+
+                cellLeft.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellLeft);
+
+                cellLeft.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellLeft);
+
+                cellLeft.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellLeft);
+
+                cellLeft.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellLeft);
+
+                cellLeft.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellLeft);
+
+                cellLeft.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellLeft);
 
                 items.Add(table);
             }
