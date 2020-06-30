@@ -20,6 +20,5 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DyestuffChemica
 
         public double Adjs4Quantity { get; set; }
 
-        public double Adjs5Quantity { get; set; }
     }
 }

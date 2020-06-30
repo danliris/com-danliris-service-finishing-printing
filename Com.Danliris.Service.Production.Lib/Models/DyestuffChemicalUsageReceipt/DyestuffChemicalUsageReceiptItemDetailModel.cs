@@ -24,8 +24,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
 
         public double Adjs4Quantity { get; set; }
 
-        public double Adjs5Quantity { get; set; }
-
         public int DyestuffChemicalUsageReceiptItemId { get; set; }
 
         [ForeignKey("DyestuffChemicalUsageReceiptItemId")]

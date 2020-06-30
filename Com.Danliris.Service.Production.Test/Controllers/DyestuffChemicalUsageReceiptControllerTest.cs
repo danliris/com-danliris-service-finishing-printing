@@ -28,11 +28,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 {
                     new DyestuffChemicalUsageReceiptItemModel()
                     {
+                        ReceiptDate = DateTimeOffset.UtcNow,
                         Adjs1Date = DateTimeOffset.UtcNow,
                         Adjs2Date = DateTimeOffset.UtcNow,
                         Adjs3Date = DateTimeOffset.UtcNow,
                         Adjs4Date = DateTimeOffset.UtcNow,
-                        Adjs5Date = DateTimeOffset.UtcNow,
                         DyestuffChemicalUsageReceiptItemDetails = new List<DyestuffChemicalUsageReceiptItemDetailModel>()
                         {
                             new DyestuffChemicalUsageReceiptItemDetailModel()
@@ -42,7 +42,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                                 Adjs2Quantity = 1,
                                 Adjs3Quantity = 3,
                                 Adjs4Quantity = 4,
-                                Adjs5Quantity = 4,
                                 ReceiptQuantity = 2
                             },
                             new DyestuffChemicalUsageReceiptItemDetailModel()
@@ -115,6 +114,60 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
             var response = await controller.GetPdfById(It.IsAny<int>(), "7");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task GetByStrikeOff_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(f => f.GetDataByStrikeOff(It.IsAny<int>())).ReturnsAsync(Model);
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
+            var response = await controller.GetDataByStrikeOff(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+
+        }
+
+        [Fact]
+        public async Task GetByStrikeOff_WithoutException_ReturnOK_Null()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(f => f.GetDataByStrikeOff(It.IsAny<int>())).ReturnsAsync(default(DyestuffChemicalUsageReceiptModel));
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
+            var response = await controller.GetDataByStrikeOff(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+
+        }
+
+        [Fact]
+        public async Task GetByStrikeOff_Exception_InternalServer()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(f => f.GetDataByStrikeOff(It.IsAny<int>())).Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
+            var response = await controller.GetDataByStrikeOff(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+
         }
     }
 }

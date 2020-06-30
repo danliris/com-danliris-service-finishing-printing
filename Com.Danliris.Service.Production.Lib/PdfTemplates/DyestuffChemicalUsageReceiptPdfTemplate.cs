@@ -174,14 +174,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         private List<PdfPTable> GetDocumentItems(DyestuffChemicalUsageReceiptModel model, int offset)
         {
             List<PdfPTable> items = new List<PdfPTable>();
-            List<string> Adjss = new List<string>() { "Adjs 1", "Adjs 2", "Adjs 3" , "Adjs 4" , "Adjs 5" };
+            List<string> Adjss = new List<string>() { "Adjs 1", "Adjs 2", "Adjs 3" , "Adjs 4"};
             foreach(var item in model.DyestuffChemicalUsageReceiptItems)
             {
-                PdfPTable table = new PdfPTable(8)
+                PdfPTable table = new PdfPTable(7)
                 {
                     WidthPercentage = 100
                 };
-                float[] widths = new float[] { 2f, 1f, 1f, 1f, 1f, 1f, 1f, 1f };
+                float[] widths = new float[] { 2f, 1f, 1f, 1f, 1f, 1f, 1f };
                 table.SetWidths(widths);
                 PdfPCell cellCenter = new PdfPCell()
                 {
@@ -226,8 +226,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 cellSubHeader.Phrase = new Phrase("Dyestuff & Chemical", TEXT_FONT_BOLD);
                 table.AddCell(cellSubHeader);
 
-                cellSubHeader.Phrase = new Phrase("Resep", TEXT_FONT_BOLD);
-                table.AddCell(cellSubHeader);
+                cellCenter.Phrase = new Phrase("Resep", TEXT_FONT_BOLD);
+                table.AddCell(cellCenter);
 
                 foreach(var adjsText in Adjss)
                 {
@@ -237,6 +237,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                 cellSubHeader.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
                 table.AddCell(cellSubHeader);
+
+                cellDate.Phrase = new Phrase(item.ReceiptDate.HasValue ? item.ReceiptDate.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                table.AddCell(cellDate);
 
                 cellDate.Phrase = new Phrase(item.Adjs1Date.HasValue ? item.Adjs1Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
@@ -248,9 +251,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 table.AddCell(cellDate);
 
                 cellDate.Phrase = new Phrase(item.Adjs4Date.HasValue ? item.Adjs4Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
-
-                cellDate.Phrase = new Phrase(item.Adjs5Date.HasValue ? item.Adjs5Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
                 table.AddCell(cellDate);
 
                 foreach(var detail in item.DyestuffChemicalUsageReceiptItemDetails)
@@ -273,10 +273,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     cellCenter.Phrase = new Phrase(detail.Adjs4Quantity == 0 ? "" : detail.Adjs4Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs5Quantity == 0 ? "" : detail.Adjs5Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                    table.AddCell(cellCenter);
-
-                    var total = detail.ReceiptQuantity + detail.Adjs1Quantity + detail.Adjs2Quantity + detail.Adjs3Quantity + detail.Adjs4Quantity + detail.Adjs5Quantity;
+                    var total = detail.ReceiptQuantity + detail.Adjs1Quantity + detail.Adjs2Quantity + detail.Adjs3Quantity + detail.Adjs4Quantity;
 
                     if(detail.Name.ToLower() != "viscositas")
                     {

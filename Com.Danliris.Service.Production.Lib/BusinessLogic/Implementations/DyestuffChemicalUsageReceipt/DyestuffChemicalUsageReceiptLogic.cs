@@ -74,11 +74,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 var dbItem = dbModel.DyestuffChemicalUsageReceiptItems.FirstOrDefault(x => x.Id == item.Id);
 
                 dbItem.ColorCode = item.ColorCode;
+                dbItem.ReceiptDate = item.ReceiptDate;
                 dbItem.Adjs1Date = item.Adjs1Date;
                 dbItem.Adjs2Date = item.Adjs2Date;
                 dbItem.Adjs3Date = item.Adjs3Date;
                 dbItem.Adjs4Date = item.Adjs4Date;
-                dbItem.Adjs5Date = item.Adjs5Date;
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
 
                 var addedDetails = item.DyestuffChemicalUsageReceiptItemDetails.Where(x => !dbItem.DyestuffChemicalUsageReceiptItemDetails.Any(y => y.Id == x.Id)).ToList();
@@ -96,7 +96,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     dbDetail.Adjs2Quantity = detail.Adjs2Quantity;
                     dbDetail.Adjs3Quantity = detail.Adjs3Quantity;
                     dbDetail.Adjs4Quantity = detail.Adjs4Quantity;
-                    dbDetail.Adjs5Quantity = detail.Adjs5Quantity;
 
                     EntityExtension.FlagForUpdate(dbDetail, IdentityService.Username, UserAgent);
                 }
@@ -145,6 +144,25 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             foreach(var item in model.DyestuffChemicalUsageReceiptItems)
+            {
+                item.DyestuffChemicalUsageReceiptItemDetails = item.DyestuffChemicalUsageReceiptItemDetails.OrderBy(s => s.Index).ToList();
+            }
+
+            return model;
+        }
+
+        public async Task<DyestuffChemicalUsageReceiptModel> GetDataByStrikeOff(int strikeOffId)
+        {
+            var model = await DbSet
+                .Include(s => s.DyestuffChemicalUsageReceiptItems)
+                    .ThenInclude(s => s.DyestuffChemicalUsageReceiptItemDetails)
+                .OrderByDescending(s => s.Date)
+                .FirstOrDefaultAsync(s => s.StrikeOffId == strikeOffId);
+
+            if (model == null)
+                return model;
+
+            foreach (var item in model.DyestuffChemicalUsageReceiptItems)
             {
                 item.DyestuffChemicalUsageReceiptItemDetails = item.DyestuffChemicalUsageReceiptItemDetails.OrderBy(s => s.Index).ToList();
             }

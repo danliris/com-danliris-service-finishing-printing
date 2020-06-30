@@ -42,6 +42,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dyes
             return await DbContext.SaveChangesAsync();
         }
 
+        public Task<DyestuffChemicalUsageReceiptModel> GetDataByStrikeOff(int strikeOffId)
+        {
+            return DyestuffChemicalUsageReceiptLogic.GetDataByStrikeOff(strikeOffId);
+        }
+
         public ReadResponse<DyestuffChemicalUsageReceiptModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
             IQueryable<DyestuffChemicalUsageReceiptModel> query = DbSet;

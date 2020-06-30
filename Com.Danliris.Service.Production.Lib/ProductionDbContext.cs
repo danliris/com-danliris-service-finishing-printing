@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Production.Lib
 
         public DbSet<DyestuffChemicalUsageReceiptModel> DyestuffChemicalUsageReceipts { get; set; }
         public DbSet<DyestuffChemicalUsageReceiptItemModel> DyestuffChemicalUsageReceiptItems { get; set; }
-        public DbSet<DyestuffChemicalUsageReceiptItemDetailModel> dyestuffChemicalUsageReceiptItemDetails { get; set; }
+        public DbSet<DyestuffChemicalUsageReceiptItemDetailModel> DyestuffChemicalUsageReceiptItemDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
@@ -51,11 +52,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
                 {
                     ColorCode = d.ColorCode,
+                    ReceiptDate = d.ReceiptDate,
                     Adjs1Date = d.Adjs1Date,
                     Adjs2Date = d.Adjs2Date,
                     Adjs3Date = d.Adjs3Date,
                     Adjs4Date = d.Adjs4Date,
-                    Adjs5Date = d.Adjs5Date,
                     DyestuffChemicalUsageReceiptItemDetails = d.DyestuffChemicalUsageReceiptItemDetails.Select(e => new DyestuffChemicalUsageReceiptItemDetailModel()
                     {
                         Index = e.Index,
@@ -64,7 +65,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                         Adjs2Quantity = e.Adjs2Quantity,
                         Adjs3Quantity = e.Adjs3Quantity,
                         Adjs4Quantity = e.Adjs4Quantity,
-                        Adjs5Quantity = e.Adjs5Quantity,
                         ReceiptQuantity = e.ReceiptQuantity
                     }).ToList(),
                 }).ToArray()
@@ -102,11 +102,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
                 {
                     ColorCode = d.ColorCode,
+                    ReceiptDate = d.ReceiptDate,
                     Adjs1Date = d.Adjs1Date,
                     Adjs2Date = d.Adjs2Date,
                     Adjs3Date = d.Adjs3Date,
                     Adjs4Date = d.Adjs4Date,
-                    Adjs5Date = d.Adjs5Date,
                     DyestuffChemicalUsageReceiptItemDetails = d.DyestuffChemicalUsageReceiptItemDetails.Select(e => new DyestuffChemicalUsageReceiptItemDetailModel()
                     {
                         Index = e.Index,
@@ -115,7 +115,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                         Adjs2Quantity = e.Adjs2Quantity,
                         Adjs3Quantity = e.Adjs3Quantity,
                         Adjs4Quantity = e.Adjs4Quantity,
-                        Adjs5Quantity = e.Adjs5Quantity,
                         ReceiptQuantity = e.ReceiptQuantity
                     }).ToList(),
                     Id = d.Id
@@ -155,21 +154,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     new DyestuffChemicalUsageReceiptItemViewModel()
                     {
                         ColorCode = "code",
+                        ReceiptDate = DateTimeOffset.UtcNow,
                         Adjs1Date = DateTimeOffset.UtcNow,
                         Adjs2Date = DateTimeOffset.UtcNow,
                         Adjs3Date = DateTimeOffset.UtcNow,
                         Adjs4Date = DateTimeOffset.UtcNow,
-                        Adjs5Date = DateTimeOffset.UtcNow,
                         UsageReceiptDetails = new List<DyestuffChemicalUsageReceiptItemDetailViewModel>()
                         {
                             new DyestuffChemicalUsageReceiptItemDetailViewModel()
                             {
+                                Index = 1,
                                 Name = "name",
                                 Adjs1Quantity = 1,
                                 Adjs2Quantity = 1,
                                 Adjs3Quantity = 1,
                                 Adjs4Quantity = 1,
-                                Adjs5Quantity = 1,
                                 ReceiptQuantity = 1,
                             }
                         }
@@ -189,6 +188,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotEmpty(response);
 
+            data.Date = DateTimeOffset.UtcNow;
+            data.ProductionOrder = null;
+
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
+            data.ProductionOrder = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel()
+            {
+                Id = 0
+            };
+
+            response = data.Validate(validationContext);
+
+            Assert.NotEmpty(response);
+
             data.ProductionOrder = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel()
             {
                 Id = 1
@@ -200,12 +215,98 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             data.StrikeOff = new Lib.ViewModels.StrikeOff.StrikeOffViewModel()
             {
-                Id = 1
+                Id = 0
             };
             response = data.Validate(validationContext);
 
-            Assert.Empty(response);
+            Assert.NotEmpty(response);
 
+        }
+
+        [Fact]
+        public async Task GetByStrikeOff_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DyestuffChemicalUsageReceiptFacade facade = new DyestuffChemicalUsageReceiptFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.GetDataByStrikeOff(data.StrikeOffId);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async Task GetByStrikeOff_Success_Null()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DyestuffChemicalUsageReceiptFacade facade = new DyestuffChemicalUsageReceiptFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = await facade.GetDataByStrikeOff(data.StrikeOffId - 1);
+
+            Assert.Null(Response);
+        }
+
+        [Fact]
+        public void CoverageVM()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DyestuffChemicalUsageReceiptFacade facade = new DyestuffChemicalUsageReceiptFacade(serviceProvider, dbContext);
+
+            var data = new DyestuffChemicalUsageReceiptViewModel()
+            {
+                UsageReceiptItems = new List<DyestuffChemicalUsageReceiptItemViewModel>()
+                {
+                    new DyestuffChemicalUsageReceiptItemViewModel()
+                    {
+                        UsageReceiptDetails = new List<DyestuffChemicalUsageReceiptItemDetailViewModel>()
+                        {
+                            new DyestuffChemicalUsageReceiptItemDetailViewModel()
+                        }
+                    }
+                }
+            };
+
+            foreach (var item in data.UsageReceiptItems)
+            {
+                Assert.Null(item.ReceiptDate);
+                Assert.Null(item.Adjs1Date);
+                Assert.Null(item.Adjs2Date);
+                Assert.Null(item.Adjs3Date);
+                Assert.Null(item.Adjs4Date);
+                Assert.Null(item.ColorCode);
+                foreach (var detail in item.UsageReceiptDetails)
+                {
+                    Assert.Null(detail.Name);
+                    Assert.Equal(0, detail.Index);
+                    Assert.Equal(0, detail.ReceiptQuantity);
+                    Assert.Equal(0, detail.Adjs1Quantity);
+                    Assert.Equal(0, detail.Adjs2Quantity);
+                    Assert.Equal(0, detail.Adjs3Quantity);
+                    Assert.Equal(0, detail.Adjs4Quantity);
+                }
+            }
+        }
+
+        [Fact]
+        public void CoverageModel()
+        {
+            var model = new DyestuffChemicalUsageReceiptModel();
+            Assert.ThrowsAny<NotImplementedException>(() => model.Validate(null));
+
+            var itemModel = new DyestuffChemicalUsageReceiptItemModel();
+            Assert.ThrowsAny<NotImplementedException>(() => itemModel.Validate(null));
+
+            var detailModel = new DyestuffChemicalUsageReceiptItemDetailModel();
+            Assert.ThrowsAny<NotImplementedException>(() => detailModel.Validate(null));
         }
     }
 }

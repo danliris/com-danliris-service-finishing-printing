@@ -17,6 +17,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
         [MaxLength(2048)]
         public string ColorCode { get; set; }
 
+        public DateTimeOffset? ReceiptDate { get; set; }
+
         public DateTimeOffset? Adjs1Date { get; set; }
 
         public DateTimeOffset? Adjs2Date { get; set; }
@@ -24,8 +26,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
         public DateTimeOffset? Adjs3Date { get; set; }
 
         public DateTimeOffset? Adjs4Date { get; set; }
-
-        public DateTimeOffset? Adjs5Date { get; set; }
 
         public ICollection<DyestuffChemicalUsageReceiptItemDetailModel> DyestuffChemicalUsageReceiptItemDetails { get; set; }
 
