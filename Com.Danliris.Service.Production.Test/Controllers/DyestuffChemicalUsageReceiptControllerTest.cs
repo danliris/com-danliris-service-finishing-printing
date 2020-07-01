@@ -46,7 +46,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                             },
                             new DyestuffChemicalUsageReceiptItemDetailModel()
                             {
-                                Name = "Viscositas"
+                                Name = "Viscositas",
+                                ReceiptQuantity = 1
                             }
                         }
                     },
