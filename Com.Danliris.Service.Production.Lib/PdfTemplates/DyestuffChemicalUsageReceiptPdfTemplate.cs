@@ -24,6 +24,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         private readonly PdfPTable DocumentInfo;
         private readonly List<PdfPTable> DocumentItems;
 
+        private readonly string VISCOSITAS = "viscositas";
+
         List<string> bodyTableColumns = new List<string> { "MACAM BARANG", "DESIGN", "S.P", "C.W", "SATUAN", "KUANTITI", "PANJANG TOTAL (m)", "BERAT TOTAL (kg)" };
 
         public DyestuffChemicalUsageReceiptPdfTemplate(DyestuffChemicalUsageReceiptModel model, int timeoffset)
@@ -38,19 +40,50 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         {
             const int MARGIN = 25;
 
-            Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, MARGIN, MARGIN);
+            TwoColumnHeaderFooter pageEventHelper = new TwoColumnHeaderFooter(DOCUMENTISO, Title, DocumentInfo);
+            var height = pageEventHelper.TableHeight;
+            Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, 50 + height, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
-
+            writer.PageEvent = pageEventHelper;
             document.Open();
 
             #region Header
-            document.Add(DOCUMENTISO);
-            document.Add(new Paragraph(" "));
-            document.Add(Title);
-            document.Add(new Paragraph(" "));
-            document.Add(DocumentInfo);
-            document.Add(new Paragraph(" "));
+            //document.Add(DOCUMENTISO);
+            //document.Add(new Paragraph(" "));
+            //document.Add(Title);
+            //document.Add(new Paragraph(" "));
+            //document.Add(DocumentInfo);
+            //document.Add(new Paragraph(" "));
+            //for (int i = 1; i <= DocumentItems.Count; i++)
+            //{
+            //    int idx = 1;
+            //    var docItem = DocumentItems[i - 1];
+            //    document.Add(docItem);
+            //    if (idx++ != DocumentItems.Count)
+            //    {
+            //        document.Add(new Paragraph(" "));
+            //    }
+
+            //    if (i % 4 == 0)
+            //    {
+            //        document.NewPage();
+            //        document.Add(DOCUMENTISO);
+            //        document.Add(new Paragraph(" "));
+            //        document.Add(Title);
+            //        document.Add(new Paragraph(" "));
+            //        document.Add(DocumentInfo);
+            //        document.Add(new Paragraph(" "));
+            //    }
+            //}
+
+
+            //document.Add(DOCUMENTISO);
+            //document.Add(new Paragraph(" "));
+            //document.Add(Title);
+            //document.Add(new Paragraph(" "));
+            //document.Add(DocumentInfo);
+            //document.Add(new Paragraph(" "));
             int index = 1;
             foreach (var item in DocumentItems)
             {
@@ -68,7 +101,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             stream.Write(byteInfo, 0, byteInfo.Length);
             stream.Position = 0;
 
-            return stream;
+            var ms2 = new MemoryStream();
+            PdfReader reader = new PdfReader(stream);
+            PdfStamper stamper = new PdfStamper(reader, ms2);
+            int pages = reader.NumberOfPages;
+            for (int i = 1; i <= pages; i++)
+            {
+                ColumnText.ShowTextAligned(stamper.GetUnderContent(i), Element.ALIGN_RIGHT, new Phrase($"Halaman {i} dari {pages}", TEXT_FONT), 580f, 15f, 0);
+            }
+            stamper.Close();
+            byte[] byteInfo2 = ms2.ToArray();
+            ms2.Write(byteInfo2, 0, byteInfo2.Length);
+            ms2.Position = 0;
+            return ms2;
         }
 
         private PdfPTable GetISO()
@@ -185,6 +230,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 {
                     WidthPercentage = 100
                 };
+                table.KeepTogether = true;
                 float[] widths = new float[] { 2f, 1f, 1f, 1f, 1f, 1f, 1f };
                 table.SetWidths(widths);
                 PdfPCell cellCenter = new PdfPCell()
@@ -262,8 +308,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     cellLeft.Phrase = new Phrase(detail.Name, TEXT_FONT);
                     table.AddCell(cellLeft);
 
-                    cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                    table.AddCell(cellCenter);
+                    if (detail.Name.ToLower() == VISCOSITAS)
+                    {
+                        if (detail.ReceiptQuantity == 0)
+                        {
+                            cellCenter.Phrase = new Phrase("", TEXT_FONT);
+                            table.AddCell(cellCenter);
+                        }
+                        else
+                        {
+                            cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                            table.AddCell(cellCenter);
+                        }
+                    }
+                    else
+                    {
+                        cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                        table.AddCell(cellCenter);
+                    }
 
                     cellCenter.Phrase = new Phrase(detail.Adjs1Quantity == 0 ? "" : detail.Adjs1Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
@@ -277,19 +339,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     cellCenter.Phrase = new Phrase(detail.Adjs4Quantity == 0 ? "" : detail.Adjs4Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                     table.AddCell(cellCenter);
 
-                    var total = detail.ReceiptQuantity + detail.Adjs1Quantity + detail.Adjs2Quantity + detail.Adjs3Quantity + detail.Adjs4Quantity;
+                    cellCenter.Phrase = new Phrase("", TEXT_FONT);
+                    table.AddCell(cellCenter);
 
-                    if (detail.Name.ToLower() != "viscositas")
-                    {
+                    //var total = detail.ReceiptQuantity + detail.Adjs1Quantity + detail.Adjs2Quantity + detail.Adjs3Quantity + detail.Adjs4Quantity;
 
-                        cellCenter.Phrase = new Phrase(total.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                        table.AddCell(cellCenter);
-                    }
-                    else
-                    {
-                        cellCenter.Phrase = new Phrase("", TEXT_FONT);
-                        table.AddCell(cellCenter);
-                    }
+                    //if (detail.Name.ToLower() != VISCOSITAS)
+                    //{
+
+                    //    cellCenter.Phrase = new Phrase(total.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                    //    table.AddCell(cellCenter);
+                    //}
+                    //else
+                    //{
+                    //    cellCenter.Phrase = new Phrase("", TEXT_FONT);
+                    //    table.AddCell(cellCenter);
+                    //}
                 }
 
                 cellLeft.Phrase = new Phrase("Pembuatan", TEXT_FONT);
@@ -317,6 +382,64 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             }
 
             return items;
+        }
+    }
+
+    public class TwoColumnHeaderFooter : PdfPageEventHelper
+    {
+        public float TableHeight { get; set; }
+        public PdfPTable Table { get; set; }
+
+        public TwoColumnHeaderFooter(PdfPTable iso, PdfPTable title, PdfPTable info)
+        {
+            Table = new PdfPTable(1)
+            {
+                WidthPercentage = 100,
+                TotalWidth = 523
+            };
+            PdfPCell cell = new PdfPCell()
+            {
+                Border = Rectangle.NO_BORDER,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                PaddingBottom = 5f
+            };
+
+            cell.Table = iso;
+            Table.AddCell(cell);
+
+            cell.Table = title;
+            Table.AddCell(cell);
+
+            cell.Table = info;
+            Table.AddCell(cell);
+
+            TableHeight = CalculatePdfPTableHeight(Table);
+        }
+
+        public float CalculatePdfPTableHeight(PdfPTable table)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Document doc = new Document(PageSize.Flsa);
+                PdfWriter w = PdfWriter.GetInstance(doc, ms);
+
+                doc.Open();
+
+                table.WriteSelectedRows(0, table.Rows.Count, 0, 0, w.DirectContent);
+
+                w.Close();
+                doc.Close();
+                return table.TotalHeight;
+            }
+        }
+
+        public override void OnEndPage(PdfWriter writer, Document document)
+        {
+            base.OnEndPage(writer, document);
+            Table.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
+            Table.WriteSelectedRows(0, -1, document.Left, document.Top + ((document.TopMargin + TableHeight) / 2), writer.DirectContent);
+
         }
     }
 }
