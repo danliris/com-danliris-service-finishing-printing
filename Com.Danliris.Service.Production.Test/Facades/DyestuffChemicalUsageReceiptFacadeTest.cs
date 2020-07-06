@@ -48,6 +48,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 StrikeOffCode = data.StrikeOffCode,
                 Date = data.Date,
                 StrikeOffId = data.StrikeOffId,
+                RepeatedProductionOrderNo = data.RepeatedProductionOrderNo,
                 StrikeOffType = data.StrikeOffType,
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
                 {
@@ -97,6 +98,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 ProductionOrderOrderQuantity = data.ProductionOrderOrderQuantity,
                 StrikeOffCode = data.StrikeOffCode,
                 Date = data.Date,
+                RepeatedProductionOrderNo = data.RepeatedProductionOrderNo,
                 StrikeOffId = data.StrikeOffId,
                 StrikeOffType = data.StrikeOffType,
                 DyestuffChemicalUsageReceiptItems = data.DyestuffChemicalUsageReceiptItems.Select(d => new DyestuffChemicalUsageReceiptItemModel()
@@ -149,6 +151,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = new DyestuffChemicalUsageReceiptViewModel()
             {
+                RepeatedProductionOrderNo = "no",
                 UsageReceiptItems = new List<DyestuffChemicalUsageReceiptItemViewModel>()
                 {
                     new DyestuffChemicalUsageReceiptItemViewModel()
@@ -250,7 +253,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var Response = await facade.GetDataByStrikeOff(data.StrikeOffId - 1);
 
-            Assert.Null(Response);
+            Assert.Null(Response.Item1);
         }
 
         [Fact]

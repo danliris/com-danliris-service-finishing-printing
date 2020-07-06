@@ -84,15 +84,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             //document.Add(new Paragraph(" "));
             //document.Add(DocumentInfo);
             //document.Add(new Paragraph(" "));
-            int index = 1;
+            //int index = 1;
             foreach (var item in DocumentItems)
             {
                 document.Add(item);
-                if (index++ != DocumentItems.Count)
-                {
-                    document.Add(new Paragraph(" "));
-                }
+                //if (index++ != DocumentItems.Count)
+                //{
+                    
+                //}
+                document.Add(new Paragraph(" "));
             }
+            document.Add(new Paragraph(" "));
             document.Add(new Paragraph("Dibuat Oleh : ..................................... ", HEADER_FONT));
             #endregion Header
 
@@ -156,25 +158,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
         private PdfPTable GetDocumentInfo(DyestuffChemicalUsageReceiptModel model, int offset)
         {
-            PdfPTable table = new PdfPTable(5)
+            PdfPTable table = new PdfPTable(7)
             {
                 WidthPercentage = 100
             };
-            float[] widths = new float[] { 1f, 3f, 1f, 1f, 3f };
+            float[] widths = new float[] { 10f, 1f, 20f, 5f, 10f, 1f, 20f };
             table.SetWidths(widths);
             PdfPCell cell = new PdfPCell()
             {
                 Border = Rectangle.NO_BORDER,
                 HorizontalAlignment = Element.ALIGN_LEFT,
                 VerticalAlignment = Element.ALIGN_TOP,
-                PaddingBottom = 2f
+                PaddingBottom = 2f,
+                PaddingLeft = 0f,
             };
-
 
             cell.Phrase = new Phrase("No SPP", HEADER_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($": {model.ProductionOrderOrderNo}", HEADER_FONT);
+            cell.Phrase = new Phrase(":", HEADER_FONT);
+            table.AddCell(cell);
+
+            cell.Phrase = new Phrase($"{model.ProductionOrderOrderNo}", HEADER_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", HEADER_FONT);
@@ -183,42 +188,230 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cell.Phrase = new Phrase("Motif", HEADER_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($": {model.StrikeOffCode}", HEADER_FONT);
+            cell.Phrase = new Phrase(":", HEADER_FONT);
+            table.AddCell(cell);
+
+            cell.Phrase = new Phrase($"{model.StrikeOffCode}", HEADER_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("Jumlah Order", HEADER_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($": {model.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture)}", HEADER_FONT);
+            cell.Phrase = new Phrase(":", HEADER_FONT);
+            table.AddCell(cell);
+
+            cell.Phrase = new Phrase($"{model.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture)}", HEADER_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", HEADER_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase("Proses", HEADER_FONT);
-            table.AddCell(cell);
+            if (string.IsNullOrEmpty(model.RepeatedProductionOrderNo))
+            {
 
-            cell.Phrase = new Phrase($": {model.StrikeOffType}", HEADER_FONT);
-            table.AddCell(cell);
 
-            cell.Phrase = new Phrase("Material", HEADER_FONT);
-            table.AddCell(cell);
+                cell.Phrase = new Phrase("Proses", HEADER_FONT);
+                table.AddCell(cell);
 
-            cell.Phrase = new Phrase($": {model.ProductionOrderMaterialName}/{model.ProductionOrderMaterialConstructionName}/{model.ProductionOrderMaterialWidth}", HEADER_FONT);
-            table.AddCell(cell);
+                cell.Phrase = new Phrase(":", HEADER_FONT);
+                table.AddCell(cell);
 
-            cell.Phrase = new Phrase("", HEADER_FONT);
-            table.AddCell(cell);
+                cell.Phrase = new Phrase($"{model.StrikeOffType}", HEADER_FONT);
+                table.AddCell(cell);
 
-            cell.Phrase = new Phrase("Tanggal", HEADER_FONT);
-            table.AddCell(cell);
+                cell.Phrase = new Phrase("Material", HEADER_FONT);
+                table.AddCell(cell);
 
-            cell.Phrase = new Phrase($": {model.Date.AddHours(offset).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", HEADER_FONT);
-            table.AddCell(cell);
+                cell.Phrase = new Phrase(": ", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase($"{model.ProductionOrderMaterialName}/{model.ProductionOrderMaterialConstructionName}/{model.ProductionOrderMaterialWidth}", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("Tanggal", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase(":", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase($"{model.Date.AddHours(offset).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", HEADER_FONT);
+                table.AddCell(cell);
+            }
+            else
+            {
+
+                cell.Phrase = new Phrase("Repeat", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase(":", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase($"{model.RepeatedProductionOrderNo}", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("Material", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase(":", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase($"{model.ProductionOrderMaterialName}/{model.ProductionOrderMaterialConstructionName}/{model.ProductionOrderMaterialWidth}", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("Proses", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase(":", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase($"{model.StrikeOffType}", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase("", HEADER_FONT);
+                table.AddCell(cell);
+
+
+                cell.Phrase = new Phrase("Tanggal", HEADER_FONT);
+                table.AddCell(cell);
+
+                cell.Phrase = new Phrase(":", HEADER_FONT);
+                table.AddCell(cell);
+                cell.Phrase = new Phrase($"{model.Date.AddHours(offset).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", HEADER_FONT);
+                table.AddCell(cell);
+            }
+
+
 
 
             return table;
         }
+
+        //private PdfPTable GetDocumentInfo(DyestuffChemicalUsageReceiptModel model, int offset)
+        //{
+        //    PdfPTable table = new PdfPTable(5)
+        //    {
+        //        WidthPercentage = 100
+        //    };
+        //    float[] widths = new float[] { 2f, 3f, 1f, 2f, 3f };
+        //    table.SetWidths(widths);
+        //    PdfPCell cell = new PdfPCell()
+        //    {
+        //        Border = Rectangle.NO_BORDER,
+        //        HorizontalAlignment = Element.ALIGN_LEFT,
+        //        VerticalAlignment = Element.ALIGN_TOP,
+        //        PaddingBottom = 2f
+        //    };
+
+        //    cell.Phrase = new Phrase("No SPP", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    cell.Phrase = new Phrase($": {model.ProductionOrderOrderNo}", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    cell.Phrase = new Phrase("", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    cell.Phrase = new Phrase("Motif", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    cell.Phrase = new Phrase($": {model.StrikeOffCode}", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    cell.Phrase = new Phrase("Jumlah Order", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    cell.Phrase = new Phrase($": {model.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture)}", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    cell.Phrase = new Phrase("", HEADER_FONT);
+        //    table.AddCell(cell);
+
+        //    if (string.IsNullOrEmpty(model.RepeatedProductionOrderNo))
+        //    {
+                
+
+        //        cell.Phrase = new Phrase("Proses", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase($": {model.StrikeOffType}", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("Material", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase($": {model.ProductionOrderMaterialName}/{model.ProductionOrderMaterialConstructionName}/{model.ProductionOrderMaterialWidth}", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("Tanggal", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase($": {model.Date.AddHours(offset).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", HEADER_FONT);
+        //        table.AddCell(cell);
+        //    }
+        //    else
+        //    {
+
+        //        cell.Phrase = new Phrase("Repeat", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase($": {model.RepeatedProductionOrderNo}", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("Material", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase($": {model.ProductionOrderMaterialName}/{model.ProductionOrderMaterialConstructionName}/{model.ProductionOrderMaterialWidth}", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("Proses", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase($": {model.StrikeOffType}", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase("", HEADER_FONT);
+        //        table.AddCell(cell);
+
+
+        //        cell.Phrase = new Phrase("Tanggal", HEADER_FONT);
+        //        table.AddCell(cell);
+
+        //        cell.Phrase = new Phrase($": {model.Date.AddHours(offset).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", HEADER_FONT);
+        //        table.AddCell(cell);
+        //    }
+
+            
+
+
+        //    return table;
+        //}
 
         private List<PdfPTable> GetDocumentItems(DyestuffChemicalUsageReceiptModel model, int offset)
         {
@@ -265,6 +458,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     HorizontalAlignment = Element.ALIGN_LEFT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
                 };
+                PdfPCell cellRight = new PdfPCell()
+                {
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                };
 
 
                 cellCenter.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
@@ -305,8 +503,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                 foreach (var detail in item.DyestuffChemicalUsageReceiptItemDetails)
                 {
-                    cellLeft.Phrase = new Phrase(detail.Name, TEXT_FONT);
-                    table.AddCell(cellLeft);
+                    if(detail.Name.ToLower() == VISCOSITAS)
+                    {
+                        cellRight.Phrase = new Phrase(detail.Name, TEXT_FONT);
+                        table.AddCell(cellRight);
+                    }
+                    else
+                    {
+                        cellLeft.Phrase = new Phrase(detail.Name, TEXT_FONT);
+                        table.AddCell(cellLeft);
+                    }
+                    
 
                     if (detail.Name.ToLower() == VISCOSITAS)
                     {
@@ -357,8 +564,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     //}
                 }
 
-                cellLeft.Phrase = new Phrase("Pembuatan", TEXT_FONT);
-                table.AddCell(cellLeft);
+                cellRight.Phrase = new Phrase("Pembuatan", TEXT_FONT);
+                table.AddCell(cellRight);
 
                 cellLeft.Phrase = new Phrase("", TEXT_FONT);
                 table.AddCell(cellLeft);
