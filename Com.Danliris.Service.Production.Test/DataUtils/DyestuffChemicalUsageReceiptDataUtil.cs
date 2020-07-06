@@ -28,6 +28,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 StrikeOffCode = "cp",
                 StrikeOffId = 1,
                 StrikeOffType = "type",
+                RepeatedProductionOrderNo = "no",
                 Date = DateTimeOffset.UtcNow,
                 DyestuffChemicalUsageReceiptItems = new List<DyestuffChemicalUsageReceiptItemModel>()
                 {

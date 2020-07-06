@@ -9,6 +9,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.D
 {
     public interface IDyestuffChemicalUsageReceiptFacade : IBaseFacade<DyestuffChemicalUsageReceiptModel>
     {
-        Task<DyestuffChemicalUsageReceiptModel> GetDataByStrikeOff(int strikeOffId);
+        Task<Tuple<DyestuffChemicalUsageReceiptModel, string>> GetDataByStrikeOff(int strikeOffId);
     }
 }

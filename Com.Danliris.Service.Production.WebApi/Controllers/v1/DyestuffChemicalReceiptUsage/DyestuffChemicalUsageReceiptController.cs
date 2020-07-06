@@ -63,21 +63,34 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Dyestuff
         {
             try
             {
-                DyestuffChemicalUsageReceiptModel model = await Facade.GetDataByStrikeOff(strikeOffId);
+                var data = await Facade.GetDataByStrikeOff(strikeOffId);
 
-                if (model == null)
+                if (data.Item1 == null)
                 {
+                    var objectData = new
+                    {
+                        Data = data.Item1,
+                        OrderNo = data.Item2
+                    };
                     Dictionary<string, object> Result =
                         new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
-                        .Ok<DyestuffChemicalUsageReceiptViewModel>(Mapper, null);
+                        .Ok();
+                    Result.Add("data", objectData);
                     return Ok(Result);
                 }
                 else
                 {
-                    DyestuffChemicalUsageReceiptViewModel viewModel = Mapper.Map<DyestuffChemicalUsageReceiptViewModel>(model);
+                    DyestuffChemicalUsageReceiptViewModel viewModel = Mapper.Map<DyestuffChemicalUsageReceiptViewModel>(data.Item1);
+                    var objectData = new
+                    {
+                        Data = viewModel,
+                        OrderNo = data.Item2
+                    };
                     Dictionary<string, object> Result =
                         new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
-                        .Ok<DyestuffChemicalUsageReceiptViewModel>(Mapper, viewModel);
+                        .Ok();
+
+                    Result.Add("data", objectData);
                     return Ok(Result);
                 }
             }

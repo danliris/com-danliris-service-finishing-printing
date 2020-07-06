@@ -17,6 +17,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DyestuffChemica
 
         public ProductionOrderIntegrationViewModel ProductionOrder { get; set; }
 
+        public string RepeatedProductionOrderNo { get; set; }
+
         public StrikeOffViewModel StrikeOff { get; set; }
 
         public DateTimeOffset Date { get; set; }
