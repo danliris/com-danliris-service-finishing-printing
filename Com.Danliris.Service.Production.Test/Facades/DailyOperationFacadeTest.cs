@@ -313,7 +313,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             vm.Input = 0;
             Assert.NotEmpty(vm.Validate(context));
-
             vm.TimeInput = 0;
             Assert.NotEmpty(vm.Validate(context));
 
@@ -346,7 +345,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             vm.DateOutput = null;
             Assert.NotEmpty(vm.Validate(context));
 
-            vm.GoodOutput = 0;
+            vm.GoodOutput = -1;
             Assert.NotEmpty(vm.Validate(context));
 
             vm.TimeOutput = 0;

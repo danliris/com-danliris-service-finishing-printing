@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     yield return new ValidationResult("harus diisi", new List<string> { "TimeOutput" });
                 }
 
-                if (this.GoodOutput <= 0)
+                if (this.GoodOutput <= -1)
                 {
                     yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "GoodOutput" });
                 }
