@@ -565,16 +565,47 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             await Assert.ThrowsAnyAsync<Exception>(() => facade.DeleteAsync(0));
         }
 
+
+      
+
+        [Fact]
+        public async void CreateDO_Type_Output_AreaPreTreatment_When_DataExist()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshot();
+            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
+            dbContext.SaveChanges();
+
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            result = await facade.CreateAsync(ptData);
+         
+
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            result = await facade.CreateAsync(outPTData);
+            Assert.NotEqual(0, result);
+
+
+        }
+
         [Fact]
         public async void CreateDOFullKanban()
         {
             var dbContext = DbContext(GetCurrentMethod());
+            
             int result = 0;
             var serviceProvider = GetServiceProviderMock(dbContext);
 
             var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
 
             var kanban = await DataUtil(facade, dbContext).GetKanban();
+
 
             var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
             result = await facade.CreateAsync(ptData);

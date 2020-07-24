@@ -44,6 +44,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             return await kanbanDataUtil.GetTestData();
         }
 
+        public KanbanSnapshotModel GetKanbanSnapshot()
+        {
+            return kanbanDataUtil.GetKanbanSnapshot();
+        }
+
         public DailyOperationModel GetNewDataInputPreTreatment(KanbanModel kanban)
         {
             DailyOperationModel model = new DailyOperationModel

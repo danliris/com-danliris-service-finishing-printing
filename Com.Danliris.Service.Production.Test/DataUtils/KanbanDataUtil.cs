@@ -19,6 +19,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             this.machineDataUtil = machineDataUtil;
         }
 
+        public KanbanSnapshotModel GetKanbanSnapshot()
+        {
+            KanbanSnapshotModel kanbanSnapshot = new KanbanSnapshotModel()
+            {
+                Buyer = "Buyer",
+                DOCreatedUtcMonth = DateTime.Now.Month,
+                DOCreatedUtcYear = DateTime.Now.Year,
+                DyeingBadOutputQty = 1,
+                DyeingCartNumber = "",
+                DyeingDay = 1,
+                DyeingGoodOutputQty = 1,
+                DyeingInputDate = 1,
+                DyeingInputQty = 1,
+                DyeingInputStepIndex = 1,
+                DyeingKonstruksi = "DyeingKonstruksi",
+                KanbanId = 1,
+                PreTreatmentInputDate = DateTime.Now.Day,
+                PreTreatmentOutputDate =DateTime.Now.Day,
+                PreTreatmentInputStepIndex =1,
+            };
+            return  kanbanSnapshot;
+        }
         public override async Task<KanbanModel> GetNewDataAsync()
         {
             MachineModel machine = await machineDataUtil.GetTestData();
@@ -29,6 +51,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 {
                     Steps = new List<KanbanStepModel>
                     {
+
                         new KanbanStepModel
                         {
                             Machine = new MachineModel
