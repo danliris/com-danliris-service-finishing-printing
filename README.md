@@ -3,25 +3,13 @@
 
 ```
 com-danliris-service-finishing-printing
- ┣ .git
- ┃ ┣ hooks
- ┃ ┃ ┣ applypatch-msg.sample
- ┃ ┃ ┣ commit-msg.sample
- ┃ ┃ ┣ fsmonitor-watchman.sample
- ┃ ┃ ┣ post-update.sample
- ┃ ┃ ┣ pre-applypatch.sample
- ┃ ┃ ┣ pre-commit.sample
- ┃ ┃ ┣ pre-push.sample
- ┃ ┃ ┣ pre-rebase.sample
- ┃ ┃ ┣ pre-receive.sample
- ┃ ┃ ┣ prepare-commit-msg.sample
- ┃ ┃ ┗ update.sample
- ┃ ┣ info
- ┃ ┃ ┗ exclude
- ┃ ┣ logs
- ┃ ┃ ┣ refs
- ┃ ┃ ┃ ┣ heads
- ┃ ┃ ┃ ┃ ┣ dev
- ┃ ┃ ┃ ┃ ┗ master
- ┃ ┃ ┃ ┗ remotes
+ ┣ Com.Danliris.Service.Production.Lib
+ ┣ Com.Danliris.Service.Production.Test
+ ┣ Com.Danliris.Service.Production.WebApi
+ ┣ TestResults
+ ┣ .codecov.yml
+ ┣ .gitignore
+ ┣ .travis.yml
+ ┣ Com.Danliris.Service.Finishing.Printing.sln
+ ┗ README.md
  ```
