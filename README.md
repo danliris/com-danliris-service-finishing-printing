@@ -62,9 +62,7 @@ Com.Danliris.Service.Production.WebApi
 
 
 ## Knows More Details
-### Structure  Directory and description
-
-**Root Directory:**
+### Root Structure  Directory and description
 
 ```
 com-danliris-service-finishing-printing
@@ -78,14 +76,17 @@ com-danliris-service-finishing-printing
  ┣ Com.Danliris.Service.Finishing.Printing.sln
  ┗ README.md
  ```
-Description:
+
 1.  Com.Danliris.Service.Production.Lib
+
 This Folder consists of various libraries, domain Models, View Models, and Business Logic.The Model and View Models represents the data structure. Business Logic has responsibility  to organize, prepare, manipulate, and organize data. The tasks are include entering data into databases, updating data, deleting data, and so on. The model carries out its work based on instructions from the controller.
 
 2.  Com.Danliris.Service.Production.WebApi
+
 This Folder consists of Controller API. The controller has responsibility to processing data and  HTTP requests and then send it to a web page. 
 
 3. Com.Danliris.Service.Production.Test
+
 This Folder is collection of classes to run code testing. The code testing used in this app is  a unit test using libraries of moq and xunit
 
  ### Validation
