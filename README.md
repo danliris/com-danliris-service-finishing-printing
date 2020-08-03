@@ -2,8 +2,9 @@
 
 [![codecov](https://codecov.io/gh/danliris/com-danliris-service-finishing-printing/branch/dev/graph/badge.svg)](https://codecov.io/gh/danliris/com-danliris-service-finishing-printing) [![Build Status](https://travis-ci.com/danliris/com-danliris-service-finishing-printing.svg?branch=dev)](https://travis-ci.com/danliris/com-danliris-service-finishing-printing) [![Maintainability](https://api.codeclimate.com/v1/badges/dd8f946180b0971daf85/maintainability)](https://codeclimate.com/github/danliris/com-danliris-service-finishing-printing/maintainability)
 
-Danliris Website is a microservices application consisting of services based on .NET Core and aureliaJs which part of  NodeJS Frontend Framework.This Application show how  using microservice architectural principals.
-com-danliris-service-finishing-printing repository is part of service that will serve  finishing-printing business Activity
+DanLiris Application is a Enterprise Project that aims to manage the business processes of a Textile Factory, PT. DanLiris.
+This Application is a microservices application consisting of services based on .NET Core and aureliaJs which part of  NodeJS Frontend Framework. This Application show how to implement microservice architecture principles.
+com-danliris-service-finishing-printing repository is part of service that will serve  finishing printing business Activity.
 
 ## Prerequisites
 * Windows, Mac or Linux
@@ -52,13 +53,18 @@ Com.Danliris.Service.Production.WebApi
 - Ensure `Com.Danliris.Service.Production.WebApi` is the startup project and run it and the browser will launched in new tab http://localhost:5000/swagger/index.html
 
 
-### Run Unit Tests
-1. Choose Tab Menu Test and the select Run All Test or press (Ctrl + R, A ) to run test suite.
+### Run Unit Tests in visual studio 
+1. You can run all test suite, specific test suite or specific test case on test explorer
+2. Choose Tab Menu Test to select differnt menu test
+3. Select Run All Test or press (Ctrl + R, A ) to run all test suite.
+4. Select Test Explorer or press (Ctrl + E, T ) to determine  test suite to run specifically.
+5. Select Analyze Code Coverage For All Test to generate code coverage  
 
 
- ## Knows More Details
+## Knows More Details
+### Structure  Directory and description
 
-**Based Directory:**
+**Root Directory:**
 
 ```
 com-danliris-service-finishing-printing
@@ -73,7 +79,14 @@ com-danliris-service-finishing-printing
  ┗ README.md
  ```
 Description:
+1.  Com.Danliris.Service.Production.Lib
+This Folder consists of various libraries, domain Models, View Models, and Business Logic.The Model and View Models represents the data structure. Business Logic has responsibility  to organize, prepare, manipulate, and organize data. The tasks are include entering data into databases, updating data, deleting data, and so on. The model carries out its work based on instructions from the controller.
 
+2.  Com.Danliris.Service.Production.WebApi
+This Folder consists of Controller API. The controller has responsibility to processing data and  HTTP requests and then send it to a web page. 
+
+3. Com.Danliris.Service.Production.Test
+This Folder is collection of classes to run code testing. The code testing used in this app is  a unit test using libraries of moq and xunit
 
  ### Validation
 Data validation using [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
