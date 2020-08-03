@@ -1,5 +1,5 @@
 # com-danliris-service-finishing-printing
-=========================================
+
 Danliris Website is a microservices application consisting of services based on .NET Core and aureliaJs which part of  NodeJS Frontend Framework.This Application show how  using microservice architectural principals.
 com-danliris-service-finishing-printing repository is part of service that will serve  finishing-printing business Activity
 -
@@ -34,7 +34,7 @@ com-danliris-service-finishing-printing repository is part of service that will 
 ```
 Com.Danliris.Service.Production.WebApi 
  ┗ Properties
- ┣ ┗ launchSettings.json
+   ┗ launchSettings.json
 ```
 - Call `dotnet run`.
 - Then open the `http://localhost:5000` URL in your browser.
@@ -49,7 +49,7 @@ Com.Danliris.Service.Production.WebApi
 ```
 Com.Danliris.Service.Production.WebApi 
  ┗ Properties
- ┣ ┗ launchSettings.json
+   ┗ launchSettings.json
 ```
 - Ensure `Com.Danliris.Service.Production.WebApi` is the startup project and run it and the browser will launched in new tab http://localhost:5000/swagger/index.html
 
