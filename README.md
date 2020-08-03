@@ -1,11 +1,9 @@
 # com-danliris-service-finishing-printing
 
+[![codecov](https://codecov.io/gh/danliris/com-danliris-service-finishing-printing/branch/dev/graph/badge.svg)](https://codecov.io/gh/danliris/com-danliris-service-finishing-printing) [![Build Status](https://travis-ci.com/danliris/com-danliris-service-finishing-printing.svg?branch=dev)](https://travis-ci.com/danliris/com-danliris-service-finishing-printing) [![Maintainability](https://api.codeclimate.com/v1/badges/dd8f946180b0971daf85/maintainability)](https://codeclimate.com/github/danliris/com-danliris-service-finishing-printing/maintainability)
+
 Danliris Website is a microservices application consisting of services based on .NET Core and aureliaJs which part of  NodeJS Frontend Framework.This Application show how  using microservice architectural principals.
 com-danliris-service-finishing-printing repository is part of service that will serve  finishing-printing business Activity
--
-
-
-[![codecov](https://codecov.io/gh/danliris/com-danliris-service-finishing-printing/branch/dev/graph/badge.svg)](https://codecov.io/gh/danliris/com-danliris-service-finishing-printing) [![Build Status](https://travis-ci.com/danliris/com-danliris-service-finishing-printing.svg?branch=dev)](https://travis-ci.com/danliris/com-danliris-service-finishing-printing) [![Maintainability](https://api.codeclimate.com/v1/badges/dd8f946180b0971daf85/maintainability)](https://codeclimate.com/github/danliris/com-danliris-service-finishing-printing/maintainability)
 
 ## Prerequisites
 * Windows, Mac or Linux
