@@ -7,49 +7,187 @@ This application is a microservices application consisting of services based on 
 
 ## Prerequisites
 * Windows, Mac or Linux
-* [Visual Studio Code](https://code.visualstudio.com/) or [Visual Studio 2017](https://visualstudio.microsoft.com/vs/whatsnew/)
-* [IIS Web Server](https://www.iis.net/) (Already part of Visual Studio 2019)
-* [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)(Already part of Visual Studio 2019)
-* [.NET Core SDK](https://www.microsoft.com/net/download/core#/current) (Already part of Visual Studio 2019)
-
-## Technologies
-* .NET Core 3
-* ASP.NET Core 3
-* Entity Framework Core 3
+* [Visual Studio Code](https://code.visualstudio.com/) or [Visual Studio](https://visualstudio.microsoft.com/vs/whatsnew/)
+* [IIS Web Server](https://www.iis.net/) 
+* [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+* [.NET Core SDK](https://www.microsoft.com/net/download/core#/current) (v2.0.9,  SDK 2.1.202, ASP.NET Core Runtime 2.0.9 )
 
 
 ## Getting Started
 
-- Clone the repository using the command `git clone https://github.com/danliris/com-danliris-service-finishing-printing.git` and checkout the `dev` branch.
+- - Fork the repository and then clone the repository using command  `git clone https://github/YOUR-USERNAME/com-danliris-service-finishing-printing.git`  checkout the `dev` branch.
+
 
 ### Command Line
 
 - Install the latest version of the .NET Core SDK from this page <https://www.microsoft.com/net/download/core>
 - Next, navigate to root project or wherever your folder is on the commandline in Administrator mode.
 - Create empty database.
-- Setting connection to database using Connection Strings in appsettings.json and appsettings.Developtment.json
+- Setting connection to database using Connection Strings in appsettings.json. Your appsettings.json look like this:
+
+```
+{
+  "Logging": {
+    "IncludeScopes": false,
+    "Debug": {
+      "LogLevel": {
+        "Default": "Warning"
+      }
+    },
+    "Console": {
+      "LogLevel": {
+        "Default": "Warning"
+      }
+    }
+  },
+
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YourDbServer;Database=your_parent_database;Trusted_Connection=True;MultipleActiveResultSets=true",
+  },
+  "ClientId": "your ClientId",
+  "Secret": "Your Secret",
+  "ASPNETCORE_ENVIRONMENT": "Development"
+}
+```
+and  Your appsettings.Developtment.json look like this :
+```
+{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  }
+}
+```
 - Make sure port application has no conflict, setting port application in launchSettings.json
 ```
 Com.Danliris.Service.Production.WebApi 
  ┗ Properties
    ┗ launchSettings.json
 ```
+
+file launchSettings.json look like this :
+```
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:6102/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Com.Danliris.Service.Finishing.Printing.WebApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5000"
+    }
+  }
+}
+```
+
 - Call `dotnet run`.
-- Then open the `http://localhost:5000` URL in your browser.
+- Then open the `http://localhost:6102/swagger/index.html` URL in your browser.
 
 ### Visual Studio
 
 - Download Visual Studio 2019 (any edition) from https://www.visualstudio.com/downloads/ .
 - Open `Com.Danliris.Service.Finishing.Printing.sln` and wait for Visual Studio to restore all Nuget packages.
 - Create empty database.
-- Setting connection to database using ConnectionStrings in appsettings.json and appsettings.Developtment.json.
+- Setting connection to database using Connection Strings in appsettings.json. Your appsettings.json look like this:
+
+```
+{
+  "Logging": {
+    "IncludeScopes": false,
+    "Debug": {
+      "LogLevel": {
+        "Default": "Warning"
+      }
+    },
+    "Console": {
+      "LogLevel": {
+        "Default": "Warning"
+      }
+    }
+  },
+
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YourDbServer;Database=your_parent_database;Trusted_Connection=True;MultipleActiveResultSets=true",
+  },
+  "ClientId": "your ClientId",
+  "Secret": "Your Secret",
+  "ASPNETCORE_ENVIRONMENT": "Development"
+}
+```
+
+and  Your appsettings.Developtment.json look like this :
+```
+{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  }
+}
+```
+
 - Make sure port application has no conflict, setting port application in launchSettings.json.
 ```
 Com.Danliris.Service.Production.WebApi 
  ┗ Properties
    ┗ launchSettings.json
 ```
-- Ensure `Com.Danliris.Service.Production.WebApi` is the startup project and run it and the browser will launched in new tab http://localhost:5000/swagger/index.html
+
+file launchSettings.json look like this :
+```
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:6102/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Com.Danliris.Service.Finishing.Printing.WebApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5000"
+    }
+  }
+}
+```
+
+- Ensure `Com.Danliris.Service.Production.WebApi` is the startup project and run it and the browser will launched in new tab `http://localhost:6102/swagger/index.html`
 
 
 ### Run Unit Tests in Visual Studio 
@@ -110,6 +248,9 @@ PdfTemplates
 
 - Collection of classes to generate report in pdf format.
 
+Services
+
+- Collection of classes and interfaces to validation and authentication user.
 
 Helpers 
 
@@ -373,6 +514,23 @@ The folder tree in this folder is:
  ┃ ┗ Com.Danliris.Service.Finishing.Printing.Test.csproj.user
 ```
 
+**TestResults**
+
+- Collections of files generated by the system for purposes of unit test code coverage.
+
+**ProductionDbContext.cs**
+
+This file contain context class that derives from DbContext in entity framework. DbContext is an important class in Entity Framework API. It is a bridge between domain or entity classes and the database. DbContext and context class  is the primary class that is responsible for interacting with the database.
+
+
+**File Program.cs**
+
+Important class that contains the entry point to the application. The file has the Main() method used to run the application and it is used to create an instance of WebHostBuilder for creating a host for the application. The Startup class to be used by the application is specified in the Main method.
+
+**File Startup.cs**
+
+This file contains Startup class. The Startup class configures services and the app's request pipeline.Optionally includes a ConfigureServices method to configure the app's services. A service is a reusable component that provides app functionality. Services are registered in ConfigureServices and consumed across the app via dependency injection (DI) or ApplicationServices.This class also Includes a Configure method to create the app's request processing pipeline.
+
 **File .travis.yml**
 
 Travis CI is configured by adding a file named .travis.yml. This file in a YAML format text file, located in root directory of the repository. This file specifies the programming language used, the desired building and testing environment (including dependencies which must be installed before the software can be built and tested), and various other parameters
@@ -381,5 +539,10 @@ Travis CI is configured by adding a file named .travis.yml. This file in a YAML 
 
 This file is used to configure code coverage in unit tests.
 
+
+**Com.Danliris.Service.Finishing.Printing.sln**
+
+File .sln is extention for *solution* aka file solution for .Net Core, this file is used to manage all project by code editor.
+
  ### Validation
-Data validation using [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
+Data validation using **IValidatableObject**
