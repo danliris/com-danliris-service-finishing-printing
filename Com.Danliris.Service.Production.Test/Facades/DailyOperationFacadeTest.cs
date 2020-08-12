@@ -226,6 +226,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public void  GenerateExcel_with_Empty_Data()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var Response = facade.GenerateExcel(-1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
         public async Task Should_Success_GetOutputBadDesc()
         {
             var dbContext = DbContext(GetCurrentMethod());

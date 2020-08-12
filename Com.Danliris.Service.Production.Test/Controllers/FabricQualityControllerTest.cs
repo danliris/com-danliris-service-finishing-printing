@@ -232,6 +232,84 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         }
 
         [Fact]
+        public void GetReportExcel_WithDateFrom_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now, null,null,-1, null,null,null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_dateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(null, DateTime.Now, null, -1, null, null, null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_WithDateFrom_and_dateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now, DateTime.Now, null, -1, null, null, null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public void GetReportExcel_WithException_ReturnError()
         {
             var mockFacade = new Mock<IFabricQualityControlFacade>();

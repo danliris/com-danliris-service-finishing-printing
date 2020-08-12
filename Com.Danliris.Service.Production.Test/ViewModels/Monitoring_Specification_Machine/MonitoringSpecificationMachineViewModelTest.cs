@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Specification_Machine
 {
-    public class Monitoring_Specification_MachineTest
+    public class MonitoringSpecificationMachineViewModelTest
     {
         [Fact]
         public void Should_Success_Instantiate()

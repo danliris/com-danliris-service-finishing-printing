@@ -111,6 +111,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public void Generate_Excels_with_EmptyData()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var Response = facade.GenerateExcel(null, 0, 0, null, DateTime.Now, DateTime.Now, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
         public virtual async void Complete_Kanban()
         {
             var dbContext = DbContext(GetCurrentMethod());

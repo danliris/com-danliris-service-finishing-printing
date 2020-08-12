@@ -251,5 +251,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.False(result);
         }
+
+        [Fact]
+        public async Task UpdateSingle_Throws_Exception()
+        {
+            var dbContext = GetDbContext(GetCurrentMethod());
+
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider.GetService(typeof(IIdentityService)))
+                .Returns(new IdentityService() { TimezoneOffset = 1, Token = "token", Username = "username" });
+
+            var service = GetService(dbContext, serviceProviderMock.Object);
+
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => service.UpdateSingle(1, new CostCalculationViewModel()));
+            
+        }
     }
 }
