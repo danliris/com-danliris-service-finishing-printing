@@ -12,6 +12,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
@@ -71,6 +72,73 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var Response = reportFacade.GenerateExcel(data.MachineId, data.ProductionOrderNo, data.CreatedUtc.AddDays(-1), data.CreatedUtc.AddDays(1), 7);
             Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void GenerateExcel_with_empty_Data()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            var Response = reportFacade.GenerateExcel(1, null, null, null, 7);
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Read_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            Assert.Throws<NotImplementedException>(() => reportFacade.Read(1, 1, null, new List<string>(), null, null));
+        }
+
+        [Fact]
+        public async Task CreateAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.CreateAsync(new MonitoringSpecificationMachineModel()));
+        }
+
+        [Fact]
+        public async Task ReadByIdAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.ReadByIdAsync(1));
+        }
+
+        [Fact]
+        public async Task UpdateAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.UpdateAsync(1,new MonitoringSpecificationMachineModel()));
+        }
+
+        [Fact]
+        public async Task DeleteAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineReportFacade reportFacade = new MonitoringSpecificationMachineReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.DeleteAsync(1));
         }
 
         [Fact]
