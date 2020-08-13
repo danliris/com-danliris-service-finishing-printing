@@ -663,6 +663,80 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public async void CreateDataOutPutAreaPretreatment()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshotPreTreatmentYesterday();
+            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
+            dbContext.SaveChanges();
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            result = await facade.CreateAsync(ptData);
+            Assert.NotEqual(0, result);
+
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            result = await facade.CreateAsync(outPTData);
+            Assert.NotEqual(0, result);
+
+        }
+
+        [Fact]
+        public async void CreateDataOutputAreaPretreatmentYesterday()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshotPreTreatmentOutputDateYesterday();
+            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
+            dbContext.SaveChanges();
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            result = await facade.CreateAsync(ptData);
+            Assert.NotEqual(0, result);
+
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            result = await facade.CreateAsync(outPTData);
+            Assert.NotEqual(0, result);
+
+        }
+
+
+        [Fact]
+        public async void CreateDataInputDyeing()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshot();
+            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
+            dbContext.SaveChanges();
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+            result = await facade.CreateAsync(dData);
+            Assert.NotEqual(0, result);
+
+           
+        }
+
+        [Fact]
         public async void EditDOFullKanban()
         {
             var dbContext = DbContext(GetCurrentMethod());

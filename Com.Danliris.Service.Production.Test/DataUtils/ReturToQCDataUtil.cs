@@ -17,10 +17,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
         {
             ReturToQCModel model = new ReturToQCModel
             {
+                Destination = "Destination",
+                DeliveryOrderNo ="1",
                 ReturToQCItems = new List<ReturToQCItemModel>
                 {
+                    
                     new ReturToQCItemModel
                     {
+                        ProductionOrderNo ="1",
+                        
                         ReturToQCItemDetails = new List<ReturToQCItemDetailModel>
                         {
                             new ReturToQCItemDetailModel()

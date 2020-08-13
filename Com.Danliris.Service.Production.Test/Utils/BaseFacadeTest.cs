@@ -5,6 +5,7 @@ using Com.Moonlay.Data.EntityFrameworkCore;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -41,10 +42,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Utils
 
         protected TDbContext DbContext(string testName)
         {
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
+
             DbContextOptionsBuilder<TDbContext> optionsBuilder = new DbContextOptionsBuilder<TDbContext>();
             optionsBuilder
                 .UseInMemoryDatabase(testName)
-                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+                .UseInternalServiceProvider(serviceProvider);
 
             TDbContext dbContext = Activator.CreateInstance(typeof(TDbContext), optionsBuilder.Options) as TDbContext;
 

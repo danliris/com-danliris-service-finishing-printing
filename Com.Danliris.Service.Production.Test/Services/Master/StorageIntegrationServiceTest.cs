@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.Master
                 },
             };
 
-            Assert.NotNull(viewModel.Id);
+            Assert.Equal(1,viewModel.Id);
             Assert.NotNull(viewModel._deleted);
             Assert.NotNull(viewModel._active);
             Assert.NotNull(viewModel._createdBy);
