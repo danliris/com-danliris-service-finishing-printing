@@ -104,12 +104,31 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
 
             //Act
-            var newdata = await DataUtil(facade, dbContext).GetNewDataToUpdate();
+            var newdata = await DataUtil(facade, dbContext).GetNewDataAsyncToUpdate();
             var response = await facade.CreateAsync(newdata);
 
             //Assert
             Assert.True(0 < response);
         }
+
+        [Fact]
+        public async void UpdateAsync_Success()
+        {
+            //Setup
+            var dbContext = DbContext(GetCurrentAsyncMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            //Act
+            var data = await DataUtil(facade, dbContext).GetNewDataAsyncToUpdate();
+         
+            var response = await facade.UpdateAsync(data.Id, data);
+
+            //Assert
+            Assert.True(0 < response);
+        }
+
+
 
         [Fact]
         public virtual async void Generate_Excels()

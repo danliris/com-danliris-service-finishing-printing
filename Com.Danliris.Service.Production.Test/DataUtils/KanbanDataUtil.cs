@@ -152,16 +152,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
         }
 
 
-        public  async Task<KanbanModel> GetNewDataToUpdate()
+        public  async Task<KanbanModel> GetNewDataAsyncToUpdate()
         {
             var oldKanban = await  this.GetTestData();
             MachineModel machine = await machineDataUtil.GetTestData();
             KanbanModel model = new KanbanModel
             {
+           
                 OldKanbanId = oldKanban.Id,
                 CartCartNumber = "11",
                 Instruction = new KanbanInstructionModel
                 {
+                    
                     Steps = new List<KanbanStepModel>
                     {
 
@@ -235,5 +237,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             };
             return model;
         }
+
+        
     }
 }
