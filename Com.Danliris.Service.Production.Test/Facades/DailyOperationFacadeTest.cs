@@ -619,17 +619,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var kanban = await DataUtil(facade, dbContext).GetKanban();
 
-
+            
             var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
             result = await facade.CreateAsync(ptData);
+
             Assert.NotEqual(0, result);
+           
 
             var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            
             result = await facade.CreateAsync(outPTData);
             Assert.NotEqual(0, result);
-
+            
 
             var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+
             result = await facade.CreateAsync(dData);
             Assert.NotEqual(0, result);
 
@@ -662,30 +666,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotEqual(0, result);
         }
 
-        [Fact]
-        public async void CreateDataOutPutAreaPretreatment()
-        {
-            var dbContext = DbContext(GetCurrentMethod());
-
-            int result = 0;
-            var serviceProvider = GetServiceProviderMock(dbContext);
-
-            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
-            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshotPreTreatmentYesterday();
-            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
-            dbContext.SaveChanges();
-
-            var kanban = await DataUtil(facade, dbContext).GetKanban();
-
-            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
-            result = await facade.CreateAsync(ptData);
-            Assert.NotEqual(0, result);
-
-            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
-            result = await facade.CreateAsync(outPTData);
-            Assert.NotEqual(0, result);
-
-        }
 
         [Fact]
         public async void CreateDataOutputAreaPretreatmentYesterday()
@@ -714,7 +694,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
 
         [Fact]
-        public async void CreateDataInputDyeing()
+        public async void CreateDataInputAreaDyeing()
         {
             var dbContext = DbContext(GetCurrentMethod());
 
@@ -730,10 +710,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var kanban = await DataUtil(facade, dbContext).GetKanban();
 
             var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+            dData.KanbanStepIndex = 3;
             result = await facade.CreateAsync(dData);
+
+
+            var outDData = DataUtil(facade, dbContext).GetNewDataOut(dData);
+            result = await facade.CreateAsync(outDData);
             Assert.NotEqual(0, result);
 
-           
+            Assert.NotEqual(0, result);
+
+
         }
 
         [Fact]

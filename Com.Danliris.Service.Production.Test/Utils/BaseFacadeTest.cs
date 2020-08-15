@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Xunit;
@@ -39,6 +40,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Utils
 
             return string.Concat(sf.GetMethod().Name, "_", _entity);
         }
+
+        protected string GetCurrentAsyncMethod([CallerMemberName] string methodName = "")
+        {
+            var method = new StackTrace()
+                .GetFrames()
+                .Select(frame => frame.GetMethod())
+                .FirstOrDefault(item => item.Name == methodName);
+
+            return method.Name;
+
+        }
+
 
         protected TDbContext DbContext(string testName)
         {

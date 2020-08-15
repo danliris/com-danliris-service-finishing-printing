@@ -19,18 +19,29 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Helpers
         [Fact]
         public void CreateExcel_Return_Success()
         {
+   
             DataTable table = new DataTable();
-            table.Columns.Add("Dosage", typeof(int));
-            table.Columns.Add("Drug", typeof(string));
-            table.Columns.Add("Patient", typeof(string));
-            table.Columns.Add("Date", typeof(DateTime));
 
-            // Step 3: here we add 5 rows.
-            table.Rows.Add(25, "Indocin", "David", DateTime.Now);
-            table.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
-            table.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
-            table.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
-            table.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
+            table.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "No Order", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "No Kereta", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Reproses", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Mesin", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Step Proses", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Lebar Kain (inch)", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Jenis Proses", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Tgl Input", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Jam Input", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Input", DataType = typeof(Double) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Tgl Output", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Jam Output", DataType = typeof(String) });
+            table.Columns.Add(new DataColumn() { ColumnName = "BQ", DataType = typeof(Double) });
+            table.Columns.Add(new DataColumn() { ColumnName = "BS", DataType = typeof(Double) });
+            table.Columns.Add(new DataColumn() { ColumnName = "Keterangan BQ", DataType = typeof(String) });
+
+            table.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", 0, "", "", 0, 0, "");
 
             var mergeCells = new List<(string cells, Enum hAlign, Enum vAlign)>
                           {

@@ -49,16 +49,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             return kanbanDataUtil.GetKanbanSnapshot();
         }
 
-        public KanbanSnapshotModel GetKanbanSnapshotPreTreatmentYesterday()
-        {
-            return kanbanDataUtil.GetKanbanSnapshotPreTreatmentInputDateYesterday();
-        }
-
+       
         public KanbanSnapshotModel GetKanbanSnapshotPreTreatmentOutputDateYesterday()
         {
             return kanbanDataUtil.GetKanbanSnapshotPreTreatmentOutputDateYesterday();
         }
-        
+
+       
 
         public DailyOperationModel GetNewDataInputPreTreatment(KanbanModel kanban)
         {
@@ -167,7 +164,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             {
                 KanbanId = dataInput.KanbanId,
                 Type = "output",
-                DateOutput = DateTimeOffset.UtcNow,
+                DateOutput = DateTimeOffset.UtcNow.AddDays(1),
                 StepId = dataInput.StepId,
                 MachineId = dataInput.MachineId,
                 StepProcess = dataInput.StepProcess,

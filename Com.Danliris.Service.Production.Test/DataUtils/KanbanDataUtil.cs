@@ -42,29 +42,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             return  kanbanSnapshot;
         }
 
-        public KanbanSnapshotModel GetKanbanSnapshotPreTreatmentInputDateYesterday()
-        {
-            KanbanSnapshotModel kanbanSnapshot = new KanbanSnapshotModel()
-            {
-                Buyer = "Buyer",
-                DOCreatedUtcMonth = DateTime.Now.Month,
-                DOCreatedUtcYear = DateTime.Now.Year,
-                DyeingBadOutputQty = 1,
-                DyeingCartNumber = "",
-                DyeingDay = 1,
-                DyeingGoodOutputQty = 1,
-                DyeingInputDate = 1,
-                DyeingInputQty = 1,
-                DyeingInputStepIndex = 1,
-                DyeingKonstruksi = "DyeingKonstruksi",
-                KanbanId = 1,
-                PreTreatmentInputDate = DateTime.Now.AddDays(-1).Day,
-                PreTreatmentOutputDate = DateTime.Now.Day,
-                PreTreatmentInputStepIndex = 1,
-            };
-            return kanbanSnapshot;
-        }
-
+      
         public KanbanSnapshotModel GetKanbanSnapshotPreTreatmentOutputDateYesterday()
         {
             KanbanSnapshotModel kanbanSnapshot = new KanbanSnapshotModel()
@@ -84,6 +62,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 PreTreatmentInputDate = DateTime.Now.AddDays(-1).Day,
                 PreTreatmentOutputDate = DateTime.Now.AddDays(-1).Day,
                 PreTreatmentInputStepIndex = 1,
+               
             };
             return kanbanSnapshot;
         }
@@ -94,6 +73,92 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             MachineModel machine = await machineDataUtil.GetTestData();
             KanbanModel model = new KanbanModel
             {
+                
+                CartCartNumber = "11",
+                Instruction = new KanbanInstructionModel
+                {
+                    Steps = new List<KanbanStepModel>
+                    {
+
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area pre treatment"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area dyeing"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area printing"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area finishing"
+                        },
+                        new KanbanStepModel
+                        {
+                            Machine = new MachineModel
+                            {
+                                Id = machine.Id
+                            },
+                            MachineId = machine.Id,
+                            StepIndicators = new List<KanbanStepIndicatorModel>
+                            {
+                                new KanbanStepIndicatorModel()
+                            },
+                            ProcessArea = "area qc"
+                        },
+                    }
+                }
+            };
+            return model;
+        }
+
+
+        public  async Task<KanbanModel> GetNewDataToUpdate()
+        {
+            var oldKanban = await  this.GetTestData();
+            MachineModel machine = await machineDataUtil.GetTestData();
+            KanbanModel model = new KanbanModel
+            {
+                OldKanbanId = oldKanban.Id,
                 CartCartNumber = "11",
                 Instruction = new KanbanInstructionModel
                 {
