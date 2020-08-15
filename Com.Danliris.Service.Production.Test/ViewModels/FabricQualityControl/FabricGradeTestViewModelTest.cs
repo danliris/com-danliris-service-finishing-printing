@@ -41,5 +41,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.FabricQualityC
             Assert.Equal(1, viewModel.Score);
             Assert.Equal("Type", viewModel.Type);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            FabricGradeTestViewModel viewModel = new FabricGradeTestViewModel();
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
 }

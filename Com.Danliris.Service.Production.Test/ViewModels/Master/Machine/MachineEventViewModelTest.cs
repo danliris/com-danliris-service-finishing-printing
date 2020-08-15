@@ -25,5 +25,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Master.Machine
             Assert.Equal("No", viewModel.No);
             Assert.Equal("Category", viewModel.Category);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            MachineEventViewModel viewModel = new MachineEventViewModel();
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
 }

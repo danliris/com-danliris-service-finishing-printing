@@ -40,5 +40,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.ShipmentDocume
             Assert.Equal("ProductionOrderType", viewModel.ProductionOrderType);
             Assert.Equal(item, viewModel.Items);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            ShipmentDocumentDetailViewModel viewModel = new ShipmentDocumentDetailViewModel();
+
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
+        }
     }
 }

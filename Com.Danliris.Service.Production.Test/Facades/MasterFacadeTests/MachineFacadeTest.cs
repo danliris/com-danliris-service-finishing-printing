@@ -139,6 +139,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
         }
 
         [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            MachineTypeIndicatorsViewModel viewModel = new MachineTypeIndicatorsViewModel();
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
+        }
+
+        [Fact]
         public void Mapping_With_AutoMapper_Profiles()
         {
             var configuration = new MapperConfiguration(cfg =>

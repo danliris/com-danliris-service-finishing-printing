@@ -21,6 +21,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.Master
                 _createAgent = "_createAgent",
                 _updatedBy = "_updatedBy",
                 _updateAgent = "_updateAgent",
+                _createdDate =DateTime.Now,
+                _updatedDate=DateTime.Now,
                 code = "code",
                 name = "name",
                 description = "description",

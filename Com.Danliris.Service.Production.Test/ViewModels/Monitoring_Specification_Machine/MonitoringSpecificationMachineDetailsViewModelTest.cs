@@ -22,8 +22,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Spe
             Assert.Equal("Indicator", viewModel.Indicator);
             Assert.Equal("Uom", viewModel.Uom);
             Assert.Equal(1, viewModel.MonitoringSpecificationMachineId);
-          
+        }
 
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            MonitoringSpecificationMachineDetailsViewModel viewModel = new MonitoringSpecificationMachineDetailsViewModel();
+
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Eve
             var time = DateTimeOffset.Now;
             var machineViewModel = new MachineViewModel()
             {
+                UId= "UId",
                Code = "Code"
             };
             var production = new ProductionOrderIntegrationViewModel()

@@ -185,11 +185,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
+            Assert.True(0 < response.Count());
 
             data.Date = default(DateTimeOffset);
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
+            Assert.True(0 < response.Count());
 
             data.Date = DateTimeOffset.UtcNow;
             data.ProductionOrder = null;
@@ -197,6 +199,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
+            Assert.True(0 < response.Count());
 
             data.ProductionOrder = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel()
             {
@@ -215,6 +218,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
+            Assert.True(0 < response.Count());
 
             data.StrikeOff = new Lib.ViewModels.StrikeOff.StrikeOffViewModel()
             {
@@ -223,7 +227,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
-
+            Assert.True(0 < response.Count());
         }
 
         [Fact]
