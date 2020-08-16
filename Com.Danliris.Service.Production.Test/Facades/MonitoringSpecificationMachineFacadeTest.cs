@@ -120,6 +120,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public async Task UpdateAsync_MonitoringSpecificationMachine_succes()
+        {
+            //Setup
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringSpecificationMachineFacade facade = new MonitoringSpecificationMachineFacade(serviceProvider, dbContext);
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var newData =  DataUtil(facade, dbContext).GetNewData();
+            
+            //Act
+           int result = await facade.UpdateAsync(data.Id, newData);
+
+            //Assert
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task UpdateAsync_Return_NotImplementedException()
         {
             var dbContext = DbContext(GetCurrentMethod());
@@ -129,6 +147,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.UpdateAsync(1,new MonitoringSpecificationMachineModel()));
         }
+
 
         [Fact]
         public async Task DeleteAsync_Return_NotImplementedException()

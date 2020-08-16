@@ -113,6 +113,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
         }
 
+        [Fact]
+        public async void UpdateAsync_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(ReturToQCFacade), serviceProvider, dbContext) as ReturToQCFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var newData = DataUtil(facade, dbContext).GetNewData();
+            await facade.UpdateAsync(data.Id, newData);
+
+        }
+
 
         [Fact]
         public async void GetReport()

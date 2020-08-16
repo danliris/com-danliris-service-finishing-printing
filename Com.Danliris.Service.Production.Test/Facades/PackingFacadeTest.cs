@@ -179,6 +179,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public async void UpdateAsync_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var newData =  DataUtil(facade, dbContext).GetNewData();
+            var Response = await facade.UpdateAsync(data.Id, newData);
+
+            Assert.NotEqual(0,Response);
+        }
+
+        [Fact]
         public void Mapping_With_AutoMapper_Profiles()
         {
             var configuration = new MapperConfiguration(cfg =>
