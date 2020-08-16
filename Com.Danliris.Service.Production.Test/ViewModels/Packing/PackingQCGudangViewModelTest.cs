@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Packing
         {
             PackingQCGudangViewModel vm = new PackingQCGudangViewModel()
             {
-                Date =DateTime.Now,
+                Date =DateTimeOffset.Now,
                 Dyeing =1,
                 Jumlah =1,
                 Printing =1,
@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Packing
                 White=1
             };
 
-            Assert.True( DateTime.MinValue < vm.Date);
+            Assert.True( DateTimeOffset.MinValue < vm.Date);
             Assert.Equal(1, vm.Dyeing);
             Assert.Equal(1, vm.Jumlah);
             Assert.Equal(1, vm.Printing);
