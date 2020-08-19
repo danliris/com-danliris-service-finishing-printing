@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Newtonsoft.Json;
 using Com.Moonlay.NetCore.Lib;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DyestuffChemicalUsageReceipt
 {
@@ -40,6 +41,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dyes
         {
             await DyestuffChemicalUsageReceiptLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();
+        }
+
+        public async Task<Tuple<DyestuffChemicalUsageReceiptModel, string>> GetDataByStrikeOff(int strikeOffId)
+        {
+            var data = await DyestuffChemicalUsageReceiptLogic.GetDataByStrikeOff(strikeOffId);
+            var orderNo = DyestuffChemicalUsageReceiptLogic.GetLatestProductionOrderNoByStrikeOff(strikeOffId);
+            return new Tuple<DyestuffChemicalUsageReceiptModel, string>(data, orderNo);
         }
 
         public ReadResponse<DyestuffChemicalUsageReceiptModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)

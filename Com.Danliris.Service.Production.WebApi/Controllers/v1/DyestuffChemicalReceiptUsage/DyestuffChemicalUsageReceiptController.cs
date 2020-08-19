@@ -57,5 +57,50 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Dyestuff
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
+        [HttpGet("strike-off/{strikeOffId}")]
+        public virtual async Task<IActionResult> GetDataByStrikeOff([FromRoute] int strikeOffId)
+        {
+            try
+            {
+                var data = await Facade.GetDataByStrikeOff(strikeOffId);
+
+                if (data.Item1 == null)
+                {
+                    var objectData = new
+                    {
+                        Data = data.Item1,
+                        OrderNo = data.Item2
+                    };
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                        .Ok();
+                    Result.Add("data", objectData);
+                    return Ok(Result);
+                }
+                else
+                {
+                    DyestuffChemicalUsageReceiptViewModel viewModel = Mapper.Map<DyestuffChemicalUsageReceiptViewModel>(data.Item1);
+                    var objectData = new
+                    {
+                        Data = viewModel,
+                        OrderNo = data.Item2
+                    };
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                        .Ok();
+
+                    Result.Add("data", objectData);
+                    return Ok(Result);
+                }
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

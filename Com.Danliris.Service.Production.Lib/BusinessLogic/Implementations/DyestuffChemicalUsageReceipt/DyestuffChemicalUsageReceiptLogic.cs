@@ -22,10 +22,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public override void CreateModel(DyestuffChemicalUsageReceiptModel model)
         {
-            foreach(var item in model.DyestuffChemicalUsageReceiptItems)
+            foreach (var item in model.DyestuffChemicalUsageReceiptItems)
             {
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
-                foreach(var detail in item.DyestuffChemicalUsageReceiptItemDetails)
+                foreach (var detail in item.DyestuffChemicalUsageReceiptItemDetails)
                 {
                     EntityExtension.FlagForCreate(detail, IdentityService.Username, UserAgent);
                 }
@@ -69,23 +69,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             var updatedItems = model.DyestuffChemicalUsageReceiptItems.Where(x => dbModel.DyestuffChemicalUsageReceiptItems.Any(y => y.Id == x.Id)).ToList();
             var deletedItems = dbModel.DyestuffChemicalUsageReceiptItems.Where(x => !model.DyestuffChemicalUsageReceiptItems.Any(y => y.Id == x.Id)).ToList();
 
-            foreach(var item in updatedItems)
+            foreach (var item in updatedItems)
             {
                 var dbItem = dbModel.DyestuffChemicalUsageReceiptItems.FirstOrDefault(x => x.Id == item.Id);
 
                 dbItem.ColorCode = item.ColorCode;
+                dbItem.ReceiptDate = item.ReceiptDate;
                 dbItem.Adjs1Date = item.Adjs1Date;
                 dbItem.Adjs2Date = item.Adjs2Date;
                 dbItem.Adjs3Date = item.Adjs3Date;
                 dbItem.Adjs4Date = item.Adjs4Date;
-                dbItem.Adjs5Date = item.Adjs5Date;
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
 
                 var addedDetails = item.DyestuffChemicalUsageReceiptItemDetails.Where(x => !dbItem.DyestuffChemicalUsageReceiptItemDetails.Any(y => y.Id == x.Id)).ToList();
                 var updatedDetails = item.DyestuffChemicalUsageReceiptItemDetails.Where(x => dbItem.DyestuffChemicalUsageReceiptItemDetails.Any(y => y.Id == x.Id)).ToList();
                 var deletedDetails = dbItem.DyestuffChemicalUsageReceiptItemDetails.Where(x => !item.DyestuffChemicalUsageReceiptItemDetails.Any(y => y.Id == x.Id)).ToList();
 
-                foreach(var detail in updatedDetails)
+                foreach (var detail in updatedDetails)
                 {
                     var dbDetail = dbItem.DyestuffChemicalUsageReceiptItemDetails.FirstOrDefault(x => x.Id == detail.Id);
 
@@ -96,7 +96,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     dbDetail.Adjs2Quantity = detail.Adjs2Quantity;
                     dbDetail.Adjs3Quantity = detail.Adjs3Quantity;
                     dbDetail.Adjs4Quantity = detail.Adjs4Quantity;
-                    dbDetail.Adjs5Quantity = detail.Adjs5Quantity;
 
                     EntityExtension.FlagForUpdate(dbDetail, IdentityService.Username, UserAgent);
                 }
@@ -114,7 +113,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
             }
 
-            foreach(var item in deletedItems)
+            foreach (var item in deletedItems)
             {
                 EntityExtension.FlagForDelete(item, IdentityService.Username, UserAgent);
                 foreach (var detail in item.DyestuffChemicalUsageReceiptItemDetails)
@@ -123,7 +122,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
             }
 
-            foreach(var item in addedItems)
+            foreach (var item in addedItems)
             {
                 item.DyestuffChemicalUsageReceiptId = dbModel.Id;
                 EntityExtension.FlagForCreate(item, IdentityService.Username, UserAgent);
@@ -144,12 +143,42 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     .ThenInclude(s => s.DyestuffChemicalUsageReceiptItemDetails)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
-            foreach(var item in model.DyestuffChemicalUsageReceiptItems)
+            foreach (var item in model.DyestuffChemicalUsageReceiptItems)
             {
                 item.DyestuffChemicalUsageReceiptItemDetails = item.DyestuffChemicalUsageReceiptItemDetails.OrderBy(s => s.Index).ToList();
             }
 
             return model;
+        }
+
+        public async Task<DyestuffChemicalUsageReceiptModel> GetDataByStrikeOff(int strikeOffId)
+        {
+            var model = await DbSet
+                .Include(s => s.DyestuffChemicalUsageReceiptItems)
+                    .ThenInclude(s => s.DyestuffChemicalUsageReceiptItemDetails)
+                .OrderByDescending(s => s.Date)
+                .FirstOrDefaultAsync(s => s.StrikeOffId == strikeOffId);
+
+            if (model == null)
+                return model;
+
+            foreach (var item in model.DyestuffChemicalUsageReceiptItems)
+            {
+                item.DyestuffChemicalUsageReceiptItemDetails = item.DyestuffChemicalUsageReceiptItemDetails.OrderBy(s => s.Index).ToList();
+            }
+
+            return model;
+        }
+
+        public string GetLatestProductionOrderNoByStrikeOff(int strikeOffId)
+        {
+            var data = DbSet
+                .Where(s => s.StrikeOffId == strikeOffId)
+                .OrderByDescending(s => s.Date)
+                .Take(3);
+
+            string result = string.Join(", ", data.Select(s => s.ProductionOrderOrderNo));
+            return result;
         }
     }
 }

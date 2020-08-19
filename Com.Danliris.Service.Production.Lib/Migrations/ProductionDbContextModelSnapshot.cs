@@ -623,8 +623,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.Property<double>("Adjs4Quantity");
 
-                    b.Property<double>("Adjs5Quantity");
-
                     b.Property<string>("CreatedAgent")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -670,7 +668,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 
                     b.HasIndex("DyestuffChemicalUsageReceiptItemId");
 
-                    b.ToTable("dyestuffChemicalUsageReceiptItemDetails");
+                    b.ToTable("DyestuffChemicalUsageReceiptItemDetails");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsageReceipt.DyestuffChemicalUsageReceiptItemModel", b =>
@@ -688,8 +686,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<DateTimeOffset?>("Adjs3Date");
 
                     b.Property<DateTimeOffset?>("Adjs4Date");
-
-                    b.Property<DateTimeOffset?>("Adjs5Date");
 
                     b.Property<string>("ColorCode")
                         .HasMaxLength(2048);
@@ -727,6 +723,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<DateTimeOffset?>("ReceiptDate");
 
                     b.HasKey("Id");
 
@@ -796,6 +794,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                         .HasMaxLength(256);
 
                     b.Property<double>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("RepeatedProductionOrderNo")
+                        .HasMaxLength(128);
 
                     b.Property<string>("StrikeOffCode")
                         .HasMaxLength(128);

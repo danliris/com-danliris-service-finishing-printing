@@ -17,6 +17,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DyestuffChemica
 
         public ProductionOrderIntegrationViewModel ProductionOrder { get; set; }
 
+        public string RepeatedProductionOrderNo { get; set; }
+
         public StrikeOffViewModel StrikeOff { get; set; }
 
         public DateTimeOffset Date { get; set; }
@@ -25,7 +27,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DyestuffChemica
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Date == null)
+            if (Date == default(DateTimeOffset))
             {
                 yield return new ValidationResult("Tanggal Harus Diisi", new List<string> { "Date" });
             }

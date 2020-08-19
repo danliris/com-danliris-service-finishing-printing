@@ -9,6 +9,7 @@ using Com.Danliris.Service.Production.Lib.Models.Master.Step;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.ViewModels.Master.Step;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -58,5 +59,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             Assert.Equal(vm.Id, model.Id);
 
         }
+
+        [Fact]
+        public virtual async void ReadVM_Return_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            StepFacade facade = new StepFacade(serviceProvider, dbContext);
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var response = facade.ReadVM(1, 25, "{}", new List<string>(), "", "{}");
+            Assert.True(0 < response.Data.Count);
+        }
+
     }
 }

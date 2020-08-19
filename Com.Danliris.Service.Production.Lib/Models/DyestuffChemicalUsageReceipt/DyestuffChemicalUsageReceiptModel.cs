@@ -44,6 +44,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
 
         public DateTimeOffset Date { get; set; }
 
+        [MaxLength(128)]
+        public string RepeatedProductionOrderNo { get; set; }
+
         public ICollection<DyestuffChemicalUsageReceiptItemModel> DyestuffChemicalUsageReceiptItems { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

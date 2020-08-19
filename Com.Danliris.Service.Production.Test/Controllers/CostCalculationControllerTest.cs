@@ -293,6 +293,26 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         }
 
         [Fact]
+        public async Task Should_Throws_InternalServerError_Delete_Data()
+        {
+            var identityServiceMock = new Mock<IIdentityService>();
+            var validateServiceMock = new Mock<IValidateService>();
+            var serviceMock = new Mock<ICostCalculationService>();
+            serviceMock
+                .Setup(service => service.DeleteSingle(It.IsAny<int>()))
+                .Throws(new Exception());
+
+            serviceMock
+                .Setup(service => service.IsDataExistsById(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            var controller = GetController(identityServiceMock.Object, validateServiceMock.Object, serviceMock.Object);
+            var response = await controller.Delete(It.IsAny<int>());
+            controller.Dispose();
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
         public async Task Should_Not_Found_Delete_Data_Not_Exist()
         {
             var identityServiceMock = new Mock<IIdentityService>();
