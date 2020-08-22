@@ -93,7 +93,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
             List<string> selectedFields = new List<string>()
             {
-                "Id", "Code", "ProductionOrder","CurrentStepIndex", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId", "IsComplete", "IsInactive"
+                "Id", "Code", "ProductionOrder","CurrentStepIndex", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId", "IsComplete", "IsInactive",
+                "IsReprocess"
             };
 
 
