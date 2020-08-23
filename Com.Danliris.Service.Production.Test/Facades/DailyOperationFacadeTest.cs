@@ -513,6 +513,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             Assert.NotEmpty(vm.Validate(context));
 
+            vm.GoodOutput = 0;
+            vm.BadOutput = 0;
+            Assert.NotEmpty(vm.Validate(context));
 
         }
 
