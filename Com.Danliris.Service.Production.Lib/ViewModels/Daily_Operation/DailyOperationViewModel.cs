@@ -93,9 +93,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     yield return new ValidationResult("harus diisi", new List<string> { "TimeOutput" });
                 }
 
-                if (this.GoodOutput <= -1)
+                if (BadOutput <= 0 && this.GoodOutput <= 0)
                 {
                     yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "GoodOutput" });
+                    //yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "BadOutput" });
                 }
 
                 if (this.DateOutput == null)
@@ -216,7 +217,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     {
                         int checkedIndex = Type.ToLower() == "input" ? Kanban.CurrentStepIndex.GetValueOrDefault() + 1 : Kanban.CurrentStepIndex.GetValueOrDefault();
                         var activeStep = Kanban.Instruction.Steps.FirstOrDefault(x => x.StepIndex == checkedIndex);
-                        if (!activeStep.Process.Equals(Step.Process))
+                        if (activeStep != null && activeStep.Process != Step.Process)
                         {
                             yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Step" });
                         }
