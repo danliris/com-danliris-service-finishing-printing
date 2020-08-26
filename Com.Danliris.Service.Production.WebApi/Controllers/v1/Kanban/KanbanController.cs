@@ -132,7 +132,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
             }
         }
 
-        [HttpGet("complete/{Id}")]
+        [HttpPut("complete/{Id}")]
         public async Task<IActionResult> UpdateIsComplete([FromRoute] int Id)
         {
             if (!ModelState.IsValid)
