@@ -22,6 +22,9 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventCategory;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventRemark;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.OperationalCost;
@@ -133,6 +136,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>()
                 .AddTransient<IColorReceiptFacade, ColorReceiptFacade>()
                 .AddTransient<IStrikeOffFacade, StrikeOffFacade>()
+                .AddTransient<ILossEventFacade, LossEventFacade>()
+                .AddTransient<ILossEventCategoryFacade, LossEventCategoryFacade>()
+                .AddTransient<ILossEventRemarkFacade, LossEventRemarkFacade>()
                 .AddTransient<IDyestuffChemicalUsageReceiptFacade, DyestuffChemicalUsageReceiptFacade>();
         }
 
@@ -164,6 +170,9 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<ReturToQCLogic>()
                 .AddTransient<ColorReceiptLogic>()
                 .AddTransient<StrikeOffLogic>()
+                .AddTransient<LossEventLogic>()
+                .AddTransient<LossEventCategoryLogic>()
+                .AddTransient<LossEventRemarkLogic>()
                 .AddTransient<DyestuffChemicalUsageReceiptLogic>();
         }
 
