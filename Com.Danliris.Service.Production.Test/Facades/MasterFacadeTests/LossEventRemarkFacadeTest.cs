@@ -34,6 +34,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             var data = new LossEventRemarkViewModel();
             var validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(data));
+
+            data.LossEventCategory = new Lib.ViewModels.Master.LossEventCategory.LossEventCategoryViewModel();
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(data));
         }
 
         [Fact]
@@ -50,6 +53,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 
             Assert.Equal(vm.Id, model.Id);
 
+            var vm2 = mapper.Map<LossEventRemarkViewModel>(model);
+
+            Assert.Equal(vm2.Id, model.Id);
         }
     }
 }
