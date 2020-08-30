@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.LossEven
 {
     public class LossEventCategoryViewModel : BaseViewModel, IValidatableObject
     {
+        public string Code { get; set; }
         public LossEventViewModel LossEvent { get; set; }
 
         public string LossesCategory { get; set; }

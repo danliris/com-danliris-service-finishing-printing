@@ -10,6 +10,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.DirectLaborCost;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEventCategory;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEventRemark;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost;
@@ -104,6 +105,7 @@ namespace Com.Danliris.Service.Production.Lib
 
         public DbSet<LossEventModel> LossEvents { get; set; }
         public DbSet<LossEventCategoryModel> LossEventCategories { get; set; }
+        public DbSet<LossEventRemarkModel> LossEventRemarks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
