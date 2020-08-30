@@ -230,6 +230,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
         }
 
+        public DailyOperationModel GetOutputDataForCurrentInput(DailyOperationViewModel vm)
+        {
+            return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
+        }
+
         public bool ValidateCreateOutputDataCheckCurrentInput(DailyOperationViewModel vm)
         {
             return !DbSet.Any(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
