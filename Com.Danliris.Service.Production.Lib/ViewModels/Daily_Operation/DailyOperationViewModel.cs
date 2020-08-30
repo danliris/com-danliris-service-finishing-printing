@@ -44,9 +44,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-
-
             DailyOperationLogic service = (DailyOperationLogic)validationContext.GetService(typeof(DailyOperationLogic));
+            
             if (string.IsNullOrEmpty(this.Type))
                 yield return new ValidationResult("harus diisi", new List<string> { "Type" });
 
@@ -79,11 +78,26 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                 {
                     yield return new ValidationResult("harus diisi", new List<string> { "DateInput" });
                 }
-
-                if (this.DateInput > DateTime.Now)
+                else
                 {
-                    yield return new ValidationResult("date input lebih dari hari ini", new List<string> { "DateInput" });
+                    if (this.DateInput > DateTime.Now)
+                    {
+                        yield return new ValidationResult("date input lebih dari hari ini", new List<string> { "DateInput" });
+                    }
+                    else
+                    {
+                        if(Kanban != null)
+                        {
+                            var outputData = service.GetOutputDataForCurrentInput(this);
+                            if (outputData != null && DateInput > outputData.DateOutput)
+                            {
+                                yield return new ValidationResult("date input lebih dari tanggal output di step yang sama", new List<string> { "DateInput" });
+                            }
+                        }
+                    }
                 }
+
+
 
             }
             else if (this.Type == "output")
@@ -103,11 +117,26 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                 {
                     yield return new ValidationResult("harus diisi", new List<string> { "DateOutput" });
                 }
-
-                if (this.DateOutput > DateTime.Now)
+                else
                 {
-                    yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
+                    if (this.DateOutput > DateTime.Now)
+                    {
+                        yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
+                    }
+                    else
+                    {
+                        if(Kanban != null)
+                        {
+                            var inputData = service.GetInputDataForCurrentOutput(this);
+                            if (inputData != null && DateOutput < inputData.DateInput)
+                            {
+                                yield return new ValidationResult("date output harus lebih dari date input", new List<string> { "DateOutput" });
+                            }
+                        }
+                    }
                 }
+
+                
 
 
                 if ((this.BadOutputReasons.Count.Equals(0) && this.BadOutput > 0) || (this.BadOutput > 0 && this.BadOutputReasons == null))
@@ -163,14 +192,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
                     if (!string.IsNullOrEmpty(Type) && Type.ToLower() == "output")
                     {
-
-                        var inputData = service.GetInputDataForCurrentOutput(this);
-
-                        if (inputData != null && DateOutput < inputData.DateInput)
-                        {
-                            yield return new ValidationResult("date output harus lebih dari date input", new List<string> { "DateOutput" });
-                        }
-
                         if (service.ValidateCreateOutputDataCheckDuplicate(this))
                         {
                             yield return new ValidationResult("Data output tidak dapat disimpan karena sudah ada data dengan kanban dan step yang sama", new List<string> { "Machine" });

@@ -387,7 +387,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
 
-            var data = await DataUtil(facade, dbContext).GetTestData();
+            var data = await DataUtil(facade, dbContext).GetNewDataAsync();
+            data.DateInput = DateTimeOffset.UtcNow.AddDays(-2);
+            var resI = await facade.CreateAsync(data);
+            var dataO = DataUtil(facade, dbContext).GetNewDataOut(data);
+            dataO.DateOutput = DateTime.UtcNow.AddDays(-1);
+            var result = await facade.CreateAsync(dataO);
             DailyOperationViewModel vm = new DailyOperationViewModel()
             {
                 Type = "input",
@@ -407,10 +412,15 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             vm.DateInput = DateTimeOffset.UtcNow.AddDays(-1);
             Assert.NotEmpty(vm.Validate(context));
 
+            vm.DateInput = dataO.DateOutput.Value.AddHours(1);
             vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
             {
                 CurrentStepIndex = data.KanbanStepIndex,
-                Id = data.KanbanId
+                Id = data.KanbanId,
+                Instruction = new Lib.ViewModels.Kanban.KanbanInstructionViewModel()
+                {
+                    Steps = new List<Lib.ViewModels.Kanban.KanbanStepViewModel>()
+                }
             };
             Assert.NotEmpty(vm.Validate(context));
 
