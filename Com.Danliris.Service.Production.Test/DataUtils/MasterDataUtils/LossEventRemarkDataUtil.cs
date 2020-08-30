@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
                 LossEventOrderTypeCode = "c",
                 LossEventOrderTypeId = 1,
                 LossEventOrderTypeName = "ss"
-            }
+            };
         }
     }
 }
