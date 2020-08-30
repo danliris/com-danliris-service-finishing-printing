@@ -64,7 +64,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
             if (this.Type == "input")
             {
-                var outputData = service.GetOutputDataForCurrentInput(this);
                 if (this.TimeInput == 0)
                 {
                     yield return new ValidationResult("harus diisi", new List<string> { "TimeInput" });
@@ -87,9 +86,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     }
                     else
                     {
-                        if (outputData != null && DateInput > outputData.DateOutput)
+                        if(Kanban != null)
                         {
-                            yield return new ValidationResult("date input lebih dari tanggal output di step yang sama", new List<string> { "DateInput" });
+                            var outputData = service.GetOutputDataForCurrentInput(this);
+                            if (outputData != null && DateInput > outputData.DateOutput)
+                            {
+                                yield return new ValidationResult("date input lebih dari tanggal output di step yang sama", new List<string> { "DateInput" });
+                            }
                         }
                     }
                 }
@@ -99,7 +102,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
             }
             else if (this.Type == "output")
             {
-                var inputData = service.GetInputDataForCurrentOutput(this);
                 if (this.TimeOutput == 0)
                 {
                     yield return new ValidationResult("harus diisi", new List<string> { "TimeOutput" });
@@ -123,9 +125,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     }
                     else
                     {
-                        if (inputData != null && DateOutput < inputData.DateInput)
+                        if(Kanban != null)
                         {
-                            yield return new ValidationResult("date output harus lebih dari date input", new List<string> { "DateOutput" });
+                            var inputData = service.GetInputDataForCurrentOutput(this);
+                            if (inputData != null && DateOutput < inputData.DateInput)
+                            {
+                                yield return new ValidationResult("date output harus lebih dari date input", new List<string> { "DateOutput" });
+                            }
                         }
                     }
                 }
