@@ -127,7 +127,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
             }
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut("{id}")]
         public virtual async Task<IActionResult> Put([FromRoute] int id, [FromBody] TViewModel viewModel)
         {
             try
@@ -165,7 +165,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
             }
         }
 
-        [HttpDelete("{Id}")]
+        [HttpDelete("{id}")]
         public virtual async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
