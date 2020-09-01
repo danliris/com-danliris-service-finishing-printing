@@ -11,14 +11,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.LossEven
     {
         public string Code { get; set; }
         public ProcessTypeIntegrationViewModel ProcessType { get; set; }
+        public string ProcessArea { get; set; }
 
         public string Losses { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if(ProcessType == null || ProcessType.Id == 0)
-                yield return new ValidationResult("Jenis Proses harus diisi", new List<string> { "ProcessType" });
+            //if(ProcessType == null || ProcessType.Id == 0)
+            //    yield return new ValidationResult("Jenis Proses harus diisi", new List<string> { "ProcessType" });
 
-            if(string.IsNullOrEmpty(Losses))
+            if(string.IsNullOrEmpty(ProcessArea))
+                yield return new ValidationResult("Area harus diisi", new List<string> { "ProcessArea" });
+
+            if (string.IsNullOrEmpty(Losses))
                 yield return new ValidationResult("Losses harus diisi", new List<string> { "Losses" });
         }
     }

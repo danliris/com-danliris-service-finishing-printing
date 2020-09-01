@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master
                 .ForPath(p => p.LossEvent.Id, opt => opt.MapFrom(m => m.LossEventId))
                 .ForPath(p => p.LossEvent.Code, opt => opt.MapFrom(m => m.LossEventCode))
                 .ForPath(p => p.LossEvent.Losses, opt => opt.MapFrom(m => m.LossEventLosses))
+                .ForPath(p => p.LossEvent.ProcessArea, opt => opt.MapFrom(m => m.LossEventProcessArea))
                 .ForPath(p => p.LossEvent.ProcessType.Id, opt => opt.MapFrom(m => m.LossEventProcessTypeId))
                 .ForPath(p => p.LossEvent.ProcessType.Code, opt => opt.MapFrom(m => m.LossEventProcessTypeCode))
                 .ForPath(p => p.LossEvent.ProcessType.Name, opt => opt.MapFrom(m => m.LossEventProcessTypeName))

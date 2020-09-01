@@ -3,6 +3,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
@@ -106,6 +107,10 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<LossEventModel> LossEvents { get; set; }
         public DbSet<LossEventCategoryModel> LossEventCategories { get; set; }
         public DbSet<LossEventRemarkModel> LossEventRemarks { get; set; }
+
+        public DbSet<DailyMonitoringEventModel> DailyMonitoringEvents { get; set; }
+        public DbSet<DailyMonitoringEventLossEventItemModel> DailyMonitoringEventLossEventItems { get; set; }
+        public DbSet<DailyMonitoringEventProductionOrderItemModel> DailyMonitoringEventProductionOrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

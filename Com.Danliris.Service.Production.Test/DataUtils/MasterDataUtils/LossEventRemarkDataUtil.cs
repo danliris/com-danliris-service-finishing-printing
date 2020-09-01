@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
             {
                 ProductionLossCode = "c",
                 Remark = "r",
+                LossEventProcessArea = "s",
                 LossEventId = 1,
                 LossEventCode = "c",
                 LossEventCategoryLossesCategory = "c",
