@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.CostCalculation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
@@ -16,6 +17,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQ
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
@@ -35,6 +37,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
@@ -139,6 +142,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<ILossEventFacade, LossEventFacade>()
                 .AddTransient<ILossEventCategoryFacade, LossEventCategoryFacade>()
                 .AddTransient<ILossEventRemarkFacade, LossEventRemarkFacade>()
+                .AddTransient<IDailyMonitoringEventFacade, DailyMonitoringEventFacade>()
                 .AddTransient<IDyestuffChemicalUsageReceiptFacade, DyestuffChemicalUsageReceiptFacade>();
         }
 
@@ -173,6 +177,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<LossEventLogic>()
                 .AddTransient<LossEventCategoryLogic>()
                 .AddTransient<LossEventRemarkLogic>()
+                .AddTransient<DailyMonitoringEventLogic>()
                 .AddTransient<DyestuffChemicalUsageReceiptLogic>();
         }
 

@@ -24,8 +24,4 @@
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.11" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\DailyMonitoringEvent\" />
-  </ItemGroup>
-
 </Project>
