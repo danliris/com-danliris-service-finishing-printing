@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine
         public decimal Solar { get; set; }
         public decimal LPG { get; set; }
 
+        public bool UseBQBS { get; set; }
+
         public UnitViewModel Unit { get; set; }
         public MachineTypeViewModel MachineType { get; set; }
         public ICollection<MachineEventViewModel> MachineEvents { get; set; }

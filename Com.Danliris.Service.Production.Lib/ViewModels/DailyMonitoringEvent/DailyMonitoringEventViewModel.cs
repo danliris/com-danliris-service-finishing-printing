@@ -4,6 +4,7 @@ using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoringEvent
@@ -18,7 +19,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoring
         public string Code { get; set; }
 
         public MachineViewModel Machine { get; set; }
-        
+
 
         public DateTimeOffset? Date { get; set; }
         public string Shift { get; set; }
@@ -38,7 +39,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoring
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if(Machine == null || Machine.Id == 0)
+            if (Machine == null || Machine.Id == 0)
                 yield return new ValidationResult("Mesin harus diisi", new List<string> { "Machine" });
 
             if (!Date.HasValue)
@@ -61,6 +62,88 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoring
 
             if (string.IsNullOrEmpty(ElectricMechanic))
                 yield return new ValidationResult("Mekanik/Elektrik harus diisi", new List<string> { "ElectricMechanic" });
+
+            if (DailyMonitoringEventLossEventItems.Count() == 0)
+            {
+                yield return new ValidationResult("Tabel Loss Event Harus Diisi", new List<string> { "DailyMonitoringEventLossEventItem" });
+            }
+            else
+            {
+                var anyError = false;
+                var dailyMonitoringEventLossEventItemsErrors = "[";
+
+                foreach(var item in DailyMonitoringEventLossEventItems)
+                {
+                    dailyMonitoringEventLossEventItemsErrors += "{";
+
+                    if(item.LossEventRemark == null || item.LossEventRemark.Id == 0)
+                    {
+                        anyError = true;
+                        dailyMonitoringEventLossEventItemsErrors += "LossEventRemark: 'Kode Loss Event Harus Diisi', ";
+                    }
+
+                    if(item.Time == 0)
+                    {
+                        anyError = true;
+                        dailyMonitoringEventLossEventItemsErrors += "Time: 'Waktu Harus Diisi', ";
+                    }
+
+                    dailyMonitoringEventLossEventItemsErrors += "}, ";
+                }
+
+                dailyMonitoringEventLossEventItemsErrors += "]";
+                if (anyError)
+                {
+                    yield return new ValidationResult(dailyMonitoringEventLossEventItemsErrors, new List<string> { "DailyMonitoringEventLossEventItems" });
+                }
+            }
+
+            if (DailyMonitoringEventProductionOrderItems.Count() == 0)
+            {
+                yield return new ValidationResult("Tabel SPP Harus Diisi", new List<string> { "DailyMonitoringEventProductionOrderItem" });
+            }
+            else
+            {
+                var anyError = false;
+                var dailyMonitoringEventProductionOrderItemsErrors = "[";
+
+                foreach (var item in DailyMonitoringEventProductionOrderItems)
+                {
+                    dailyMonitoringEventProductionOrderItemsErrors += "{";
+
+                    if (item.ProductionOrder == null || item.ProductionOrder.Id == 0)
+                    {
+                        anyError = true;
+                        dailyMonitoringEventProductionOrderItemsErrors += "ProductionOrder: 'No Order Harus Diisi', ";
+                    }
+
+                    if (item.Speed == 0)
+                    {
+                        anyError = true;
+                        dailyMonitoringEventProductionOrderItemsErrors += "Speed: 'Kecepatan Harus Diisi', ";
+                    }
+
+                    if (item.Input_BQ == 0)
+                    {
+                        anyError = true;
+                        dailyMonitoringEventProductionOrderItemsErrors += "Input_BQ: 'Input/BQ Harus Diisi', ";
+                    }
+
+                    if (item.Output_BS == 0)
+                    {
+                        anyError = true;
+                        dailyMonitoringEventProductionOrderItemsErrors += "Output_BS: 'Output/BS Harus Diisi', ";
+                    }
+
+                    dailyMonitoringEventProductionOrderItemsErrors += "}, ";
+                }
+
+                dailyMonitoringEventProductionOrderItemsErrors += "]";
+                if (anyError)
+                {
+                    yield return new ValidationResult(dailyMonitoringEventProductionOrderItemsErrors, new List<string> { "DailyMonitoringEventProductionOrderItems" });
+                }
+            }
         }
     }
 }
