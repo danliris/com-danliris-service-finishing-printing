@@ -122,6 +122,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 dbItem.ProductionOrderCode = item.ProductionOrderCode;
                 dbItem.ProductionOrderId = item.ProductionOrderId;
                 dbItem.ProductionOrderNo = item.ProductionOrderNo;
+                dbItem.KanbanCartCode = item.KanbanCartCode;
+                dbItem.KanbanCartNumber = item.KanbanCartNumber;
+                dbItem.KanbanCode = item.KanbanCode;
+                dbItem.KanbanId = item.KanbanId;
                 dbItem.Speed = item.Speed;
 
                 dbItem.FlagForUpdate(IdentityService.Username, UserAgent);

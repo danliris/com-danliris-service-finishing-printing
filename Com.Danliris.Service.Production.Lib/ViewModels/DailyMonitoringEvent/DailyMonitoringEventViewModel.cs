@@ -111,10 +111,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoring
                 {
                     dailyMonitoringEventProductionOrderItemsErrors += "{";
 
-                    if (item.ProductionOrder == null || item.ProductionOrder.Id == 0)
+                    if (item.Kanban == null || item.Kanban.Id == 0)
                     {
                         anyError = true;
-                        dailyMonitoringEventProductionOrderItemsErrors += "ProductionOrder: 'No Order Harus Diisi', ";
+                        dailyMonitoringEventProductionOrderItemsErrors += "Kanban: 'No Order Harus Diisi', ";
                     }
 
                     if (item.Speed == 0)

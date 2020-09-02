@@ -14,6 +14,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEven
         [MaxLength(256)]
         public string ProductionOrderNo { get; set; }
 
+        public int KanbanId { get; set; }
+        [MaxLength(4096)]
+        public string KanbanCode { get; set; }
+        [MaxLength(4096)]
+        public string KanbanCartCode { get; set; }
+        [MaxLength(4096)]
+        public string KanbanCartNumber { get; set; }
+
         public double Speed { get; set; }
 
         public double Input_BQ { get; set; }

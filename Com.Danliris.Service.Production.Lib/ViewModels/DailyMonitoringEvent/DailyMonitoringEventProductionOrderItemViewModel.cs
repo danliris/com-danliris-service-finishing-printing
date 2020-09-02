@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
+using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoring
 {
     public class DailyMonitoringEventProductionOrderItemViewModel : BaseViewModel
     {
-        public ProductionOrderIntegrationViewModel ProductionOrder { get; set; }
+        public KanbanViewModel Kanban { get; set; }
         
         public double Speed { get; set; }
 

@@ -36,6 +36,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                     new DailyMonitoringEventProductionOrderItemModel()
                     {
                         Input_BQ = 1,
+                        KanbanCartCode = "c",
+                        KanbanId = 1,
+                        KanbanCode = "c",
+                        KanbanCartNumber = "n",
                         Speed = 1,
                         ProductionOrderNo = "a",
                         ProductionOrderId = 1,

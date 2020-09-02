@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             {
                 Id = data.Id,
                 Code = data.Code,
-                
+
                 DailyMonitoringEventLossEventItems = data.DailyMonitoringEventLossEventItems.Select(s => new DailyMonitoringEventLossEventItemModel()
                 {
                     Time = s.Time,
@@ -63,7 +63,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             });
             var mapper = configuration.CreateMapper();
 
-            DailyMonitoringEventViewModel vm = new DailyMonitoringEventViewModel { Id = 1 };
+            DailyMonitoringEventViewModel vm = new DailyMonitoringEventViewModel
+            {
+                Id = 1,
+                DailyMonitoringEventLossEventItems = new List<DailyMonitoringEventLossEventItemViewModel>()
+                {
+                    new DailyMonitoringEventLossEventItemViewModel()
+                },
+                DailyMonitoringEventProductionOrderItems = new List<DailyMonitoringEventProductionOrderItemViewModel>()
+                {
+                    new DailyMonitoringEventProductionOrderItemViewModel()
+                }
+            };
             DailyMonitoringEventModel model = mapper.Map<DailyMonitoringEventModel>(vm);
 
             Assert.Equal(vm.Id, model.Id);
@@ -85,6 +96,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(data));
 
+            data.DailyMonitoringEventLossEventItems = new List<DailyMonitoringEventLossEventItemViewModel>()
+            {
+                new DailyMonitoringEventLossEventItemViewModel()
+            };
+
+            data.DailyMonitoringEventProductionOrderItems = new List<DailyMonitoringEventProductionOrderItemViewModel>()
+            {
+                new DailyMonitoringEventProductionOrderItemViewModel()
+            };
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(data));
         }
     }
 }

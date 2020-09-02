@@ -21,9 +21,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DailyMo
                .ReverseMap();
 
             CreateMap<DailyMonitoringEventProductionOrderItemModel, DailyMonitoringEventProductionOrderItemViewModel>()
-                .ForPath(p => p.ProductionOrder.Id, opt => opt.MapFrom(m => m.ProductionOrderId))
-                .ForPath(p => p.ProductionOrder.Code, opt => opt.MapFrom(m => m.ProductionOrderCode))
-                .ForPath(p => p.ProductionOrder.OrderNo, opt => opt.MapFrom(m => m.ProductionOrderNo))
+                .ForPath(p => p.Kanban.ProductionOrder.Id, opt => opt.MapFrom(m => m.ProductionOrderId))
+                .ForPath(p => p.Kanban.ProductionOrder.Code, opt => opt.MapFrom(m => m.ProductionOrderCode))
+                .ForPath(p => p.Kanban.ProductionOrder.OrderNo, opt => opt.MapFrom(m => m.ProductionOrderNo))
+                .ForPath(p => p.Kanban.Id, opt => opt.MapFrom(m => m.KanbanId))
+                .ForPath(p => p.Kanban.Code, opt => opt.MapFrom(m => m.KanbanCode))
+                .ForPath(p => p.Kanban.Cart.Code, opt => opt.MapFrom(m => m.KanbanCartCode))
+                .ForPath(p => p.Kanban.Cart.CartNumber, opt => opt.MapFrom(m => m.KanbanCartNumber))
                 .ReverseMap();
 
             CreateMap<DailyMonitoringEventModel, DailyMonitoringEventViewModel>()
