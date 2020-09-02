@@ -16,6 +16,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEvent
         [MaxLength(2048)]
         public string ProcessTypeName { get; set; }
 
+        [MaxLength(4096)]
+        public string ProcessArea { get; set; }
+
         public int OrderTypeId { get; set; }
         [MaxLength(512)]
         public string OrderTypeCode { get; set; }

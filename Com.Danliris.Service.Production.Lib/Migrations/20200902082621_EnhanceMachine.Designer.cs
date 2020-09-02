@@ -4,14 +4,16 @@ using Com.Danliris.Service.Production.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    partial class ProductionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200902082621_EnhanceMachine")]
+    partial class EnhanceMachine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -803,17 +805,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<double>("Input_BQ");
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("KanbanCartCode")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("KanbanCartNumber")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("KanbanCode")
-                        .HasMaxLength(4096);
-
-                    b.Property<int>("KanbanId");
 
                     b.Property<string>("LastModifiedAgent")
                         .IsRequired()

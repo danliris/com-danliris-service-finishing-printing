@@ -12,6 +12,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master
         public LossEventRemarkProfile()
         {
             CreateMap<LossEventRemarkModel, LossEventRemarkViewModel>()
+               .ForPath(p => p.LossEventCategory.LossEvent.ProcessArea, opt => opt.MapFrom(m => m.LossEventProcessArea))
                .ForPath(p => p.LossEventCategory.Id, opt => opt.MapFrom(m => m.LossEventCategoryId))
                .ForPath(p => p.LossEventCategory.Code, opt => opt.MapFrom(m => m.LossEventCategoryCode))
                .ForPath(p => p.LossEventCategory.LossesCategory, opt => opt.MapFrom(m => m.LossEventCategoryLossesCategory))
