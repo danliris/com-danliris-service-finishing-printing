@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DailyMo
                 .ForPath(p => p.Machine.Id, opt => opt.MapFrom(m => m.MachineId))
                 .ForPath(p => p.Machine.Code, opt => opt.MapFrom(m => m.MachineCode))
                 .ForPath(p => p.Machine.Name, opt => opt.MapFrom(m => m.MachineName))
-                .ForPath(p => p.Machine.UseBQBS, opt => opt.MapFrom(m => m.MachineName))
+                .ForPath(p => p.Machine.UseBQBS, opt => opt.MapFrom(m => m.MachineUseBQBS))
                 .ForPath(p => p.ProcessType.OrderType.Id, opt => opt.MapFrom(m => m.OrderTypeId))
                 .ForPath(p => p.ProcessType.OrderType.Code, opt => opt.MapFrom(m => m.OrderTypeCode))
                 .ForPath(p => p.ProcessType.OrderType.Name, opt => opt.MapFrom(m => m.OrderTypeName))
