@@ -56,6 +56,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 MachineName = "s",
                 OrderTypeName = "s",
                 ProcessTypeCode = "c",
+                MachineUseBQBS = true,
                 Shift = "s",
                 ProcessTypeName = "a",
                 ProcessTypeId = 1,

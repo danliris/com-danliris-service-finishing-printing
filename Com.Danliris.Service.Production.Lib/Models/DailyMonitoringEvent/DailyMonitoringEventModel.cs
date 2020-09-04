@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEven
         public string MachineCode { get; set; }
         [MaxLength(4096)]
         public string MachineName { get; set; }
+        public bool MachineUseBQBS { get; set; }
         
         public DateTimeOffset Date { get; set; }
         [MaxLength(128)]

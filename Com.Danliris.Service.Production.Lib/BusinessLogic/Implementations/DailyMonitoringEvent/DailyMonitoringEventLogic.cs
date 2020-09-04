@@ -62,6 +62,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbModel.MachineCode = model.MachineCode;
             dbModel.MachineId = model.MachineId;
             dbModel.MachineName = model.MachineName;
+            dbModel.MachineUseBQBS = model.MachineUseBQBS;
             dbModel.Notes = model.Notes;
             dbModel.OrderTypeCode = model.OrderTypeCode;
             dbModel.OrderTypeId = model.OrderTypeId;
