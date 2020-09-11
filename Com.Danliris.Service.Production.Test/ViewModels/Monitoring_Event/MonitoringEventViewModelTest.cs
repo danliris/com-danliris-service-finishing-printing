@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Eve
             var time = DateTimeOffset.Now;
             var machineViewModel = new MachineViewModel()
             {
+                UId= "UId",
                Code = "Code"
             };
             var production = new ProductionOrderIntegrationViewModel()
@@ -38,7 +39,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Eve
                 Machine = machineViewModel,
                 ProductionOrder = production,
                 ProductionOrderDetail = productionOrderDetail,
-                MachineEvent = machineEvent
+                MachineEvent = machineEvent,
             };
 
             Assert.Equal("UId", viewModel.UId);
@@ -72,13 +73,41 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Monitoring_Eve
         }
 
         [Fact]
+        public void validate_when_id_equal_zero()
+        {
+
+            MonitoringEventViewModel viewModel = new MonitoringEventViewModel()
+            {
+                ProductionOrder =new ProductionOrderIntegrationViewModel()
+                {
+                    Id=0,
+                },
+                Machine = new MachineViewModel()
+                {
+                    Id = 0,
+                    
+                },
+                ProductionOrderDetail =new ProductionOrderDetailIntegrationViewModel()
+                {
+                    Id =0,
+                },
+                MachineEvent =new MachineEventViewModel()
+                {
+                    Id=0
+                }
+            };
+            var result = viewModel.Validate(null);
+            Assert.True(0 < result.Count());
+        }
+
+        [Fact]
         public void validate_when_DateStart_greaterThan_DateEnd()
         {
 
             MonitoringEventViewModel viewModel = new MonitoringEventViewModel()
             {
                 DateStart = DateTimeOffset.Now.AddDays(2),
-                DateEnd = DateTimeOffset.Now
+                DateEnd = DateTimeOffset.Now,
             };
             var result = viewModel.Validate(null);
             Assert.True(0 < result.Count());

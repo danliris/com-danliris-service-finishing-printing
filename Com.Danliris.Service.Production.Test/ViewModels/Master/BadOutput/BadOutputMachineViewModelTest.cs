@@ -24,5 +24,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Master.BadOutp
             Assert.Equal("Code", viewModel.Code);
             Assert.Equal(1, viewModel.BadOutputId);
         }
+
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            BadOutputMachineViewModel viewModel = new BadOutputMachineViewModel();
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
 }

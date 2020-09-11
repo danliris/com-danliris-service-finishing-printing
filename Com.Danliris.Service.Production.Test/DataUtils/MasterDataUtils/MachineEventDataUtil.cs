@@ -12,5 +12,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
         public MachineEventDataUtil(MachineEventFacade facade) : base(facade)
         {
         }
+
+       
     }
 }

@@ -41,11 +41,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             MachineStepLogic machineStepLogic = new MachineStepLogic(identityService, dbContext);
 
             serviceProviderMock
+               .Setup(x => x.GetService(typeof(MachineEventLogic)))
+               .Returns(machineEventLogic);
+
+            serviceProviderMock
                 .Setup(x => x.GetService(typeof(MachineLogic)))
                 .Returns(new MachineLogic(machineEventLogic, machineStepLogic, identityService, dbContext));
 
             return serviceProviderMock;
         }
+
+
 
         [Fact]
         public virtual async void GetDyeingPrinting_Success()
@@ -60,6 +66,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             var Response = facade.GetDyeingPrintingMachine(1, 25, "{}", new List<string>(), "", "{}");
 
             Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
+        public  async void UpdateAsync_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MachineFacade facade = Activator.CreateInstance(typeof(MachineFacade), serviceProvider, dbContext) as MachineFacade;
+           
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            int Response =await  facade.UpdateAsync(data.Id, data);
+
+            Assert.NotEqual(0,Response);
         }
 
         [Fact]
@@ -136,6 +157,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 
             MachineViewModel vm2 = new MachineViewModel();
             Assert.NotEmpty(vm2.Validate(null));
+        }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            MachineTypeIndicatorsViewModel viewModel = new MachineTypeIndicatorsViewModel();
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
 
         [Fact]

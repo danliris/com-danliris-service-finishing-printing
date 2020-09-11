@@ -84,8 +84,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Packing
             Assert.True(0 < result.Count());
         }
 
+
         [Fact]
-        public void validate_when_rowErrorCount_moreThan_1()
+        public void validate_Throws_NotImplementedException()
+        {
+            PackingDetailViewModel viewModel = new PackingDetailViewModel();
+
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
+        }
+
+        [Fact]
+        public void validate_PackingDetails()
         {
 
             PackingViewModel viewModel = new PackingViewModel()

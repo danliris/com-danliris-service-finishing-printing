@@ -29,6 +29,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Kanban
                 }
             };
 
+         
+
             var instruction = new KanbanInstructionViewModel();
             var productionOrder = new ProductionOrderIntegrationViewModel();
             var selectedProductionOrderDetail = new ProductionOrderDetailIntegrationViewModel();
@@ -160,6 +162,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Kanban
             {
                 Instruction = new KanbanInstructionViewModel()
                 {
+                    Code = "Code",
                     Name = "Name",
                     Steps = new List<KanbanStepViewModel>()
                     {

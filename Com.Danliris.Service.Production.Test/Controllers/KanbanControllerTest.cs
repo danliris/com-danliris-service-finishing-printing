@@ -478,6 +478,34 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         }
 
         [Fact]
+        public async void UpdateIsComplete_When_ModelState_Invalid_Return_BadRequest()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.CompleteKanban(It.IsAny<int>()))
+              .ReturnsAsync(1);
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            controller.ModelState.AddModelError("key", "value");
+
+            var response = await controller.UpdateIsComplete(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
         public void GetSnapshotExcel_WithoutException_ReturnOK()
         {
             var mockFacade = new Mock<IKanbanFacade>();

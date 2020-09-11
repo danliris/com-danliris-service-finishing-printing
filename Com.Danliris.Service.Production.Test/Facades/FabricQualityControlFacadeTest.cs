@@ -117,5 +117,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.Equal(vm.Id, model.Id);
 
         }
+
+        [Fact]
+        public async Task UpdateAsync()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            FabricQualityControlFacade facade = Activator.CreateInstance(typeof(FabricQualityControlFacade), serviceProvider, dbContext) as FabricQualityControlFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var newData = DataUtil(facade, dbContext).GetNewDataFabricQualityControlModel();
+            int id = data.Id;
+            var Response = facade.UpdateAsync(id, newData);
+
+            Assert.NotNull(Response);
+        }
+        
     }
 }

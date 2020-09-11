@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
         public async Task<int> UpdateAsync(int id, DirectLaborCostModel model)
         {
-            DirectLaborCostLogic.UpdateModelAsync(id, model);
+            await DirectLaborCostLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
     }

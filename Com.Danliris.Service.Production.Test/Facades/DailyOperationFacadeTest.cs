@@ -16,6 +16,7 @@ using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -226,6 +227,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public void  GenerateExcel_with_Empty_Data()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+
+            var Response = facade.GenerateExcel(-1, -1, DateTime.UtcNow.AddDays(-30), DateTime.UtcNow.AddDays(30), 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
         public async Task Should_Success_GetOutputBadDesc()
         {
             var dbContext = DbContext(GetCurrentMethod());
@@ -272,16 +286,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotEmpty(vm.Validate(context));
 
             vm.Type = "s";
-            Assert.NotEmpty(vm.Validate(context));
+            var result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.Shift = "s";
-            Assert.NotEmpty(vm.Validate(context));
+             result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.Machine = new Lib.ViewModels.Master.Machine.MachineViewModel();
             Assert.NotEmpty(vm.Validate(context));
 
             vm.Step = new Lib.ViewModels.Master.Machine.MachineStepViewModel();
-            Assert.NotEmpty(vm.Validate(context));
+
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
             {
@@ -297,37 +318,58 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                     }
                 }
             };
-            Assert.NotEmpty(vm.Validate(context));
+
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
 
             vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel();
 
             vm.Type = "input";
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.DateInput = DateTime.Now.AddDays(1);
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.DateInput = null;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.Input = 0;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
+
             vm.TimeInput = 0;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.Type = "output";
-            Assert.NotEmpty(vm.Validate(context));
+            vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>();
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.DateOutput = DateTime.Now;
             vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>();
             vm.BadOutput = 1;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.DateOutput = DateTime.Now;
             vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>();
             vm.BadOutput = 1;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.BadOutputReasons = new List<DailyOperationBadOutputReasonsViewModel>()
             {
@@ -337,19 +379,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 }
             };
             vm.BadOutput = 1;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.DateOutput = DateTime.Now.AddDays(1);
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.DateOutput = null;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
             vm.GoodOutput = -1;
-            Assert.NotEmpty(vm.Validate(context));
+            result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
 
-            vm.TimeOutput = 0;
-            Assert.NotEmpty(vm.Validate(context));
+            vm.TimeOutput = 0; result = vm.Validate(context);
+            Assert.NotEmpty(result);
+            Assert.True(0 < result.Count());
         }
 
         [Fact]
@@ -578,10 +629,40 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             await Assert.ThrowsAnyAsync<Exception>(() => facade.DeleteAsync(0));
         }
 
+
+      
+
+        [Fact]
+        public async void CreateDO_Type_Output_AreaPreTreatment_When_DataExist()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshot();
+            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
+            dbContext.SaveChanges();
+
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            result = await facade.CreateAsync(ptData);
+         
+
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            result = await facade.CreateAsync(outPTData);
+            Assert.NotEqual(0, result);
+
+
+        }
+
         [Fact]
         public async void CreateDOFullKanban()
         {
             var dbContext = DbContext(GetCurrentMethod());
+            
             int result = 0;
             var serviceProvider = GetServiceProviderMock(dbContext);
 
@@ -589,16 +670,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var kanban = await DataUtil(facade, dbContext).GetKanban();
 
+            
             var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
             result = await facade.CreateAsync(ptData);
+
             Assert.NotEqual(0, result);
+           
 
             var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            
             result = await facade.CreateAsync(outPTData);
             Assert.NotEqual(0, result);
-
+            
 
             var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+
             result = await facade.CreateAsync(dData);
             Assert.NotEqual(0, result);
 
@@ -629,6 +715,63 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var outQData = DataUtil(facade, dbContext).GetNewDataOut(qData);
             result = await facade.CreateAsync(outQData);
             Assert.NotEqual(0, result);
+        }
+
+
+        [Fact]
+        public async void CreateDataOutputAreaPretreatmentYesterday()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshotPreTreatmentOutputDateYesterday();
+            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
+            dbContext.SaveChanges();
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var ptData = DataUtil(facade, dbContext).GetNewDataInputPreTreatment(kanban);
+            result = await facade.CreateAsync(ptData);
+            Assert.NotEqual(0, result);
+
+            var outPTData = DataUtil(facade, dbContext).GetNewDataOut(ptData);
+            result = await facade.CreateAsync(outPTData);
+            Assert.NotEqual(0, result);
+
+        }
+
+
+        [Fact]
+        public async void CreateDataInputAreaDyeing()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+
+            int result = 0;
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var facade = new DailyOperationFacade(serviceProvider.Object, dbContext);
+
+            var kanbanSnapShot = DataUtil(facade, dbContext).GetKanbanSnapshot();
+            dbContext.KanbanSnapshots.Add(kanbanSnapShot);
+            dbContext.SaveChanges();
+
+            var kanban = await DataUtil(facade, dbContext).GetKanban();
+
+            var dData = DataUtil(facade, dbContext).GetNewDataInputDyeing(kanban);
+            dData.KanbanStepIndex = 3;
+            result = await facade.CreateAsync(dData);
+
+
+            var outDData = DataUtil(facade, dbContext).GetNewDataOut(dData);
+            result = await facade.CreateAsync(outDData);
+            Assert.NotEqual(0, result);
+
+            Assert.NotEqual(0, result);
+
+
         }
 
         [Fact]

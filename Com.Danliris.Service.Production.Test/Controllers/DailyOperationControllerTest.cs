@@ -173,7 +173,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 {
                     Process = "a"
                 },
-                Type = "input"
+                Type = "input",
+                IsChangeable =false,
             };
             var kanbanStep = vm.Kanban.Instruction.Steps.FirstOrDefault()?.StepIndex;
 

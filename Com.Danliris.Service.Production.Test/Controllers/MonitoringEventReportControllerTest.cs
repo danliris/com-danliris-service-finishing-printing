@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var controller = GetController(serviceProviderMock, serviceMock, mapperMock);
 
-            var response = controller.GetReportAll(null, null, null, null, null, 1, 25);
+            var response = controller.GetReportAll(null, null, null, null, null, 0, 0);
 
             Assert.Equal((int)HttpStatusCode.OK, (int)response.GetType().GetProperty("StatusCode").GetValue(response, null));
         }
