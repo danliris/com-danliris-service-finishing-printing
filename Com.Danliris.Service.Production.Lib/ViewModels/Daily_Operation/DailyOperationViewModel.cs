@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             DailyOperationLogic service = (DailyOperationLogic)validationContext.GetService(typeof(DailyOperationLogic));
-            
+
             if (string.IsNullOrEmpty(this.Type))
                 yield return new ValidationResult("harus diisi", new List<string> { "Type" });
 
@@ -86,12 +86,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     }
                     else
                     {
-                        if(Kanban != null)
+                        if (Kanban != null)
                         {
                             var outputData = service.GetOutputDataForCurrentInput(this);
                             if (outputData != null && DateInput > outputData.DateOutput)
                             {
                                 yield return new ValidationResult("date input lebih dari tanggal output di step yang sama", new List<string> { "DateInput" });
+                            }
+                            else
+                            {
+                                var prevOutputData = service.GetPrevOutputDataForCurrentInput(this);
+                                if (prevOutputData != null && DateInput < prevOutputData.DateOutput)
+                                {
+                                    yield return new ValidationResult("date input kurang dari tanggal output di step sebelumnya", new List<string> { "DateInput" });
+                                }
                             }
                         }
                     }
@@ -125,7 +133,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     }
                     else
                     {
-                        if(Kanban != null)
+                        if (Kanban != null)
                         {
                             var inputData = service.GetInputDataForCurrentOutput(this);
                             if (inputData != null && DateOutput < inputData.DateInput)
@@ -136,7 +144,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     }
                 }
 
-                
+
 
 
                 if ((this.BadOutputReasons.Count.Equals(0) && this.BadOutput > 0) || (this.BadOutput > 0 && this.BadOutputReasons == null))

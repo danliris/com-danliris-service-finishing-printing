@@ -227,12 +227,38 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
         public DailyOperationModel GetInputDataForCurrentOutput(DailyOperationViewModel vm)
         {
-            return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.StepProcess == vm.Step.Process);
+            if (vm.IsEdit.GetValueOrDefault())
+            {
+                return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.KanbanStepIndex == vm.KanbanStepIndex);
+            }
+            else
+            {
+                return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "input" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
+            }
         }
 
         public DailyOperationModel GetOutputDataForCurrentInput(DailyOperationViewModel vm)
         {
-            return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && s.StepProcess == vm.Step.Process);
+            if (vm.IsEdit.GetValueOrDefault())
+            {
+                return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && s.KanbanStepIndex == vm.KanbanStepIndex);
+            }
+            else
+            {
+                return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault() + 1);
+            }
+        }
+
+        public DailyOperationModel GetPrevOutputDataForCurrentInput(DailyOperationViewModel vm)
+        {
+            if (vm.IsEdit.GetValueOrDefault())
+            {
+                return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && s.KanbanStepIndex == vm.KanbanStepIndex - 1);
+            }
+            else
+            {
+                return DbSet.FirstOrDefault(s => s.KanbanId == vm.Kanban.Id && s.Type.ToLower() == "output" && s.KanbanStepIndex == vm.Kanban.CurrentStepIndex.GetValueOrDefault());
+            }
         }
 
         public bool ValidateCreateOutputDataCheckCurrentInput(DailyOperationViewModel vm)
