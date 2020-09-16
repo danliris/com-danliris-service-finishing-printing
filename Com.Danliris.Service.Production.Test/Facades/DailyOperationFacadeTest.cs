@@ -463,7 +463,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             vm.DateInput = DateTimeOffset.UtcNow.AddDays(-1);
             Assert.NotEmpty(vm.Validate(context));
 
-            vm.DateInput = dataO.DateOutput.Value.AddHours(1);
+            vm.DateInput = dataO.DateOutput.Value.AddHours(-1);
             vm.Kanban = new Lib.ViewModels.Kanban.KanbanViewModel()
             {
                 CurrentStepIndex = data.KanbanStepIndex,
