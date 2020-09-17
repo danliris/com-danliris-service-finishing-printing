@@ -258,9 +258,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
             return new ReadResponse<DailyOperationModel>(data, query.Count(), orderDictionary, selectedFields);
         }
 
-        public async Task<DailyOperationModel> ReadByIdAsync(int id)
+        public Task<DailyOperationModel> ReadByIdAsync(int id)
         {
-            return await DailyOperationLogic.ReadModelById(id);
+            return DailyOperationLogic.ReadModelById(id);
         }
 
         public async Task<int> UpdateAsync(int id, DailyOperationModel model)
