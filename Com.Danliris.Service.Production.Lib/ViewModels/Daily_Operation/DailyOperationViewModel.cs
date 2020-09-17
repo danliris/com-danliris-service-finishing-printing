@@ -29,6 +29,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public bool IsChangeable { get; set; }
 
+        public bool HasOutput { get; set; }
+
         //step
         public MachineStepViewModel Step { get; set; }
 
