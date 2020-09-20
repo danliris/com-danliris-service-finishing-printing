@@ -40,5 +40,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.PackingReceipt
             Assert.Equal(1, viewModel.AvailableQuantity);
             Assert.True(viewModel.IsDelivered);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            PackingReceiptItemViewModel viewModel = new PackingReceiptItemViewModel();
+
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
 }

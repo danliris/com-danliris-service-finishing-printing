@@ -115,6 +115,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
         }
 
         [Fact]
+        public void Should_Success_Validate_DeliveryDate()
+        {
+            var vm = new ShipmentDocumentViewModel()
+            {
+                DeliveryDate = DateTimeOffset.UtcNow.AddDays(1),
+            };
+
+            Assert.True(vm.Validate(null).Count() > 0);
+        }
+
+        [Fact]
         public async Task Should_Success_Update_Data()
         {
             var service = new ShipmentDocumentService(GetServiceProvider().Object, _dbContext(GetCurrentMethod()));

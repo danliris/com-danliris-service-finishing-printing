@@ -28,5 +28,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Master.Machine
             Assert.Equal(1, viewModel.MachineId);
             Assert.Equal(1, viewModel.StepId);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            MachineStepViewModel viewModel = new MachineStepViewModel();
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
 }

@@ -37,6 +37,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine
         public string MachineTypeCode { get; set; }
         public string MachineTypeName { get; set; }
 
+        public bool UseBQBS { get; set; }
+
         public ICollection<MachineEventsModel> MachineEvents { get; set; }
         public ICollection<MachineStepModel> MachineSteps { get; set; }
 

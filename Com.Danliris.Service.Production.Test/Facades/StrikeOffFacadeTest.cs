@@ -171,7 +171,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             StrikeOffFacade facade = new StrikeOffFacade(serviceProvider, dbContext);
             System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             var response = data.Validate(validationContext);
-
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             var model = await DataUtil(facade, dbContext).GetTestData();
@@ -179,16 +179,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             data.Code = model.Code;
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.Code = "testCodeNew" + Guid.NewGuid().ToString();
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.Type = "type";
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.StrikeOffItems = new List<StrikeOffItemViewModel>()
@@ -197,6 +200,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
 
@@ -206,6 +210,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.StrikeOffItems = new List<StrikeOffItemViewModel>()
@@ -232,6 +237,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.StrikeOffItems = new List<StrikeOffItemViewModel>()
@@ -259,6 +265,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
             Assert.Equal(0, data.StrikeOffItems.FirstOrDefault().ChemicalItems.FirstOrDefault().Index);
 
@@ -284,6 +291,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.StrikeOffItems = new List<StrikeOffItemViewModel>()
@@ -309,6 +317,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             };
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
         }
     }

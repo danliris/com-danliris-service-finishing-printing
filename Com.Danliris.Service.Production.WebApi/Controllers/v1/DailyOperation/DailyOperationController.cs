@@ -72,6 +72,11 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DailyOpe
                     var hasOutput = await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process, viewModel.Machine.Id, viewModel.Kanban.CurrentStepIndex.GetValueOrDefault());
                     viewModel.IsChangeable = (stepCurrent == null) || ((stepCurrent.Process == viewModel.Step.Process) && (viewModel.Type == "output" || (viewModel.Type == "input" && !hasOutput)));
 
+                    if(viewModel.Type == "input")
+                    {
+                        viewModel.HasOutput = await Facade.HasOutput(viewModel.Kanban.Id, viewModel.Step.Process, viewModel.Machine.Id, viewModel.KanbanStepIndex);
+                    }
+
                     Dictionary<string, object> Result =
                         new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
                         .Ok<DailyOperationViewModel>(Mapper, viewModel);

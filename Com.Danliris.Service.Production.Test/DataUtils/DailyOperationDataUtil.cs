@@ -44,6 +44,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             return await kanbanDataUtil.GetTestData();
         }
 
+        public KanbanSnapshotModel GetKanbanSnapshot()
+        {
+            return kanbanDataUtil.GetKanbanSnapshot();
+        }
+
+       
+        public KanbanSnapshotModel GetKanbanSnapshotPreTreatmentOutputDateYesterday()
+        {
+            return kanbanDataUtil.GetKanbanSnapshotPreTreatmentOutputDateYesterday();
+        }
+
+       
+
         public DailyOperationModel GetNewDataInputPreTreatment(KanbanModel kanban)
         {
             DailyOperationModel model = new DailyOperationModel
@@ -78,7 +91,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 {
                     new DailyOperationBadOutputReasonsModel()
                 },
-                Shift = "shift"
+                Shift = "shift",
+                CreatedUtc = DateTime.Now.AddDays(-1),
             };
             return model;
         }
@@ -150,7 +164,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             {
                 KanbanId = dataInput.KanbanId,
                 Type = "output",
-                DateOutput = DateTimeOffset.UtcNow,
+                DateOutput = DateTimeOffset.UtcNow.AddDays(1),
                 StepId = dataInput.StepId,
                 MachineId = dataInput.MachineId,
                 StepProcess = dataInput.StepProcess,

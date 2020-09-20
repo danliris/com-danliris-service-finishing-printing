@@ -12,6 +12,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
@@ -72,6 +73,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public  void GenerateExcel_with_emptyData()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventFacade facade = Activator.CreateInstance(typeof(MonitoringEventFacade), serviceProvider, dbContext) as MonitoringEventFacade;
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            var Response = reportFacade.GenerateExcel(null, null, null, DateTime.MinValue, null, 7);
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
         public async void ReadByMachine()
         {
             var dbContext = DbContext(GetCurrentMethod());
@@ -115,6 +129,61 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.Equal(vm.Id, model.Id);
 
+        }
+
+        [Fact]
+        public  void Read_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            Assert.Throws<NotImplementedException>(() => reportFacade.Read(1, 1, null, new List<string>(), null, null));
+        }
+
+        [Fact]
+        public async Task CreateAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.CreateAsync(new MonitoringEventModel()));
+        }
+
+        [Fact]
+        public async Task ReadByIdAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.ReadByIdAsync(1));
+        }
+
+        [Fact]
+        public async Task UpdateAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.UpdateAsync(1,new MonitoringEventModel()));
+        }
+
+        [Fact]
+        public async Task DeleteAsync_Return_NotImplementedException()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MonitoringEventReportFacade reportFacade = new MonitoringEventReportFacade(serviceProvider, dbContext);
+
+            await Assert.ThrowsAsync<NotImplementedException>(() => reportFacade.DeleteAsync(1));
         }
     }
 }

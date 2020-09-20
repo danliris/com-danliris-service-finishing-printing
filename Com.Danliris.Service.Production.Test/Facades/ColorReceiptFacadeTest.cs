@@ -130,11 +130,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             var response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
+
             data.ColorName = "test";
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
+            
             response = data.Validate(validationContext);
-
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.Technician = new TechnicianViewModel()
@@ -145,25 +148,29 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.ChangeTechnician = true;
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
-
+            
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.NewTechnician = "test";
             data.Type = "type";
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
-
+            
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.ColorReceiptItems = new List<ColorReceiptItemViewModel>();
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
-
+            
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.ColorReceiptItems = new List<ColorReceiptItemViewModel>()
@@ -183,6 +190,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             response = data.Validate(validationContext);
 
             Assert.NotEmpty(response);
+            Assert.True(0 < response.Count());
 
             data.ColorReceiptItems = new List<ColorReceiptItemViewModel>()
             {
@@ -200,12 +208,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>();
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>()
@@ -223,6 +233,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>()
@@ -240,6 +251,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             data.DyeStuffReactives = new List<ColorReceiptDyeStuffReactiveViewModel>()
@@ -258,6 +270,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(data, serviceProvider, null);
             response = data.Validate(validationContext);
 
+            Assert.True(0 < response.Count());
             Assert.NotEmpty(response);
 
             ColorReceiptItemViewModel vmItem = new ColorReceiptItemViewModel()
@@ -270,6 +283,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 Quantity = 1
             };
 
+            Assert.True(0 < response.Count());
             Assert.NotEqual(0, vmItem.Quantity);
         }
 

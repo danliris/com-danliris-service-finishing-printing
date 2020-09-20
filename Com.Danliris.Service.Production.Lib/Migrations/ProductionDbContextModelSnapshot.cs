@@ -607,6 +607,245 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.ToTable("DailyOperation");
                 });
 
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent.DailyMonitoringEventLossEventItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<int>("DailyMonitoringEventId");
+
+                    b.Property<string>("DeletedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("LossEventLosses")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventLossesCategory")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventProductionLossCode")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LossEventRemark")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventRemarkCode")
+                        .HasMaxLength(16);
+
+                    b.Property<int>("LossEventRemarkId");
+
+                    b.Property<double>("Time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DailyMonitoringEventId");
+
+                    b.ToTable("DailyMonitoringEventLossEventItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent.DailyMonitoringEventModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CreatedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("ElectricMechanic")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("Group")
+                        .HasMaxLength(8);
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("Kasie")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("Kasubsie")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LastModifiedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("MachineCode")
+                        .HasMaxLength(64);
+
+                    b.Property<int>("MachineId");
+
+                    b.Property<string>("MachineName")
+                        .HasMaxLength(4096);
+
+                    b.Property<bool>("MachineUseBQBS");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("OrderTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("OrderTypeId");
+
+                    b.Property<string>("OrderTypeName")
+                        .HasMaxLength(2048);
+
+                    b.Property<string>("ProcessArea")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("ProcessTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName")
+                        .HasMaxLength(2048);
+
+                    b.Property<string>("Shift")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DailyMonitoringEvents");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent.DailyMonitoringEventProductionOrderItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<int>("DailyMonitoringEventId");
+
+                    b.Property<string>("DeletedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<double>("Input_BQ");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("KanbanCartCode")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("KanbanCartNumber")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("KanbanCode")
+                        .HasMaxLength(4096);
+
+                    b.Property<int>("KanbanId");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<double>("Output_BS");
+
+                    b.Property<string>("ProductionOrderCode")
+                        .HasMaxLength(256);
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo")
+                        .HasMaxLength(256);
+
+                    b.Property<double>("Speed");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DailyMonitoringEventId");
+
+                    b.ToTable("DailyMonitoringEventProductionOrderItems");
+                });
+
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsageReceipt.DyestuffChemicalUsageReceiptItemDetailModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1681,6 +1920,243 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.ToTable("DirectLaborCosts");
                 });
 
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEvent.LossEventModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CreatedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Losses")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("OrderTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("OrderTypeId");
+
+                    b.Property<string>("OrderTypeName")
+                        .HasMaxLength(2048);
+
+                    b.Property<string>("ProcessArea")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("ProcessTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName")
+                        .HasMaxLength(2048);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LossEvents");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEventCategory.LossEventCategoryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CreatedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("LossEventCode")
+                        .HasMaxLength(16);
+
+                    b.Property<int>("LossEventId");
+
+                    b.Property<string>("LossEventLosses")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventOrderTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("LossEventOrderTypeId");
+
+                    b.Property<string>("LossEventOrderTypeName")
+                        .HasMaxLength(2048);
+
+                    b.Property<string>("LossEventProcessArea")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventProcessTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("LossEventProcessTypeId");
+
+                    b.Property<string>("LossEventProcessTypeName")
+                        .HasMaxLength(2048);
+
+                    b.Property<string>("LossesCategory")
+                        .HasMaxLength(4096);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LossEventCategories");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEventRemark.LossEventRemarkModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CreatedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("LossEventCategoryCode")
+                        .HasMaxLength(16);
+
+                    b.Property<int>("LossEventCategoryId");
+
+                    b.Property<string>("LossEventCategoryLossesCategory")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventCode")
+                        .HasMaxLength(16);
+
+                    b.Property<int>("LossEventId");
+
+                    b.Property<string>("LossEventLosses")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventOrderTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("LossEventOrderTypeId");
+
+                    b.Property<string>("LossEventOrderTypeName")
+                        .HasMaxLength(2048);
+
+                    b.Property<string>("LossEventProcessArea")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("LossEventProcessTypeCode")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("LossEventProcessTypeId");
+
+                    b.Property<string>("LossEventProcessTypeName")
+                        .HasMaxLength(2048);
+
+                    b.Property<string>("ProductionLossCode")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(4096);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LossEventRemarks");
+                });
+
             modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineEventsModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1816,6 +2292,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.Property<int>("UnitId");
 
                     b.Property<string>("UnitName");
+
+                    b.Property<bool>("UseBQBS");
 
                     b.Property<decimal>("Water");
 
@@ -4190,6 +4668,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Migrations
                     b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel", "Machine")
                         .WithMany()
                         .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent.DailyMonitoringEventLossEventItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent.DailyMonitoringEventModel", "DailyMonitoringEvent")
+                        .WithMany("DailyMonitoringEventLossEventItems")
+                        .HasForeignKey("DailyMonitoringEventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent.DailyMonitoringEventProductionOrderItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent.DailyMonitoringEventModel", "DailyMonitoringEvent")
+                        .WithMany("DailyMonitoringEventProductionOrderItems")
+                        .HasForeignKey("DailyMonitoringEventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

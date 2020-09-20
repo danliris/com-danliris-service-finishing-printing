@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
     [Authorize]
     public class KanbanController : BaseController<KanbanModel, KanbanViewModel, IKanbanFacade>
     {
+        private const string LANJUT_PROSES = "Lanjut Proses";
+        private const string REPROSES = "Reproses";
         public KanbanController(IIdentityService identityService, IValidateService validateService, IKanbanFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
         }
@@ -48,9 +50,16 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         OldKanbanId = viewModel.OldKanbanId,
                         ProductionOrder = viewModel.ProductionOrder,
                         IsBadOutput = viewModel.IsBadOutput,
+                        BadOutput = viewModel.BadOutput ?? 0,
+                        IsReprocess = viewModel.IsReprocess,
                         SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
                     };
 
+                    if (cart.reprocess == REPROSES || cart.reprocess == LANJUT_PROSES)
+                    {
+                        vmToCreate.IsReprocess = cart.IsReprocess;
+                        vmToCreate.Instruction = cart.Instruction;
+                    }
                     KanbanModel model = Mapper.Map<KanbanModel>(vmToCreate);
                     await Facade.CreateAsync(model);
 
@@ -123,7 +132,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
             }
         }
 
-        [HttpGet("complete/{Id}")]
+        [HttpPut("complete/{Id}")]
         public async Task<IActionResult> UpdateIsComplete([FromRoute] int Id)
         {
             if (!ModelState.IsValid)

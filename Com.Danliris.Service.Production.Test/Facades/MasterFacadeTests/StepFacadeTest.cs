@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
@@ -72,5 +73,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             Assert.True(0 < response.Data.Count);
         }
 
+        [Fact]
+        public async Task UpdateAsync()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            StepFacade facade = new StepFacade(serviceProvider, dbContext);
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var newData = DataUtil(facade, dbContext).GetNewData();
+            var response =await facade.UpdateAsync(data.Id, newData);
+            Assert.True(0 < response);
+        }
     }
+
 }
+

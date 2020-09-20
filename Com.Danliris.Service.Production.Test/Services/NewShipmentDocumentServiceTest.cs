@@ -132,6 +132,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
         public void Should_Success_Validate_All_Null_Data()
         {
             var vm = new NewShipmentDocumentViewModel();
+           
+
+            Assert.True(vm.Validate(null).Count() > 0);
+        }
+
+        [Fact]
+        public void Should_Success_Validate_DeliveryDate()
+        {
+            var vm = new NewShipmentDocumentViewModel()
+            {
+                DeliveryDate = DateTimeOffset.UtcNow.AddDays(1)
+            };
 
             Assert.True(vm.Validate(null).Count() > 0);
         }

@@ -28,5 +28,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.NewShipmentDoc
             Assert.Equal("ReferenceNo", viewModel.ReferenceNo);
             Assert.Equal("ReferenceType", viewModel.ReferenceType);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            NewShipmentDocumentItemViewModel viewModel = new NewShipmentDocumentItemViewModel();
+
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
 }

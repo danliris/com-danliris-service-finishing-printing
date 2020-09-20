@@ -37,5 +37,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.NewShipmentDoc
             Assert.Equal(items, viewModel.Items);
             
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            NewShipmentDocumentDetailViewModel viewModel = new NewShipmentDocumentDetailViewModel();
+
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
 }

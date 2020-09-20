@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocument;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -20,10 +21,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.ShipmentDocume
                 ProductName = "ProductName",
                 Quantity = 1,
                 Remark = "Remark",
-                UOMId =1,
+                UOMId = 1,
                 UOMUnit = "UOMUnit",
-                Weight =1,
-                ProductId =1,
+                Weight = 1,
+                ProductId = 1,
                 DesignNumber = "DesignNumber"
             };
 
@@ -41,5 +42,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.ShipmentDocume
             Assert.Equal("UOMUnit", viewModel.UOMUnit);
             Assert.Equal(1, viewModel.Weight);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            ShipmentDocumentPackingReceiptItemViewModel viewModel = new ShipmentDocumentPackingReceiptItemViewModel();
+
+            Assert.Throws<NotImplementedException>(()=>viewModel.Validate(null));
         }
+
+    }
 }

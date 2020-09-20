@@ -13,6 +13,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
@@ -59,6 +60,22 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.Equal(vm.Id, model.Id);
 
+        }
+
+        [Fact]
+        public async Task UpdatePacking_success()
+        {
+            var dbContext = DbContext(GetCurrentAsyncMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade =new  PackingReceiptFacade(serviceProvider, dbContext);
+
+            var data =await DataUtil(facade, dbContext).GetTestData();
+            var newdata = DataUtil(facade, dbContext).GetNewData();
+           
+            var result = await facade.UpdateAsync(data.Id, newdata);
+
+            Assert.NotEqual(0, result);
         }
     }
 }

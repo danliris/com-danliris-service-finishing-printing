@@ -3,11 +3,15 @@ using Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.CostCalculation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.DirectLaborCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEventCategory;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.LossEventRemark;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost;
@@ -99,6 +103,14 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<DyestuffChemicalUsageReceiptModel> DyestuffChemicalUsageReceipts { get; set; }
         public DbSet<DyestuffChemicalUsageReceiptItemModel> DyestuffChemicalUsageReceiptItems { get; set; }
         public DbSet<DyestuffChemicalUsageReceiptItemDetailModel> DyestuffChemicalUsageReceiptItemDetails { get; set; }
+
+        public DbSet<LossEventModel> LossEvents { get; set; }
+        public DbSet<LossEventCategoryModel> LossEventCategories { get; set; }
+        public DbSet<LossEventRemarkModel> LossEventRemarks { get; set; }
+
+        public DbSet<DailyMonitoringEventModel> DailyMonitoringEvents { get; set; }
+        public DbSet<DailyMonitoringEventLossEventItemModel> DailyMonitoringEventLossEventItems { get; set; }
+        public DbSet<DailyMonitoringEventProductionOrderItemModel> DailyMonitoringEventProductionOrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -29,6 +29,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public bool IsChangeable { get; set; }
 
+        public bool HasOutput { get; set; }
+
         //step
         public MachineStepViewModel Step { get; set; }
 
@@ -44,9 +46,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-
-
             DailyOperationLogic service = (DailyOperationLogic)validationContext.GetService(typeof(DailyOperationLogic));
+
             if (string.IsNullOrEmpty(this.Type))
                 yield return new ValidationResult("harus diisi", new List<string> { "Type" });
 
@@ -79,11 +80,34 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                 {
                     yield return new ValidationResult("harus diisi", new List<string> { "DateInput" });
                 }
-
-                if (this.DateInput > DateTime.Now)
+                else
                 {
-                    yield return new ValidationResult("date input lebih dari hari ini", new List<string> { "DateInput" });
+                    if (this.DateInput > DateTime.Now)
+                    {
+                        yield return new ValidationResult("date input lebih dari hari ini", new List<string> { "DateInput" });
+                    }
+                    else
+                    {
+                        if (Kanban != null)
+                        {
+                            var outputData = service.GetOutputDataForCurrentInput(this);
+                            if (outputData != null && DateInput > outputData.DateOutput)
+                            {
+                                yield return new ValidationResult("date input lebih dari tanggal output di step yang sama", new List<string> { "DateInput" });
+                            }
+                            else
+                            {
+                                var prevOutputData = service.GetPrevOutputDataForCurrentInput(this);
+                                if (prevOutputData != null && DateInput < prevOutputData.DateOutput)
+                                {
+                                    yield return new ValidationResult("date input kurang dari tanggal output di step sebelumnya", new List<string> { "DateInput" });
+                                }
+                            }
+                        }
+                    }
                 }
+
+
 
             }
             else if (this.Type == "output")
@@ -93,20 +117,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     yield return new ValidationResult("harus diisi", new List<string> { "TimeOutput" });
                 }
 
-                if (this.GoodOutput <= -1)
+                if (BadOutput <= 0 && this.GoodOutput <= 0)
                 {
                     yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "GoodOutput" });
+                    //yield return new ValidationResult("harus diisi, tidak boleh kurang dari 0", new List<string> { "BadOutput" });
                 }
 
                 if (this.DateOutput == null)
                 {
                     yield return new ValidationResult("harus diisi", new List<string> { "DateOutput" });
                 }
-
-                if (this.DateOutput > DateTime.Now)
+                else
                 {
-                    yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
+                    if (this.DateOutput > DateTime.Now)
+                    {
+                        yield return new ValidationResult("date output lebih dari hari ini", new List<string> { "DateOutput" });
+                    }
+                    else
+                    {
+                        if (Kanban != null)
+                        {
+                            var inputData = service.GetInputDataForCurrentOutput(this);
+                            if (inputData != null && DateOutput < inputData.DateInput)
+                            {
+                                yield return new ValidationResult("date output harus lebih dari date input", new List<string> { "DateOutput" });
+                            }
+                        }
+                    }
                 }
+
+
 
 
                 if ((this.BadOutputReasons.Count.Equals(0) && this.BadOutput > 0) || (this.BadOutput > 0 && this.BadOutputReasons == null))
@@ -162,14 +202,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
 
                     if (!string.IsNullOrEmpty(Type) && Type.ToLower() == "output")
                     {
-
-                        var inputData = service.GetInputDataForCurrentOutput(this);
-
-                        if (inputData != null && DateOutput < inputData.DateInput)
-                        {
-                            yield return new ValidationResult("date output harus lebih dari date input", new List<string> { "DateOutput" });
-                        }
-
                         if (service.ValidateCreateOutputDataCheckDuplicate(this))
                         {
                             yield return new ValidationResult("Data output tidak dapat disimpan karena sudah ada data dengan kanban dan step yang sama", new List<string> { "Machine" });
@@ -216,7 +248,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation
                     {
                         int checkedIndex = Type.ToLower() == "input" ? Kanban.CurrentStepIndex.GetValueOrDefault() + 1 : Kanban.CurrentStepIndex.GetValueOrDefault();
                         var activeStep = Kanban.Instruction.Steps.FirstOrDefault(x => x.StepIndex == checkedIndex);
-                        if (!activeStep.Process.Equals(Step.Process))
+                        if (activeStep != null && activeStep.Process != Step.Process)
                         {
                             yield return new ValidationResult("step proses tidak sesuai", new List<string> { "Step" });
                         }

@@ -39,5 +39,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.NewShipmentDoc
             Assert.Equal("UOMUnit", viewModel.UOMUnit);
             Assert.Equal(1, viewModel.Weight);
         }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            NewShipmentDocumentPackingReceiptItemViewModel viewModel = new NewShipmentDocumentPackingReceiptItemViewModel();
+
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
         }
+    }
     }

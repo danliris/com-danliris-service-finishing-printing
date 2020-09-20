@@ -104,7 +104,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
         public async Task<int> UpdateAsync(int id, OperationalCostModel model)
         {
-            OperationalCostLogic.UpdateModelAsync(id, model);
+            await OperationalCostLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
     }

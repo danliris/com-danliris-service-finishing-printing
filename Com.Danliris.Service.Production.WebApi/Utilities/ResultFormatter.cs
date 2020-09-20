@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Production.WebApi.Utilities
 
         public Dictionary<string, object> Fail()
         {
+            Result.Add("error", Result.GetValueOrDefault("message"));
             return Result;
         }
 

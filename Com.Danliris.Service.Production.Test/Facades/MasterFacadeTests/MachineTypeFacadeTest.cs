@@ -11,6 +11,7 @@ using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
@@ -56,6 +57,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 
             Assert.Equal(vm.Id, model.Id);
 
+        }
+
+        [Fact]
+        public async Task UpdateAsync_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MachineTypeFacade facade = new MachineTypeFacade(serviceProvider, dbContext);
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var newData = DataUtil(facade, dbContext).GetNewData();
+            var response = await facade.UpdateAsync(data.Id, newData);
+            Assert.True(0 < response);
         }
     }
 }

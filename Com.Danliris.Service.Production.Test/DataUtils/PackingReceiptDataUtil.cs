@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
             {
                 Items = new List<PackingReceiptItem>
                 {
+                    new PackingReceiptItem(),
                     new PackingReceiptItem()
                 }
             };

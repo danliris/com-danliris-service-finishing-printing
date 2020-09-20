@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
             List<string> selectedFields = new List<string>()
                 {
                     "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "Electric", "Steam",
-                    "Water", "Solar", "LPG", "LastModifiedUtc", "MachineEvents", "Steps"
+                    "Water", "Solar", "LPG", "LastModifiedUtc", "MachineEvents", "Steps", "UseBQBS"
                 };
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
@@ -89,7 +89,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
             List<string> selectedFields = new List<string>()
                 {
                     "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "Electric", "Steam",
-                    "Water", "Solar", "LPG", "LastModifiedUtc", "MachineEvents", "Steps"
+                    "Water", "Solar", "LPG", "LastModifiedUtc", "MachineEvents", "Steps", "UseBQBS"
                 };
 
             //query = query

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ColorReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.CostCalculation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
@@ -16,12 +17,16 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQ
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventCategory;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventRemark;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.OperationalCost;
@@ -32,6 +37,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
@@ -133,6 +139,10 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IReturToQCFacade, ReturToQCFacade>()
                 .AddTransient<IColorReceiptFacade, ColorReceiptFacade>()
                 .AddTransient<IStrikeOffFacade, StrikeOffFacade>()
+                .AddTransient<ILossEventFacade, LossEventFacade>()
+                .AddTransient<ILossEventCategoryFacade, LossEventCategoryFacade>()
+                .AddTransient<ILossEventRemarkFacade, LossEventRemarkFacade>()
+                .AddTransient<IDailyMonitoringEventFacade, DailyMonitoringEventFacade>()
                 .AddTransient<IDyestuffChemicalUsageReceiptFacade, DyestuffChemicalUsageReceiptFacade>();
         }
 
@@ -164,6 +174,10 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<ReturToQCLogic>()
                 .AddTransient<ColorReceiptLogic>()
                 .AddTransient<StrikeOffLogic>()
+                .AddTransient<LossEventLogic>()
+                .AddTransient<LossEventCategoryLogic>()
+                .AddTransient<LossEventRemarkLogic>()
+                .AddTransient<DailyMonitoringEventLogic>()
                 .AddTransient<DyestuffChemicalUsageReceiptLogic>();
         }
 

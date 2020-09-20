@@ -96,6 +96,41 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public  async void CreateAsync_Success()
+        {
+            //Setup
+            var dbContext = DbContext(GetCurrentAsyncMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            //Act
+            var newdata = await DataUtil(facade, dbContext).GetNewDataAsyncToUpdate();
+            var response = await facade.CreateAsync(newdata);
+
+            //Assert
+            Assert.True(0 < response);
+        }
+
+        [Fact]
+        public async void UpdateAsync_Success()
+        {
+            //Setup
+            var dbContext = DbContext(GetCurrentAsyncMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            //Act
+            var data = await DataUtil(facade, dbContext).GetNewDataAsyncToUpdate();
+         
+            var response = await facade.UpdateAsync(data.Id, data);
+
+            //Assert
+            Assert.True(0 < response);
+        }
+
+
+
+        [Fact]
         public virtual async void Generate_Excels()
         {
             var dbContext = DbContext(GetCurrentMethod());
@@ -106,6 +141,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var data = await DataUtil(facade, dbContext).GetTestData();
 
             var Response = facade.GenerateExcel(null, 0, 0, null, data.CreatedUtc.AddDays(-1), data.CreatedUtc.AddDays(1), 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public void Generate_Excels_with_EmptyData()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+
+            var Response = facade.GenerateExcel(null, 0, 0, null, DateTime.Now, DateTime.Now, 7);
 
             Assert.NotNull(Response);
         }

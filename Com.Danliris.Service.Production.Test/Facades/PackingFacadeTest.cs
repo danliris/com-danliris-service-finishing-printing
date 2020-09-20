@@ -62,6 +62,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public  void GenerateExcel_when_EmptyResult()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var Response = facade.GenerateExcel(null, 1, null, null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
         public async void GenerateExcel_DateFrom_DateTo()
         {
             var dbContext = DbContext(GetCurrentMethod());
@@ -91,6 +104,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             Assert.NotNull(Response);
         }
 
+
+
+        [Fact]
+        public  void GenerateExcelQCGudang_when_EmptyResult()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var Response = facade.GenerateExcelQCGudang(null, null, 7);
+
+            Assert.NotNull(Response);
+        }
         [Fact]
         public async void GetReport()
         {
@@ -102,6 +129,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var data = await DataUtil(facade, dbContext).GetTestData();
 
             var Response = facade.GetReport(1, 25, data.Code, data.ProductionOrderId, null, null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async void GetReport_WIth_DateFrom_ReturnSucces()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetReport(1, 25, data.Code, data.ProductionOrderId, DateTime.Now.AddDays(-1), null, 7);
+
+            Assert.NotNull(Response);
+        }
+
+        [Fact]
+        public async void GetReport_WIth_DateTo_ReturnSucces()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetReport(1, 25, data.Code, data.ProductionOrderId, null, DateTime.Now.AddDays(1), 7);
 
             Assert.NotNull(Response);
         }
@@ -119,6 +176,21 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var Response = await facade.GetPackingDetail("");
 
             Assert.Null(Response);
+        }
+
+        [Fact]
+        public async void UpdateAsync_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var newData =  DataUtil(facade, dbContext).GetNewData();
+            var Response = await facade.UpdateAsync(data.Id, newData);
+
+            Assert.NotEqual(0,Response);
         }
 
         [Fact]
