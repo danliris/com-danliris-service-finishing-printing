@@ -94,7 +94,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             List<string> selectedFields = new List<string>()
             {
                 "Id", "Code", "ProductionOrder","CurrentStepIndex", "Cart", "Instruction", "SelectedProductionOrderDetail", "LastModifiedUtc", "OldKanbanId", "IsComplete", "IsInactive",
-                "IsReprocess"
+                "IsReprocess","IsFulfilledOutput"
             };
 
 
@@ -107,6 +107,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                     CurrentStepIndex = field.CurrentStepIndex,
                     CartQty = field.CartQty,
                     IsBadOutput = field.IsBadOutput,
+                    IsFulfilledOutput =field.IsFulfilledOutput,
                     IsComplete = field.IsComplete,
                     IsInactive = field.IsInactive,
                     IsReprocess = field.IsReprocess,

@@ -136,6 +136,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (model.Type.ToUpper() == "INPUT")
             {
+                selectedKanban.IsFulfilledOutput = false;
                 selectedKanban.CurrentStepIndex += 1;
                 selectedKanban.CurrentQty = model.Input.GetValueOrDefault();
                 model.KanbanStepIndex = selectedKanban.CurrentStepIndex;
@@ -143,6 +144,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             else if (model.Type.ToUpper() == "OUTPUT")
             {
                 model.KanbanStepIndex = selectedKanban.CurrentStepIndex;
+                selectedKanban.IsFulfilledOutput = true;
                 selectedKanban.CurrentQty = model.GoodOutput.GetValueOrDefault() + model.BadOutput.GetValueOrDefault();
                 selectedKanban.GoodOutput = model.GoodOutput.GetValueOrDefault();
                 selectedKanban.BadOutput = model.BadOutput.GetValueOrDefault();

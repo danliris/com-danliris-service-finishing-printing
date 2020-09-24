@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
         public string Grade { get; set; }
         public KanbanInstructionViewModel Instruction { get; set; }
         public bool? IsBadOutput { get; set; }
+        public bool? IsFulfilledOutput { get; set; }
         public bool? IsComplete { get; set; }
         public bool? IsInactive { get; set; }
         public bool? IsReprocess { get; set; }
