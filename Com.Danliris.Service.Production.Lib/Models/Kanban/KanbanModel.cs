@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
         public virtual KanbanInstructionModel Instruction { get; set; }
         public int InstructionId { get; set; }
         public bool IsBadOutput { get; set; }
+        public bool IsFulfilledOutput { get; set; }
         public bool IsComplete { get; set; }
         public bool IsInactive { get; set; }
         public bool IsReprocess { get; set; }
