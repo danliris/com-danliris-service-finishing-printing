@@ -197,6 +197,35 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public async Task Should_Success_Update_Add()
+        {
+            var dbContext = DbContext(GetCurrentMethod() + "Should_Success_Update_Add");
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            var dailyOperationBadOutputReasonsLogic = new DailyOperationBadOutputReasonsLogic(identityService, dbContext);
+            var dailyOperationLogic = new DailyOperationLogic(dailyOperationBadOutputReasonsLogic, identityService, dbContext);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            DailyOperationFacade facade = Activator.CreateInstance(typeof(DailyOperationFacade), serviceProvider, dbContext) as DailyOperationFacade;
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var outputData = DataUtil(facade, dbContext).GetNewDataOut(data);
+
+            await facade.CreateAsync(outputData);
+
+            outputData.BadOutput = 10;
+            outputData.BadOutputReasons = new List<DailyOperationBadOutputReasonsModel>()
+            {
+                new DailyOperationBadOutputReasonsModel()
+                {
+                    MachineCode = "c"
+                }
+            };
+            await facade.UpdateAsync(outputData.Id, outputData);
+            Assert.NotNull(data);
+        }
+
+        [Fact]
         public virtual async void Should_Success_Read()
         {
             var dbContext = DbContext(GetCurrentMethod());
