@@ -20,7 +20,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 {
     public class DailyOperationLogic : BaseLogic<DailyOperationModel>
     {
-        private const string UserAgent = "production-service";
         private DailyOperationBadOutputReasonsLogic DailyOperationBadOutputReasonsLogic;
         private readonly DbSet<KanbanModel> DbSetKanban;
         private readonly ProductionDbContext DbContext;
@@ -87,11 +86,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await DailyOperationBadOutputReasonsLogic.UpdateModelAsync(itemId, data);
                     }
 
-                    foreach (DailyOperationBadOutputReasonsModel item in model.BadOutputReasons)
-                    {
-                        if (item.Id == 0)
-                            DailyOperationBadOutputReasonsLogic.CreateModel(item);
-                    }
+                    
+                }
+
+                foreach (DailyOperationBadOutputReasonsModel item in model.BadOutputReasons)
+                {
+                    if (item.Id == 0)
+                        DailyOperationBadOutputReasonsLogic.CreateModel(item);
                 }
                 // this.UpdateKanban(model, flag);
             }
