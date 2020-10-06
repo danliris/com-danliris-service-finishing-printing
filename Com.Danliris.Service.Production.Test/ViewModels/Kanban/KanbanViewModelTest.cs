@@ -17,7 +17,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Kanban
                 UId = "UId",
                 BadOutput =1,
                 Code = "Code",
-                FinishWidth = "FinishWidth"
+                FinishWidth = "FinishWidth",
+                IsFulfilledOutput=true
             };
         }
 
@@ -88,5 +89,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Kanban
             var result = viewModel.Validate(null);
             Assert.True(0 < result.Count());
         }
+
+
     }
 }

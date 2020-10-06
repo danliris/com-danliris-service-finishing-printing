@@ -20,7 +20,6 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 {
     public class DailyOperationLogic : BaseLogic<DailyOperationModel>
     {
-        private const string UserAgent = "production-service";
         private DailyOperationBadOutputReasonsLogic DailyOperationBadOutputReasonsLogic;
         private readonly DbSet<KanbanModel> DbSetKanban;
         private readonly ProductionDbContext DbContext;
@@ -87,11 +86,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await DailyOperationBadOutputReasonsLogic.UpdateModelAsync(itemId, data);
                     }
 
-                    foreach (DailyOperationBadOutputReasonsModel item in model.BadOutputReasons)
-                    {
-                        if (item.Id == 0)
-                            DailyOperationBadOutputReasonsLogic.CreateModel(item);
-                    }
+                    
+                }
+
+                foreach (DailyOperationBadOutputReasonsModel item in model.BadOutputReasons)
+                {
+                    if (item.Id == 0)
+                        DailyOperationBadOutputReasonsLogic.CreateModel(item);
                 }
                 // this.UpdateKanban(model, flag);
             }
@@ -136,6 +137,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
 
             if (model.Type.ToUpper() == "INPUT")
             {
+                selectedKanban.IsFulfilledOutput = false;
                 selectedKanban.CurrentStepIndex += 1;
                 selectedKanban.CurrentQty = model.Input.GetValueOrDefault();
                 model.KanbanStepIndex = selectedKanban.CurrentStepIndex;
@@ -143,6 +145,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             else if (model.Type.ToUpper() == "OUTPUT")
             {
                 model.KanbanStepIndex = selectedKanban.CurrentStepIndex;
+                selectedKanban.IsFulfilledOutput = true;
                 selectedKanban.CurrentQty = model.GoodOutput.GetValueOrDefault() + model.BadOutput.GetValueOrDefault();
                 selectedKanban.GoodOutput = model.GoodOutput.GetValueOrDefault();
                 selectedKanban.BadOutput = model.BadOutput.GetValueOrDefault();
