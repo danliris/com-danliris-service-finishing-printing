@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using Com.Moonlay.NetCore.Lib;
 using System.IO;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoringEvent;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyMonitoringEvent
 {
@@ -55,7 +57,185 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
         public MemoryStream GenerateExcel(DateTime? dateFrom, DateTime? dateTo, string area, int machineId, int offSet)
         {
-            throw new NotImplementedException();
+            var data = GetReport(dateFrom, dateTo, area, machineId, offSet);
+
+            var memoryStream = new MemoryStream();
+
+            using (ExcelPackage package = new ExcelPackage(memoryStream))
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+
+                int x = 2;
+                worksheet.Cells[x, 2].Value = "Machine";
+                worksheet.Cells[x, 3].Value = "AVAILABLE TIME";
+                worksheet.Cells[x, 4].Value = "AVAILABLE LOADING TIME";
+                worksheet.Cells[x, 5].Value = "OPERATING TIME";
+                worksheet.Cells[x, 6].Value = "VALUE OPERATING TIME";
+                worksheet.Cells[x, 7].Value = "IDLE TIME";
+                worksheet.Cells[x, 8].Value = "Asset Utilization";
+                worksheet.Cells[x, 9].Value = "Overall Equipment Efficiency MMP";
+
+                worksheet.Cells[x, 2, x, 9].Style.Font.Bold = true;
+
+
+                x++;
+                foreach (var item in data)
+                {
+                    worksheet.Cells[x, 2].Value = item.MachineName;
+                    worksheet.Cells[x, 2].Style.Font.Bold = true;
+                    worksheet.Cells[x, 3].Value = Convert.ToDecimal(item.AvailableTime.ToString("F2"));
+                    worksheet.Cells[x, 4].Value = Convert.ToDecimal(item.AvailableLoadingTime.ToString("F2"));
+                    worksheet.Cells[x, 5].Value = Convert.ToDecimal(item.OperatingTime.ToString("F2"));
+                    worksheet.Cells[x, 6].Value = Convert.ToDecimal(item.ValueOperatingTime.ToString("F2"));
+                    worksheet.Cells[x, 7].Value = Convert.ToDecimal(item.IdleTime.ToString("F2"));
+                    worksheet.Cells[x, 8].Value = Convert.ToDecimal(item.AssetUtilization.ToString("F2"));
+                    worksheet.Cells[x, 9].Value = Convert.ToDecimal(item.OEEMMP.ToString("F2"));
+                    x++;
+                }
+
+                worksheet.Cells[2, 2, 3, 9].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                worksheet.Cells[2, 2, 3, 9].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                worksheet.Cells[2, 2, 3, 9].Style.Border.Left.Style = ExcelBorderStyle.Medium;
+                worksheet.Cells[2, 2, 3, 9].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+
+                x++;
+                var monitoring = data.FirstOrDefault();
+                worksheet.Cells[x, 6].Value = monitoring?.MachineName;
+                worksheet.Cells[x, 6].Style.Font.Bold = true;
+                worksheet.Cells[x, 6, x, 7].Merge = true;
+                worksheet.Cells[x, 6, x, 7].Style.WrapText = true;
+                worksheet.Cells[x, 6, x, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                x++;
+                worksheet.Cells[x, 4].Value = "Input";
+                worksheet.Cells[x, 4].Style.Font.Bold = true;
+                worksheet.Cells[x, 4, x, 5].Merge = true;
+                worksheet.Cells[x, 4, x, 5].Style.WrapText = true;
+                worksheet.Cells[x, 4, x, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells[x, 6].Value = Convert.ToDecimal(monitoring?.Input.ToString("F2"));
+                worksheet.Cells[x, 7].Value = Convert.ToDecimal(monitoring?.DesignSpeed.ToString("F2")) + " mtr/menit";
+                worksheet.Cells[x, 6, x, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                x++;
+                worksheet.Cells[x, 4].Value = "Output";
+                worksheet.Cells[x, 4].Style.Font.Bold = true;
+                worksheet.Cells[x, 4, x, 5].Merge = true;
+                worksheet.Cells[x, 4, x, 5].Style.WrapText = true;
+                worksheet.Cells[x, 4, x, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells[x, 6].Value = Convert.ToDecimal(monitoring?.Output.ToString("F2"));
+                worksheet.Cells[x, 7].Value = "";
+                worksheet.Cells[x, 6, x, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                x++;
+                worksheet.Cells[x, 4].Value = "";
+                worksheet.Cells[x, 4].Style.Font.Bold = true;
+                worksheet.Cells[x, 4, x, 5].Merge = true;
+                worksheet.Cells[x, 4, x, 5].Style.WrapText = true;
+                worksheet.Cells[x, 4, x, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells[x, 6].Value = "";
+                worksheet.Cells[x, 7].Value = "";
+
+                x++;
+                worksheet.Cells[x, 4].Value = "Total Loss Time";
+                worksheet.Cells[x, 4].Style.Font.Bold = true;
+                worksheet.Cells[x, 4, x, 5].Merge = true;
+                worksheet.Cells[x, 4, x, 5].Style.WrapText = true;
+                worksheet.Cells[x, 4, x, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells[x, 6].Value = Convert.ToDecimal(monitoring?.TotalTime.ToString("F2")) + " Jam";
+                worksheet.Cells[x, 7].Value = "";
+                worksheet.Cells[x, 6, x, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                worksheet.Cells[5, 6, 9, 7].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                worksheet.Cells[5, 6, 9, 7].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                worksheet.Cells[5, 6, 9, 7].Style.Border.Left.Style = ExcelBorderStyle.Medium;
+                worksheet.Cells[5, 6, 9, 7].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+
+                x++;
+
+                int start = x;
+                int lossIndex = x;
+                if (monitoring != null)
+                {
+                    var legalLosses = monitoring.LegalLossesExcel.GroupBy(s => s.Losses);
+                    foreach(var item in legalLosses)
+                    {
+                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+
+                    }
+                    lossIndex = lossIndex + legalLosses.Count();
+
+                    var unutilisedLosses = monitoring.UnUtilisedCapacityLossesExcel.GroupBy(s => s.Losses);
+                    foreach (var item in unutilisedLosses)
+                    {
+                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+
+                    }
+                    lossIndex = lossIndex + unutilisedLosses.Count();
+
+                    var processLosses = monitoring.ProcessDrivenLossesExcel.GroupBy(s => s.Losses);
+                    foreach (var item in processLosses)
+                    {
+                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+
+                    }
+                    lossIndex = lossIndex + processLosses.Count();
+
+                    var manufactureLosses = monitoring.ManufacturingPerformanceLossesExcel.GroupBy(s => s.Losses);
+                    foreach (var item in manufactureLosses)
+                    {
+                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+
+                    }
+                    lossIndex = lossIndex + manufactureLosses.Count();
+                }
+
+
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                package.Save();
+            }
+            memoryStream.Position = 0;
+            return memoryStream;
         }
 
         public List<DailyMonitoringEventReportViewModel> GetReport(DateTime? dateFrom, DateTime? dateTo, string area, int machineId, int offSet)
@@ -86,16 +266,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                            .Select(s => new DailyMonitoringEventReportViewModel()
                            {
                                DesignSpeed = s.SelectMany(e => e.DailyMonitoringEventProductionOrderItems).Sum(e => e.Speed) / s.SelectMany(e => e.DailyMonitoringEventProductionOrderItems).Count(),
-                               Output = s.First().MachineUseBQBS ? s.SelectMany(e => e.DailyMonitoringEventProductionOrderItems).Sum(e => e.Input_BQ + e.Output_BS) : s.SelectMany(e => e.DailyMonitoringEventProductionOrderItems).Sum(e => e.Output_BS),
+                               Output = s.SelectMany(e => e.DailyMonitoringEventProductionOrderItems).Sum(e => e.Output_BS),
+                               Input = s.SelectMany(e => e.DailyMonitoringEventProductionOrderItems).Sum(e => e.Input_BQ),
                                TotalTime = s.GroupBy(e => new { e.Date, e.Shift }).Count() * 8,
-
+                               ProcessArea = s.Key.ProcessArea,
+                               MachineName = s.First().MachineName
                            }).ToList();
 
 
             var groupedLegalLosses = groupedData.ToList().Select(s => s.SelectMany(e => e.DailyMonitoringEventLossEventItems).Where(e => e.LossEventLosses.ToUpper() == LEGAL_LOSSES)).FirstOrDefault();
-            var unUtilisedCapacityLosses = groupedData.ToList().Select(s => s.SelectMany(e => e.DailyMonitoringEventLossEventItems).Where(e => e.LossEventLosses.ToUpper() == UNUTILISED_CAPACITY_LOSSES)).FirstOrDefault();
-            var processDrivenLosses = groupedData.ToList().Select(s => s.SelectMany(e => e.DailyMonitoringEventLossEventItems).Where(e => e.LossEventLosses.ToUpper() == PROCESS_DRIVEN_LOSSES)).FirstOrDefault();
-            var manufacturingPerformanceLosses = groupedData.ToList().Select(s => s.SelectMany(e => e.DailyMonitoringEventLossEventItems).Where(e => e.LossEventLosses.ToUpper() == MANUFACTURING_PERFORMANCE_LOSSES)).FirstOrDefault();
+            var groupedUnUtilisedCapacityLosses = groupedData.ToList().Select(s => s.SelectMany(e => e.DailyMonitoringEventLossEventItems).Where(e => e.LossEventLosses.ToUpper() == UNUTILISED_CAPACITY_LOSSES)).FirstOrDefault();
+            var groupedProcessDrivenLosses = groupedData.ToList().Select(s => s.SelectMany(e => e.DailyMonitoringEventLossEventItems).Where(e => e.LossEventLosses.ToUpper() == PROCESS_DRIVEN_LOSSES)).FirstOrDefault();
+            var groupedManufacturingPerformanceLosses = groupedData.ToList().Select(s => s.SelectMany(e => e.DailyMonitoringEventLossEventItems).Where(e => e.LossEventLosses.ToUpper() == MANUFACTURING_PERFORMANCE_LOSSES)).FirstOrDefault();
 
             var reportData = result.FirstOrDefault();
 
@@ -107,19 +289,19 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                                                     LossEventCategory = e.Key,
                                                     Value = e.Sum(r => r.Time) / 60
                                                 }).ToList();
-                var unUtilisedCapacityLossesMonitoringEvent = unUtilisedCapacityLosses.GroupBy(e => e.LossEventLossesCategory)
+                var unUtilisedCapacityLossesMonitoringEvent = groupedUnUtilisedCapacityLosses.GroupBy(e => e.LossEventLossesCategory)
                                                 .Select(e => new UnUtilisedCapacityLossesViewModel()
                                                 {
                                                     LossEventCategory = e.Key,
                                                     Value = e.Sum(r => r.Time) / 60
                                                 }).ToList();
-                var processDrivenLossesMonitoringEvent = processDrivenLosses.GroupBy(e => e.LossEventLossesCategory)
+                var processDrivenLossesMonitoringEvent = groupedProcessDrivenLosses.GroupBy(e => e.LossEventLossesCategory)
                                                 .Select(e => new ProcessDrivenLossesViewModel()
                                                 {
                                                     LossEventCategory = e.Key,
                                                     Value = e.Sum(r => r.Time) / 60
                                                 }).ToList();
-                var manufacturingPerformanceLossesMonitoringEvent = manufacturingPerformanceLosses.GroupBy(e => e.LossEventLossesCategory)
+                var manufacturingPerformanceLossesMonitoringEvent = groupedManufacturingPerformanceLosses.GroupBy(e => e.LossEventLossesCategory)
                                                 .Select(e => new ManufacturingPerformanceLossesViewModel()
                                                 {
                                                     LossEventCategory = e.Key,
@@ -155,7 +337,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                         item.Value = category.Value;
                     }
 
-                    if(item.LossEventCategory.ToUpper() == PLANNED_STOPPED_TIME)
+                    if (item.LossEventCategory.ToUpper() == PLANNED_STOPPED_TIME)
                     {
                         var dates = new List<DateTime>();
 
@@ -197,6 +379,79 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                     if (category != null)
                     {
                         item.Value = category.Value;
+                    }
+                }
+
+
+                reportData.LegalLossesExcel = DbContext.LossEventRemarks.Where(s => s.LossEventProcessArea == area && s.LossEventLosses.ToUpper() == LEGAL_LOSSES)
+                                            .Select(s => new LegalLossesExcelViewModel()
+                                            {
+                                                Losses = s.LossEventLosses,
+                                                LossesCategory = s.LossEventCategoryLossesCategory,
+                                                LossesRemarkCode = s.ProductionLossCode,
+                                                LossesRemarkRemark = s.Remark
+                                            }).ToList();
+
+                foreach (var item in reportData.LegalLossesExcel)
+                {
+                    var remark = groupedLegalLosses.FirstOrDefault(s => s.LossEventProductionLossCode == item.LossesRemarkCode);
+                    if (remark != null)
+                    {
+                        item.Time = remark.Time / 60;
+                    }
+                }
+
+                reportData.UnUtilisedCapacityLossesExcel = DbContext.LossEventRemarks.Where(s => s.LossEventProcessArea == area && s.LossEventLosses.ToUpper() == UNUTILISED_CAPACITY_LOSSES)
+                                            .Select(s => new UnUtilisedCapacityLossesExcelViewModel()
+                                            {
+                                                Losses = s.LossEventLosses,
+                                                LossesCategory = s.LossEventCategoryLossesCategory,
+                                                LossesRemarkCode = s.ProductionLossCode,
+                                                LossesRemarkRemark = s.Remark
+                                            }).ToList();
+
+                foreach (var item in reportData.UnUtilisedCapacityLossesExcel)
+                {
+                    var remark = groupedUnUtilisedCapacityLosses.FirstOrDefault(s => s.LossEventProductionLossCode == item.LossesRemarkCode);
+                    if (remark != null)
+                    {
+                        item.Time = remark.Time / 60;
+                    }
+                }
+
+                reportData.ProcessDrivenLossesExcel = DbContext.LossEventRemarks.Where(s => s.LossEventProcessArea == area && s.LossEventLosses.ToUpper() == PROCESS_DRIVEN_LOSSES)
+                                            .Select(s => new ProcessDrivenLossesExcelViewModel()
+                                            {
+                                                Losses = s.LossEventLosses,
+                                                LossesCategory = s.LossEventCategoryLossesCategory,
+                                                LossesRemarkCode = s.ProductionLossCode,
+                                                LossesRemarkRemark = s.Remark
+                                            }).ToList();
+
+                foreach (var item in reportData.ProcessDrivenLossesExcel)
+                {
+                    var remark = groupedProcessDrivenLosses.FirstOrDefault(s => s.LossEventProductionLossCode == item.LossesRemarkCode);
+                    if (remark != null)
+                    {
+                        item.Time = remark.Time / 60;
+                    }
+                }
+
+                reportData.ManufacturingPerformanceLossesExcel = DbContext.LossEventRemarks.Where(s => s.LossEventProcessArea == area && s.LossEventLosses.ToUpper() == MANUFACTURING_PERFORMANCE_LOSSES)
+                                            .Select(s => new ManufacturingPerformanceLossesExcelViewModel()
+                                            {
+                                                Losses = s.LossEventLosses,
+                                                LossesCategory = s.LossEventCategoryLossesCategory,
+                                                LossesRemarkCode = s.ProductionLossCode,
+                                                LossesRemarkRemark = s.Remark
+                                            }).ToList();
+
+                foreach (var item in reportData.ManufacturingPerformanceLossesExcel)
+                {
+                    var remark = groupedManufacturingPerformanceLosses.FirstOrDefault(s => s.LossEventProductionLossCode == item.LossesRemarkCode);
+                    if (remark != null)
+                    {
+                        item.Time = remark.Time / 60;
                     }
                 }
 
