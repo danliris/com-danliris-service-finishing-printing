@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
@@ -106,6 +107,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
                 new DailyMonitoringEventProductionOrderItemViewModel()
             };
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(data));
+        }
+
+        [Fact]
+        public async Task GetReport()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyMonitoringEventFacade facade = new DailyMonitoringEventFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetReport(DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(1), data.ProcessArea, data.MachineId, 7);
+
+            Assert.NotEmpty(Response);
+        }
+
+        [Fact]
+        public async Task GenerateExcel()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            DailyMonitoringEventFacade facade = new DailyMonitoringEventFacade(serviceProvider, dbContext);
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GenerateExcel(DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(1), data.ProcessArea, data.MachineId, 7);
+
+            Assert.NotNull(Response);
         }
     }
 }
