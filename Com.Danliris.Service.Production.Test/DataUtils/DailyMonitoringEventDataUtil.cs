@@ -22,7 +22,37 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
                 {
                     new DailyMonitoringEventLossEventItemModel()
                     {
-                        LossEventLosses = "l",
+                        LossEventLosses = "Legal Losses",
+                        LossEventLossesCategory = "c",
+                        LossEventProductionLossCode = "c",
+                        Time = 1,
+                        LossEventRemarkId = 1,
+                        LossEventRemarkCode = "c",
+                        LossEventRemark = "r"
+                    },
+                    new DailyMonitoringEventLossEventItemModel()
+                    {
+                        LossEventLosses = "Unutilised Capacity Losses",
+                        LossEventLossesCategory = "c",
+                        LossEventProductionLossCode = "c",
+                        Time = 1,
+                        LossEventRemarkId = 1,
+                        LossEventRemarkCode = "c",
+                        LossEventRemark = "r"
+                    },
+                    new DailyMonitoringEventLossEventItemModel()
+                    {
+                        LossEventLosses = "Process Driven Losses",
+                        LossEventLossesCategory = "c",
+                        LossEventProductionLossCode = "c",
+                        Time = 1,
+                        LossEventRemarkId = 1,
+                        LossEventRemarkCode = "c",
+                        LossEventRemark = "r"
+                    },
+                    new DailyMonitoringEventLossEventItemModel()
+                    {
+                        LossEventLosses = "Manufacturing Performance Losses",
                         LossEventLossesCategory = "c",
                         LossEventProductionLossCode = "c",
                         Time = 1,
