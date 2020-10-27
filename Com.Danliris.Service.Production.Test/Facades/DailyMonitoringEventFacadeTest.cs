@@ -1,14 +1,20 @@
 ﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyMonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyMonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventCategory;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventRemark;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
+using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
+using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Services.ValidateService;
 using Com.Danliris.Service.Production.Lib.Utilities;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +29,73 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         private const string ENTITY = "DailyMonitoringEvent";
         public DailyMonitoringEventFacadeTest() : base(ENTITY)
         {
+        }
+
+        protected override Mock<IServiceProvider> GetServiceProviderMock(ProductionDbContext dbContext)
+        {
+            var serviceProviderMock = new Mock<IServiceProvider>();
+
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            serviceProviderMock
+                .Setup(x => x.GetService(typeof(IdentityService)))
+                .Returns(identityService);
+
+            serviceProviderMock
+                .Setup(x => x.GetService(typeof(DailyMonitoringEventLogic)))
+                .Returns(Activator.CreateInstance(typeof(DailyMonitoringEventLogic), identityService, dbContext) as DailyMonitoringEventLogic);
+
+            serviceProviderMock
+                .Setup(x => x.GetService(typeof(LossEventCategoryLogic)))
+                .Returns(Activator.CreateInstance(typeof(LossEventCategoryLogic), identityService, dbContext) as LossEventCategoryLogic);
+
+            serviceProviderMock
+                .Setup(x => x.GetService(typeof(LossEventRemarkLogic)))
+                .Returns(Activator.CreateInstance(typeof(LossEventRemarkLogic), identityService, dbContext) as LossEventRemarkLogic);
+
+            return serviceProviderMock;
+        }
+
+        protected override DailyMonitoringEventDataUtil DataUtil(DailyMonitoringEventFacade facade, ProductionDbContext dbContext = null)
+        {
+            LossEventCategoryFacade categoryFacade = new LossEventCategoryFacade(GetServiceProviderMock(dbContext).Object, dbContext);
+            LossEventCategoryDataUtil categoryDataUtil = new LossEventCategoryDataUtil(categoryFacade);
+            var category = categoryDataUtil.GetNewData();
+            category.LossEventLosses = "Legal Losses";
+            var result = categoryFacade.CreateAsync(category).Result;
+
+            var category2 = categoryDataUtil.GetNewData();
+            category2.LossEventLosses = "Unutilised Capacity Losses";
+            result = categoryFacade.CreateAsync(category2).Result;
+
+            var category3 = categoryDataUtil.GetNewData();
+            category3.LossEventLosses = "Process Driven Losses";
+            result = categoryFacade.CreateAsync(category3).Result;
+
+            var category4 = categoryDataUtil.GetNewData();
+            category4.LossEventLosses = "Manufacturing Performance Losses";
+            result = categoryFacade.CreateAsync(category4).Result;
+
+            LossEventRemarkFacade remarkFacade = new LossEventRemarkFacade(GetServiceProviderMock(dbContext).Object, dbContext);
+            LossEventRemarkDataUtil remarkDataUtil = new LossEventRemarkDataUtil(remarkFacade);
+            var remark = remarkDataUtil.GetNewData();
+            remark.LossEventLosses = "Legal Losses";
+            result = remarkFacade.CreateAsync(remark).Result;
+
+            var remark2 = remarkDataUtil.GetNewData();
+            remark2.LossEventLosses = "Unutilised Capacity Losses";
+            result = remarkFacade.CreateAsync(remark2).Result;
+
+            var remark3 = remarkDataUtil.GetNewData();
+            remark3.LossEventLosses = "Process Driven Losses";
+            result = remarkFacade.CreateAsync(remark3).Result;
+
+            var remark4 = remarkDataUtil.GetNewData();
+            remark4.LossEventLosses = "Manufacturing Performance Losses";
+            result = remarkFacade.CreateAsync(remark4).Result;
+
+            DailyMonitoringEventDataUtil dataUtil = new DailyMonitoringEventDataUtil(facade);
+            return dataUtil;
         }
 
         [Fact]
