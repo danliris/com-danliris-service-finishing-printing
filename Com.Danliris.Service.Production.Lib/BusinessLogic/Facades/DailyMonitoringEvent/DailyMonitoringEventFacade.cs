@@ -156,82 +156,269 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
                 int lossIndex = x;
                 if (monitoring != null)
                 {
-                    var legalLosses = monitoring.LegalLossesExcel.GroupBy(s => s.Losses);
-                    foreach(var item in legalLosses)
+                    var legalLosses = monitoring.LegalLossesExcel.FirstOrDefault();
+                    var legalRemarkCount = monitoring.LegalLossesExcel.Count;
+                    if (legalLosses != null)
                     {
-                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Value = legalLosses.Losses;
                         worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + legalRemarkCount - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + legalRemarkCount - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + legalRemarkCount - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + legalRemarkCount - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+                        var category = monitoring.LegalLossesExcel.GroupBy(s => s.LossesCategory);
+
+                        int legalIndex = lossIndex;
+                        foreach (var item in category)
+                        {
+                            worksheet.Cells[legalIndex, 3].Value = item.Key;
+                            worksheet.Cells[legalIndex, 3, legalIndex + item.Count() - 1, 3].Merge = true;
+                            worksheet.Cells[legalIndex, 3, legalIndex + item.Count() - 1, 3].Style.WrapText = true;
+                            worksheet.Cells[legalIndex, 3, legalIndex + item.Count() - 1, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[legalIndex, 3, legalIndex + item.Count() - 1, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                            var totalTime = item.Sum(s => s.Time);
+                            if (totalTime == 0)
+                            {
+                                worksheet.Cells[legalIndex, 7].Value = "-";
+                            }
+                            else
+                            {
+                                worksheet.Cells[legalIndex, 7].Value = Convert.ToDecimal(totalTime.ToString("F2"));
+                            }
+                            worksheet.Cells[legalIndex, 7, legalIndex + item.Count() - 1, 7].Merge = true;
+                            worksheet.Cells[legalIndex, 7, legalIndex + item.Count() - 1, 7].Style.WrapText = true;
+                            worksheet.Cells[legalIndex, 7, legalIndex + item.Count() - 1, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[legalIndex, 7, legalIndex + item.Count() - 1, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                            legalIndex += item.Count();
+                        }
+
+                        foreach (var item in monitoring.LegalLossesExcel)
+                        {
+                            worksheet.Cells[lossIndex, 4].Value = item.LossesRemarkCode;
+                            worksheet.Cells[lossIndex, 5].Value = item.LossesRemarkRemark;
+
+
+                            if (item.Time == 0)
+                            {
+
+                                worksheet.Cells[lossIndex, 6].Value = "-";
+                                worksheet.Cells[lossIndex, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            }
+                            else
+                            {
+                                worksheet.Cells[lossIndex, 6].Value = Convert.ToDecimal(item.Time.ToString("F2"));
+                            }
+                            lossIndex++;
+                        }
 
                     }
-                    lossIndex = lossIndex + legalLosses.Count();
 
-                    var unutilisedLosses = monitoring.UnUtilisedCapacityLossesExcel.GroupBy(s => s.Losses);
-                    foreach (var item in unutilisedLosses)
+                    var unUtilisedLosses = monitoring.UnUtilisedCapacityLossesExcel.FirstOrDefault();
+                    var unUtilisedRemarkCount = monitoring.UnUtilisedCapacityLossesExcel.Count;
+                    if (unUtilisedLosses != null)
                     {
-                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Value = unUtilisedLosses.Losses;
                         worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + unUtilisedRemarkCount - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + unUtilisedRemarkCount - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + unUtilisedRemarkCount - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + unUtilisedRemarkCount - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+                        var category = monitoring.UnUtilisedCapacityLossesExcel.GroupBy(s => s.LossesCategory);
+
+                        int unUtilisedIndex = lossIndex;
+                        foreach (var item in category)
+                        {
+                            worksheet.Cells[unUtilisedIndex, 3].Value = item.Key;
+                            worksheet.Cells[unUtilisedIndex, 3, unUtilisedIndex + item.Count() - 1, 3].Merge = true;
+                            worksheet.Cells[unUtilisedIndex, 3, unUtilisedIndex + item.Count() - 1, 3].Style.WrapText = true;
+                            worksheet.Cells[unUtilisedIndex, 3, unUtilisedIndex + item.Count() - 1, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[unUtilisedIndex, 3, unUtilisedIndex + item.Count() - 1, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                            var totalTime = item.Sum(s => s.Time);
+                            if (totalTime == 0)
+                            {
+                                worksheet.Cells[unUtilisedIndex, 7].Value = "-";
+                            }
+                            else
+                            {
+                                worksheet.Cells[unUtilisedIndex, 7].Value = Convert.ToDecimal(totalTime.ToString("F2"));
+                            }
+
+                            worksheet.Cells[unUtilisedIndex, 7, unUtilisedIndex + item.Count() - 1, 7].Merge = true;
+                            worksheet.Cells[unUtilisedIndex, 7, unUtilisedIndex + item.Count() - 1, 7].Style.WrapText = true;
+                            worksheet.Cells[unUtilisedIndex, 7, unUtilisedIndex + item.Count() - 1, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[unUtilisedIndex, 7, unUtilisedIndex + item.Count() - 1, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                            unUtilisedIndex += item.Count();
+                        }
+
+                        foreach (var item in monitoring.UnUtilisedCapacityLossesExcel)
+                        {
+                            worksheet.Cells[lossIndex, 4].Value = item.LossesRemarkCode;
+                            worksheet.Cells[lossIndex, 5].Value = item.LossesRemarkRemark;
+
+
+                            if (item.Time == 0)
+                            {
+
+                                worksheet.Cells[lossIndex, 6].Value = "-";
+                                worksheet.Cells[lossIndex, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            }
+                            else
+                            {
+                                worksheet.Cells[lossIndex, 6].Value = Convert.ToDecimal(item.Time.ToString("F2"));
+                            }
+                            lossIndex++;
+                        }
 
                     }
-                    lossIndex = lossIndex + unutilisedLosses.Count();
 
-                    var processLosses = monitoring.ProcessDrivenLossesExcel.GroupBy(s => s.Losses);
-                    foreach (var item in processLosses)
+
+                    var processLosses = monitoring.ProcessDrivenLossesExcel.FirstOrDefault();
+                    var processRemarkCount = monitoring.ProcessDrivenLossesExcel.Count;
+                    if (processLosses != null)
                     {
-                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Value = processLosses.Losses;
                         worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + processRemarkCount - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + processRemarkCount - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + processRemarkCount - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + processRemarkCount - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+                        var category = monitoring.ProcessDrivenLossesExcel.GroupBy(s => s.LossesCategory);
+
+                        int processIndex = lossIndex;
+                        foreach (var item in category)
+                        {
+                            worksheet.Cells[processIndex, 3].Value = item.Key;
+                            worksheet.Cells[processIndex, 3, processIndex + item.Count() - 1, 3].Merge = true;
+                            worksheet.Cells[processIndex, 3, processIndex + item.Count() - 1, 3].Style.WrapText = true;
+                            worksheet.Cells[processIndex, 3, processIndex + item.Count() - 1, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[processIndex, 3, processIndex + item.Count() - 1, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                            var totalTime = item.Sum(s => s.Time);
+                            if (totalTime == 0)
+                            {
+                                worksheet.Cells[processIndex, 7].Value = "-";
+                            }
+                            else
+                            {
+                                worksheet.Cells[processIndex, 7].Value = Convert.ToDecimal(totalTime.ToString("F2"));
+                            }
+
+                            worksheet.Cells[processIndex, 7, processIndex + item.Count() - 1, 7].Merge = true;
+                            worksheet.Cells[processIndex, 7, processIndex + item.Count() - 1, 7].Style.WrapText = true;
+                            worksheet.Cells[processIndex, 7, processIndex + item.Count() - 1, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[processIndex, 7, processIndex + item.Count() - 1, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                            processIndex += item.Count();
+                        }
+
+                        foreach (var item in monitoring.ProcessDrivenLossesExcel)
+                        {
+                            worksheet.Cells[lossIndex, 4].Value = item.LossesRemarkCode;
+                            worksheet.Cells[lossIndex, 5].Value = item.LossesRemarkRemark;
+
+
+                            if (item.Time == 0)
+                            {
+
+                                worksheet.Cells[lossIndex, 6].Value = "-";
+                                worksheet.Cells[lossIndex, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            }
+                            else
+                            {
+                                worksheet.Cells[lossIndex, 6].Value = Convert.ToDecimal(item.Time.ToString("F2"));
+                            }
+                            lossIndex++;
+                        }
 
                     }
-                    lossIndex = lossIndex + processLosses.Count();
 
-                    var manufactureLosses = monitoring.ManufacturingPerformanceLossesExcel.GroupBy(s => s.Losses);
-                    foreach (var item in manufactureLosses)
+                    var manufacturingLosses = monitoring.ManufacturingPerformanceLossesExcel.FirstOrDefault();
+                    var manufacturingRemarkCount = monitoring.ManufacturingPerformanceLossesExcel.Count;
+                    if (manufacturingLosses != null)
                     {
-                        worksheet.Cells[lossIndex, 2].Value = item.Key;
+                        worksheet.Cells[lossIndex, 2].Value = manufacturingLosses.Losses;
                         worksheet.Cells[lossIndex, 2].Style.Font.Bold = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Merge = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.WrapText = true;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + manufacturingRemarkCount - 1, 2].Merge = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + manufacturingRemarkCount - 1, 2].Style.WrapText = true;
+                        worksheet.Cells[lossIndex, 2, lossIndex + manufacturingRemarkCount - 1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[lossIndex, 2, lossIndex + manufacturingRemarkCount - 1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Top.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Left.Style = ExcelBorderStyle.Medium;
-                        worksheet.Cells[lossIndex, 2, lossIndex + item.Count() - 1, 2].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+                        var category = monitoring.ManufacturingPerformanceLossesExcel.GroupBy(s => s.LossesCategory);
+
+                        int manufacturingIndex = lossIndex;
+                        foreach (var item in category)
+                        {
+                            worksheet.Cells[manufacturingIndex, 3].Value = item.Key;
+                            worksheet.Cells[manufacturingIndex, 3, manufacturingIndex + item.Count() - 1, 3].Merge = true;
+                            worksheet.Cells[manufacturingIndex, 3, manufacturingIndex + item.Count() - 1, 3].Style.WrapText = true;
+                            worksheet.Cells[manufacturingIndex, 3, manufacturingIndex + item.Count() - 1, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[manufacturingIndex, 3, manufacturingIndex + item.Count() - 1, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                            var totalTime = item.Sum(s => s.Time);
+                            if (totalTime == 0)
+                            {
+                                worksheet.Cells[manufacturingIndex, 7].Value = "-";
+                            }
+                            else
+                            {
+                                worksheet.Cells[manufacturingIndex, 7].Value = Convert.ToDecimal(totalTime.ToString("F2"));
+                            }
+
+                            worksheet.Cells[manufacturingIndex, 7, manufacturingIndex + item.Count() - 1, 7].Merge = true;
+                            worksheet.Cells[manufacturingIndex, 7, manufacturingIndex + item.Count() - 1, 7].Style.WrapText = true;
+                            worksheet.Cells[manufacturingIndex, 7, manufacturingIndex + item.Count() - 1, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            worksheet.Cells[manufacturingIndex, 7, manufacturingIndex + item.Count() - 1, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                            manufacturingIndex += item.Count();
+                        }
+
+                        foreach (var item in monitoring.ManufacturingPerformanceLossesExcel)
+                        {
+                            worksheet.Cells[lossIndex, 4].Value = item.LossesRemarkCode;
+                            worksheet.Cells[lossIndex, 5].Value = item.LossesRemarkRemark;
+
+
+                            if (item.Time == 0)
+                            {
+
+                                worksheet.Cells[lossIndex, 6].Value = "-";
+                                worksheet.Cells[lossIndex, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            }
+                            else
+                            {
+                                worksheet.Cells[lossIndex, 6].Value = Convert.ToDecimal(item.Time.ToString("F2"));
+                            }
+                            lossIndex++;
+                        }
 
                     }
-                    lossIndex = lossIndex + manufactureLosses.Count();
+
+                    if(lossIndex > start)
+                    {
+                        worksheet.Cells[start, 2, lossIndex - 1, 7].Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[start, 2, lossIndex - 1, 7].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[start, 2, lossIndex - 1, 7].Style.Border.Left.Style = ExcelBorderStyle.Medium;
+                        worksheet.Cells[start, 2, lossIndex - 1, 7].Style.Border.Right.Style = ExcelBorderStyle.Medium;
+                    }
+                    
                 }
 
-
+                
+                worksheet.Cells[worksheet.Dimension.Address].Style.Font.Size = 12;
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
-
+                worksheet.Column(2).Width = 20;
+                worksheet.Column(3).Width = 40;
                 package.Save();
             }
             memoryStream.Position = 0;
@@ -348,7 +535,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dail
 
                         var stoppedHours = dates.Count(s => s.DayOfWeek == DayOfWeek.Saturday || s.DayOfWeek == DayOfWeek.Sunday) * 24;
 
-                        item.Value = item.Value + stoppedHours;
+                        item.Value += stoppedHours;
                     }
                 }
 
