@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
             List<string> searchAttributes = new List<string>()
             {
-                "ProcessTypeName", "Losses"
+                "ProcessTypeName", "Losses", "ProcessArea"
             };
             query = QueryHelper<LossEventModel>.Search(query, searchAttributes, keyword);
 
