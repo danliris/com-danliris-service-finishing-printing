@@ -12,7 +12,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.EventOrg
         public string ProcessArea { get; set; }
 
         public string Kasie { get; set; }
-      
+        public string Group { get; set; }
+
         public string Kasubsie { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -25,6 +26,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.EventOrg
 
             if (string.IsNullOrEmpty(Kasubsie))
                 yield return new ValidationResult("Kasubsie harus diisi", new List<string> { "Kasubsie" });
+
+            if (string.IsNullOrEmpty(Group))
+                yield return new ValidationResult("Kasubsie harus diisi", new List<string> { "Group" });
         }
     }
 }

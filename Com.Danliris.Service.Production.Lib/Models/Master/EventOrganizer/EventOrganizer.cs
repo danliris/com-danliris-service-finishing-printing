@@ -13,6 +13,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.EventOrganiz
         [MaxLength(4096)]
         public string ProcessArea { get; set; }
 
+        public string Group { get; set; }
+
         [MaxLength(4096)]
         public string Kasie { get; set; }
         [MaxLength(4096)]

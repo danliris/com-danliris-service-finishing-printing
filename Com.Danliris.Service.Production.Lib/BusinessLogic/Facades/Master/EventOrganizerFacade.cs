@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
             List<string> searchAttributes = new List<string>()
             {
-                 "Code", "Name"
+                 "Code", "ProcessArea","kasie","kasubsie","Group"
             };
             query = QueryHelper<EventOrganizer>.Search(query, searchAttributes, keyword);
 
