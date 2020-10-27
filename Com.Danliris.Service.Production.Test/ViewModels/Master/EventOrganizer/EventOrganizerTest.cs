@@ -21,6 +21,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.ViewModels.Master.EventOr
                 Group= "Group"
 
             };
+
+            Assert.Equal("Code", viewModel.Code);
+
             var result= viewModel.Validate(null);
             Assert.True(0 == result.Count());
            
