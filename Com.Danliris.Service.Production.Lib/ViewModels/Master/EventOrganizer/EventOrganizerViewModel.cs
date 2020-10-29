@@ -28,7 +28,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.EventOrg
                 yield return new ValidationResult("Kasubsie harus diisi", new List<string> { "Kasubsie" });
 
             if (string.IsNullOrEmpty(Group))
-                yield return new ValidationResult("Kasubsie harus diisi", new List<string> { "Group" });
+                yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
         }
     }
 }
