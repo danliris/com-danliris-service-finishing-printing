@@ -35,6 +35,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DailyMonitoringEven
         [MaxLength(2048)]
         public string ProcessTypeName { get; set; }
 
+        public int EventOrganizerId { get; set; }
+
         [MaxLength(4096)]
         public string ProcessArea { get; set; }
 
