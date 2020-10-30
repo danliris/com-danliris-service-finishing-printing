@@ -13,7 +13,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
         {
         }
 
-
+        public override EventOrganizer GetNewData()
+        {
+            return new EventOrganizer()
+            {
+                ProcessArea = "Area Printing",
+               Group="A",
+               Kasubsie= "Kasubsie",
+               Kasie= "Kasie",
+               Code= "Code"
+            };
+        }
 
     }
 }
