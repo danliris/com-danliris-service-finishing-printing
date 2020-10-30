@@ -7,9 +7,12 @@ using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.EventOrganiz
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
+using Com.Danliris.Service.Production.Lib.Services.IdentityService;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
@@ -19,6 +22,35 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
         private const string ENTITY = "Instruction";
         public EventOrganizerFacadeTest() : base(ENTITY)
         {
+        }
+
+        protected override Mock<IServiceProvider> GetServiceProviderMock(ProductionDbContext dbContext)
+        {
+            var serviceProviderMock = new Mock<IServiceProvider>();
+
+            IIdentityService identityService = new IdentityService { Username = "Username" };
+
+            serviceProviderMock
+                .Setup(x => x.GetService(typeof(IdentityService)))
+                .Returns(identityService);
+
+            serviceProviderMock
+                .Setup(x => x.GetService(typeof(EventOrganizerLogic)))
+                .Returns(new EventOrganizerLogic(identityService, dbContext));
+
+            return serviceProviderMock;
+        }
+
+        [Fact]
+        public  async Task ReadByGroupArea_Return_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            EventOrganizerFacade facade = new EventOrganizerFacade(serviceProvider, dbContext);
+            var data = await DataUtil(facade, dbContext).GetTestData();
+            var response =await facade.ReadByGroupArea(data.ProcessArea,data.Group);
+            Assert.True(0 < response.Id);
         }
 
         [Fact]

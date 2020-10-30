@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Newtonsoft.Json;
 using Com.Moonlay.NetCore.Lib;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.EventOrganizer;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master
 {
@@ -72,10 +73,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
             return await EventOrganizerLogic.ReadModelById(id);
         }
 
+     
+
         public async Task<int> UpdateAsync(int id, EventOrganizer model)
         {
             await this.EventOrganizerLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
+        }
+
+        public async Task<EventOrganizer> ReadByGroupArea(string area, string group)
+        {
+          return  await this.EventOrganizerLogic.ReadByGroupArea(area, group);
         }
     }
 }
