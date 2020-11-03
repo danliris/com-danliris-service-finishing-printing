@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils
         {
             return new LossEventCategoryModel()
             {
-                LossEventProcessArea = "c",
+                LossEventProcessArea = "s",
                 LossesCategory = "c",
                 LossEventCode = "c",
                 LossEventId = 1,

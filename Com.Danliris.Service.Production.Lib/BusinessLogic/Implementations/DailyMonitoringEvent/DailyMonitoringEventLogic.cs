@@ -67,6 +67,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbModel.OrderTypeCode = model.OrderTypeCode;
             dbModel.OrderTypeId = model.OrderTypeId;
             dbModel.OrderTypeName = model.OrderTypeName;
+            dbModel.EventOrganizerId = model.EventOrganizerId;
             dbModel.ProcessArea = model.ProcessArea;
             dbModel.ProcessTypeCode = model.ProcessTypeCode;
             dbModel.ProcessTypeId = model.ProcessTypeId;

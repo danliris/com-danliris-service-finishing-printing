@@ -24,6 +24,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.EventOrganizer;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventCategory;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventRemark;
@@ -121,7 +122,8 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<IMachineFacade, MachineFacade>()
                 .AddTransient<IMonitoringSpecificationMachineFacade, MonitoringSpecificationMachineFacade>()
                 .AddTransient<IMonitoringSpecificationMachineReportFacade, MonitoringSpecificationMachineReportFacade>()
-                .AddTransient<IMonitoringEventFacade, MonitoringEventFacade>()
+                .AddTransient<IEventOrganizerFacade, EventOrganizerFacade>()
+                .AddTransient<IMachineEventFacade, MachineEventFacade>()
                 .AddTransient<IMachineEventFacade, MachineEventFacade>()
                 .AddTransient<IKanbanFacade, KanbanFacade>()
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
@@ -162,6 +164,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<MachineStepLogic>()
                 .AddTransient<MonitoringSpecificationMachineLogic>()
                 .AddTransient<MonitoringSpecificationMachineDetailsLogic>()
+                .AddTransient<EventOrganizerLogic>()
                 .AddTransient<MonitoringEventLogic>()
                 .AddTransient<BadOutputLogic>()
                 .AddTransient<BadOutputMachineLogic>()

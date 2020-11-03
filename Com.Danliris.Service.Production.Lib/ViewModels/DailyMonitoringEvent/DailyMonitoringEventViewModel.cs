@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.EventOrganizer;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
 using Com.Danliris.Service.Production.Lib.Utilities.BaseClass;
 using Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master;
 using System;
@@ -19,6 +20,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoring
         public string Code { get; set; }
 
         public MachineViewModel Machine { get; set; }
+
+        public EventOrganizerViewModel EventOrganizer;
 
 
         public DateTimeOffset? Date { get; set; }
@@ -60,8 +63,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DailyMonitoring
             if (string.IsNullOrEmpty(Kasubsie))
                 yield return new ValidationResult("Kasubsie harus diisi", new List<string> { "Kasubsie" });
 
-            if (string.IsNullOrEmpty(ElectricMechanic))
-                yield return new ValidationResult("Mekanik/Elektrik harus diisi", new List<string> { "ElectricMechanic" });
+            //if (string.IsNullOrEmpty(ElectricMechanic))
+            //    yield return new ValidationResult("Mekanik/Elektrik harus diisi", new List<string> { "ElectricMechanic" });
 
             if (DailyMonitoringEventLossEventItems.Count() == 0)
             {

@@ -194,6 +194,33 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
         }
 
         [Fact]
+        public async void CreateAsync_Fail()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            await Assert.ThrowsAsync<System.NullReferenceException>(() => facade.CreateAsync( null));
+
+        }
+
+
+        [Fact]
+        public async void UpdateAsync_Fail()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            var facade = Activator.CreateInstance(typeof(PackingFacade), serviceProvider, dbContext) as PackingFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+           
+            await Assert.ThrowsAsync<System.NullReferenceException>(() => facade.UpdateAsync(data.Id, null));
+
+        }
+
+        [Fact]
         public void Mapping_With_AutoMapper_Profiles()
         {
             var configuration = new MapperConfiguration(cfg =>
