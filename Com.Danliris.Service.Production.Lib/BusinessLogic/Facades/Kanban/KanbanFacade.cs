@@ -107,7 +107,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                     CurrentStepIndex = field.CurrentStepIndex,
                     CartQty = field.CartQty,
                     IsBadOutput = field.IsBadOutput,
-                    IsFulfilledOutput =field.IsFulfilledOutput,
+                    IsFulfilledOutput = field.IsFulfilledOutput,
                     IsComplete = field.IsComplete,
                     IsInactive = field.IsInactive,
                     IsReprocess = field.IsReprocess,
@@ -1101,6 +1101,119 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             MemoryStream stream = new MemoryStream();
             package.SaveAs(stream);
             return stream;
+        }
+
+        public ReadResponse<KanbanVisualizationViewModel> ReadVisualization(string order, string filter)
+        {
+            IQueryable<KanbanModel> query = DbSet.Where(s => s.CurrentStepIndex != 0);
+
+            Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<KanbanModel>.Filter(query, filterDictionary);
+
+            Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<KanbanModel>.Order(query, orderDictionary);
+            
+            List<KanbanVisualizationViewModel> resultData = new List<KanbanVisualizationViewModel>();
+            //var re = query.ToList();
+
+            var joinQuery = (from kanban in query
+                             join dailyOperation in DbContext.DailyOperation
+                             on new { KanbanId = kanban.Id, StepIndex = kanban.CurrentStepIndex }
+                             equals new { dailyOperation.KanbanId, StepIndex = dailyOperation.KanbanStepIndex }
+                             select new { kanban, dailyOperation }).GroupBy(s => s.kanban).ToList();
+            var idKanbans = joinQuery.Select(e => e.Key.Id).Distinct();
+            var idMachines = joinQuery.SelectMany(e => e).Select(e => e.dailyOperation.MachineId).Distinct();
+            var instructionKanbans = DbContext.KanbanInstructions.Include(s => s.Steps).Where(s => idKanbans.Contains(s.KanbanId)).ToList();
+            var machines = DbContext.Machine.Where(s => idMachines.Contains(s.Id)).ToList();
+            foreach (var item in joinQuery)
+            {
+                var instructionKanban = instructionKanbans.FirstOrDefault(s => s.KanbanId == item.Key.Id);
+                //var instructionKanban = item.Key.Instruction.Steps.FirstOrDefault(s => s.KanbanId == item.Key.Id);
+                var step = instructionKanban != null ? instructionKanban.Steps.FirstOrDefault(s => s.StepIndex == item.Key.CurrentStepIndex) : null;
+                //var steps = instructionKanban != null ? DbContext.KanbanSteps.Where(s => s.InstructionId == instructionKanban.Id).ToList() : new List<KanbanStepModel>();
+                //var step = instructionKanban != null ? DbContext.KanbanSteps.FirstOrDefault(s => s.InstructionId == instructionKanban.Id && s.StepIndex == item.Key.CurrentStepIndex) : null;
+                var outputDO = item.Where(s => s.dailyOperation.Type.ToLower() == "output").OrderByDescending(s => s.dailyOperation.CreatedUtc).FirstOrDefault()?.dailyOperation;
+
+                if (outputDO != null)
+                {
+                    var machine = machines.FirstOrDefault(s => s.Id == outputDO.MachineId);
+
+                    var itemData = new KanbanVisualizationViewModel()
+                    {
+                        BadOutput = outputDO.BadOutput,
+                        Cart = new CartViewModel()
+                        {
+                            CartNumber = item.Key.CartCartNumber
+                        },
+                        Code = item.Key.Code,
+                        CurrentStepIndex = item.Key.CurrentStepIndex,
+                        DailyOperationMachine = machine?.Name,
+                        Deadline = step?.Deadline,
+                        GoodOutput = outputDO.GoodOutput,
+                        Process = step?.Process,
+                        ProcessArea = step?.ProcessArea,
+                        ProductionOrder = new ProductionOrderIntegrationViewModel()
+                        {
+                            OrderNo = item.Key.ProductionOrderOrderNo,
+                            SalesContractNo = item.Key.ProductionOrderSalesContractNo,
+                            DeliveryDate = item.Key.ProductionOrderDeliveryDate,
+                            Buyer = new BuyerIntegrationViewModel()
+                            {
+                                Name = item.Key.ProductionOrderBuyerName
+                            },
+                            OrderQuantity = item.Key.SelectedProductionOrderDetailQuantity
+                        },
+                        StepsLength = instructionKanban != null ? instructionKanban.Steps.Count : 0,
+                        Type = "Output"
+
+                    };
+
+                    resultData.Add(itemData);
+                }
+                else
+                {
+                    var inputDO = item.Where(s => s.dailyOperation.Type.ToLower() == "input").OrderByDescending(s => s.dailyOperation.CreatedUtc).FirstOrDefault()?.dailyOperation;
+
+                    if (inputDO != null)
+                    {
+                        var machine = machines.FirstOrDefault(s => s.Id == inputDO.MachineId);
+
+                        var itemData = new KanbanVisualizationViewModel()
+                        {
+                            Cart = new CartViewModel()
+                            {
+                                CartNumber = item.Key.CartCartNumber
+                            },
+                            Code = item.Key.Code,
+                            CurrentStepIndex = item.Key.CurrentStepIndex,
+                            DailyOperationMachine = machine?.Name,
+                            Deadline = step?.Deadline,
+                            Process = step?.Process,
+                            ProcessArea = step?.ProcessArea,
+                            ProductionOrder = new ProductionOrderIntegrationViewModel()
+                            {
+                                OrderNo = item.Key.ProductionOrderOrderNo,
+                                SalesContractNo = item.Key.ProductionOrderSalesContractNo,
+                                DeliveryDate = item.Key.ProductionOrderDeliveryDate,
+                                Buyer = new BuyerIntegrationViewModel()
+                                {
+                                    Name = item.Key.ProductionOrderBuyerName
+                                },
+                                OrderQuantity = item.Key.SelectedProductionOrderDetailQuantity
+                            },
+                            StepsLength = instructionKanban != null ? instructionKanban.Steps.Count : 0,
+                            Type = "Input",
+                            InputQuantity = inputDO.Input
+
+                        };
+
+                        resultData.Add(itemData);
+                    }
+                }
+            }
+
+
+            return new ReadResponse<KanbanVisualizationViewModel>(resultData, resultData.Count, orderDictionary, new List<string>());
         }
 
         //private MemoryStream CreateExcel(List<KeyValuePair<DataTable, String>> dtSourceList, bool styling = false)

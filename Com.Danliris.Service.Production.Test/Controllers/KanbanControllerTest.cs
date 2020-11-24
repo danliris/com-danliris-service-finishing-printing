@@ -558,5 +558,57 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
 
         }
+
+        [Fact]
+        public void GetVisualization_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.ReadVisualization(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ReadResponse<KanbanVisualizationViewModel>(new List<KanbanVisualizationViewModel>(), 1,new Dictionary<string, string>(), new List<string>()));
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetVisualization(It.IsAny<string>(), It.IsAny<string>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetVisualization_WithException_ReturnInternalServerError()
+        {
+            var mockFacade = new Mock<IKanbanFacade>();
+            mockFacade.Setup(x => x.ReadVisualization(It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetVisualization(It.IsAny<string>(), It.IsAny<string>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
