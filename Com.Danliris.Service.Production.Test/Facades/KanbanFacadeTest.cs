@@ -255,5 +255,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotEmpty(Response.Data);
         }
+
+        [Fact]
+        public virtual async void Read_Visualization2()
+        {
+            var dbContext = DbContext(GetCurrentMethod() + "Read_Visualization2");
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+            DailyOperationFacade doFacade = new DailyOperationFacade(serviceProvider, dbContext);
+            var dataIn = await DODataUtil(doFacade, facade, dbContext).GetTestData();
+
+            var Response = facade.ReadVisualization("{}", "{}");
+
+            Assert.NotEmpty(Response.Data);
+        }
     }
 }
