@@ -278,5 +278,37 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
+        [HttpGet("read/visualization")]
+        public IActionResult GetVisualization([FromQuery] string order = "{}", [FromQuery] string filter = "{}")
+        {
+            try
+            {
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+
+                var data = Facade.ReadVisualization(order, filter);
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data.Data,
+                    info = new
+                    {
+                        Count = data.Count,
+                        Order = data.Order,
+                        Selected = data.Selected
+                    },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                   .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }

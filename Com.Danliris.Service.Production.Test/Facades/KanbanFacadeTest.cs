@@ -234,5 +234,41 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             Assert.NotNull(Response);
         }
+
+        [Fact]
+        public virtual async void Read_Visualization()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+            DailyOperationFacade doFacade = new DailyOperationFacade(serviceProvider, dbContext);
+            var dataIn = await DODataUtil(doFacade, facade, dbContext).GetTestData();
+            var dataOut = DODataUtil(doFacade, facade, dbContext).GetNewDataOut(dataIn);
+            var kanban = await facade.ReadByIdAsync(dataIn.KanbanId);
+            dataOut.KanbanId = dataIn.KanbanId;
+            dataOut.StepId = kanban.Instruction.Steps.First().Id;
+            dataOut.MachineId = kanban.Instruction.Steps.First().MachineId;
+            var outModel = await doFacade.CreateAsync(dataOut);
+
+            var Response = facade.ReadVisualization("{}", "{}");
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
+        public virtual async void Read_Visualization2()
+        {
+            var dbContext = DbContext(GetCurrentMethod() + "Read_Visualization2");
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            KanbanFacade facade = new KanbanFacade(serviceProvider, dbContext);
+            DailyOperationFacade doFacade = new DailyOperationFacade(serviceProvider, dbContext);
+            var dataIn = await DODataUtil(doFacade, facade, dbContext).GetTestData();
+
+            var Response = facade.ReadVisualization("{}", "{}");
+
+            Assert.NotEmpty(Response.Data);
+        }
     }
 }
