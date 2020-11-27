@@ -563,7 +563,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         public void GetVisualization_WithoutException_ReturnOK()
         {
             var mockFacade = new Mock<IKanbanFacade>();
-            mockFacade.Setup(x => x.ReadVisualization(It.IsAny<string>(), It.IsAny<string>()))
+            mockFacade.Setup(x => x.ReadVisualization(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(new ReadResponse<KanbanVisualizationViewModel>(new List<KanbanVisualizationViewModel>(), 1,new Dictionary<string, string>(), new List<string>()));
 
             var mockMapper = new Mock<IMapper>();
@@ -589,7 +589,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         public void GetVisualization_WithException_ReturnInternalServerError()
         {
             var mockFacade = new Mock<IKanbanFacade>();
-            mockFacade.Setup(x => x.ReadVisualization(It.IsAny<string>(), It.IsAny<string>()))
+            mockFacade.Setup(x => x.ReadVisualization(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .Throws(new Exception());
 
             var mockMapper = new Mock<IMapper>();

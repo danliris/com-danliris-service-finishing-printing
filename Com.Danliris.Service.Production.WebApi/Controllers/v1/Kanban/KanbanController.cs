@@ -280,13 +280,13 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
         }
 
         [HttpGet("read/visualization")]
-        public IActionResult GetVisualization([FromQuery] string order = "{}", [FromQuery] string filter = "{}")
+        public IActionResult GetVisualization([FromQuery] string order = "{}", [FromQuery] string filter = "{}", [FromQuery] int page = 1, [FromQuery] int size = 500)
         {
             try
             {
                 int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
 
-                var data = Facade.ReadVisualization(order, filter);
+                var data = Facade.ReadVisualization(order, filter, page, size);
 
                 return Ok(new
                 {
@@ -294,6 +294,7 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                     data = data.Data,
                     info = new
                     {
+                        Total = data.Total,
                         Count = data.Count,
                         Order = data.Order,
                         Selected = data.Selected
