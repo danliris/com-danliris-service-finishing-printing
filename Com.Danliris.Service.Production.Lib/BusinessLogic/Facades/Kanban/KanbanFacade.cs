@@ -1103,7 +1103,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             return stream;
         }
 
-        public ReadResponse<KanbanVisualizationViewModel> ReadVisualization(string order, string filter)
+        public ReadResponse<KanbanVisualizationViewModel> ReadVisualization(string order, string filter, int page, int size)
         {
             IQueryable<KanbanModel> query = DbSet.Where(s => s.CurrentStepIndex != 0);
 
@@ -1112,7 +1112,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<KanbanModel>.Order(query, orderDictionary);
-            
+            //var totalData = query.Count();
+            //query = query.Skip((page - 1) * size).Take(size);
+            //var countData = query.Count();
+
             List<KanbanVisualizationViewModel> resultData = new List<KanbanVisualizationViewModel>();
             //var re = query.ToList();
 
@@ -1120,12 +1123,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                              join dailyOperation in DbContext.DailyOperation
                              on new { KanbanId = kanban.Id, StepIndex = kanban.CurrentStepIndex }
                              equals new { dailyOperation.KanbanId, StepIndex = dailyOperation.KanbanStepIndex }
-                             select new { kanban, dailyOperation }).GroupBy(s => s.kanban).ToList();
-            var idKanbans = joinQuery.Select(e => e.Key.Id).Distinct();
-            var idMachines = joinQuery.SelectMany(e => e).Select(e => e.dailyOperation.MachineId).Distinct();
+                             select new { kanban, dailyOperation }).GroupBy(s => s.kanban);
+
+            var totalData = joinQuery.Count();
+
+            var resultQuery = joinQuery.Skip((page - 1) * size).Take(size).ToList();
+            var countData = resultQuery.Count;
+
+            var idKanbans = resultQuery.Select(e => e.Key.Id).Distinct();
+            var idMachines = resultQuery.SelectMany(e => e).Select(e => e.dailyOperation.MachineId).Distinct();
             var instructionKanbans = DbContext.KanbanInstructions.Include(s => s.Steps).Where(s => idKanbans.Contains(s.KanbanId)).ToList();
             var machines = DbContext.Machine.Where(s => idMachines.Contains(s.Id)).ToList();
-            foreach (var item in joinQuery)
+            foreach (var item in resultQuery)
             {
                 var instructionKanban = instructionKanbans.FirstOrDefault(s => s.KanbanId == item.Key.Id);
                 //var instructionKanban = item.Key.Instruction.Steps.FirstOrDefault(s => s.KanbanId == item.Key.Id);
@@ -1213,7 +1222,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             }
 
 
-            return new ReadResponse<KanbanVisualizationViewModel>(resultData, resultData.Count, orderDictionary, new List<string>());
+            return new ReadResponse<KanbanVisualizationViewModel>(resultData, countData, totalData, orderDictionary, new List<string>());
         }
 
         //private MemoryStream CreateExcel(List<KeyValuePair<DataTable, String>> dtSourceList, bool styling = false)

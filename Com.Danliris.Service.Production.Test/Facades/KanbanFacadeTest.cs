@@ -90,13 +90,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             var data = await DataUtil(facade, dbContext).GetTestData();
 
-            var Response = facade.GetReport(1, 25, null,0,0,null, data.CreatedUtc.AddDays(-1), data.CreatedUtc.AddDays(1), 7);
+            var Response = facade.GetReport(1, 25, null, 0, 0, null, data.CreatedUtc.AddDays(-1), data.CreatedUtc.AddDays(1), 7);
 
             Assert.NotEmpty(Response.Data);
         }
 
         [Fact]
-        public  async void CreateAsync_Success()
+        public async void CreateAsync_Success()
         {
             //Setup
             var dbContext = DbContext(GetCurrentAsyncMethod());
@@ -121,7 +121,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
 
             //Act
             var data = await DataUtil(facade, dbContext).GetNewDataAsyncToUpdate();
-         
+
             var response = await facade.UpdateAsync(data.Id, data);
 
             //Assert
@@ -212,7 +212,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             KanbanFacade kanbanFacade = new KanbanFacade(serviceProvider, dbContext);
             DailyOperationFacade facade = new DailyOperationFacade(serviceProvider, dbContext);
             var data = await DODataUtil(facade, kanbanFacade, dbContext).GetTestData();
-            var dataOut =  DODataUtil(facade, kanbanFacade, dbContext).GetNewDataOut(data);
+            var dataOut = DODataUtil(facade, kanbanFacade, dbContext).GetNewDataOut(data);
             var kanban = await kanbanFacade.ReadByIdAsync(data.KanbanId);
             dataOut.KanbanId = data.KanbanId;
             dataOut.StepId = kanban.Instruction.Steps.First().Id;
@@ -229,7 +229,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             var dbContext = DbContext(GetCurrentMethod());
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             KanbanFacade kanbanFacade = new KanbanFacade(serviceProvider, dbContext);
-            
+
             var Response = kanbanFacade.GenerateKanbanSnapshotExcel(DateTime.UtcNow.Month, DateTime.UtcNow.Year);
 
             Assert.NotNull(Response);
@@ -251,7 +251,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             dataOut.MachineId = kanban.Instruction.Steps.First().MachineId;
             var outModel = await doFacade.CreateAsync(dataOut);
 
-            var Response = facade.ReadVisualization("{}", "{}");
+            var Response = facade.ReadVisualization("{}", "{}", 1, 500);
 
             Assert.NotEmpty(Response.Data);
         }
@@ -266,7 +266,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades
             DailyOperationFacade doFacade = new DailyOperationFacade(serviceProvider, dbContext);
             var dataIn = await DODataUtil(doFacade, facade, dbContext).GetTestData();
 
-            var Response = facade.ReadVisualization("{}", "{}");
+            var Response = facade.ReadVisualization("{}", "{}", 1, 500);
 
             Assert.NotEmpty(Response.Data);
         }
