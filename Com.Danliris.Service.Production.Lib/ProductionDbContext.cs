@@ -23,6 +23,9 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.StrikeOff;
+using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.UploadExcel.Excel_InventoryGreige;
+using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.UploadExcel.Excel_Preparing;
+using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.UploadExcel.Excel_Pretreatment;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction;
 using Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step;
@@ -111,6 +114,13 @@ namespace Com.Danliris.Service.Production.Lib
         public DbSet<DailyMonitoringEventModel> DailyMonitoringEvents { get; set; }
         public DbSet<DailyMonitoringEventLossEventItemModel> DailyMonitoringEventLossEventItems { get; set; }
         public DbSet<DailyMonitoringEventProductionOrderItemModel> DailyMonitoringEventProductionOrderItems { get; set; }
+
+        public DbSet<Excel_AreaInventoryGreigeModel> Excel_AreaInventoryGreiges { get; set; }
+        public DbSet<Excel_AreaInventoryGreigeMovementModel> Excel_AreaInventoryGreigeMovements { get; set; }
+        public DbSet<Excel_AreaPreparingModel> Excel_AreaPreparings { get; set; }
+        public DbSet<Excel_AreaPretreatmentChemicalUsedModel> Excel_AreaPretreatmentChemicalUseds { get; set; }
+        public DbSet<Excel_AreaPretreatmentConditionCheckModel> Excel_AreaPretreatmentConditionChecks { get; set; }
+        public DbSet<Excel_AreaPretreatmentDiaryMachineModel> Excel_AreaPretreatmentDiaryMachines { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
