@@ -50,5 +50,8 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.UploadEx
         public double? LoseMTR { get; set; }
         public string Note { get; set; }
         public string Remark { get; set; }
+        public double FlowWaterWasher { get; set; }
+        public double FlowWaterPolistream { get; set; }
+        public double FlowWaterPolistream2 { get; set; }
     }
 }
