@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.UploadEx
     public class Excel_AreaPretreatmentConditionCheckModel
     {
         public int Id { get; set; }
+        public string Shift { get; set; }
+        public string Group { get; set; }
         public DateTime Date { get; set; }
         public string Machine { get; set; }
         public TimeSpan Time { get; set; }
