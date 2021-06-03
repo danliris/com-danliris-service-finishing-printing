@@ -217,7 +217,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             int totalRow = 0;
             foreach (var step in viewModel.Instruction.Steps)
             {
-                table1RightCellRS2CS4.Phrase = new Phrase(step.Process, body_font);
+                table1RightCellRS2CS4.Phrase = new Phrase(step.Process, body_bold_font);
                 table1RightCellRS2CS4.HorizontalAlignment = Element.ALIGN_CENTER;
                 table1RightCellRS2CS4.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable1Right.AddCell(table1RightCellRS2CS4);
