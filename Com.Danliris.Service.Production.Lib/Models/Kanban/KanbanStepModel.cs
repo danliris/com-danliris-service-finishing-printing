@@ -18,6 +18,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
         public virtual KanbanInstructionModel Instruction { get; set; }
         public int MachineId { get; set; }
         public int SelectedIndex { get; set; }
+        public int StepIndex { get; set; }
         public ICollection<KanbanStepIndicatorModel> StepIndicators { get; set; }
         public virtual MachineModel Machine { get; set; }
     }

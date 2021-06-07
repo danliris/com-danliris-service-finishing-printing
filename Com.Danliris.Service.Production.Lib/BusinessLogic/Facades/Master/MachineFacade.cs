@@ -1,18 +1,16 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
+﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
-using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Utilities;
+using Com.Moonlay.NetCore.Lib;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
-using Newtonsoft.Json;
 using System.Linq;
-using Com.Moonlay.NetCore.Lib;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master
 {
@@ -45,9 +43,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
             return await DbContext.SaveChangesAsync();
         }
 
-        public ReadResponse<MachineModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
+        public ReadResponse<MachineModel> GetDyeingPrintingMachine(int page, int size, string order, List<string> select, string keyword, string filter)
         {
-            IQueryable<MachineModel> query = DbSet;
+            IQueryable<MachineModel> query = DbSet.Include(x => x.MachineEvents).Include(x => x.MachineSteps)
+                .Where(x => x.UnitDivisionName.ToUpper() == "FINISHING & PRINTING" || x.UnitDivisionName.ToUpper() == "DYEING & PRINTING");
 
             List<string> searchAttributes = new List<string>()
             {
@@ -60,44 +59,83 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
             List<string> selectedFields = new List<string>()
                 {
-                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "LastModifiedUtc", "MachineEvents", "MachineSteps"
+                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "Electric", "Steam",
+                    "Water", "Solar", "LPG", "LastModifiedUtc", "MachineEvents", "Steps", "UseBQBS"
                 };
 
-            query = query
-                    .Select(field => new MachineModel
-                    {
-                        Id = field.Id,
-                        Name = field.Name,
-                        Code = field.Code,
-                        Process = field.Process,
-                        Manufacture = field.Manufacture,
-                        Year = field.Year,
-                        Condition = field.Condition,
-                        UnitName = field.UnitName,
-                        UnitDivisionName = field.UnitDivisionName,
-                        MachineTypeId = field.MachineTypeId,
-                        MachineTypeName = field.MachineTypeName,
-                        MonthlyCapacity = field.MonthlyCapacity,
-                        LastModifiedUtc = field.LastModifiedUtc,
-                        MachineEvents = new List<MachineEventsModel>(field.MachineEvents.Select(i => new MachineEventsModel
-                        {
-                            Id = i.Id,
-                            Code = i.Code,
-                            Name = i.Name,
-                            No = i.No,
-                            Category = i.Category,
-                            MachineId = i.MachineId
-                        })),
-                        MachineSteps = new List<MachineStepModel>(field.MachineSteps.Select(d => new MachineStepModel
-                        {
-                            Id = d.Id,
-                            Code = d.Code,
-                            Alias = d.Alias,
-                            Process = d.Process,
-                            ProcessArea = d.ProcessArea,
-                            StepId = d.StepId,
-                        }))
-                    });
+            Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<MachineModel>.Order(query, orderDictionary);
+
+            Pageable<MachineModel> pageable = new Pageable<MachineModel>(query, page - 1, size);
+            List<MachineModel> data = pageable.Data.ToList();
+            int totalData = pageable.TotalCount;
+
+            return new ReadResponse<MachineModel>(data, totalData, orderDictionary, selectedFields);
+        }
+
+        public ReadResponse<MachineModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
+        {
+            IQueryable<MachineModel> query = DbSet.Include(x => x.MachineEvents).Include(x => x.MachineSteps);
+
+            List<string> searchAttributes = new List<string>()
+            {
+                "Code", "Name"
+            };
+            query = QueryHelper<MachineModel>.Search(query, searchAttributes, keyword);
+
+            Dictionary<string, object> filterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<MachineModel>.Filter(query, filterDictionary);
+
+            List<string> selectedFields = new List<string>()
+                {
+                    "Id", "Name", "Code", "Process", "Manufacture","Year","Condition","Unit","MachineType","MonthlyCapacity", "Electric", "Steam",
+                    "Water", "Solar", "LPG", "LastModifiedUtc", "MachineEvents", "Steps", "UseBQBS"
+                };
+
+            //query = query
+            //        .Select(field => new MachineModel
+            //        {
+            //            Id = field.Id,
+            //            Name = field.Name,
+            //            Code = field.Code,
+            //            Process = field.Process,
+            //            Manufacture = field.Manufacture,
+            //            Year = field.Year,
+            //            Condition = field.Condition,
+            //            UnitName = field.UnitName,
+            //            UnitDivisionName = field.UnitDivisionName,
+            //            MachineTypeId = field.MachineTypeId,
+            //            MachineTypeName = field.MachineTypeName,
+            //            MonthlyCapacity = field.MonthlyCapacity,
+            //            Electric = field.Electric,
+            //            LPG = field.LPG,
+            //            Solar = field.Solar,
+            //            MachineTypeCode = field.MachineTypeCode,
+            //            Water = field.Water,
+            //            Steam = field.Steam,
+            //            UnitCode = field.UnitCode,
+            //            UnitDivisionId = field.UnitDivisionId,
+            //            UnitId = field.UnitId,
+            //            LastModifiedUtc = field.LastModifiedUtc,
+            //            MachineEvents = new List<MachineEventsModel>(field.MachineEvents.Select(i => new MachineEventsModel
+            //            {
+            //                Id = i.Id,
+            //                Code = i.Code,
+            //                Name = i.Name,
+            //                No = i.No,
+            //                Category = i.Category,
+            //                MachineId = i.MachineId
+            //            })),
+            //            MachineSteps = new List<MachineStepModel>(field.MachineSteps.Select(d => new MachineStepModel
+            //            {
+            //                Id = d.Id,
+            //                Code = d.Code,
+            //                Alias = d.Alias,
+            //                Process = d.Process,
+            //                ProcessArea = d.ProcessArea,
+            //                StepId = d.StepId,
+            //            }))
+            //        });
 
             Dictionary<string, string> orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<MachineModel>.Order(query, orderDictionary);
@@ -116,7 +154,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Mast
 
         public async Task<int> UpdateAsync(int id, MachineModel model)
         {
-            this.MachineLogic.UpdateModelAsync(id, model);
+            await this.MachineLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
     }

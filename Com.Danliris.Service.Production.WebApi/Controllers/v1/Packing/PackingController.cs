@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Services.ValidateService;
-using Com.Danliris.Service.Production.Lib.Utilities;
 using Com.Danliris.Service.Production.WebApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
 {
@@ -110,6 +108,122 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Packing
                     fileName = string.Format("Packing Report {0}", dateTo.GetValueOrDefault().ToString("dd/MM/yyyy"));
                 else
                     fileName = string.Format("Packing Report {0} - {1}", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("details/by-product-name")]
+        public async Task<IActionResult> GetPackingDetail([FromQuery] string productName)
+        {
+            try
+            {
+                var model = await Facade.GetPackingDetail(productName);
+
+
+                if (model == null)
+                {
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.NOT_FOUND_STATUS_CODE, General.NOT_FOUND_MESSAGE)
+                        .Fail();
+                    return NotFound(Result);
+                }
+                else
+                {
+                    PackingModel data = model.Packing;
+                    data.PackingDetails = new List<PackingDetailModel>()
+                    {
+                        new PackingDetailModel()
+                        {
+                            Grade = model.Grade,
+                            PackingId = model.PackingId,
+                            Quantity = model.Quantity,
+                            Remark = model.Remark,
+                            Weight = model.Weight,
+                            Lot = model.Lot,
+                            Length = model.Length,
+                            Id = model.Id
+                        }
+                    };
+
+
+                    var viewModel = Mapper.Map<PackingViewModel>(data);
+
+                    var newResult = new
+                    {
+                        packing = viewModel,
+                        name = productName
+                    };
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                        .Ok<object>(Mapper, newResult);
+
+                    return Ok(Result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, ex.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+
+        }
+
+        [HttpGet("reports/qcgudang")]
+        public IActionResult GetReportQCGudang(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            try
+            {
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                //int offSet = 7;
+                var data = Facade.GetQCGudang(dateFrom, dateTo, offSet);
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data,
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                   .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("reports/qcgudang/downloads/xls")]
+        public IActionResult GetQCGudangXls(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            try
+            {
+                byte[] xlsInBytes;
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var xls = Facade.GenerateExcelQCGudang(dateFrom, dateTo, offSet);
+
+                string fileName = "";
+                if (dateFrom == null && dateTo == null)
+                    fileName = string.Format("QC To Gudang Report");
+                else if (dateFrom != null && dateTo == null)
+                    fileName = string.Format("QC To Gudang Report {0}", dateFrom.Value.ToString("dd/MM/yyyy"));
+                else if (dateFrom == null && dateTo != null)
+                    fileName = string.Format("QC To Gudang Report {0}", dateTo.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                else
+                    fileName = string.Format("QC To Gudang Report {0} - {1}", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
                 xlsInBytes = xls.ToArray();
 
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);

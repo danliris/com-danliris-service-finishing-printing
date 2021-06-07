@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing
         public string MaterialConstructionFinishName { get; set; }
         
         public int MaterialId { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string Material { get; set; }
         [MaxLength(25)]
         public string MaterialWidthFinish { get; set; }

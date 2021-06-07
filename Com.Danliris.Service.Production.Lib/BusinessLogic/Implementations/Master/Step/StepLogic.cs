@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Mast
                     if (indicator == null)
                         await StepIndicatorLogic.DeleteModel(indicatorId);
                     else
-                        StepIndicatorLogic.UpdateModelAsync(indicatorId, indicator);
+                        await StepIndicatorLogic.UpdateModelAsync(indicatorId, indicator);
                 }
 
                 foreach (var indicator in model.StepIndicators)
@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Mast
                         StepIndicatorLogic.CreateModel(indicator);
                 }
             }
-            base.UpdateModelAsync(id, model);
+            await base.UpdateModelAsync(id, model);
         }
 
         public override async Task DeleteModel(int id)

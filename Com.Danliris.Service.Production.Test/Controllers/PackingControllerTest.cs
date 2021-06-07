@@ -13,7 +13,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
@@ -76,7 +78,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         public void GetReportPdf_WithoutException_ReturnOK()
         {
             var mockFacade = new Mock<IPackingFacade>();
-            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            PackingModel model = new PackingModel()
+            {
+                OrderTypeName = "order",
+                PackingDetails = new List<PackingDetailModel>()
+                {
+                    new PackingDetailModel()
+                    {
+                        Grade = "a"
+                    }
+                }
+            };
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(model);
 
             var mockMapper = new Mock<IMapper>();
 
@@ -94,6 +107,43 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
             var response = controller.GetPdfById(It.IsAny<int>());
+            Assert.NotNull(response.Result);
+        }
+
+        [Fact]
+        public void GetPdfById_Return_return_NotFound()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            PackingModel model = new PackingModel()
+            {
+                OrderTypeName = "order",
+                PackingDetails = new List<PackingDetailModel>()
+                {
+                    new PackingDetailModel()
+                    {
+                        Grade = "a"
+                    }
+                }
+            };
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(()=>null);
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetPdfById(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response.Result));
             Assert.NotNull(response.Result);
         }
 
@@ -145,7 +195,85 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             };
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
-            var response = controller.GetXls(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
+            var response = controller.GetXls(null,null, null, 1);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_With_DateFrom_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now, null, null, 1);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_With_dateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls( null, DateTime.Now, null, 1);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_With_DateTo_and_DateFrom_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now.AddDays(-1), DateTime.Now, null, 1);
             Assert.NotNull(response);
         }
 
@@ -172,6 +300,242 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
             var response = controller.GetXls(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetPackingDetail_OK()
+        {
+            var mocks = GetMocks();
+            PackingModel model = new PackingModel()
+            {
+                PackingDetails = new List<PackingDetailModel>() { new PackingDetailModel() { Packing = new PackingModel()} }
+
+            };
+            mocks.Mapper.Setup(f => f.Map<List<PackingViewModel>>(It.IsAny<List<PackingModel>>())).Returns(ViewModels);
+            mocks.Facade.Setup(x => x.GetPackingDetail(It.IsAny<string>())).Returns(Task.FromResult(model.PackingDetails.FirstOrDefault()));
+
+            var controller = GetController(mocks);
+
+            var response = await controller.GetPackingDetail("");
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetPackingDetail_NotFound()
+        {
+            var mocks = GetMocks();
+            PackingModel model = new PackingModel()
+            {
+                PackingDetails = new List<PackingDetailModel>() { new PackingDetailModel() { Packing = new PackingModel() } }
+
+            };
+            mocks.Mapper.Setup(f => f.Map<List<PackingViewModel>>(It.IsAny<List<PackingModel>>())).Returns(ViewModels);
+            mocks.Facade.Setup(x => x.GetPackingDetail(It.IsAny<string>())).Returns(Task.FromResult(default(PackingDetailModel)));
+
+            var controller = GetController(mocks);
+
+            var response = await controller.GetPackingDetail("");
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async void GetPackingDetail_Exception()
+        {
+            var mocks = GetMocks();
+            PackingModel model = new PackingModel()
+            {
+                PackingDetails = new List<PackingDetailModel>() { new PackingDetailModel() { Packing = new PackingModel() } }
+
+            };
+            mocks.Mapper.Setup(f => f.Map<List<PackingViewModel>>(It.IsAny<List<PackingModel>>())).Returns(ViewModels);
+            mocks.Facade.Setup(x => x.GetPackingDetail(It.IsAny<string>())).Throws(new Exception(""));
+
+            var controller = GetController(mocks);
+
+            var response = await controller.GetPackingDetail("");
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetReportQCGudang_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GetQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new List<PackingQCGudangViewModel>());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetReportQCGudang();
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetReportQCGudang_Throws_InternalServerError()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GetQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetReportQCGudang();
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetReportQCGudang_Return_Success()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcelQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetQCGudangXls();
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportQCGudang_when_dateFrom_NotNull_Return_Success()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcelQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetQCGudangXls(DateTime.Now.AddDays(-1),null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportQCGudang_when_dateTo_NotNull_Return_Success()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcelQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetQCGudangXls(null,DateTime.Now);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportQCGudang_when_dateTo_and_DateFrom_NotNull_Return_Success()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcelQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetQCGudangXls( DateTime.Now.AddDays(-1),DateTime.Now);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportQCGudang_WithException_ReturnError()
+        {
+            var mockFacade = new Mock<IPackingFacade>();
+            mockFacade.Setup(x => x.GenerateExcelQCGudang(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            PackingController controller = new PackingController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetQCGudangXls();
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
     }

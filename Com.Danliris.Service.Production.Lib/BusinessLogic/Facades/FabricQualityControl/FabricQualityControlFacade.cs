@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Fabr
 
         public async Task<int> UpdateAsync(int id, FabricQualityControlModel model)
         {
-            FabricQualityControlLogic.UpdateModelAsync(id, model);
+            await FabricQualityControlLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
@@ -242,6 +242,37 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Fabr
             });
 
             return fabricQCs.ToList();
+        }
+
+        public Task<List<FabricQCGradeTestsViewModel>> GetForSPP(string no)
+        {
+            IQueryable<FabricQCGradeTestsViewModel> data;
+            if (string.IsNullOrEmpty(no))
+            {
+                data = from fabricqc in DbContext.FabricQualityControls
+                       select new FabricQCGradeTestsViewModel
+                       {
+                           OrderNo = fabricqc.ProductionOrderNo,
+                           OrderQuantity = fabricqc.OrderQuantity
+                       };
+
+
+            }
+            else
+            {
+                data = from fabricqc in DbContext.FabricQualityControls
+                       join fabricgt in DbContext.FabricGradeTests on fabricqc.Id equals fabricgt.FabricQualityControlId
+                       where fabricqc.ProductionOrderNo == no
+                       select new FabricQCGradeTestsViewModel
+                       {
+                           OrderNo = fabricqc.ProductionOrderNo,
+                           OrderQuantity = fabricqc.OrderQuantity,
+                           Grade = fabricgt.Grade
+                       };
+
+
+            }
+            return data.AsNoTracking().ToListAsync();
         }
     }
 }

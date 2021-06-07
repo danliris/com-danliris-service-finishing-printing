@@ -1,0 +1,1914 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.DailyOperation.DailyOperationProfile" Collapsed="true">
+    <Position X="124.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\DailyOperation\DailyOperationProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.FabricQualityControl.FabricQualityControlProfile" Collapsed="true">
+    <Position X="119" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\FabricQualityControl\FabricQualityControlProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Kanban.KanbanProfile" Collapsed="true">
+    <Position X="113.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Kanban\KanbanProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master.BadOutputProfile" Collapsed="true">
+    <Position X="124.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\BadOutputProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master.DirectLaborCostProfile" Collapsed="true">
+    <Position X="108.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\DirectLaborCostProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master.MachineProfile" Collapsed="true">
+    <Position X="108.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\MachineProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master.MachineTypeProfile" Collapsed="true">
+    <Position X="117.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\MachineTypeProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master.OperationalCostProfile" Collapsed="true">
+    <Position X="120.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\OperationalCostProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.AutoMapperProfiles.Master.DurationEstimationProfile" Collapsed="true">
+    <Position X="120.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\DurationEstimationProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.AutoMapperProfiles.Master.InstructionProfile" Collapsed="true">
+    <Position X="117.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\InstructionProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.AutoMapperProfiles.Master.StepProfile" Collapsed="true">
+    <Position X="120.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Master\StepProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.MonitoringEvent.MonitoringEventProfile" Collapsed="true">
+    <Position X="126" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\MonitoringEvent\MonitoringEventProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.MonitoringSpecificationMachine.MonitoringSpecificationMachineProfile" Collapsed="true">
+    <Position X="112" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\MonitoringSpecificationMachine\MonitoringSpecificationMachineProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Packing.PackingProfile" Collapsed="true">
+    <Position X="112" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\Packing\PackingProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.PackingReceipt.PackingReceiptProfile" Collapsed="true">
+    <Position X="120.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\PackingReceipt\PackingReceiptProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ReturToQC.ReturToQCProfile" Collapsed="true">
+    <Position X="110.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\ReturToQC\ReturToQCProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ShipmentDocument.ShipmentDocumentProfile" Collapsed="true">
+    <Position X="124.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AutoMapperProfiles\ShipmentDocument\ShipmentDocumentProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation.DailyOperationFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAABIAAAAAAAIAAAAAAEhAABIAAggEAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\DailyOperation\DailyOperationFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl.FabricQualityControlFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="113.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAIAAAAAAEgAAAIAAwAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\FabricQualityControl\FabricQualityControlFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban.KanbanFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAABIAAAgAAAIAABAAAEgAAAIQAgAABAAAIAAAoA=</HashCode>
+      <FileName>BusinessLogic\Facades\Kanban\KanbanFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master.BadOutputFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAEgAAAIAAgAIAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\BadOutputFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master.DirectLaborCostFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAIAAAAAAEgAAAIAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\DirectLaborCostFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master.MachineEventFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="124.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAIAAAAAAEgAAAIAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\MachineEventFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master.MachineFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAEgAAAIAAgAAAQAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\MachineFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master.MachineTypeFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="112" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAQAAAAEgAAAIAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\MachineTypeFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master.OperationalCostFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="117.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAEgAEAIAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\OperationalCostFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master.DurationEstimationFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="117.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAIAAAEgAAAIAAgAAAIAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\DurationEstimationFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master.InstructionFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="113.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAIAAAAAAEgAAAIEAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\InstructionFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master.StepFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="113.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAIIAAAAAEgAAAIAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Master\StepFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent.MonitoringEventFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="122.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAEgAAAIAAgAAAAAAIAAAJA=</HashCode>
+      <FileName>BusinessLogic\Facades\MonitoringEvent\MonitoringEventFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent.MonitoringEventReportFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAhIAAAAAAAIAAAAIAEgAAEIAAgACAAACIAAIJA=</HashCode>
+      <FileName>BusinessLogic\Facades\MonitoringEvent\MonitoringEventReportFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine.MonitoringSpecificationMachineFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="108.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAEgAAAIAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\MonitoringSpecificationMachine\MonitoringSpecificationMachineFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine.MonitoringSpecificationMachineReportFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="113.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAIAAAAIAEgAAAIAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\MonitoringSpecificationMachine\MonitoringSpecificationMachineReportFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.OrderStatusReport.OrderStatusReportService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="122.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFQDAAACGAIAMBGAAAAIAAASIACIAAQAAAQBFgEBQAA=</HashCode>
+      <FileName>BusinessLogic\Facades\OrderStatusReport\OrderStatusReportService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.OrderStatusReport.YearlyOrderQuantity" Collapsed="true">
+    <Position X="108.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAI=</HashCode>
+      <FileName>BusinessLogic\Facades\OrderStatusReport\OrderStatusReportService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.OrderStatusReport.QuantityQueryResult" Collapsed="true">
+    <Position X="117.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Facades\OrderStatusReport\OrderStatusReportService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing.PackingFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="106.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAIBIAAAAAAAIAQAAAAAgAABAAIgACQAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\Packing\PackingFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt.PackingReceiptFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAQAAAAAgAAAAAAgACCAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\PackingReceipt\PackingReceiptFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC.ReturToQCFacade" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="124.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAIAQAAAAAgAAAAAAgACAAAAIAAAIA=</HashCode>
+      <FileName>BusinessLogic\Facades\ReturToQC\ReturToQCFacade.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument.ShipmentDocumentService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="126" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAJgAEIIAAhAQAAAAgAAAAQIIAEAoA=</HashCode>
+      <FileName>BusinessLogic\Facades\ShipmentDocument\ShipmentDocumentService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation.DailyOperationBadOutputReasonsLogic" Collapsed="true">
+    <Position X="16.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\DailyOperation\DailyOperationBadOutputReasonsLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation.DailyOperationLogic" Collapsed="true">
+    <Position X="21" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAYAAAAAAAAAAMAAgCIAEEAAAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\DailyOperation\DailyOperationLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl.FabricQualityControlLogic" Collapsed="true">
+    <Position X="25.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAgAAAQAAAAAAAAAAMAAgAAAAEAAIAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\FabricQualityControl\FabricQualityControlLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban.KanbanLogic" Collapsed="true">
+    <Position X="30" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAwAAAAAAAAAAMAAgAAQAEAABAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Kanban\KanbanLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput.BadOutputLogic" Collapsed="true">
+    <Position X="34.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAIQAgAAAAEAAAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\BadOutput\BadOutputLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput.BadOutputMachineLogic" Collapsed="true">
+    <Position X="39" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\BadOutput\BadOutputMachineLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost.DirectLaborCostLogic" Collapsed="true">
+    <Position X="43.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\DirectLaborCost\DirectLaborCostLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.DurationEstimation.DurationEstimationLogic" Collapsed="true">
+    <Position X="45.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAACAAAAAMAAgAAAAEAAAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\DurationEstimation\DurationEstimationLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.Instruction.InstructionLogic" Collapsed="true">
+    <Position X="48" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAAAQAAAAAAAAAAMAAgAAAAEAAAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\Instruction\InstructionLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine.MachineEventLogic" Collapsed="true">
+    <Position X="50.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAgAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\Machine\MachineEventLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine.MachineLogic" Collapsed="true">
+    <Position X="52.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAQAgAAAAAAAAIAAgAAAAEAAAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\Machine\MachineLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine.MachineStepLogic" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\Machine\MachineStepLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType.MachineTypeIndicatorsLogic" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\MachineType\MachineTypeIndicatorsLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType.MachineTypeLogic" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAQAAAAAAAAAAIAAgAAAAEAAAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\MachineType\MachineTypeLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.OperationalCost.OperationalCostLogic" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\OperationalCost\OperationalCostLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.Step.StepIndicatorLogic" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\Step\StepIndicatorLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.Step.StepLogic" Collapsed="true">
+    <Position X="14.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAQAAAAAAAAAAIAAgAAAAAAAAABBAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Master\Step\StepLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringEvent.MonitoringEventLogic" Collapsed="true">
+    <Position X="18.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\MonitoringEvent\MonitoringEventLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine.MonitoringSpecificationMachineDetailsLogic" Collapsed="true">
+    <Position X="23.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\MonitoringSpecificationMachine\MonitoringSpecificationMachineDetailsLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine.MonitoringSpecificationMachineLogic" Collapsed="true">
+    <Position X="27.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAQAAAAAAAAAAIAAgAAAAEAAAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\MonitoringSpecificationMachine\MonitoringSpecificationMachineLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing.PackingLogic" Collapsed="true">
+    <Position X="32.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAQAAgAIAAgAAAAEACAAABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\Packing\PackingLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt.PackingReceiptLogic" Collapsed="true">
+    <Position X="36.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAQAAAAAQAAAIIAAgAEAAEACAACBAAAAAQ=</HashCode>
+      <FileName>BusinessLogic\Implementations\PackingReceipt\PackingReceiptLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC.ReturToQCLogic" Collapsed="true">
+    <Position X="41.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAABAAQAAAAIAAgAEAAEACAIABAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Implementations\ReturToQC\ReturToQCLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Enums.FabricQualityControlEnums.FabricQualityControlEnums" Collapsed="true">
+    <Position X="112" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\FabricQualityControlEnums\FabricQualityControlEnum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Helpers.APIEndpoint" Collapsed="true">
+    <Position X="117.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\APIEndpoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Helpers.Excel" Collapsed="true">
+    <Position X="124.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\Excel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Helpers.General" Collapsed="true">
+    <Position X="126" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\General.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Helpers.ObjectExtension" Collapsed="true">
+    <Position X="115.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Helpers\ObjectExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.Initial" Collapsed="true">
+    <Position X="110.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190424072043_Initial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.AddIndexItemMigrationPurpose" Collapsed="true">
+    <Position X="110.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190429081800_AddIndexItemMigrationPurpose.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.Packing_Weight_Length_Double" Collapsed="true">
+    <Position X="126" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190504041851_Packing_Weight_Length_Double.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.KanbanStepIndex" Collapsed="true">
+    <Position X="117.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190506133305_KanbanStepIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.FabricGradeTestIndex" Collapsed="true">
+    <Position X="127.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190510093728_FabricGradeTestIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.ModifyColumnLengthDailyOperation" Collapsed="true">
+    <Position X="120.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190514124415_ModifyColumnLengthDailyOperation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.ShipmentDetailIndex" Collapsed="true">
+    <Position X="115.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190517042331_ShipmentDetailIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.ShipmentItemIndex" Collapsed="true">
+    <Position X="127.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190517060600_ShipmentItemIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.ShipmentPackingReceiptItemIndex" Collapsed="true">
+    <Position X="106.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190517080342_ShipmentPackingReceiptItemIndex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.FixLengthPacking" Collapsed="true">
+    <Position X="124.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190520044935_FixLengthPacking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.AddDirectLaborCostModule" Collapsed="true">
+    <Position X="108.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190701121103_AddDirectLaborCostModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.AddOperationalCost" Collapsed="true">
+    <Position X="113.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190702093625_AddOperationalCost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.AddNewColumnInMachine" Collapsed="true">
+    <Position X="112" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190812081526_AddNewColumnInMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.ChangeDataTypeInMachine" Collapsed="true">
+    <Position X="127.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20190814045214_ChangeDataTypeInMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Migrations.ProductionDbContextModelSnapshot" Collapsed="true">
+    <Position X="127.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Migrations\ProductionDbContextModelSnapshot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl.CriteriaConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="112" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\FabricQualityControl\CriteriaConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl.FabricGradeTestConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="126" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\FabricQualityControl\FabricGradeTestConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.FabricQualityControl.FabricQualityControlConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="110.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\FabricQualityControl\FabricQualityControlConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban.KanbanConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="126" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Kanban\KanbanConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban.KanbanInstructionConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="106.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Kanban\KanbanInstructionConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban.KanbanStepConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Kanban\KanbanStepConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban.KanbanStepIndicatorConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Kanban\KanbanStepIndicatorConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation.DurationEstimationAreaConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="112" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Master\DurationEstimation\DurationEstimationAreaConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ModelConfigs.Master.DurationEstimation.DurationEstimationConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Master\DurationEstimation\DurationEstimationConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction.InstructionConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="112" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Master\Instruction\InstructionConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction.InstructionStepConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Master\Instruction\InstructionStepConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Instruction.InstructionStepIndicatorConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="120.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Master\Instruction\InstructionStepIndicatorConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step.StepConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="112" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Master\Step\StepConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ModelConfigs.Master.Step.StepIndicatorConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelConfigs\Master\Step\StepIndicatorConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationBadOutputReasonsModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="117.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAABAASgAAAAAAgCAABAAIAAAAAAAAAAAAAAAKQ=</HashCode>
+      <FileName>Models\Daily_Operation\DailyOperationBadOutputReasonsModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation.DailyOperationModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="122.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAREQCAAAgEMABiAAAoEAAEgAAAAQAAAAAAEAA=</HashCode>
+      <FileName>Models\Daily_Operation\DailyOperationModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.CriteriaModel" Collapsed="true">
+    <Position X="113.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAiAAAAgAAQAABAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Models\FabricQualityControl\CriteriaModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricGradeTestModel" Collapsed="true">
+    <Position X="106.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAECAQEAAAAgAQAAAAkAEAhQAAIAAIQEAAAEIAAA=</HashCode>
+      <FileName>Models\FabricQualityControl\FabricGradeTestModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.FabricQualityControl.FabricQualityControlModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAEBAQACAAAABEABwAiAAAASEAAAAMAECgAAAEGA=</HashCode>
+      <FileName>Models\FabricQualityControl\FabricQualityControlModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanInstructionModel" Collapsed="true">
+    <Position X="108.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAIABgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Kanban\KanbanInstructionModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="110.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQQhgAEQRYCCBAqAQAAqAYQCCACIABEIA4gDYAEgcAQ=</HashCode>
+      <FileName>Models\Kanban\KanbanModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanStepIndicatorModel" Collapsed="true">
+    <Position X="120.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAIAAgAAAAAAA=</HashCode>
+      <FileName>Models\Kanban\KanbanStepIndicatorModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban.KanbanStepModel" Collapsed="true">
+    <Position X="122.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAICAAAEAgAgAAAAAAAIAAAAAoEABAAgAAA=</HashCode>
+      <FileName>Models\Kanban\KanbanStepModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput.BadOutputMachineModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="120.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAARAASAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Master\BadOutput\BadOutputMachineModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.BadOutput.BadOutputModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="122.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAIAAAAgAAAAAAAAAAAQAAAAAAAAEAA=</HashCode>
+      <FileName>Models\Master\BadOutput\BadOutputModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.DirectLaborCost.DirectLaborCostModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="106.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABBACAAAAAAAAgAAAAAAAAAAIEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Master\DirectLaborCost\DirectLaborCostModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Models.Master.DurationEstimation.DurationEstimationAreaModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="113.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAACCCAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Master\DurationEstimation\DurationEstimationAreaModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Models.Master.DurationEstimation.DurationEstimationModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAEAAACIAAAAAEAgBAAAAACAAAAAAAAQAAAAEAA=</HashCode>
+      <FileName>Models\Master\DurationEstimation\DurationEstimationModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Models.Master.Instruction.InstructionModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACAAAAAAAAgAAQAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Models\Master\Instruction\InstructionModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Models.Master.Instruction.InstructionStepIndicatorModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="122.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAQAAAAEAAAAIAAgAAAAAAA=</HashCode>
+      <FileName>Models\Master\Instruction\InstructionStepIndicatorModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Models.Master.Instruction.InstructionStepModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="124.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKCAAAAAgAgAAAEAAAIAAAAAgAABAAAAAA=</HashCode>
+      <FileName>Models\Master\Instruction\InstructionStepModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineEventsModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="126" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAACAAAAEAAAgAAQAACAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\Master\Machine\MachineEventsModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="106.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAgAAAAABACIAgAAAwAgAAYABCAhoYAAAAAGAABAEAA=</HashCode>
+      <FileName>Models\Master\Machine\MachineModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine.MachineStepModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="110.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAKAAAAEAgAgAAAAAAAEAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Models\Master\Machine\MachineStepModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType.MachineTypeIndicatorsModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="113.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKIAAAAAAAAAAAAAABEAAAAAhAAAAAAAAA=</HashCode>
+      <FileName>Models\Master\MachineType\MachineTypeIndicatorsModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.MachineType.MachineTypeModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAACgAAAAAAAgAAQAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Models\Master\MachineType\MachineTypeModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.OperationalCost.OperationalCostModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABACAAAAAAAAgAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Master\OperationalCost\OperationalCostModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Models.Master.Step.StepIndicatorModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="117.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAQAAAAEAAAAIAAgAAAAAAA=</HashCode>
+      <FileName>Models\Master\Step\StepIndicatorModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Models.Master.Step.StepModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKCAAAAAgAgAAAAAAAAAAAAAAAABAAAEAA=</HashCode>
+      <FileName>Models\Master\Step\StepModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Event.MonitoringEventModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="124.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hABAjAAQAISAIAAAAABgAABAAAgAgAAAASQCAAAAcQA=</HashCode>
+      <FileName>Models\Monitoring_Event\MonitoringEventModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailsModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="106.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKAAAAAAEAAAAAAgABEAAAAABAgAAAAAAA=</HashCode>
+      <FileName>Models\Monitoring_Specification_Machine\MonitoringSpecificationMachineDetailsModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Monitoring_Specification_Machine.MonitoringSpecificationMachineModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="110.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAgAAAAASBABAAAAAgAAAAAACAAAAAAAAAAAAAMAA=</HashCode>
+      <FileName>Models\Monitoring_Specification_Machine\MonitoringSpecificationMachineModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingDetailModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAACAAAAAQAAAAABAACgAAAAAAAAAgAEAAQA=</HashCode>
+      <FileName>Models\Packing\PackingDetailModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.Packing.PackingModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="108.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAA4QQEIACAAIAAAUQgAAAUIQCAAACBAACSAABgECE=</HashCode>
+      <FileName>Models\Packing\PackingModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt.PackingReceiptItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="117.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAiAAAAAAiCEAAAAAAAAABAACAEAAAAAAABgAIAIQA=</HashCode>
+      <FileName>Models\PackingReceipt\PackingReceiptItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.PackingReceipt.PackingReceiptModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAYQAAAAACECIAAAxgwAAAUgECAAAABASCDAAAJESA=</HashCode>
+      <FileName>Models\PackingReceipt\PackingReceiptModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC.ReturToQCItemDetailModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="126" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAAIABAAAACEAACAAAAAEAJEACAAAAAAACCAAACIIQA=</HashCode>
+      <FileName>Models\ReturToQC\ReturToQCItemDetailModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC.ReturToQCItemModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAgAAAAACAAAAAAAAAAAAAAACAAAAAAAAAEAAAAgI=</HashCode>
+      <FileName>Models\ReturToQC\ReturToQCItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.ReturToQC.ReturToQCModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="106.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAIAgRQIAAAAAEAAAAAlgAAoAAEAEQA=</HashCode>
+      <FileName>Models\ReturToQC\ReturToQCModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument.ShipmentDocumentDetailModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="117.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAASAKACAABAAAAAAAAAACABAAAAQAAACAAAAA=</HashCode>
+      <FileName>Models\ShipmentDocument\ShipmentDocumentDetailModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument.ShipmentDocumentItemModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="119" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAABCAEAAAAAAAAAAEAAAAAAAAAAAAAAAJgBA=</HashCode>
+      <FileName>Models\ShipmentDocument\ShipmentDocumentItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument.ShipmentDocumentModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="120.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABCICAAAIACFAAAABAggAAAgI0gAQABAACABBABAEAA=</HashCode>
+      <FileName>Models\ShipmentDocument\ShipmentDocumentModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument.ShipmentDocumentPackingReceiptItemModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="122.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAAAAAAAAACAIAAAAAAAAAJEACAAAIAhAACAgAAIIQA=</HashCode>
+      <FileName>Models\ShipmentDocument\ShipmentDocumentPackingReceiptItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates.FabricQualityControlPdfTemplate" Collapsed="true">
+    <Position X="117.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>PdfTemplates\FabricQualityControlPdfTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates.KanbanPdfTemplate" Collapsed="true">
+    <Position X="112" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAQAAA=</HashCode>
+      <FileName>PdfTemplates\KanbanPdfTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates.PackingPdfTemplate" Collapsed="true">
+    <Position X="110.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAAAIDAAwgCAgGAAIFAJAABEEAAAYBAAgCjABAQQAAU=</HashCode>
+      <FileName>PdfTemplates\PackingPdfTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates.ReturToQCPdfTemplate" Collapsed="true">
+    <Position X="108.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAAAADAAwACEiGAACFAJAAAEAAAAQBAAgCgAABQQAAQ=</HashCode>
+      <FileName>PdfTemplates\ReturToQCPDFTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates.ShipmentPdfTemplate" Collapsed="true">
+    <Position X="108.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABAAAAYAAABEAAQHACAIAEQAoICAAgAACAIAIYgAQ=</HashCode>
+      <FileName>PdfTemplates\ShipmentPdfTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService.HttpClientService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAgAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Services\HttpClientService\HttpClientService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService.HttpDefaultResponse&lt;T&gt;" Collapsed="true">
+    <Position X="106.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAACA=</HashCode>
+      <FileName>Services\HttpClientService\HttpDefaultResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Services.IdentityService.IdentityService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="108.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAABAEA=</HashCode>
+      <FileName>Services\IdentityService\IdentityService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Services.ValidateService.ValidateService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="127.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\ValidateService\ValidateService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Utilities.BaseClass.BaseLogic&lt;TModel&gt;" Collapsed="true">
+    <Position X="27.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAIAAgAIAAEAAAAABAAAIAA=</HashCode>
+      <FileName>Utilities\BaseClass\BaseLogic.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Utilities.BaseClass.BaseViewModel" Collapsed="true">
+    <Position X="54.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAQABEAAAAAAAAAAAEAAAAAAAAAgAAAAAQAAAAE=</HashCode>
+      <FileName>Utilities\BaseClass\BaseViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Utilities.APIEndpoint" Collapsed="true">
+    <Position X="115.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAgBAACAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Utilities\APIEndpoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.Utilities.EnumExtensions" Collapsed="true">
+    <Position X="122.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\EnumExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Utilities.CodeGenerator" Collapsed="true">
+    <Position X="106.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAEAAAAA=</HashCode>
+      <FileName>Utilities\CodeGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Utilities.QueryHelper&lt;TModel&gt;" Collapsed="true">
+    <Position X="119" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Utilities\QueryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Utilities.ReadResponse&lt;TModel&gt;" Collapsed="true">
+    <Position X="120.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAI=</HashCode>
+      <FileName>Utilities\ReadResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.Utilities.ServiceValidationException" Collapsed="true">
+    <Position X="113.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Utilities\ServiceValidationException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation.DailyOperationBadOutputReasonsViewModel" Collapsed="true">
+    <Position X="48" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAgAAAEAAAAAABAAAAAAAAAAAAAAAAAAIQ=</HashCode>
+      <FileName>ViewModels\Daily_Operation\DailyOperationBadOutputReasonsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation.DailyOperationKanbanViewModel" Collapsed="true">
+    <Position X="120.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAAIAAAgQAAAAI=</HashCode>
+      <FileName>ViewModels\Daily_Operation\DailyOperationKanbanViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Daily_Operation.DailyOperationViewModel" Collapsed="true">
+    <Position X="61.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQGQCAAAgEIAAiAAAqEAAIAAAAIQAAAAAAEAA=</HashCode>
+      <FileName>ViewModels\Daily_Operation\DailyOperationViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityControl.CriteriaViewModel" Collapsed="true">
+    <Position X="115.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAgAAAAgAAQAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>ViewModels\FabricQualityControl\CriteriaViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityControl.FabricGradeTestViewModel" Collapsed="true">
+    <Position X="75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAECAQACAAAgAQAAAAkAAAhAAAIAAIQEAAAEIAAA=</HashCode>
+      <FileName>ViewModels\FabricQualityControl\FabricGradeTestViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityControl.FabricQCGradeTestsViewModel" Collapsed="true">
+    <Position X="108.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAEAAAI=</HashCode>
+      <FileName>ViewModels\FabricQualityControl\FabricQCGradeTestsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityControl.FabricQualityControlViewModel" Collapsed="true">
+    <Position X="93" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAEBAQACAAAABEABwAiAAAASEAAAAMAECgAAAEGA=</HashCode>
+      <FileName>ViewModels\FabricQualityControl\FabricQualityControlViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.FabricQualityControl.Score" Collapsed="true">
+    <Position X="112" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApAEAAAA=</HashCode>
+      <FileName>ViewModels\FabricQualityControl\Score.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory.InventoryDocumentItemViewModel" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAhABAEAAAAAAAAAAAAAAQAAAAAAACAAAgAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Inventory\InventoryDocumentItemViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Inventory.InventoryDocumentViewModel" Collapsed="true">
+    <Position X="16.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAACAAACQAABAgAIAAAIAABIAAAAAAAAQAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Inventory\InventoryDocumentViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.AccountBankIntegrationViewModel" Collapsed="true">
+    <Position X="23.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAACAAAgAAAAAABYAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\AccountBankIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.AccountIntegrationViewModel" Collapsed="true">
+    <Position X="106.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAACAAAAAAAAAAAAAAAAAAQAAAAAAAAg=</HashCode>
+      <FileName>ViewModels\Integration\Master\AccountIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.CommodityIntegrationViewModel" Collapsed="true">
+    <Position X="110.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\CommodityIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.DesignMotiveIntegrationViewModel" Collapsed="true">
+    <Position X="126" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\DesignMotiveIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.DivisionViewModel" Collapsed="true">
+    <Position X="36.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\DivisionViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.FinishTypeIntegrationViewModel" Collapsed="true">
+    <Position X="122.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>ViewModels\Integration\Master\FinishTypeIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.MaterialConstructionIntegrationViewModel" Collapsed="true">
+    <Position X="119" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>ViewModels\Integration\Master\MaterialConstructionIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.MaterialIntegrationViewModel" Collapsed="true">
+    <Position X="50.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAgAAQAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\MaterialIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.ProductIntegrationViewModel" Collapsed="true">
+    <Position X="124.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\ProductIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.QualityIntegrationViewModel" Collapsed="true">
+    <Position X="115.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\QualityIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.StandardTestIntegrationViewModel" Collapsed="true">
+    <Position X="110.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>ViewModels\Integration\Master\StandardTestIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.StorageIntegrationViewModel" Collapsed="true">
+    <Position X="77.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAgAAgAIABAAAAAIAAEAACAgEAQAABAEAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\StorageIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.StorageUnitViewModel" Collapsed="true">
+    <Position X="122.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAEAAAIAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\StorageIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.divisionViewModel" Collapsed="true">
+    <Position X="110.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAEAAAIAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\StorageIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.TermOfPaymentIntegrationViewModel" Collapsed="true">
+    <Position X="124.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\TermOfPaymentIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.UnitViewModel" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAQAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\UnitViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master.YarnMaterialIntegrationViewModel" Collapsed="true">
+    <Position X="106.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>ViewModels\Integration\Master\YarnMaterialIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master.BuyerIntegrationViewModel" Collapsed="true">
+    <Position X="126" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAICAAgAAQAEAIAAAACEQAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\BuyerIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master.ColorTypeIntegrationViewModel" Collapsed="true">
+    <Position X="108.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>ViewModels\Integration\Master\ColorTypeIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master.OrderTypeIntegrationViewModel" Collapsed="true">
+    <Position X="124.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\OrderTypeIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master.ProcessTypeIntegrationViewModel" Collapsed="true">
+    <Position X="122.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAgAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\ProcessTypeIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Master.UOMIntegrationViewModel" Collapsed="true">
+    <Position X="126" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Master\UOMIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.FinishingPrintingSalesContractIntegrationViewModel" Collapsed="true">
+    <Position X="120.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEAGBQgCAAiUAABDQgEwA0CIAAAAAAAFIAAFAAAgAAA=</HashCode>
+      <FileName>ViewModels\Integration\Sales\FinishingPrinting\FinishingPrintingSalesContractIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionLampStandardIntegrationViewModel" Collapsed="true">
+    <Position X="106.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAgAAQAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Sales\FinishingPrinting\ProductionLampStandardIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderDetailIntegrationViewModel" Collapsed="true">
+    <Position X="108.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAAAAAAAAIAAAAAgAAAAAAAEAAABAAAAgAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Sales\FinishingPrinting\ProductionOrderDetailIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel" Collapsed="true">
+    <Position X="110.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEAChZgAgAADAAQDBiAwAgREAAEEAFAAgACBAAAAAUI=</HashCode>
+      <FileName>ViewModels\Integration\Sales\FinishingPrinting\ProductionOrderIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionRunWidthIntegrationViewModel" Collapsed="true">
+    <Position X="113.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ViewModels\Integration\Sales\FinishingPrinting\ProductionRunWidthIntegrationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban.CartViewModel" Collapsed="true">
+    <Position X="68.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAgAAEAAAAAAAAAAAgIAA=</HashCode>
+      <FileName>ViewModels\Kanban\CartViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban.KanbanCreateViewModel" Collapsed="true">
+    <Position X="79.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAQAACAAAgAAAAiCAAGAACIAAAAAAAAIAEgMAA=</HashCode>
+      <FileName>ViewModels\Kanban\KanbanCreateViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban.KanbanInstructionViewModel" Collapsed="true">
+    <Position X="86.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Kanban\KanbanInstructionViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban.KanbanStepViewModel" Collapsed="true">
+    <Position X="81.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAIEAAAAgAAA=</HashCode>
+      <FileName>ViewModels\Kanban\KanbanStepViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban.KanbanViewModel" Collapsed="true">
+    <Position X="99.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAEAQAACCAAgAAAAiAAAGAACIAAAAAAAAIAEgMAA=</HashCode>
+      <FileName>ViewModels\Kanban\KanbanViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.BadOutput.BadOutputMachineViewModel" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAACAAAAAAAAiAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Master\BadOutput\BadOutputMachineViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.BadOutput.BadOutputViewModel" Collapsed="true">
+    <Position X="18.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAIAAAAgAAAAAAAAAAAQAAAAAAAAEAA=</HashCode>
+      <FileName>ViewModels\Master\BadOutput\BadOutputViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.DirectLaborCost.DirectLaborCostViewModel" Collapsed="true">
+    <Position X="25.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABBACAAAAAAAAgAAAAAAAAAAIEAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Master\DirectLaborCost\DirectLaborCostViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Master.DurationEstimation.DurationEstimationAreaViewModel" Collapsed="true">
+    <Position X="30" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Master\DurationEstimation\DurationEstimationAreaViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Master.DurationEstimation.DurationEstimationViewModel" Collapsed="true">
+    <Position X="32.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAACAAAAAAAAgAAAAAACAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>ViewModels\Master\DurationEstimation\DurationEstimationViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Master.Instruction.InstructionViewModel" Collapsed="true">
+    <Position X="34.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACAAAAAAAAgAAQAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>ViewModels\Master\Instruction\InstructionViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine.MachineEventViewModel" Collapsed="true">
+    <Position X="39" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAgAAQAACAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>ViewModels\Master\Machine\MachineEventViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine.MachineStepViewModel" Collapsed="true">
+    <Position X="41.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAKAAAAAAgAgAAAAAAAEAAAAAAAABAAAAAA=</HashCode>
+      <FileName>ViewModels\Master\Machine\MachineStepViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine.MachineViewModel" Collapsed="true">
+    <Position X="45.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBAAAABACAAAAAIwAgAAQABCAhgAAAAgACAAAAEAA=</HashCode>
+      <FileName>ViewModels\Master\Machine\MachineViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.MachineType.MachineTypeIndicatorsViewModel" Collapsed="true">
+    <Position X="52.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKAAAAAAAAAAAAAAABEAAAAABAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Master\MachineType\MachineTypeIndicatorsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.MachineType.MachineTypeViewModel" Collapsed="true">
+    <Position X="57" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAACgAAAAAAAgAAQAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>ViewModels\Master\MachineType\MachineTypeViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.OperationalCost.OperationalCostViewModel" Collapsed="true">
+    <Position X="63.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABACAAAAAAAAgAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Master\OperationalCost\OperationalCostViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Master.Step.StepIndicatorViewModel" Collapsed="true">
+    <Position X="70.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ViewModels\Master\Step\StepIndicatorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ViewModels.Master.Step.StepViewModel" Collapsed="true">
+    <Position X="81.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKCAAAAAgAgAAAAAAAAAAAAAAAABAAAEAA=</HashCode>
+      <FileName>ViewModels\Master\Step\StepViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Event.MonitoringEventReportViewModel" Collapsed="true">
+    <Position X="88.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAlBIYgEAhAAAAAAAACAAIEYAABBAAAAAAAAAAkAAg=</HashCode>
+      <FileName>ViewModels\Monitoring_Event\MonitoringEventReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Event.MonitoringEventViewModel" Collapsed="true">
+    <Position X="95.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAADAAAAACAAAAEAAAgAAAAIEgAAAAAAAAAAAAAMQA=</HashCode>
+      <FileName>ViewModels\Monitoring_Event\MonitoringEventViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Specification_Machine.MonitoringSpecificationMachineDetailsViewModel" Collapsed="true">
+    <Position X="102" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKAAAAAAAAAAAAAgABEAAAAABAgAAAAAAA=</HashCode>
+      <FileName>ViewModels\Monitoring_Specification_Machine\MonitoringSpecificationMachineDetailsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Specification_Machine.MonitoringSpecificationMachineReportViewModel" Collapsed="true">
+    <Position X="12" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAABAAAAgABAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>ViewModels\Monitoring_Specification_Machine\MonitoringSpecificationMachineReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Specification_Machine.ReportItem" Collapsed="true">
+    <Position X="122.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAACAAAAAAAAAQAAA=</HashCode>
+      <FileName>ViewModels\Monitoring_Specification_Machine\MonitoringSpecificationMachineReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Monitoring_Specification_Machine.MonitoringSpecificationMachineViewModel" Collapsed="true">
+    <Position X="27.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACBABAEAAAgAAAAAAAAAAAAAAAAAAAAMAA=</HashCode>
+      <FileName>ViewModels\Monitoring_Specification_Machine\MonitoringSpecificationMachineViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.OrderStatusReports.YearlyOrderStatusReportViewModel" Collapsed="true">
+    <Position X="110.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIBAAAAAAAEAAAAAACIAABAAAIAEAAAgAAABAAAAAAA=</HashCode>
+      <FileName>ViewModels\OrderStatusReports\YearlyOrderStatusReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.OrderStatusReports.MonthlyOrderStatusReportViewModel" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\OrderStatusReports\YearlyOrderStatusReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.OrderStatusReports.ProductionOrderStatusReportViewModel" Collapsed="true">
+    <Position X="112" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAAAAAAAAAAAAIAAAAAAACAAAAAAAAAAAQ=</HashCode>
+      <FileName>ViewModels\OrderStatusReports\YearlyOrderStatusReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.OrderStatusReports.MonthlyOrderQuantity" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIBAAAAEAAEQBAIAAAAAABQAAIAAAAAgAEABAhBEIAA=</HashCode>
+      <FileName>ViewModels\OrderStatusReports\YearlyOrderStatusReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing.PackingDetailViewModel" Collapsed="true">
+    <Position X="43.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAACAAAAAAAAAAABAACgAAAAAAAAAgAEAAQA=</HashCode>
+      <FileName>ViewModels\Packing\PackingDetailViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing.PackingQCGudangViewModel" Collapsed="true">
+    <Position X="113.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQIAAAAAAAAAAAAAAAAAAQAABABAAAABAAAAQAAAAAA=</HashCode>
+      <FileName>ViewModels\Packing\PackingQCGudangViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Packing.PackingViewModel" Collapsed="true">
+    <Position X="54.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAA4QQEIACAAIAAAUQgAAAUIQCAAACBAACSAABgECE=</HashCode>
+      <FileName>ViewModels\Packing\PackingViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.PackingReceipt.PackingReceiptItemViewModel" Collapsed="true">
+    <Position X="59.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAiAAAAAAiCAAAAAAAAAABAACAEAAAAAAAAgAIAIQA=</HashCode>
+      <FileName>ViewModels\PackingReceipt\PackingReceiptItemViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.PackingReceipt.PackingReceiptViewModel" Collapsed="true">
+    <Position X="66" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIQAAAAACACIAAAxAwAAAUAECAAAABAQCCAAAJEyA=</HashCode>
+      <FileName>ViewModels\PackingReceipt\PackingReceiptViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC.ReturToQCItemDetailViewModel" Collapsed="true">
+    <Position X="72.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAAIABAAAACEAAAAAAAAAAJEACAAAAAAACCAAACIIQA=</HashCode>
+      <FileName>ViewModels\ReturToQC\ReturToQCItemDetailViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC.ReturToQCItemViewModel" Collapsed="true">
+    <Position X="84" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACBAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>ViewModels\ReturToQC\ReturToQCItemViewIModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ReturToQC.ReturToQCViewModel" Collapsed="true">
+    <Position X="90.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAACACAACAQAIAAAAAEAAAAAFgAAIAAAAEQA=</HashCode>
+      <FileName>ViewModels\ReturToQC\ReturToQCViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocument.ShipmentDocumentDetailViewModel" Collapsed="true">
+    <Position X="97.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAASACACAAAAAAAAAAAAACABAAAAQAAAAAAEAA=</HashCode>
+      <FileName>ViewModels\ShipmentDocument\ShipmentDocumentDetailViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocument.ShipmentDocumentItemViewModel" Collapsed="true">
+    <Position X="104.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAEAAAAAAAAAAAAAAAAAAAAAAAAAAJgBA=</HashCode>
+      <FileName>ViewModels\ShipmentDocument\ShipmentDocumentItemViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocument.ShipmentDocumentPackingReceiptItemViewModel" Collapsed="true">
+    <Position X="14.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAAAAAAAAACAAAAAAAAAAAJEACAAAAABAACAgAAIIQA=</HashCode>
+      <FileName>ViewModels\ShipmentDocument\ShipmentDocumentPackingReceiptItemViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocument.ShipmentDocumentViewModel" Collapsed="true">
+    <Position X="21" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAACBAAAABAAwAAAAAkgAAABAAAAAAAAAEgA=</HashCode>
+      <FileName>ViewModels\ShipmentDocument\ShipmentDocumentViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Com.Danliris.Service.Production.Lib.ProductionDbContext" Collapsed="true">
+    <Position X="126" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QABBAACQEigKAAgEIEABAIgQEAQowJAgQwADAQAgACE=</HashCode>
+      <FileName>ProductionDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation.IDailyOperationFacade" Collapsed="true">
+    <Position X="27.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAAAAAAAAAgAABAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\DailyOperation\IDailyOperationFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl.IFabricQualityControlFacade" Collapsed="true">
+    <Position X="31.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\FabricQualityControl\IFabricQualityControlFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban.IKanbanFacade" Collapsed="true">
+    <Position X="36.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Kanban\IKanbanFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master.IBadOutputFacade" Collapsed="true">
+    <Position X="40.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IBadOutputFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master.IDirectLaborCostFacade" Collapsed="true">
+    <Position X="45.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IDirectLaborCostFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master.IMachineEventFacade" Collapsed="true">
+    <Position X="2.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IMachineEventFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master.IMachineFacade" Collapsed="true">
+    <Position X="4.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IMachineFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master.IMachineTypeFacade" Collapsed="true">
+    <Position X="7" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IMachineTypeFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master.IOperationalCostFacade" Collapsed="true">
+    <Position X="9.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IOperationalCostFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Interfaces.Master.IDurationEstimationFacade" Collapsed="true">
+    <Position X="11.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IDurationEstimationFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Interfaces.Master.IInstructionFacade" Collapsed="true">
+    <Position X="13.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IInstructionFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Production.Lib.BusinessLogic.Interfaces.Master.IStepFacade" Collapsed="true">
+    <Position X="16" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Master\IStepFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent.IMonitoringEventFacade" Collapsed="true">
+    <Position X="18.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\MonitoringEvent\IMonitoringEventFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent.IMonitoringEventReportFacade" Collapsed="true">
+    <Position X="20.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAAAAAAIAAAAAEAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\MonitoringEvent\IMonitoringEventReportFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine.IMonitoringSpecificationMachineFacade" Collapsed="true">
+    <Position X="22.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\MonitoringSpecificationMachine\IMonitoringSpecificationMachineFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine.IMonitoringSpecificationMachineReportFacade" Collapsed="true">
+    <Position X="25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\MonitoringSpecificationMachine\IMonitoringSpecificationMachineReportFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.OrderStatusReport.IOrderStatusReportService" Collapsed="true">
+    <Position X="112" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAEAAAAIAAAAAAAIAAAAAAABAgAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\OrderStatusReport\IOrderStatusReportService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing.IPackingFacade" Collapsed="true">
+    <Position X="29.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAIBIAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\Packing\IPackingFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.PackingReceipt.IPackingReceiptFacade" Collapsed="true">
+    <Position X="34" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\PackingReceipt\IPackingReceiptFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC.IReturToQCFacade" Collapsed="true">
+    <Position X="38.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\ReturToQC\IReturToQCFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ShipmentDocument.IShipmentDocumentService" Collapsed="true">
+    <Position X="43" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>BusinessLogic\Interfaces\ShipmentDocument\IShipmentDocumentService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService.IHttpClientService" Collapsed="true">
+    <Position X="108.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Services\HttpClientService\IHttpClientService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Production.Lib.Services.IdentityService.IIdentityService" Collapsed="true">
+    <Position X="110.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAABAEA=</HashCode>
+      <FileName>Services\IdentityService\IIdentityService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Production.Lib.Services.ValidateService.IValidateService" Collapsed="true">
+    <Position X="113.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\ValidateService\IValidateService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Production.Lib.Utilities.BaseInterface.IBaseFacade&lt;TModel&gt;" Collapsed="true">
+    <Position X="24" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAgAAAAAAgAAAAAAIAAAIA=</HashCode>
+      <FileName>Utilities\BaseInterface\IBaseFacade.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Com.Danliris.Service.Production.Lib.Utilities.BaseInterface.IBaseLogic&lt;TModel&gt;" Collapsed="true">
+    <Position X="106.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAgAAAAEAAAAABAAAAAA=</HashCode>
+      <FileName>Utilities\BaseInterface\IBaseLogic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

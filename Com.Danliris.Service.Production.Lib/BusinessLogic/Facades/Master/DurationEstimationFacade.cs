@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
             List<string> searchAttributes = new List<string>()
             {
-                "Code", "ProcessTypeName"
+                "Code", "ProcessTypeName", "ProcessTypeCode"
             };
             query = QueryHelper<DurationEstimationModel>.Search(query, searchAttributes, keyword);
 
@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
 
         public async Task<int> UpdateAsync(int id, DurationEstimationModel model)
         {
-            DurationEstimationLogic.UpdateModelAsync(id, model);
+            await DurationEstimationLogic.UpdateModelAsync(id, model);
             return await DbContext.SaveChangesAsync();
         }
 
@@ -101,6 +101,11 @@ namespace Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master
         {
             await DurationEstimationLogic.DeleteModel(id);
             return await DbContext.SaveChangesAsync();
+        }
+
+        public DurationEstimationModel ReadByProcessType(string processTypeCode)
+        {
+            return DbSet.Include(i => i.Areas).FirstOrDefault(f => f.ProcessTypeCode.Equals(processTypeCode));
         }
     }
 }

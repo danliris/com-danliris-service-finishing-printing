@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             return Result;
         }
 
-        public override void UpdateModelAsync(int id, KanbanModel model)
+        public override async Task UpdateModelAsync(int id, KanbanModel model)
         {
             if (model.Instruction != null && model.Instruction.Steps != null)
             {
@@ -105,13 +105,34 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     }
                     else
                     {
+                        //if (step.InstructionId <= 0)
+                        //    step.InstructionId = model.Instruction.Id;
+                        
+
+                        if (!step.StepIndicators.Any(stepIndicator => !(stepIndicator.Id <= 0)))
+                        {
+                            var existingStepIndicators = KanbanStepIndicatorDbSet.Where(stepIndicator => stepIndicator.StepId.Equals(step.Id)).ToList();
+                            foreach (var existingStepIndicator in existingStepIndicators)
+                            {
+                                EntityExtension.FlagForDelete(existingStepIndicator, IdentityService.Username, UserAgent);
+                            }
+                            KanbanStepIndicatorDbSet.UpdateRange(existingStepIndicators);
+                            foreach (var stepIndicator in step.StepIndicators)
+                            {
+                                //stepIndicator.Id = 0;
+                                EntityExtension.FlagForCreate(stepIndicator, IdentityService.Username, UserAgent);
+                                KanbanStepIndicatorDbSet.Add(stepIndicator);
+                            }
+                        }
+                        else
+                            foreach (var stepIndicator in step.StepIndicators)
+                            {
+                                EntityExtension.FlagForUpdate(stepIndicator, IdentityService.Username, UserAgent);
+                                KanbanStepIndicatorDbSet.Update(stepIndicator);
+                            }
+
                         EntityExtension.FlagForUpdate(step, IdentityService.Username, UserAgent);
                         KanbanStepDbSet.Update(step);
-                        foreach (var stepIndicator in step.StepIndicators)
-                        {
-                            EntityExtension.FlagForUpdate(stepIndicator, IdentityService.Username, UserAgent);
-                            KanbanStepIndicatorDbSet.Update(stepIndicator);
-                        }
                     }
                 }
 
@@ -130,7 +151,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                     }
                 }
             }
-            base.UpdateModelAsync(id, model);
+            await base.UpdateModelAsync(id, model);
         }
     }
 }

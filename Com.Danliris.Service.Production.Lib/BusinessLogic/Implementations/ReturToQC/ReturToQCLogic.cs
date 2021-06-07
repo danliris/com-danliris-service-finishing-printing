@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                             !f.IsDeleted)))))));
         }
 
-        public override void UpdateModelAsync(int id, ReturToQCModel model)
+        public override async Task UpdateModelAsync(int id, ReturToQCModel model)
         {
             EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
             foreach (var item in model.ReturToQCItems)
@@ -111,69 +111,72 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 }
             }
             DbSet.Update(model);
+            await Task.CompletedTask;
         }
 
-        public async Task CreateInventoryDocument(ReturToQCModel model)
-        {
-            using (var client = new HttpClient() { Timeout = Timeout.InfiniteTimeSpan })
-            {
-                string relativePath = "inventory-documents/multi";
-                try
-                {
-                    Uri serverUri = new Uri(APIEndpoint.Inventory);
-                    Uri relativePathUri = new Uri(relativePath, UriKind.Relative);
-                    var uri = new Uri(serverUri, relativePathUri);
+        //public async Task CreateInventoryDocument(ReturToQCModel model)
+        //{
+        //    using (var client = new HttpClient() { Timeout = Timeout.InfiniteTimeSpan })
+        //    {
+        //        string relativePath = "inventory-documents/multi";
+        //        try
+        //        {
+        //            Uri serverUri = new Uri(APIEndpoint.Inventory);
+        //            Uri relativePathUri = new Uri(relativePath, UriKind.Relative);
+        //            var uri = new Uri(serverUri, relativePathUri);
 
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
-                    var listContainer = new List<StringContent>();
-                    if (model.ReturToQCItems != null && model.ReturToQCItems.Count != 0)
-                    {
-                        List<InventoryDocumentViewModel> postedModels = new List<InventoryDocumentViewModel>();
-                        foreach (var item in model.ReturToQCItems)
-                        {
-                            InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel();
-                            inventoryDoc.referenceNo = model.ReturNo + " - " + item.ProductionOrderNo;
-                            inventoryDoc.referenceType = "retur-to-qc";
-                            inventoryDoc.remark = "";
-                            inventoryDoc.type = model.IsVoid ? "IN" : "OUT";
-                            inventoryDoc.date = DateTimeOffset.UtcNow;
-                            var itemDetails = item.ReturToQCItemDetails.LastOrDefault();
+        //            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", IdentityService.Token);
+        //            var listContainer = new List<StringContent>();
+        //            if (model.ReturToQCItems != null && model.ReturToQCItems.Count != 0)
+        //            {
+        //                List<InventoryDocumentViewModel> postedModels = new List<InventoryDocumentViewModel>();
+        //                foreach (var item in model.ReturToQCItems)
+        //                {
+        //                    InventoryDocumentViewModel inventoryDoc = new InventoryDocumentViewModel
+        //                    {
+        //                        referenceNo = model.ReturNo + " - " + item.ProductionOrderNo,
+        //                        referenceType = "retur-to-qc",
+        //                        remark = "",
+        //                        type = model.IsVoid ? "IN" : "OUT",
+        //                        date = DateTimeOffset.UtcNow
+        //                    };
+        //                    var itemDetails = item.ReturToQCItemDetails.LastOrDefault();
 
-                            if (itemDetails != null)
-                            {
-                                inventoryDoc.storageId = itemDetails.StorageId;
-                                inventoryDoc.storageCode = itemDetails.StorageCode;
-                                inventoryDoc.storageName = itemDetails.StorageName;
-                            }
+        //                    if (itemDetails != null)
+        //                    {
+        //                        inventoryDoc.storageId = itemDetails.StorageId;
+        //                        inventoryDoc.storageCode = itemDetails.StorageCode;
+        //                        inventoryDoc.storageName = itemDetails.StorageName;
+        //                    }
 
-                            inventoryDoc.items = item.ReturToQCItemDetails.Select(x => new InventoryDocumentItemViewModel()
-                            {
-                                productCode = x.ProductCode,
-                                productName = x.ProductName,
-                                productId = x.ProductId,
-                                remark = x.Remark,
-                                quantity = x.ReturQuantity,
-                                uomId = x.UOMId,
-                                uom = x.UOMUnit,
-                            }).ToList();
+        //                    inventoryDoc.items = item.ReturToQCItemDetails.Select(x => new InventoryDocumentItemViewModel()
+        //                    {
+        //                        productCode = x.ProductCode,
+        //                        productName = x.ProductName,
+        //                        productId = x.ProductId,
+        //                        remark = x.Remark,
+        //                        quantity = x.ReturQuantity,
+        //                        uomId = x.UOMId,
+        //                        uom = x.UOMUnit,
+        //                    }).ToList();
 
-                            postedModels.Add(inventoryDoc);
-                        }
-                        var myContentJson = JsonConvert.SerializeObject(postedModels, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                        var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
-                        var response = await client.PostAsync(uri, myContent);
-                        response.EnsureSuccessStatusCode();
-                    }
-                }
-                catch (UriFormatException)
-                {
-                    throw new UriFormatException(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
-                }
-            }
-        }
+        //                    postedModels.Add(inventoryDoc);
+        //                }
+        //                var myContentJson = JsonConvert.SerializeObject(postedModels, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+        //                var myContent = new StringContent(myContentJson, Encoding.UTF8, "application/json");
+        //                var response = await client.PostAsync(uri, myContent);
+        //                response.EnsureSuccessStatusCode();
+        //            }
+        //        }
+        //        catch (UriFormatException)
+        //        {
+        //            throw new UriFormatException(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
+        //        }
+        //        catch (Exception)
+        //        {
+        //            throw new Exception(string.Format("Error : {0}, {1}", APIEndpoint.Inventory, relativePath));
+        //        }
+        //    }
+        //}
     }
 }

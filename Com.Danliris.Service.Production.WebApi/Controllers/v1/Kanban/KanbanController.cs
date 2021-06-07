@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
     [Authorize]
     public class KanbanController : BaseController<KanbanModel, KanbanViewModel, IKanbanFacade>
     {
+        private const string LANJUT_PROSES = "Lanjut Proses";
+        private const string REPROSES = "Reproses";
         public KanbanController(IIdentityService identityService, IValidateService validateService, IKanbanFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
         }
@@ -47,9 +49,17 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         Instruction = viewModel.Instruction,
                         OldKanbanId = viewModel.OldKanbanId,
                         ProductionOrder = viewModel.ProductionOrder,
+                        IsBadOutput = viewModel.IsBadOutput,
+                        BadOutput = viewModel.BadOutput ?? 0,
+                        IsReprocess = viewModel.IsReprocess,
                         SelectedProductionOrderDetail = viewModel.SelectedProductionOrderDetail
                     };
 
+                    if (cart.reprocess == REPROSES || cart.reprocess == LANJUT_PROSES)
+                    {
+                        vmToCreate.IsReprocess = cart.IsReprocess;
+                        vmToCreate.Instruction = cart.Instruction;
+                    }
                     KanbanModel model = Mapper.Map<KanbanModel>(vmToCreate);
                     await Facade.CreateAsync(model);
 
@@ -122,6 +132,29 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
             }
         }
 
+        [HttpPut("complete/{Id}")]
+        public async Task<IActionResult> UpdateIsComplete([FromRoute] int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await Facade.CompleteKanban(Id);
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
         [HttpGet("reports")]
         public IActionResult GetReport(DateTime? dateFrom = null, DateTime? dateTo = null, bool? proses = null, int orderTypeId = -1, int processTypeId = -1, string orderNo = null, int page = 1, int size = 25)
         {
@@ -182,6 +215,99 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                 Dictionary<string, object> Result =
                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
                   .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("old/{id}")]
+        public virtual async Task<IActionResult> GetOldKanbanById([FromRoute] int id)
+        {
+            try
+            {
+                var model = await Facade.ReadOldKanbanByIdAsync(id);
+
+                if (model == null)
+                {
+                    Dictionary<string, object> Result =
+                           new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                           .Ok<KanbanViewModel>(Mapper, new KanbanViewModel());
+                    return Ok(Result);
+                }
+                else
+                {
+                    var viewModel = Mapper.Map<KanbanViewModel>(model);
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                        .Ok<KanbanViewModel>(Mapper, viewModel);
+                    return Ok(Result);
+                }
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("snapshot/downloads/xls")]
+        public IActionResult GetSnapshotXLS(int month, int year)
+        {
+            try
+            {
+                byte[] xlsInBytes;
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var xls = Facade.GenerateKanbanSnapshotExcel(month, year);
+
+                string fileName = "";
+                DateTime date = new DateTime(year, month, 1);
+                fileName = string.Format("Kanban " + date.ToString("MMMM yyyy"));
+
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return file;
+
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("read/visualization")]
+        public IActionResult GetVisualization([FromQuery] string order = "{}", [FromQuery] string filter = "{}", [FromQuery] int page = 1, [FromQuery] int size = 500)
+        {
+            try
+            {
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+
+                var data = Facade.ReadVisualization(order, filter, page, size);
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data.Data,
+                    info = new
+                    {
+                        Total = data.Total,
+                        Count = data.Count,
+                        Order = data.Order,
+                        Selected = data.Selected
+                    },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                   new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                   .Fail();
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }

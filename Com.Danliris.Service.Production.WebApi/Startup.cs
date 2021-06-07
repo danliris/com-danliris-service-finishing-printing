@@ -1,56 +1,82 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Newtonsoft.Json.Serialization;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Com.Danliris.Service.Production.Lib.Services.IdentityService;
-using Com.Danliris.Service.Production.Lib.Services.ValidateService;
-using Com.Danliris.Service.Production.Lib.BusinessLogic.Interfaces.Master;
-using Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master;
-using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.Step;
-using Com.Danliris.Service.Production.WebApi.Utilities;
-using Com.Danliris.Service.Production.Lib;
-using IdentityServer4.AccessTokenValidation;
-using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.Instruction;
-using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.DurationEstimation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringEvent;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.CostCalculation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyMonitoringEvent;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
-using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.DyestuffChemicalUsageReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.FabricQualityControl;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.NewShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.OrderStatusReport;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.StrikeOff;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyMonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.DyestuffChemicalUsageReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.BadOutput;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.DirectLaborCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.EventOrganizer;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventCategory;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.LossEventRemark;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.MachineType;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.OperationalCost;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Packing;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.PackingReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.StrikeOff;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ColorReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyMonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DailyOperation;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.DyestuffChemicalUsageReceipt;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.FabricQualityControl;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringEvent;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.MonitoringSpecificationMachine;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.NewShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.OrderStatusReport;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Packing;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.PackingReceipt;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ReturToQC;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ReturToQC;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.ReturToQC;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.ShipmentDocument;
-using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.StrikeOff;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
+using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
+using Com.Danliris.Service.Production.Lib;
+using Com.Danliris.Service.Production.Lib.BusinessLogic.Facades.Master;
+using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.DurationEstimation;
+using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.Instruction;
+using Com.Danliris.Service.Production.Lib.BusinessLogic.Implementations.Master.Step;
+using Com.Danliris.Service.Production.Lib.BusinessLogic.Interfaces.Master;
+using Com.Danliris.Service.Production.Lib.Services.IdentityService;
+using Com.Danliris.Service.Production.Lib.Services.ValidateService;
+using Com.Danliris.Service.Production.WebApi.Utilities;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Com.Danliris.Service.Production.WebApi
 {
@@ -70,7 +96,7 @@ namespace Com.Danliris.Service.Production.WebApi
         {
             APIEndpoint.Core = Configuration.GetValue<string>("CoreEndpoint") ?? Configuration["CoreEndpoint"];
             APIEndpoint.Inventory = Configuration.GetValue<string>("InventoryEndpoint") ?? Configuration["InventoryEndpoint"];
-            //APIEndpoint.Production = Configuration.GetValue<string>("ProductionEndpoint") ?? Configuration["ProductionEndpoint"];
+            APIEndpoint.Sales = Configuration.GetValue<string>("SalesEndpoint") ?? Configuration["SalesEndpoint"];
             //APIEndpoint.Purchasing = Configuration.GetValue<string>("PurchasingEndpoint") ?? Configuration["PurchasingEndpoint"];
         }
 
@@ -89,34 +115,44 @@ namespace Com.Danliris.Service.Production.WebApi
         private void RegisterFacades(IServiceCollection services)
         {
             services
-                .AddTransient<IKanbanFacade, KanbanFacade>()
                 .AddTransient<IStepFacade, StepFacade>()
                 .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IDurationEstimationFacade, DurationEstimationFacade>()
-                .AddTransient<IInstructionFacade, InstructionFacade>()
                 .AddTransient<IMachineTypeFacade, MachineTypeFacade>()
                 .AddTransient<IMachineFacade, MachineFacade>()
                 .AddTransient<IMonitoringSpecificationMachineFacade, MonitoringSpecificationMachineFacade>()
                 .AddTransient<IMonitoringSpecificationMachineReportFacade, MonitoringSpecificationMachineReportFacade>()
-                .AddTransient<IMonitoringEventFacade, MonitoringEventFacade>()
+                .AddTransient<IEventOrganizerFacade, EventOrganizerFacade>()
                 .AddTransient<IMachineEventFacade, MachineEventFacade>()
+                .AddTransient<IMachineEventFacade, MachineEventFacade>()
+                .AddTransient<IKanbanFacade, KanbanFacade>()
                 .AddTransient<IBadOutputFacade, BadOutputFacade>()
                 .AddScoped<IDailyOperationFacade, DailyOperationFacade>()
                 .AddTransient<IPackingFacade, PackingFacade>()
-                .AddTransient<IDailyOperationFacade, DailyOperationFacade>()
-                .AddTransient<IPackingFacade, PackingFacade>()
                 .AddTransient<IFabricQualityControlFacade, FabricQualityControlFacade>()
-                .AddTransient<MachineEventFacade>()
                 .AddTransient<IMonitoringEventReportFacade, MonitoringEventReportFacade>()
-                .AddTransient<IPackingReceiptFacade,PackingReceiptFacade>()
+                .AddTransient<IPackingReceiptFacade, PackingReceiptFacade>()
                 .AddTransient<IShipmentDocumentService, ShipmentDocumentService>()
-                .AddTransient<IReturToQCFacade, ReturToQCFacade>();
+                .AddTransient<INewShipmentDocumentService, NewShipmentDocumentService>()
+                .AddTransient<IDirectLaborCostFacade, DirectLaborCostFacade>()
+                .AddTransient<IOperationalCostFacade, OperationalCostFacade>()
+                .AddTransient<IOrderStatusReportService, OrderStatusReportService>()
+                .AddTransient<ICostCalculationService, CostCalculationService>()
+                .AddTransient<IReturToQCFacade, ReturToQCFacade>()
+                .AddTransient<IColorReceiptFacade, ColorReceiptFacade>()
+                .AddTransient<IStrikeOffFacade, StrikeOffFacade>()
+                .AddTransient<ILossEventFacade, LossEventFacade>()
+                .AddTransient<ILossEventCategoryFacade, LossEventCategoryFacade>()
+                .AddTransient<ILossEventRemarkFacade, LossEventRemarkFacade>()
+                .AddTransient<IDailyMonitoringEventFacade, DailyMonitoringEventFacade>()
+                .AddTransient<IDyestuffChemicalUsageReceiptFacade, DyestuffChemicalUsageReceiptFacade>();
         }
 
         private void RegisterLogics(IServiceCollection services)
         {
             services
-                .AddTransient<KanbanLogic>()
+                .AddTransient<DirectLaborCostLogic>()
+                .AddTransient<OperationalCostLogic>()
                 .AddTransient<StepLogic>()
                 .AddTransient<StepIndicatorLogic>()
                 .AddTransient<InstructionLogic>()
@@ -128,6 +164,7 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<MachineStepLogic>()
                 .AddTransient<MonitoringSpecificationMachineLogic>()
                 .AddTransient<MonitoringSpecificationMachineDetailsLogic>()
+                .AddTransient<EventOrganizerLogic>()
                 .AddTransient<MonitoringEventLogic>()
                 .AddTransient<BadOutputLogic>()
                 .AddTransient<BadOutputMachineLogic>()
@@ -136,7 +173,15 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddTransient<PackingLogic>()
                 .AddTransient<FabricQualityControlLogic>()
                 .AddTransient<PackingReceiptLogic>()
-                .AddTransient<ReturToQCLogic>();
+                .AddTransient<KanbanLogic>()
+                .AddTransient<ReturToQCLogic>()
+                .AddTransient<ColorReceiptLogic>()
+                .AddTransient<StrikeOffLogic>()
+                .AddTransient<LossEventLogic>()
+                .AddTransient<LossEventCategoryLogic>()
+                .AddTransient<LossEventRemarkLogic>()
+                .AddTransient<DailyMonitoringEventLogic>()
+                .AddTransient<DyestuffChemicalUsageReceiptLogic>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -194,6 +239,36 @@ namespace Com.Danliris.Service.Production.WebApi
                 .AddJsonFormatters()
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             #endregion
+
+            services.AddMvcCore().AddApiExplorer();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo() { Title = "My API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference = new OpenApiReference()
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                        },
+                        new List<string>()
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -203,6 +278,12 @@ namespace Com.Danliris.Service.Production.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
@@ -216,3 +297,4 @@ namespace Com.Danliris.Service.Production.WebApi
         }
     }
 }
+

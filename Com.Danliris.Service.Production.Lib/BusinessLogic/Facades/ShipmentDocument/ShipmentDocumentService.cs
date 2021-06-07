@@ -67,12 +67,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                 }
             }
             //UpdatePackingReceiptQuantity(model);
-            CreateInventoryDocumentOut(model);
+            await CreateInventoryDocumentOut(model);
 
             return await _DbContext.SaveChangesAsync();
         }
 
-        private void CreateInventoryDocumentIn(ShipmentDocumentModel model)
+        private async Task CreateInventoryDocumentIn(ShipmentDocumentModel model)
         {
             string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
             var inventoryDoc = new InventoryDocumentViewModel()
@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
             string dailyBankTransactionUri = "inventory-documents";
 
             var httpClient = (IHttpClientService)_ServiceProvider.GetService(typeof(IHttpClientService));
-            var response = httpClient.PostAsync($"{APIEndpoint.Inventory}{dailyBankTransactionUri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json")).Result;
+            var response = await httpClient.PostAsync($"{APIEndpoint.Inventory}{dailyBankTransactionUri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json"));
             response.EnsureSuccessStatusCode();
         }
 
@@ -123,20 +123,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
 
         public ReadResponse<ShipmentDocumentModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
-            IQueryable<ShipmentDocumentModel> Query = _DbSet;
+            IQueryable<ShipmentDocumentModel> Query = _DbSet.Include(x => x.Details).ThenInclude(x => x.Items).ThenInclude(x => x.PackingReceiptItems);
 
-            Query = Query
-                .Select(s => new ShipmentDocumentModel
-                {
-                    Id = s.Id,
-                    CreatedUtc = s.CreatedUtc,
-                    CreatedBy = s.CreatedBy,
-                    Code = s.Code,
-                    LastModifiedUtc = s.LastModifiedUtc,
-                    DeliveryDate = s.DeliveryDate,
-                    BuyerCode = s.BuyerCode,
-                    BuyerName = s.BuyerName
-                });
 
             List<string> searchAttributes = new List<string>()
             {
@@ -163,9 +151,30 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                    CreatedBy = s.CreatedBy,
                    Code = s.Code,
                    LastModifiedUtc = s.LastModifiedUtc,
+                   DeliveryCode = s.DeliveryCode,
                    DeliveryDate = s.DeliveryDate,
+                   BuyerId = s.BuyerId,
+                   BuyerAddress = s.BuyerAddress,
+                   BuyerNPWP = s.BuyerNPWP,
                    BuyerCode = s.BuyerCode,
-                   BuyerName = s.BuyerName
+                   BuyerName = s.BuyerName,
+                   Details = s.Details.Select(t => new ShipmentDocumentDetailModel
+                   {
+                       Items = t.Items.Select(u => new ShipmentDocumentItemModel
+                       {
+                           PackingReceiptItems = u.PackingReceiptItems.Select(v => new ShipmentDocumentPackingReceiptItemModel
+                           {
+                               ProductName = v.ProductName,
+                               ProductCode = v.ProductCode,
+                               Quantity = v.Quantity,
+                               Weight = v.Weight,
+                               Length = v.Length,
+                               UOMId = v.UOMId,
+                               UOMUnit = v.UOMUnit,
+
+                           }).ToList(),
+                       }).ToList(),
+                   }).ToList(),
                }).ToList()
             );
 
@@ -189,10 +198,12 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
             return Result;
         }
 
+        //implements Void
         public async Task<int> UpdateAsync(int id, ShipmentDocumentModel model)
         {
             EntityExtension.FlagForUpdate(model, _IdentityService.Username, _UserAgent);
             _DbSet.Update(model);
+            model.IsVoid = true;
             foreach (var detail in model.Details)
             {
                 EntityExtension.FlagForUpdate(detail, _IdentityService.Username, _UserAgent);
@@ -209,20 +220,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                 }
             }
 
-            CreateInventoryDocumentIn(model);
+            await CreateInventoryDocumentIn(model);
             return await _DbContext.SaveChangesAsync();
         }
 
-        private void CreateInventoryDocumentOut(ShipmentDocumentModel model)
+        private async Task CreateInventoryDocumentOut(ShipmentDocumentModel model)
         {
             string referenceType = string.IsNullOrWhiteSpace(model.StorageName) ? model.StorageName : "";
             var inventoryDoc = new InventoryDocumentViewModel()
             {
                 date = model.DeliveryDate,
                 referenceType = $"Pengiriman Barang {referenceType}",
+                referenceNo = model.Code,
                 remark = "Pengiriman Barang",
                 type = "OUT",
                 storageId = model.StorageId,
+                storageCode = model.StorageCode,
+                storageName = model.StorageName,
                 items = new List<InventoryDocumentItemViewModel>()
             };
 
@@ -248,11 +262,40 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Ship
                 }
             }
 
-            string dailyBankTransactionUri = "inventory-documents";
+            string uri = "inventory-documents";
 
             var httpClient = (IHttpClientService)_ServiceProvider.GetService(typeof(IHttpClientService));
-            var response = httpClient.PostAsync($"{APIEndpoint.Inventory}{dailyBankTransactionUri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json")).Result;
+            var response = await httpClient.PostAsync($"{APIEndpoint.Inventory}{uri}", new StringContent(JsonConvert.SerializeObject(inventoryDoc).ToString(), Encoding.UTF8, "application/json"));
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<List<ShipmentDocumentPackingReceiptItemModel>> GetShipmentProducts(int productionOrderId, int buyerId)
+        {
+            var shipmentDocumentIds = await _DbSet.Where(w => w.BuyerId.Equals(buyerId)).Select(s => s.Id).ToListAsync();
+            var shipmentDocumentDetailIds = await _DetailDbSet.Where(w => w.ProductionOrderId.Equals(productionOrderId) && shipmentDocumentIds.Contains(w.ShipmentDocumentId)).Select(s => s.Id).ToListAsync();
+            var shipmentDocumentItemIds = await _ItemDbSet.Where(w => shipmentDocumentDetailIds.Contains(w.ShipmentDocumentDetailId)).Select(s => s.Id).ToListAsync();
+
+            return await _PackingReceiptItemDbSet.Where(w => shipmentDocumentItemIds.Contains(w.ShipmentDocumentItemId)).GroupBy(g => g.ProductId).Select(s => new ShipmentDocumentPackingReceiptItemModel()
+            {
+                Active = s.First().Active,
+                ColorType = s.First().ColorType,
+                CreatedAgent = s.First().CreatedAgent,
+                CreatedBy = s.First().CreatedBy,
+                CreatedUtc = s.First().CreatedUtc,
+                DesignCode = s.First().DesignCode,
+                DesignNumber = s.First().DesignNumber,
+                LastModifiedAgent = s.First().LastModifiedAgent,
+                LastModifiedBy = s.First().LastModifiedBy,
+                LastModifiedUtc = s.First().LastModifiedUtc,
+                Length = s.First().Length,
+                ProductCode = s.First().ProductCode,
+                ProductId = s.First().ProductId,
+                ProductName = s.First().ProductName,
+                Quantity = s.Sum(sum => sum.Quantity),
+                UOMId = s.First().UOMId,
+                UOMUnit = s.First().UOMUnit,
+                Weight = s.First().Weight
+            }).ToListAsync();
         }
     }
 }

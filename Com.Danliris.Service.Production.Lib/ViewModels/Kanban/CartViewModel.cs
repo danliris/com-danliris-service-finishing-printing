@@ -5,10 +5,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
 {
     public class CartViewModel : BaseViewModel
     {
+        public string reprocess { get; set; }
+        public bool? IsReprocess { get; set; }
         public string CartNumber { get; set; }
         public string Code { get; set; }
         public double Qty { get; set; }
         public double Pcs { get; set; }
         public UOMIntegrationViewModel Uom { get; set; }
+        public KanbanInstructionViewModel Instruction { get; set; }
     }
 }

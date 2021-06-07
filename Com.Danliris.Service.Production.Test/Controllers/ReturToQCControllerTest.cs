@@ -76,7 +76,23 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         public void GetReportPdf_WithoutException_ReturnOK()
         {
             var mockFacade = new Mock<IReturToQCFacade>();
-            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
+            var model = new ReturToQCModel()
+            {
+                ReturToQCItems = new List<ReturToQCItemModel>()
+                {
+                    new ReturToQCItemModel()
+                    {
+                        ReturToQCItemDetails = new List<ReturToQCItemDetailModel>()
+                        {
+                            new ReturToQCItemDetailModel()
+                            {
+                                ReturToQCItem = new ReturToQCItemModel()
+                            }
+                        }
+                    }
+                }
+            };
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(model);
 
             var mockMapper = new Mock<IMapper>();
 
@@ -124,6 +140,32 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         }
 
         [Fact]
+        public void GetPdfById_Return_NotFound()
+        {
+            var mockFacade = new Mock<IReturToQCFacade>();
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>()))
+                 .ReturnsAsync(() => null);
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            ReturToQCController controller = new ReturToQCController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetPdfById(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response.Result));
+        }
+
+        [Fact]
         public void GetReportExcel_WithoutException_ReturnOK()
         {
             var mockFacade = new Mock<IReturToQCFacade>();
@@ -149,6 +191,84 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             Assert.NotNull(response);
         }
 
+        [Fact]
+        public void GetReportExcel_with_DateFrom_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IReturToQCFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            ReturToQCController controller = new ReturToQCController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now.AddDays(-1), null, null, null, null, null);
+            Assert.NotNull(response);
+        }
+
+
+        [Fact]
+        public void GetReportExcel_with_DateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IReturToQCFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            ReturToQCController controller = new ReturToQCController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(null, DateTime.Now, null, null, null, null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_with_dateTo_and_DateFrom_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IReturToQCFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            ReturToQCController controller = new ReturToQCController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now.AddDays(-1), DateTime.Now, null, null, null, null);
+            Assert.NotNull(response);
+        }
         [Fact]
         public void GetReportExcel_WithException_ReturnError()
         {

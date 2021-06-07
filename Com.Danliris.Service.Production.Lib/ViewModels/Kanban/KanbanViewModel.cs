@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
         public string Grade { get; set; }
         public KanbanInstructionViewModel Instruction { get; set; }
         public bool? IsBadOutput { get; set; }
+        public bool? IsFulfilledOutput { get; set; }
         public bool? IsComplete { get; set; }
         public bool? IsInactive { get; set; }
         public bool? IsReprocess { get; set; }
@@ -42,10 +43,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban
 
                 if (string.IsNullOrWhiteSpace(Cart.CartNumber))
                     yield return new ValidationResult("Nomor Kereta harus diisi", new List<string> { "CartNumber" });
-                if (Cart.Qty <= 0)
-                    yield return new ValidationResult("Panjang harus lebih dari 0", new List<string> { "Qty" });
-                if (Cart.Pcs <= 0)
-                    yield return new ValidationResult("Jumlah PCS harus diisi", new List<string> { "Pcs" });
+                //if (Cart.Qty <= 0)
+                //    yield return new ValidationResult("Panjang harus lebih dari 0", new List<string> { "Qty" });
+                //if (Cart.Pcs <= 0)
+                //    yield return new ValidationResult("Jumlah PCS harus diisi", new List<string> { "Pcs" });
             }
 
             int ErrorCount = 0;

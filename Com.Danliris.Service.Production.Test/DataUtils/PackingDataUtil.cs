@@ -17,6 +17,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.DataUtils
         {
             PackingModel model = new PackingModel
             {
+                DeliveryType = "delivery",
+                FinishedProductType = "finish",
+                Date = DateTimeOffset.UtcNow,
                 PackingDetails = new List<PackingDetailModel>
                 {
                     new PackingDetailModel()

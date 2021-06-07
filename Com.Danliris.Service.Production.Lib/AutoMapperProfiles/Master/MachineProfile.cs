@@ -22,11 +22,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master
             .ForPath(d => d.MachineType.Id, opt => opt.MapFrom(s => s.MachineTypeId))
             .ForPath(d => d.MachineType.Name, opt => opt.MapFrom(s => s.MachineTypeName))
             .ForPath(d => d.MachineType.Code, opt => opt.MapFrom(s => s.MachineTypeCode))
+            .ForPath(d => d.Steps, opt => opt.MapFrom(s => s.MachineSteps))
 
             .ReverseMap();
 
             CreateMap<MachineEventsModel, MachineEventViewModel>().ReverseMap();
-            CreateMap<MachineStepModel, MachineStepViewModel>().ReverseMap();
+            CreateMap<StepModel, StepViewModel>().ReverseMap();
+            CreateMap<MachineStepModel, StepViewModel>().ReverseMap();
         }
     }
 }

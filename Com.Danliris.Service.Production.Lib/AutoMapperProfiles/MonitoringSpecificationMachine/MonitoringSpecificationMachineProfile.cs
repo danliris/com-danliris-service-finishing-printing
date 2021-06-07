@@ -12,12 +12,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Monitor
         public MonitoringSpecificationMachineProfile()
         {
             CreateMap<MonitoringSpecificationMachineModel, MonitoringSpecificationMachineViewModel>()
-            .ForPath(d => d.Machine.Id, opt => opt.MapFrom(s => s.MachineId))
-            .ForPath(d => d.Machine.Name, opt => opt.MapFrom(s => s.MachineName))
-            .ForPath(d => d.ProductionOrder.Id, opt => opt.MapFrom(s => s.ProductionOrderId))
-            .ForPath(d => d.ProductionOrder.OrderNo, opt => opt.MapFrom(s => s.ProductionOrderNo))
-            .ReverseMap();
-            CreateMap<MonitoringSpecificationMachineDetailsModel, MonitoringSpecificationMachineDetailsViewModel>().ReverseMap();
+                .ForPath(dest => dest.DateTimeInput, opt => opt.MapFrom(s => s.DateTimeInput))
+                .ForPath(dest => dest.Machine.Id, opt => opt.MapFrom(s => s.MachineId))
+                .ForPath(dest => dest.Machine.Name, opt => opt.MapFrom(s => s.MachineName))
+                .ForPath(dest => dest.ProductionOrder.Id, opt => opt.MapFrom(s => s.ProductionOrderId))
+                .ForPath(dest => dest.ProductionOrder.OrderNo, opt => opt.MapFrom(s => s.ProductionOrderNo))
+                .ReverseMap();
+
+            CreateMap<MonitoringSpecificationMachineDetailsModel, MonitoringSpecificationMachineDetailsViewModel>()
+                .ForPath(dest => dest.MonitoringSpecificationMachineId, opt => opt.MapFrom(s => s.MonitoringSpecificationMachineId))
+                .ReverseMap();
         }
     }
 }

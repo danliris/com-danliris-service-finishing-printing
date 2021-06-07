@@ -11,6 +11,10 @@ namespace Com.Danliris.Service.Production.Lib.Models.Master.Instruction
         public string Process { get; set; }
         public string ProcessArea { get; set; }
         public int InstructionId { get; set; }
+
+        //Migration Purpose
+        public int ItemIndex { get; set; }
+
         public virtual InstructionModel Instruction { get; set; }
         public ICollection<InstructionStepIndicatorModel> StepIndicators { get; set; }
 

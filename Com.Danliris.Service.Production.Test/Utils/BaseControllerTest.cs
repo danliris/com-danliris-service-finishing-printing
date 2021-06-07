@@ -94,7 +94,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public void Get_WithoutException_ReturnOK()
+        public virtual void Get_WithoutException_ReturnOK()
         {
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new ReadResponse<TModel>(new List<TModel>(), 0, new Dictionary<string, string>(), new List<string>()));
@@ -105,7 +105,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public void Get_ReadThrowException_ReturnInternalServerError()
+        public virtual void Get_ReadThrowException_ReturnInternalServerError()
         {
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Post_WithoutException_ReturnCreated()
+        public virtual async Task Post_WithoutException_ReturnCreated()
         {
             var mocks = GetMocks();
             mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Verifiable();
@@ -134,7 +134,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Post_ThrowServiceValidationExeption_ReturnBadRequest()
+        public virtual async Task Post_ThrowServiceValidationExeption_ReturnBadRequest()
         {
             var mocks = GetMocks();
             mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Throws(GetServiceValidationExeption());
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Post_ThrowException_ReturnInternalServerError()
+        public virtual async Task Post_ThrowException_ReturnInternalServerError()
         {
             var mocks = GetMocks();
             mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Verifiable();
@@ -154,7 +154,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCode);
         }
 
-        private async Task<int> GetStatusCodeGetById((Mock<IIdentityService> IdentityService, Mock<IValidateService> ValidateService, Mock<IFacade> Facade, Mock<IMapper> Mapper) mocks)
+        protected async Task<int> GetStatusCodeGetById((Mock<IIdentityService> IdentityService, Mock<IValidateService> ValidateService, Mock<IFacade> Facade, Mock<IMapper> Mapper) mocks)
         {
             TController controller = GetController(mocks);
             IActionResult response = await controller.GetById(1);
@@ -163,7 +163,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task GetById_NotNullModel_ReturnOK()
+        public virtual async Task GetById_NotNullModel_ReturnOK()
         {
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(Model);
@@ -173,7 +173,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task GetById_NullModel_ReturnNotFound()
+        public virtual async Task GetById_NullModel_ReturnNotFound()
         {
             var mocks = GetMocks();
             mocks.Mapper.Setup(f => f.Map<TViewModel>(It.IsAny<TModel>())).Returns(ViewModel);
@@ -184,7 +184,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task GetById_ThrowException_ReturnInternalServerError()
+        public virtual async Task GetById_ThrowException_ReturnInternalServerError()
         {
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ThrowsAsync(new Exception());
@@ -202,7 +202,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Put_InvalidId_ReturnBadRequest()
+        public virtual async Task Put_InvalidId_ReturnBadRequest()
         {
             var mocks = GetMocks();
             mocks.ValidateService.Setup(vs => vs.Validate(It.IsAny<TViewModel>())).Verifiable();
@@ -217,7 +217,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Put_ValidId_ReturnNoContent()
+        public virtual async Task Put_ValidId_ReturnNoContent()
         {
             var mocks = GetMocks();
             mocks.ValidateService.Setup(vs => vs.Validate(It.IsAny<TViewModel>())).Verifiable();
@@ -234,7 +234,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Put_ThrowServiceValidationExeption_ReturnBadRequest()
+        public virtual async Task Put_ThrowServiceValidationExeption_ReturnBadRequest()
         {
             var mocks = GetMocks();
             mocks.ValidateService.Setup(s => s.Validate(It.IsAny<TViewModel>())).Throws(GetServiceValidationExeption());
@@ -244,7 +244,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Put_ThrowException_ReturnInternalServerError()
+        public virtual async Task Put_ThrowException_ReturnInternalServerError()
         {
             var mocks = GetMocks();
             mocks.ValidateService.Setup(vs => vs.Validate(It.IsAny<TViewModel>())).Verifiable();
@@ -268,7 +268,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Delete_WithoutException_ReturnNoContent()
+        public virtual async Task Delete_WithoutException_ReturnNoContent()
         {
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.DeleteAsync(It.IsAny<int>())).ReturnsAsync(1);
@@ -278,7 +278,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils
         }
 
         [Fact]
-        public async Task Delete_ThrowException_ReturnInternalStatusError()
+        public virtual async Task Delete_ThrowException_ReturnInternalStatusError()
         {
             var mocks = GetMocks();
             mocks.Facade.Setup(f => f.DeleteAsync(It.IsAny<int>())).ThrowsAsync(new Exception());

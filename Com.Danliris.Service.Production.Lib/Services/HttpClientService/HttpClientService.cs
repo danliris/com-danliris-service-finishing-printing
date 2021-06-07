@@ -10,9 +10,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService
     {
         private HttpClient _client = new HttpClient();
 
-        public HttpClientService(IdentityService identityService)
+        public HttpClientService(IIdentityService identityService)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, identityService.Token);
+            _client.DefaultRequestHeaders.Add("x-timezone-offset", identityService.TimezoneOffset.ToString());
         }
 
         public async Task<HttpResponseMessage> PutAsync(string url, HttpContent content)

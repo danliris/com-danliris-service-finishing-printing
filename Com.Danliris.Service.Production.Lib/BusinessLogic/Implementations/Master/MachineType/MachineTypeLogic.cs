@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             DbSet.Update(model);
         }
 
-        public override async void UpdateModelAsync(int id, MachineTypeModel model)
+        public override async Task UpdateModelAsync(int id, MachineTypeModel model)
         {
             if (model.Indicators != null)
             {
@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                         await MachineTypeIndicatorsLogic.DeleteModel(itemId);
                     else
                     {
-                       MachineTypeIndicatorsLogic.UpdateModelAsync(itemId, data);
+                       await MachineTypeIndicatorsLogic.UpdateModelAsync(itemId, data);
                     }
 
                     foreach (MachineTypeIndicatorsModel item in model.Indicators)

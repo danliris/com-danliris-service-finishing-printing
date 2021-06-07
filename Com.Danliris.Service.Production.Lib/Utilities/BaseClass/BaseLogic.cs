@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseClass
     public abstract class BaseLogic<TModel> : IBaseLogic<TModel>
         where TModel : StandardEntity, IValidatableObject
     {
-        private const string UserAgent = "production-service";
+        protected const string UserAgent = "production-service";
         protected DbSet<TModel> DbSet;
         protected IIdentityService IdentityService;
 
@@ -33,10 +33,12 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseClass
             return DbSet.FirstOrDefaultAsync(d => d.Id.Equals(id) && d.IsDeleted.Equals(false));
         }
 
-        public virtual void UpdateModelAsync(int id, TModel model)
+        public virtual async Task UpdateModelAsync(int id, TModel model)
         {
+
             EntityExtension.FlagForUpdate(model, IdentityService.Username, UserAgent);
             DbSet.Update(model);
+            await Task.CompletedTask;
         }
 
         public virtual async Task DeleteModel(int id)

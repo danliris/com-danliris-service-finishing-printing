@@ -6,7 +6,7 @@ namespace Com.Danliris.Service.Production.Lib.Utilities.BaseInterface
     {
         void CreateModel(TModel model);
         Task<TModel> ReadModelById(int id);
-        void UpdateModelAsync(int id, TModel model);
+        Task UpdateModelAsync(int id, TModel model);
         Task DeleteModel(int id);
     }
 }

@@ -1,12 +1,21 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementations.Master.Machine;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Master.MachineType;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils.MasterDataUtils;
 using Com.Danliris.Service.Finishing.Printing.Test.Utils;
 using Com.Danliris.Service.Production.Lib;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
+using Com.Danliris.Service.Production.Lib.ViewModels.Master.Step;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
 {
@@ -32,10 +41,145 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Facades.MasterFacadeTests
             MachineStepLogic machineStepLogic = new MachineStepLogic(identityService, dbContext);
 
             serviceProviderMock
+               .Setup(x => x.GetService(typeof(MachineEventLogic)))
+               .Returns(machineEventLogic);
+
+            serviceProviderMock
                 .Setup(x => x.GetService(typeof(MachineLogic)))
                 .Returns(new MachineLogic(machineEventLogic, machineStepLogic, identityService, dbContext));
 
             return serviceProviderMock;
+        }
+
+
+
+        [Fact]
+        public virtual async void GetDyeingPrinting_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MachineFacade facade = Activator.CreateInstance(typeof(MachineFacade), serviceProvider, dbContext) as MachineFacade;
+
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            var Response = facade.GetDyeingPrintingMachine(1, 25, "{}", new List<string>(), "", "{}");
+
+            Assert.NotEmpty(Response.Data);
+        }
+
+        [Fact]
+        public  async void UpdateAsync_Success()
+        {
+            var dbContext = DbContext(GetCurrentMethod());
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+            MachineFacade facade = Activator.CreateInstance(typeof(MachineFacade), serviceProvider, dbContext) as MachineFacade;
+           
+            var data = await DataUtil(facade, dbContext).GetTestData();
+
+            int Response =await  facade.UpdateAsync(data.Id, data);
+
+            Assert.NotEqual(0,Response);
+        }
+
+        [Fact]
+        public void Validate_ViewModel()
+        {
+            MachineViewModel vm = new MachineViewModel()
+            {
+                Code = "code",
+                Condition = "condition",
+                Electric = 1,
+                LPG = 1,
+                MachineEvents = new List<MachineEventViewModel>()
+                {
+                    new MachineEventViewModel()
+                    {
+                        Name = "name",
+                        No = "no"
+                    }
+                },
+                MachineType = new MachineTypeViewModel()
+                {
+                    Indicators = new List<MachineTypeIndicatorsViewModel>()
+                    {
+                        new MachineTypeIndicatorsViewModel()
+                        {
+                            DataType = "datatype",
+                            DefaultValue = "default",
+                            Indicator = "indicatpr",
+                            Uom = "uom"
+                            
+                        }
+                        
+                    },
+                    Description = "description",
+                    Name = "name"
+                },
+                Manufacture = "manufacture",
+                MonthlyCapacity = 1,
+                Name = "name",
+                Process = "process",
+                Solar = 1,
+                Steam = 1,
+                Steps = new List<StepViewModel>()
+                {
+                    new StepViewModel()
+                    {
+                        Alias = "alias",
+                        Process = "process",
+                        ProcessArea = "area",
+                        StepIndicators = new List<StepIndicatorViewModel>()
+                        {
+                            new StepIndicatorViewModel()
+                            {
+                                Name = "name",
+                                Uom = "uom",
+                                Value = "value"
+                            }
+                        }
+                    }
+                },
+                Unit = new UnitViewModel()
+                {
+                    Name = "name",
+                    Division = new DivisionViewModel()
+                    {
+                        Name = "name"
+                    }
+                },
+                Water = 1,
+                Year = 2019
+            };
+
+            Assert.Empty(vm.Validate(null));
+
+            MachineViewModel vm2 = new MachineViewModel();
+            Assert.NotEmpty(vm2.Validate(null));
+        }
+
+        [Fact]
+        public void validate_Throws_NotImplementedException()
+        {
+            MachineTypeIndicatorsViewModel viewModel = new MachineTypeIndicatorsViewModel();
+            Assert.Throws<NotImplementedException>(() => viewModel.Validate(null));
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MachineProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            MachineViewModel vm = new MachineViewModel { Id = 1 };
+            MachineModel model = mapper.Map<MachineModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
@@ -31,6 +32,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var mockIdentityService = new Mock<IIdentityService>();
 
             var mockValidateService = new Mock<IValidateService>();
+            FabricQualityControlViewModel vm = new FabricQualityControlViewModel()
+            {
+                DateIm = DateTimeOffset.UtcNow,
+                FabricGradeTests = new List<FabricGradeTestViewModel>()
+                {
+                    new FabricGradeTestViewModel()
+                }
+            };
+            mockMapper.Setup(x => x.Map<FabricQualityControlViewModel>(It.IsAny<FabricQualityControlModel>()))
+                .Returns(vm);
 
             FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
             {
@@ -43,6 +54,77 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var response = controller.GetPDF(It.IsAny<int>());
             Assert.NotNull(response.Result);
+        }
+
+        [Fact]
+        public void GetPDF_Return_Not_Found()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(()=>null);
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+            FabricQualityControlViewModel vm = new FabricQualityControlViewModel()
+            {
+                DateIm = DateTimeOffset.UtcNow,
+                FabricGradeTests = new List<FabricGradeTestViewModel>()
+                {
+                    new FabricGradeTestViewModel()
+                }
+            };
+            mockMapper.Setup(x => x.Map<FabricQualityControlViewModel>(It.IsAny<FabricQualityControlModel>()))
+                .Returns(vm);
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetPDF(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response.Result));
+        }
+
+        [Fact]
+        public void GetPDF_Return_BadRequest()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(f => f.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(() => null);
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+            FabricQualityControlViewModel vm = new FabricQualityControlViewModel()
+            {
+                DateIm = DateTimeOffset.UtcNow,
+                FabricGradeTests = new List<FabricGradeTestViewModel>()
+                {
+                    new FabricGradeTestViewModel()
+                }
+            };
+            mockMapper.Setup(x => x.Map<FabricQualityControlViewModel>(It.IsAny<FabricQualityControlModel>()))
+                .Returns(vm);
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+            controller.ModelState.AddModelError("key", "value");
+
+            var response = controller.GetPDF(It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response.Result));
         }
 
         [Fact]
@@ -150,6 +232,84 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
         }
 
         [Fact]
+        public void GetReportExcel_WithDateFrom_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now, null,null,-1, null,null,null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_dateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(null, DateTime.Now, null, -1, null, null, null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_WithDateFrom_and_dateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(DateTime.Now, DateTime.Now, null, -1, null, null, null);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public void GetReportExcel_WithException_ReturnError()
         {
             var mockFacade = new Mock<IFabricQualityControlFacade>();
@@ -172,6 +332,57 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
 
             var response = controller.GetXls(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public async Task GetForSPP_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GetForSPP(It.IsAny<string>()))
+                .ReturnsAsync(new List<FabricQCGradeTestsViewModel>());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+
+            var response = await controller.GetForSPP(It.IsAny<string>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task GetForSPP_WithException_ThrowError()
+        {
+            var mockFacade = new Mock<IFabricQualityControlFacade>();
+            mockFacade.Setup(x => x.GetForSPP(It.IsAny<string>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            FabricQualityControlController controller = new FabricQualityControlController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+
+            var response = await controller.GetForSPP(It.IsAny<string>());
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
     }

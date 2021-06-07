@@ -1,4 +1,7 @@
-﻿using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+﻿using AutoMapper;
+using Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.ShipmentDocument;
+using Com.Danliris.Service.Finishing.Printing.Lib.Models.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.ShipmentDocument;
 using Com.Danliris.Service.Finishing.Printing.Test.DataUtils;
@@ -14,6 +17,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Services
@@ -22,7 +26,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
     {
         private const string ENTITY = "ShipmentDocument";
         //private PurchasingDocumentAcceptanceDataUtil pdaDataUtil;
-        private readonly IIdentityService identityService;
+        
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public string GetCurrentMethod()
@@ -67,7 +71,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
         }
 
         [Fact]
-        public async void Should_Success_Get_Data()
+        public async Task Should_Success_Get_Data()
         {
             var service = new ShipmentDocumentService(GetServiceProvider().Object, _dbContext(GetCurrentMethod()));
             var data = await _dataUtil(service).GetTestData();
@@ -76,7 +80,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
         }
 
         [Fact]
-        public async void Should_Success_Get_Data_By_Id()
+        public async Task Should_Success_Get_Data_By_Id()
         {
             var service = new ShipmentDocumentService(GetServiceProvider().Object, _dbContext(GetCurrentMethod()));
             var model = await _dataUtil(service).GetTestData();
@@ -85,7 +89,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
         }
 
         [Fact]
-        public async void Should_Success_Create_Data()
+        public async Task Should_Success_Create_Data()
         {
             var service = new ShipmentDocumentService(GetServiceProvider().Object, _dbContext(GetCurrentMethod()));
             var model = _dataUtil(service).GetNewData();
@@ -111,7 +115,18 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
         }
 
         [Fact]
-        public async void Should_Success_Update_Data()
+        public void Should_Success_Validate_DeliveryDate()
+        {
+            var vm = new ShipmentDocumentViewModel()
+            {
+                DeliveryDate = DateTimeOffset.UtcNow.AddDays(1),
+            };
+
+            Assert.True(vm.Validate(null).Count() > 0);
+        }
+
+        [Fact]
+        public async Task Should_Success_Update_Data()
         {
             var service = new ShipmentDocumentService(GetServiceProvider().Object, _dbContext(GetCurrentMethod()));
             var model = await _dataUtil(service).GetTestData();
@@ -122,7 +137,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
         }
 
         [Fact]
-        public async void Should_Success_Delete_Data()
+        public async Task Should_Success_Delete_Data()
         {
             var service = new ShipmentDocumentService(GetServiceProvider().Object, _dbContext(GetCurrentMethod()));
             var model = await _dataUtil(service).GetTestData();
@@ -130,6 +145,33 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services
 
             var Response = await service.DeleteAsync(newModel.Id);
             Assert.NotEqual(0, Response);
+        }
+
+        [Fact]
+        public async Task Should_Success_Get_Shipment_Product()
+        {
+            var service = new ShipmentDocumentService(GetServiceProvider().Object, _dbContext(GetCurrentMethod()));
+            var model = await _dataUtil(service).GetTestData();
+            var createdModel = await service.ReadByIdAsync(model.Id);
+
+            var result = await service.GetShipmentProducts(createdModel.Details.FirstOrDefault().ProductionOrderId, createdModel.BuyerId);
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Mapping_With_AutoMapper_Profiles()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ShipmentDocumentProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            ShipmentDocumentViewModel vm = new ShipmentDocumentViewModel { Id = 1 };
+            ShipmentDocumentModel model = mapper.Map<ShipmentDocumentModel>(vm);
+
+            Assert.Equal(vm.Id, model.Id);
+
         }
     }
 }

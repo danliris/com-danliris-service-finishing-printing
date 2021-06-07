@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.Danliris.Service.Finishing.Printing.WebApi", "Com.Danliris.Service.Production.WebApi\Com.Danliris.Service.Finishing.Printing.WebApi.csproj", "{A00146D3-8413-4884-81C7-0153C1E83762}"
 EndProject
