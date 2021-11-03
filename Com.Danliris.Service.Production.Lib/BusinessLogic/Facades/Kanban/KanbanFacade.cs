@@ -167,6 +167,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
                 step.StepIndex = index;
                 index++;
             }
+            model.ProductionOrderHandlingStandard = model.ProductionOrderHandlingStandard.Substring(0, 100);
             KanbanLogic.CreateModel(model);
             return await DbContext.SaveChangesAsync();
         }
