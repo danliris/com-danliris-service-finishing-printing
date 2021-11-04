@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ModelConfigs.Kanban
             builder.Property(b => b.Code).HasMaxLength(100);
             builder.Property(b => b.FinishWidth).HasMaxLength(100);
             builder.Property(b => b.Grade).HasMaxLength(100);
-            builder.Property(b => b.ProductionOrderHandlingStandard).HasMaxLength(100);
+            builder.Property(b => b.ProductionOrderHandlingStandard).HasMaxLength(500);
             builder.Property(b => b.ProductionOrderMaterialCode).HasMaxLength(100);
             builder.Property(b => b.ProductionOrderMaterialConstructionCode).HasMaxLength(100);
             builder.Property(b => b.ProductionOrderMaterialConstructionName).HasMaxLength(500);
