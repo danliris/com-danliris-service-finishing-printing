@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             TwoColumnHeaderFooter pageEventHelper = new TwoColumnHeaderFooter(DOCUMENTISO, Title, DocumentInfo);
             var height = pageEventHelper.TableHeight;
-            Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, 50 + height, 15);
+            Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, 50 + height, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             writer.PageEvent = pageEventHelper;
@@ -781,6 +781,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 {
                     WidthPercentage = 100
                 };
+
+                float rowHeight = 16f;
                 table.KeepTogether = true;
                 float[] widths = new float[] { 2f, 1f, 1f, 1f, 1f, 1f, 1f };
                 table.SetWidths(widths);
@@ -788,50 +790,71 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 {
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
+                    MinimumHeight = rowHeight
                 };
 
                 PdfPCell cellColor = new PdfPCell()
                 {
-                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    HorizontalAlignment = Element.ALIGN_LEFT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    Colspan = 7
+                    Colspan = 7,
+                    //MinimumHeight = rowHeight,
+                };
+
+                PdfPCell cellColorName = new PdfPCell()
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    
+                    //MinimumHeight = rowHeight,
                 };
 
                 PdfPCell cellSubHeader = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    Rowspan = 2
+                    Rowspan = 2,
+                    //MinimumHeight = rowHeight,
+                };
+
+                PdfPCell cellSubHeader2 = new PdfPCell()
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    
+                    //MinimumHeight = rowHeight,
                 };
 
                 PdfPCell cellDate = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    MinimumHeight = 15f,
+                    MinimumHeight = rowHeight,
                 };
 
                 PdfPCell cellLeft = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_LEFT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
+                    MinimumHeight = rowHeight,
                 };
                 PdfPCell cellRight = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
+                    MinimumHeight = rowHeight,
                 };
 
                 PdfPCell cellSample = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_TOP,
-                    FixedHeight = 30
+                    FixedHeight = 45
 
                 };
 
-                cellCenter.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellColorName.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
+                table.AddCell(cellColorName);
 
                 cellColor.Phrase = new Phrase(item.ColorCode, TEXT_FONT_BOLD);
                 table.AddCell(cellColor);
@@ -839,13 +862,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 cellSubHeader.Phrase = new Phrase("Dyestuff & Chemical", TEXT_FONT_BOLD);
                 table.AddCell(cellSubHeader);
 
-                cellCenter.Phrase = new Phrase("Resep", TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellSubHeader2.Phrase = new Phrase("Resep", TEXT_FONT_BOLD);
+                table.AddCell(cellSubHeader2);
 
                 foreach (var adjsText in Adjss)
                 {
-                    cellCenter.Phrase = new Phrase(adjsText, TEXT_FONT_BOLD);
-                    table.AddCell(cellCenter);
+                    cellSubHeader2.Phrase = new Phrase(adjsText, TEXT_FONT_BOLD);
+                    table.AddCell(cellSubHeader2);
                 }
 
                 cellSubHeader.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
@@ -1244,7 +1267,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             {
                 HorizontalAlignment = Element.ALIGN_RIGHT,
                 VerticalAlignment = Element.ALIGN_TOP,
-                MinimumHeight = 200f 
+                MinimumHeight = 175f 
 
                 };
 
@@ -1364,7 +1387,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             {
                 HorizontalAlignment = Element.ALIGN_RIGHT,
                 VerticalAlignment = Element.ALIGN_TOP,
-                MinimumHeight = 200f,
+                MinimumHeight = 175f,
                 //Rowspan = 2
 
             };
