@@ -1007,6 +1007,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             {
                 WidthPercentage = 100
             };
+            float rowHeight = 16f;
             List<string> Adjss = new List<string>() { "Adjs 1", "Adjs 2", "Adjs 3", "Adjs 4" };
             foreach (var item in model.DyestuffChemicalUsageReceiptItems)
             {
@@ -1021,6 +1022,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 {
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
+                    MinimumHeight = rowHeight,
                 };
 
                 PdfPCell cellColor = new PdfPCell()
@@ -1037,33 +1039,42 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     Rowspan = 2
                 };
 
+                PdfPCell cellSubHeader2 = new PdfPCell()
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    
+                };
+
                 PdfPCell cellDate = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    MinimumHeight = 15f,
+                    MinimumHeight = rowHeight,
                 };
 
                 PdfPCell cellLeft = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_LEFT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
+                    MinimumHeight = rowHeight,
                 };
                 PdfPCell cellRight = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
+                    MinimumHeight = rowHeight,
                 };
 
                 PdfPCell cellSample = new PdfPCell()
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_TOP,
-
+                    //MinimumHeight = rowHeight,
                 };
 
-                cellCenter.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellSubHeader2.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
+                table.AddCell(cellSubHeader2);
 
                 cellColor.Phrase = new Phrase(item.ColorCode, TEXT_FONT_BOLD);
                 table.AddCell(cellColor);
@@ -1071,13 +1082,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 cellSubHeader.Phrase = new Phrase("Dyestuff & Chemical", TEXT_FONT_BOLD);
                 table.AddCell(cellSubHeader);
 
-                cellCenter.Phrase = new Phrase("Resep", TEXT_FONT_BOLD);
-                table.AddCell(cellCenter);
+                cellSubHeader2.Phrase = new Phrase("Resep", TEXT_FONT_BOLD);
+                table.AddCell(cellSubHeader2);
 
                 foreach (var adjsText in Adjss)
                 {
-                    cellCenter.Phrase = new Phrase(adjsText, TEXT_FONT_BOLD);
-                    table.AddCell(cellCenter);
+                    cellSubHeader2.Phrase = new Phrase(adjsText, TEXT_FONT_BOLD);
+                    table.AddCell(cellSubHeader2);
                 }
 
                 cellSubHeader.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
@@ -1267,7 +1278,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             {
                 HorizontalAlignment = Element.ALIGN_RIGHT,
                 VerticalAlignment = Element.ALIGN_TOP,
-                MinimumHeight = 175f 
+                MinimumHeight = 155f 
 
                 };
 
@@ -1387,7 +1398,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             {
                 HorizontalAlignment = Element.ALIGN_RIGHT,
                 VerticalAlignment = Element.ALIGN_TOP,
-                MinimumHeight = 175f,
+                MinimumHeight = 155f,
                 //Rowspan = 2
 
             };
