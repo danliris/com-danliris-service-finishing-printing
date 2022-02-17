@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             TwoColumnHeaderFooter pageEventHelper = new TwoColumnHeaderFooter(DOCUMENTISO, Title, DocumentInfo);
             var height = pageEventHelper.TableHeight;
-            Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, 50 + height, MARGIN);
+            Document document = new Document(PageSize.Flsa, MARGIN, MARGIN, 50 + height, 15);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             writer.PageEvent = pageEventHelper;
@@ -792,7 +792,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                 PdfPCell cellColor = new PdfPCell()
                 {
-                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
                     Colspan = 7
                 };
@@ -826,7 +826,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_TOP,
-                    FixedHeight = 55
+                    FixedHeight = 30
 
                 };
 
