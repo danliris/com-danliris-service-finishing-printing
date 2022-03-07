@@ -849,7 +849,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 {
                     HorizontalAlignment = Element.ALIGN_RIGHT,
                     VerticalAlignment = Element.ALIGN_TOP,
-                    FixedHeight = 45
+                    FixedHeight = 38
 
                 };
 
@@ -974,8 +974,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 //table.AddCell(cellLeft);
 
 
-                cellSample.Phrase = new Phrase("Pembuatan", TEXT_FONT);
-                table.AddCell(cellSample);
+                cellRight.Phrase = new Phrase("Pembuatan", TEXT_FONT);
+                table.AddCell(cellRight);
+
+                cellRight.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellRight);
+
+                cellRight.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellRight);
+
+                cellRight.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellRight);
+
+                cellRight.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellRight);
+
+                cellRight.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellRight);
+
+                cellRight.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellRight);
+
+
 
                 cellSample.Phrase = new Phrase("", TEXT_FONT);
                 table.AddCell(cellSample);
@@ -994,6 +1014,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                 cellSample.Phrase = new Phrase("", TEXT_FONT);
                 table.AddCell(cellSample);
+
+                cellSample.Phrase = new Phrase("", TEXT_FONT);
+                table.AddCell(cellSample);
+
                 items.Add(table);
             }
 
