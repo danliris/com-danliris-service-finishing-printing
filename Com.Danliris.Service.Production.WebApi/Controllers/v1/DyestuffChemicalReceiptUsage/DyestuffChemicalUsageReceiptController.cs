@@ -40,13 +40,25 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Dyestuff
                 }
                 else
                 {
-                    int timeoffsset = Convert.ToInt32(timezone);
-                    var pdfTemplate = new DyestuffChemicalUsageReceiptPdfTemplate(model, timeoffsset);
-                    var stream = pdfTemplate.GeneratePdfTemplate();
-                    return new FileStreamResult(stream, "application/pdf")
-                    {
-                        FileDownloadName = string.Format("{0} - {1}.pdf", model.ProductionOrderOrderNo, model.StrikeOffCode)
-                    };
+                    if (model.StrikeOffType == "GROUND PRINTING") {
+                        int timeoffsset = Convert.ToInt32(timezone);
+                        var pdfTemplate = new DyestuffChemicalUsageReceiptPdfTemplate(model, timeoffsset);
+                        var stream = pdfTemplate.GeneratePdfTemplateGround();
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = string.Format("{0} - {1}.pdf", model.ProductionOrderOrderNo, model.StrikeOffCode)
+                        };
+                    }else{
+                        int timeoffsset = Convert.ToInt32(timezone);
+                        var pdfTemplate = new DyestuffChemicalUsageReceiptPdfTemplate(model, timeoffsset);
+                        var stream = pdfTemplate.GeneratePdfTemplate();
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = string.Format("{0} - {1}.pdf", model.ProductionOrderOrderNo, model.StrikeOffCode)
+                        };
+
+                    }
+                    
                 }
             }
             catch (Exception e)
