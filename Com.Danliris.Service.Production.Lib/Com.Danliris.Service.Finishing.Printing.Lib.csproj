@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
     <PackageReference Include="MlkPwgen" Version="0.3.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.11" />
   </ItemGroup>
 
