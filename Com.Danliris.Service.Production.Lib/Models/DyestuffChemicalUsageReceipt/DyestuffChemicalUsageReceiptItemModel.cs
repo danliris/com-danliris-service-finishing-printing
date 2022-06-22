@@ -27,6 +27,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
 
         public DateTimeOffset? Adjs4Date { get; set; }
 
+        public decimal TotalRealizationQty { get; set; }
+
         public ICollection<DyestuffChemicalUsageReceiptItemDetailModel> DyestuffChemicalUsageReceiptItemDetails { get; set; }
 
         public int DyestuffChemicalUsageReceiptId { get; set; }
