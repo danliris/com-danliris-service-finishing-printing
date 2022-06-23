@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.DyestuffChemica
 
         public DateTimeOffset Date { get; set; }
 
+        public decimal TotalScreen { get; set; }
+
         public ICollection<DyestuffChemicalUsageReceiptItemViewModel> UsageReceiptItems { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

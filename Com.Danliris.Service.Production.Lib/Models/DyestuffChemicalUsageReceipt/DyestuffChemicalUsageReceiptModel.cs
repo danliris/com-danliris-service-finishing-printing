@@ -47,6 +47,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
         [MaxLength(128)]
         public string RepeatedProductionOrderNo { get; set; }
 
+        public decimal TotalScreen { get; set; }
+
         public ICollection<DyestuffChemicalUsageReceiptItemModel> DyestuffChemicalUsageReceiptItems { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
