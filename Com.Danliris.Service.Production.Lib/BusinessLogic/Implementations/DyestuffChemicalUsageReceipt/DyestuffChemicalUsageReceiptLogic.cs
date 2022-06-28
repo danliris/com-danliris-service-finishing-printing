@@ -59,6 +59,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
             dbModel.ProductionOrderMaterialId = model.ProductionOrderMaterialId;
             dbModel.ProductionOrderMaterialName = model.ProductionOrderMaterialName;
             dbModel.ProductionOrderMaterialWidth = model.ProductionOrderMaterialWidth;
+            dbModel.TotalScreen = model.TotalScreen;
             dbModel.StrikeOffId = model.StrikeOffId;
             dbModel.StrikeOffCode = model.StrikeOffCode;
             dbModel.StrikeOffType = model.StrikeOffType;
@@ -79,6 +80,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 dbItem.Adjs2Date = item.Adjs2Date;
                 dbItem.Adjs3Date = item.Adjs3Date;
                 dbItem.Adjs4Date = item.Adjs4Date;
+                dbItem.TotalRealizationQty = item.TotalRealizationQty;
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
 
                 var addedDetails = item.DyestuffChemicalUsageReceiptItemDetails.Where(x => !dbItem.DyestuffChemicalUsageReceiptItemDetails.Any(y => y.Id == x.Id)).ToList();
