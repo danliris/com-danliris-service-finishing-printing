@@ -114,5 +114,66 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Dyestuff
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
+        [HttpGet("reports")]
+        public IActionResult Get(string productionOrderNo, string strikeOffCode, DateTime? dateFrom, DateTime? dateTo, int page, int size, string Order = "{}")
+        {
+            int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+            string accept = Request.Headers["Accept"];
+
+            try
+            {
+                var data = Facade.GetReport(productionOrderNo, strikeOffCode, dateFrom, dateTo, page, size, Order, offset);
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data.Item1,
+                    info = new { total = data.Item2 },
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+
+        }
+
+        [HttpGet("reports/downloads/xls")]
+        public IActionResult GetXls(string productionOrderNo, string strikeOffCode, DateTime? dateFrom, DateTime? dateTo, int offset)
+        {
+            try
+            {
+                byte[] xlsInBytes;
+                int offSet = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var xls = Facade.GenerateExcel(productionOrderNo, strikeOffCode, dateFrom, dateTo, offSet);
+
+                string filename = "";
+                if (dateFrom == null && dateTo == null)
+                    filename = string.Format("Laporan Resep Pemakaian Dyestuff & Chemical");
+                else if (dateFrom != null && dateTo == null)
+                    filename = string.Format("Laporan Resep Pemakaian Dyestuff & Chemical", dateFrom.Value.ToString("dd/MM/yyyy"));
+                else if (dateFrom == null && dateTo != null)
+                    filename = string.Format("Laporan Resep Pemakaian Dyestuff & Chemical", dateTo.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                else
+                    filename = string.Format("Laporan Resep Pemakaian Dyestuff & Chemical", dateFrom.GetValueOrDefault().ToString("dd/MM/yyyy"), dateTo.Value.ToString("dd/MM/yyyy"));
+                xlsInBytes = xls.ToArray();
+
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                  new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                  .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
     }
 }
