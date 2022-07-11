@@ -16,7 +16,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 {
-    public class DyestuffChemicalUsageReceiptControllerTest : BaseControllerTest<DyestuffChemicalUsageReceiptReportController, DyestuffChemicalUsageReceiptModel, DyestuffChemicalUsageReceiptViewModel, IDyestuffChemicalUsageReceiptFacade>
+    public class DyestuffChemicalUsageReceiptControllerTest : BaseControllerTest<DyestuffChemicalUsageReceiptController, DyestuffChemicalUsageReceiptModel, DyestuffChemicalUsageReceiptViewModel, IDyestuffChemicalUsageReceiptFacade>
     {
         [Fact]
         public async Task GetReportPdf_WithoutException_ReturnOK()
