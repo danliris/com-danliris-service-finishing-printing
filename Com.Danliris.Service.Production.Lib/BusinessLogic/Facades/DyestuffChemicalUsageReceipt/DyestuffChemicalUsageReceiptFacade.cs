@@ -100,7 +100,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dyes
         public IQueryable<DyestuffChemicalUsageReceiptReportViewModel> GetReportQuery(string productionOrderNo, string strikeOffCode, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
-            DateTime DateTo = dateTo == null ? new DateTime(1970, 1, 1) : (DateTime)dateTo;
+            DateTime DateTo = dateTo == null ? new DateTime(2100, 1, 1) : (DateTime)dateTo;
 
             var QueryReport = (from a in DbContext.DyestuffChemicalUsageReceipts
                                join b in DbContext.DyestuffChemicalUsageReceiptItems on a.Id equals b.DyestuffChemicalUsageReceiptId
@@ -158,7 +158,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Dyes
             var data = GetReportQuery(productionOrderNo, strikeOffCode, dateFrom, dateTo, offset);
 
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
-            DateTime DateTo = dateTo == null ? new DateTime(1970, 1, 1) : (DateTime)dateTo;
+            DateTime DateTo = dateTo == null ? new DateTime(2100, 1, 1) : (DateTime)dateTo;
 
             DataTable dt = new DataTable();
             dt.Columns.Add(new DataColumn() { ColumnName = "User", DataType = typeof(string) });
