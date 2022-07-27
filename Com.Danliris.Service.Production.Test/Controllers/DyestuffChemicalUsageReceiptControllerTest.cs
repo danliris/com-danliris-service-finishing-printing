@@ -6,9 +6,14 @@ using Com.Danliris.Service.Finishing.Printing.Test.Controller.Utils;
 using Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.DyestuffChemicalReceiptUsage;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Services.ValidateService;
+using Com.Danliris.Service.Production.Lib.Utilities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +21,182 @@ using Xunit;
 
 namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 {
-    public class DyestuffChemicalUsageReceiptControllerTest : BaseControllerTest<DyestuffChemicalUsageReceiptReportController, DyestuffChemicalUsageReceiptModel, DyestuffChemicalUsageReceiptViewModel, IDyestuffChemicalUsageReceiptFacade>
+    public class DyestuffChemicalUsageReceiptControllerTest : BaseControllerTest<DyestuffChemicalUsageReceiptController, DyestuffChemicalUsageReceiptModel, DyestuffChemicalUsageReceiptViewModel, IDyestuffChemicalUsageReceiptFacade>
     {
+        [Fact]
+        public void GetReport_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(f => f.GetReport(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(new Tuple<List<DyestuffChemicalUsageReceiptReportViewModel>, int>(new List<DyestuffChemicalUsageReceiptReportViewModel>(), 0));
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            var controller = GetController((mockIdentityService, mockValidateService, mockFacade, mockMapper));
+            var response = controller.Get(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>());
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetReport_WithException_ReturnError()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(x => x.GetReport(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DyestuffChemicalUsageReceiptController controller = new DyestuffChemicalUsageReceiptController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.Get(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetReportExcel_WithoutException_ReturnOK()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DyestuffChemicalUsageReceiptController controller = new DyestuffChemicalUsageReceiptController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>());
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_WithDateFrom_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DyestuffChemicalUsageReceiptController controller = new DyestuffChemicalUsageReceiptController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(null, null, DateTime.Now, DateTime.Now, -1);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_dateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DyestuffChemicalUsageReceiptController controller = new DyestuffChemicalUsageReceiptController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(null, null, DateTime.Now, null, -1);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_WithDateFrom_and_dateTo_NotNull_ReturnOK()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DyestuffChemicalUsageReceiptController controller = new DyestuffChemicalUsageReceiptController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(null, null, DateTime.Now, DateTime.Now, -1);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetReportExcel_WithException_ReturnError()
+        {
+            var mockFacade = new Mock<IDyestuffChemicalUsageReceiptFacade>();
+            mockFacade.Setup(x => x.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var mockMapper = new Mock<IMapper>();
+
+            var mockIdentityService = new Mock<IIdentityService>();
+
+            var mockValidateService = new Mock<IValidateService>();
+
+            DyestuffChemicalUsageReceiptController controller = new DyestuffChemicalUsageReceiptController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = $"{It.IsAny<int>()}";
+
+            var response = controller.GetXls(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>());
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
         [Fact]
         public async Task GetReportPdf_WithoutException_ReturnOK()
         {
