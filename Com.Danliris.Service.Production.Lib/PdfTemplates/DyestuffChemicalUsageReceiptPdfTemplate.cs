@@ -13,7 +13,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
     {
         public string DOCUMENT_TITLE = "RESEP PEMAKAIAN DYESTUFF & CHEMICAL UNTUK PASTA";
         public string DOCUMENT_TITLE_GROUND = "RESEP PEMAKAIAN DYESTUFF & CHEMICAL UNTUK GROUND";
-        public string ISO = "FM.FP-02-PR-06-09.1-009/R1";
+        //public string ISO = "FM.FP-02-PR-06-09.1-009/R1";
+        public string ISO = "FM.DP-02-LB-10-001";
         public string ISOGROUND = "FM.DP-02-LB-09.1-001/R1";
         public Font HEADER_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
         public Font HEADER_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
@@ -113,7 +114,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 document.Add(new Paragraph(" "));
             }
             document.Add(new Paragraph(" "));
-            document.Add(new Paragraph("Dibuat Oleh : ..................................... ", HEADER_FONT));
+
+            document.Add(new Paragraph("Dikeluarkan Oleh : ..........................                       Dicheck Oleh : ..........................                       Dibuat Oleh : ..........................", HEADER_FONT));
+
+            document.Add(new Paragraph(" "));
+            document.Add(new Paragraph(" "));
+            document.Add(new Paragraph(" "));
+
+            document.Add(new Paragraph("                                    (Laborat)                                                           (Colourist)                                                       (Pasta)", HEADER_FONT));  
             #endregion Header
 
             document.Close();
