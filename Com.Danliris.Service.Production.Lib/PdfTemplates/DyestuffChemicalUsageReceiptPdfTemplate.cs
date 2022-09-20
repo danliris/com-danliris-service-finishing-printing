@@ -14,8 +14,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
         public string DOCUMENT_TITLE = "RESEP PEMAKAIAN DYESTUFF & CHEMICAL UNTUK PASTA";
         public string DOCUMENT_TITLE_GROUND = "RESEP PEMAKAIAN DYESTUFF & CHEMICAL UNTUK GROUND";
         //public string ISO = "FM.FP-02-PR-06-09.1-009/R1";
-        public string ISO = "FM.DP-02-LB-10-001";
-        public string ISOGROUND = "FM.DP-02-LB-09.1-001/R1";
+        public string ISO = "FM.DP-02-LB-10-001/R1";
+        public string ISOGROUND = "FM.DP-02-LB-09.1-001/R2";
         public Font HEADER_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
         public Font HEADER_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
         public Font SUBHEADER_FONT_BOLD_UNDERLINED = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10, Font.UNDERLINE);
@@ -879,29 +879,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     table.AddCell(cellSubHeader2);
                 }
 
-                cellSubHeader.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
-                table.AddCell(cellSubHeader);
+                cellSubHeader2.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
+                table.AddCell(cellSubHeader2);
 
-                cellDate.Phrase = new Phrase(item.ReceiptDate.HasValue ? item.ReceiptDate.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                cellDate.Phrase = new Phrase(" ( Gram )", TEXT_FONT_BOLD);
+                cellDate.Colspan = 6;
                 table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs1Date.HasValue ? item.Adjs1Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.ReceiptDate.HasValue ? item.ReceiptDate.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs2Date.HasValue ? item.Adjs2Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.Adjs1Date.HasValue ? item.Adjs1Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs3Date.HasValue ? item.Adjs3Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.Adjs2Date.HasValue ? item.Adjs2Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs4Date.HasValue ? item.Adjs4Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.Adjs3Date.HasValue ? item.Adjs3Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
+
+                //cellDate.Phrase = new Phrase(item.Adjs4Date.HasValue ? item.Adjs4Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
                 foreach (var detail in item.DyestuffChemicalUsageReceiptItemDetails)
                 {
-                    if(detail.Name.ToLower() == VISCOSITAS)
+                    if (detail.Name.ToLower() == VISCOSITAS)
                     {
-                        cellRight.Phrase = new Phrase(detail.Name, TEXT_FONT);
+                        cellRight.Phrase = new Phrase(detail.Name + " (Cps)", TEXT_FONT);
+                        table.AddCell(cellRight);
+                    } else if (detail.Name.ToLower() == "air") {
+                        cellRight.Phrase = new Phrase(detail.Name + " (Cc)", TEXT_FONT);
                         table.AddCell(cellRight);
                     }
                     else
@@ -982,7 +989,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 //table.AddCell(cellLeft);
 
 
-                cellRight.Phrase = new Phrase("Pembuatan", TEXT_FONT);
+                cellRight.Phrase = new Phrase("Pembuatan (Kg)", TEXT_FONT);
                 table.AddCell(cellRight);
 
                 cellRight.Phrase = new Phrase("", TEXT_FONT);
@@ -1123,30 +1130,44 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     table.AddCell(cellSubHeader2);
                 }
 
-                cellSubHeader.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
-                table.AddCell(cellSubHeader);
+                cellSubHeader2.Phrase = new Phrase("Total", TEXT_FONT_BOLD);
+                table.AddCell(cellSubHeader2);
 
-                cellDate.Phrase = new Phrase(item.ReceiptDate.HasValue ? item.ReceiptDate.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                cellDate.Phrase = new Phrase("( Gram )", TEXT_FONT_BOLD);
+                cellDate.Colspan = 6;
                 table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs1Date.HasValue ? item.Adjs1Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.ReceiptDate.HasValue ? item.ReceiptDate.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs2Date.HasValue ? item.Adjs2Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.Adjs1Date.HasValue ? item.Adjs1Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs3Date.HasValue ? item.Adjs3Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.Adjs2Date.HasValue ? item.Adjs2Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
-                cellDate.Phrase = new Phrase(item.Adjs4Date.HasValue ? item.Adjs4Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
-                table.AddCell(cellDate);
+                //cellDate.Phrase = new Phrase(item.Adjs3Date.HasValue ? item.Adjs3Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
 
-                foreach (var detail in item.DyestuffChemicalUsageReceiptItemDetails)
+                //cellDate.Phrase = new Phrase(item.Adjs4Date.HasValue ? item.Adjs4Date.Value.AddHours(offset).ToString("dd-MMM-yyyy", new CultureInfo("id-ID")) : "", TEXT_FONT_BOLD);
+                //table.AddCell(cellDate);
+
+                var details = item.DyestuffChemicalUsageReceiptItemDetails;
+
+                foreach (var detail in details)
                 {
-                    if (detail.Name.ToLower() == VISCOSITAS)
+                    if (detail.Name.ToLower() == VISCOSITAS || detail.Name.ToLower() == "air" )
                     {
-                        cellRight.Phrase = new Phrase(detail.Name, TEXT_FONT);
-                        table.AddCell(cellRight);
+                        if (detail.Name.ToLower() == VISCOSITAS)
+                        {
+                            //cellRight.Phrase = new Phrase(detail.Name + " (Cps)", TEXT_FONT);
+                            //table.AddCell(cellRight);
+                        }
+                        else if (detail.Name.ToLower() == "air")
+                        {
+                            cellRight.Phrase = new Phrase(detail.Name + " (Cc)", TEXT_FONT);
+                            table.AddCell(cellRight);
+                        }
                     }
                     else
                     {
@@ -1157,16 +1178,16 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                     if (detail.Name.ToLower() == VISCOSITAS)
                     {
-                        if (detail.ReceiptQuantity == 0)
-                        {
-                            cellCenter.Phrase = new Phrase("", TEXT_FONT);
-                            table.AddCell(cellCenter);
-                        }
-                        else
-                        {
-                            cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                            table.AddCell(cellCenter);
-                        }
+                        //if (detail.ReceiptQuantity == 0)
+                        //{
+                        //    cellCenter.Phrase = new Phrase("", TEXT_FONT);
+                        //    table.AddCell(cellCenter);
+                        //}
+                        //else
+                        //{
+                        //    cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                        //    table.AddCell(cellCenter);
+                        //}
                     }
                     else
                     {
@@ -1174,20 +1195,36 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                         table.AddCell(cellCenter);
                     }
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs1Quantity == 0 ? "" : detail.Adjs1Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                    table.AddCell(cellCenter);
+                    if (detail.Name.ToLower() == VISCOSITAS)
+                    {
+                        //if (detail.ReceiptQuantity == 0)
+                        //{
+                        //    cellCenter.Phrase = new Phrase("", TEXT_FONT);
+                        //    table.AddCell(cellCenter);
+                        //}
+                        //else
+                        //{
+                        //    cellCenter.Phrase = new Phrase(detail.ReceiptQuantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                        //    table.AddCell(cellCenter);
+                        //}
+                    }
+                    else
+                    {
+                        cellCenter.Phrase = new Phrase(detail.Adjs1Quantity == 0 ? "" : detail.Adjs1Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                        table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs2Quantity == 0 ? "" : detail.Adjs2Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                    table.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase(detail.Adjs2Quantity == 0 ? "" : detail.Adjs2Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                        table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs3Quantity == 0 ? "" : detail.Adjs3Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                    table.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase(detail.Adjs3Quantity == 0 ? "" : detail.Adjs3Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                        table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase(detail.Adjs4Quantity == 0 ? "" : detail.Adjs4Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                    table.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase(detail.Adjs4Quantity == 0 ? "" : detail.Adjs4Quantity.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                        table.AddCell(cellCenter);
 
-                    cellCenter.Phrase = new Phrase("", TEXT_FONT);
-                    table.AddCell(cellCenter);
+                        cellCenter.Phrase = new Phrase("", TEXT_FONT);
+                        table.AddCell(cellCenter);
+                    }
 
                     //var total = detail.ReceiptQuantity + detail.Adjs1Quantity + detail.Adjs2Quantity + detail.Adjs3Quantity + detail.Adjs4Quantity;
 
@@ -1226,7 +1263,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 //table.AddCell(cellLeft);
 
 
-                cellSample.Phrase = new Phrase("Total Pembuatan", TEXT_FONT);
+                cellSample.Phrase = new Phrase("Total Pembuatan (Liter)", TEXT_FONT);
                 table.AddCell(cellSample);
 
                 cellSample.Phrase = new Phrase("", TEXT_FONT);
