@@ -2,6 +2,7 @@
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
@@ -14,8 +15,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
@@ -27,7 +28,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             #region Header
             PdfPTable headerTable = new PdfPTable(4);
             PdfPCell cellHeaderCS4 = new PdfPCell() { Border = Rectangle.NO_BORDER, Colspan = 4, PaddingTop = 1, PaddingBottom = 1  };
-            PdfPCell cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER, PaddingTop = 1, PaddingBottom = 1 };
+            PdfPCell cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER, PaddingTop = 1, PaddingBottom = 2 };
             float[] widths = new float[] { 6f, 10f, 5f, 10f };
             headerTable.SetWidths(widths);
             headerTable.WidthPercentage = 100;
@@ -40,7 +41,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_CENTER;
             headerTable.AddCell(cellHeaderCS4);
 
-            cellHeaderCS4.Phrase = new Phrase($"Delivery: {DateTime.Now.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", body_font);
+            string delivery_date = viewModel.ProductionOrder.DeliveryDate == null ? "-" : viewModel.ProductionOrder.DeliveryDate1.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
+            cellHeaderCS4.Phrase = new Phrase($"Delivery: {delivery_date}", body_font);
             //cellHeader.Phrase = new Phrase($"Delivery: {viewModel.ProductionOrder.DeliveryDate.Value.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_RIGHT;
             headerTable.AddCell(cellHeaderCS4);
@@ -158,7 +160,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             PdfPTable bodyTable1Left = new PdfPTable(6);
             bodyTable1Left.SplitLate = false;
-            float[] bodyTable1LeftWidths = new float[] { 10f, 10f, 10f, 50f, 10f, 10f };
+            float[] bodyTable1LeftWidths = new float[] { 11f, 11f, 11f, 40f, 11f, 12f };
             bodyTable1Left.SetWidths(bodyTable1LeftWidths);
             bodyTable1Left.WidthPercentage = 100;
 
@@ -169,37 +171,38 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             bodyTable1Right.WidthPercentage = 100;
 
             #region Set Table 1 Header
-            PdfPCell table1LeftCellHeader = new PdfPCell() { FixedHeight = 20 };
+            PdfPCell table1LeftCellHeader = new PdfPCell() { FixedHeight = 20};
             PdfPCell table1RightCellHeader = new PdfPCell() { FixedHeight = 20, Colspan = 4 };
 
             table1LeftCellHeader.Phrase = new Phrase("TGL", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
             table1LeftCellHeader.Phrase = new Phrase("MESIN", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
             table1LeftCellHeader.Phrase = new Phrase("SHIFT", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
             table1LeftCellHeader.Phrase = new Phrase("KETERANGAN", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
             table1LeftCellHeader.Phrase = new Phrase("NAMA", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
             table1LeftCellHeader.Phrase = new Phrase("PARAF", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
+            
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
             table1RightCellHeader.Phrase = new Phrase("FLOW PROSES", body_bold_font);
@@ -294,23 +297,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             {
                 if (i > 3 && i < Columns - 1)
                 {
-                    bodyTable2Widths[i] = 80 / StepTotal;
+                    bodyTable2Widths[i] = 60 / StepTotal;
                 }
                 else
                 {
-                    bodyTable2Widths[i] = 5;
+                    bodyTable2Widths[i] = 7;
                 }
             }
             bodyTable2.SetWidths(bodyTable2Widths);
             bodyTable2.WidthPercentage = 100;
 
             PdfPCell table2CellHeader = new PdfPCell();
+            PdfPCell table2CellContent = new PdfPCell() { PaddingBottom = 10};
             PdfPCell table2CellHeaderCS3 = new PdfPCell() { Colspan = 3 };
             PdfPCell table2CellHeaderRS2 = new PdfPCell() { Rowspan = 2 };
 
             table2CellHeaderRS2.Phrase = new Phrase("NO PCS", body_bold_font);
             table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
-            table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_CENTER;
+            table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable2.AddCell(table2CellHeaderRS2);
 
             table2CellHeaderCS3.Phrase = new Phrase("PANJANG", body_bold_font);
@@ -322,13 +326,13 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             {
                 table2CellHeaderRS2.Phrase = new Phrase(step.Alias, body_bold_font);
                 table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
-                table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_CENTER;
+                table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
                 bodyTable2.AddCell(table2CellHeaderRS2);
             }
 
             table2CellHeaderRS2.Phrase = new Phrase("NO PCS", body_bold_font);
             table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
-            table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_CENTER;
+            table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable2.AddCell(table2CellHeaderRS2);
 
             table2CellHeader.Phrase = new Phrase("ASLI", body_bold_font);
@@ -353,10 +357,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     string index = "";
                     if (j == 0)
                         index = i.ToString();
-                    table2CellHeader.Phrase = new Phrase(index, body_font);
-                    table2CellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-                    table2CellHeader.VerticalAlignment = Element.ALIGN_CENTER;
-                    bodyTable2.AddCell(table2CellHeader);
+                    table2CellContent.Phrase = new Phrase(index, body_font);
+                    table2CellContent.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table2CellContent.VerticalAlignment = Element.ALIGN_CENTER;
+                    bodyTable2.AddCell(table2CellContent);
                 }
             }
 
@@ -365,7 +369,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             signatureCell.Phrase = new Phrase("PARAF CHECK", body_bold_font);
             signatureCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            signatureCell.VerticalAlignment = Element.ALIGN_CENTER;
+            signatureCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable2.AddCell(signatureCell);
 
 
@@ -382,7 +386,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             bottomCell.Phrase = new Phrase("KETERANGAN", body_bold_font);
             bottomCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            bottomCell.VerticalAlignment = Element.ALIGN_CENTER;
+            bottomCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable2.AddCell(bottomCell);
 
             for (int j = 3; j < Columns; j++)

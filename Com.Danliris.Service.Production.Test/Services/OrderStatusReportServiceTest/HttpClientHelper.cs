@@ -22,6 +22,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.OrderStatusRepor
         //    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, identityService.Token);
         //    _client.DefaultRequestHeaders.Add("x-timezone-offset", identityService.TimezoneOffset.ToString());
         //}
+        private HttpClient _client = new HttpClient();
 
         public Task<HttpResponseMessage> GetAsync(string url)
         {
@@ -54,6 +55,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.OrderStatusRepor
         {
             throw new NotImplementedException();
         }
+        public async Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, string token, HttpContent content)
+        {
+            var request = new HttpRequestMessage(method, url)
+            {
+                Content = content
+            };
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return await _client.SendAsync(request);
+
+        }
     }
 
     public class HttpResponseTestGetMonthly : IHttpClientService
@@ -65,7 +77,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.OrderStatusRepor
         //    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, identityService.Token);
         //    _client.DefaultRequestHeaders.Add("x-timezone-offset", identityService.TimezoneOffset.ToString());
         //}
-
+        private HttpClient _client = new HttpClient();
         public Task<HttpResponseMessage> GetAsync(string url)
         {
             return Task.Run(() => new HttpResponseMessage()
@@ -95,6 +107,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Services.OrderStatusRepor
         public Task<HttpResponseMessage> PutAsync(string url, HttpContent content)
         {
             throw new NotImplementedException();
+        }
+        public async Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, string token, HttpContent content)
+        {
+            var request = new HttpRequestMessage(method, url)
+            {
+                Content = content
+            };
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return await _client.SendAsync(request);
+
         }
     }
 }

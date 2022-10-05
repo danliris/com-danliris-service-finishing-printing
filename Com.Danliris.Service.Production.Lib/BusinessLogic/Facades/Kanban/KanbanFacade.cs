@@ -4,6 +4,7 @@ using Com.Danliris.Service.Finishing.Printing.Lib.Helpers;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Daily_Operation;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Master.Machine;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Integration.Master;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
@@ -37,6 +38,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
         private readonly DbSet<KanbanStepModel> KanbanStepDbSet;
         private readonly DbSet<KanbanStepIndicatorModel> KanbanStepIndicatorDbSet;
         private readonly DbSet<MachineModel> MachineDbSet;
+        private readonly IServiceProvider _serviceProvider;
 
         private readonly string[] KanbanDataCells = { "A", "B", "C", "D" };
         private readonly string[] SnapshotDataCells = { "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
@@ -52,6 +54,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
             KanbanStepDbSet = DbContext.Set<KanbanStepModel>();
             KanbanStepIndicatorDbSet = DbContext.Set<KanbanStepIndicatorModel>();
             MachineDbSet = DbContext.Set<MachineModel>();
+
+            _serviceProvider = serviceProvider;
         }
 
         public ReadResponse<KanbanModel> Read(int page, int size, string order, List<string> select, string keyword, string filter)
@@ -179,7 +183,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
 
         public async Task<KanbanModel> ReadByIdAsync(int id)
         {
-
+            var httpClientService = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+            var response = httpClientService.GetAsync($@"{Utilities.APIEndpoint.Sales}sales/production-orders/57801");
             var result = await DbSet.Include(s => s.Instruction)
                                         .ThenInclude(x => x.Steps)
                                             .ThenInclude(a => a.Machine)

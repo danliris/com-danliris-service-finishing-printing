@@ -21,5 +21,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Utils
         {
             return Task.Run(() => new HttpResponseMessage());
         }
+
+        public Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, string token, HttpContent content)
+        {
+            return Task.Run(() => new HttpResponseMessage());
+        }
     }
 }
