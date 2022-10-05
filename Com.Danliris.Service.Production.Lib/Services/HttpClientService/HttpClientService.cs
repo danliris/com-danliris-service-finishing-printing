@@ -30,5 +30,17 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService
         {
             return await _client.PostAsync(url, content);
         }
+
+        public async Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, string token, HttpContent content)
+        {
+            var request = new HttpRequestMessage(method, url)
+            {
+                Content = content
+            };
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return await _client.SendAsync(request);
+
+        }
     }
 }

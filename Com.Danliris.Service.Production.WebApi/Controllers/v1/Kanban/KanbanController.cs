@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Interfaces.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban;
 using Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates;
+using Com.Danliris.Service.Finishing.Printing.Lib.Services.HttpClientService;
 using Com.Danliris.Service.Finishing.Printing.Lib.ViewModels.Kanban;
 using Com.Danliris.Service.Production.Lib.Services.IdentityService;
 using Com.Danliris.Service.Production.Lib.Services.ValidateService;
@@ -14,6 +15,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Com.Danliris.Service.Finishing.Printing.Lib.Utilities;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
 {
@@ -25,8 +31,16 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
     {
         private const string LANJUT_PROSES = "Lanjut Proses";
         private const string REPROSES = "Reproses";
-        public KanbanController(IIdentityService identityService, IValidateService validateService, IKanbanFacade facade, IMapper mapper) : base(identityService, validateService, facade, mapper, "1.0.0")
+        private readonly IIdentityService IdentityService;
+        private readonly IServiceProvider serviceProvider;
+        private readonly IHttpClientService HttpClientService;
+        public KanbanController(IIdentityService identityService, IValidateService validateService, IKanbanFacade facade, IMapper mapper, IServiceProvider serviceProvider) : base(identityService, validateService, facade, mapper, "1.0.0")
         {
+            
+            IdentityService = identityService;
+            this.serviceProvider = serviceProvider;
+            HttpClientService = serviceProvider.GetService<IHttpClientService>();
+
         }
 
         [HttpPost("create/carts")]
@@ -96,6 +110,8 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
 
             try
             {
+                VerifyUser();
+
                 var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
                 int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 var model = await Facade.ReadByIdAsync(Id);
@@ -110,9 +126,35 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                 else
                 {
                     //var oldKanbanModel = !model.OldKanbanId.Equals(0) ? await Facade.ReadByIdAsync(model.OldKanbanId) : null;
-
+                    //IdentityService.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
                     var viewModel = Mapper.Map<KanbanViewModel>(model);
                     //var oldKanbanViewModel = Mapper.Map<KanbanViewModel>(oldKanbanModel);
+
+                    //var request = new HttpRequestMessage(HttpMethod.Get, $@"{APIEndpoint.Sales}sales/production-orders/" + viewModel.ProductionOrder.Id);
+
+
+
+
+                    //var client = _clientFactory.CreateClient();
+
+                    //var http = serviceProvider.GetService<IHttpClientService>();
+                    var listRO = "";
+                    var httpContent = new StringContent(JsonConvert.SerializeObject(listRO), Encoding.UTF8, "application/json");
+                    var token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
+                    var costCalculationUri = $@"{APIEndpoint.Sales}sales/production-orders/" + viewModel.ProductionOrder.Id;
+                    var httpResponse = await HttpClientService.SendAsync(HttpMethod.Get, costCalculationUri, token, httpContent);
+                    var contentString = await httpResponse.Content.ReadAsStringAsync();
+
+                    Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+
+                    object json;
+                    if (content.TryGetValue("data", out json))
+                    {
+                        Dictionary<string, object> spp = JsonConvert.DeserializeObject<Dictionary<string, object>>(json.ToString());
+                        var tanggal = spp.TryGetValue("DeliveryDate", out json) ? (json != null ? json.ToString() : "") : "";
+                        viewModel.ProductionOrder.DeliveryDate1 = Convert.ToDateTime(tanggal);
+                    }
+                    
 
                     var PdfTemplate = new KanbanPdfTemplate();
                     MemoryStream stream = PdfTemplate.GeneratePdfTemplate(viewModel, timeoffsset);

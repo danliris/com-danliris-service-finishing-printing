@@ -34,7 +34,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -60,7 +62,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -84,6 +88,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
             var mockIdentityService = new Mock<IIdentityService>();
 
             var mockValidateService = new Mock<IValidateService>();
+
+            var mockServiceProvider = new Mock<IServiceProvider>();
             KanbanViewModel vm = new KanbanViewModel()
             {
                 ProductionOrder = new Production.Lib.ViewModels.Integration.Sales.FinishingPrinting.ProductionOrderIntegrationViewModel()
@@ -118,7 +124,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
                 }
             };
             mockMapper.Setup(s => s.Map<KanbanViewModel>(It.IsAny<KanbanModel>())).Returns(vm);
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -144,7 +150,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -170,7 +178,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -196,7 +206,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -334,7 +346,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -360,7 +374,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -386,7 +402,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -412,7 +430,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -438,7 +458,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -464,7 +486,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -490,7 +514,10 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -518,7 +545,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -545,7 +573,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -572,7 +602,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -598,7 +630,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Test.Controllers
 
             var mockValidateService = new Mock<IValidateService>();
 
-            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object)
+            var mockServiceProvider = new Mock<IServiceProvider>();
+
+            KanbanController controller = new KanbanController(mockIdentityService.Object, mockValidateService.Object, mockFacade.Object, mockMapper.Object, mockServiceProvider.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
