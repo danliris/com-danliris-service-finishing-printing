@@ -350,7 +350,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             table2CellHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable2.AddCell(table2CellHeader);
 
-            for (int i = 1; i <= 30; i++)
+            for (int i = 1; i <= 22; i++)
             {
                 for (int j = 0; j < Columns; j++)
                 {
