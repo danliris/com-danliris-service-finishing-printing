@@ -184,7 +184,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Facades.Kanb
         public async Task<KanbanModel> ReadByIdAsync(int id)
         {
             var httpClientService = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
-            var response = httpClientService.GetAsync($@"{Utilities.APIEndpoint.Sales}sales/production-orders/57801");
+            //var response = httpClientService.GetAsync($@"{Utilities.APIEndpoint.Sales}sales/production-orders/57801");
             var result = await DbSet.Include(s => s.Instruction)
                                         .ThenInclude(x => x.Steps)
                                             .ThenInclude(a => a.Machine)

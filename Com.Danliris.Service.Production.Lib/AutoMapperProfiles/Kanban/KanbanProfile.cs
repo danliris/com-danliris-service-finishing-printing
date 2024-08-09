@@ -54,6 +54,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.AutoMapperProfiles.Kanban
                 .ForPath(p => p.SelectedProductionOrderDetail.ColorType.Name, opt => opt.MapFrom(m => m.SelectedProductionOrderDetailColorTypeName))
                 .ForPath(p => p.SelectedProductionOrderDetail.Quantity, opt => opt.MapFrom(m => m.SelectedProductionOrderDetailQuantity))
                 .ForPath(p => p.SelectedProductionOrderDetail.Uom.Unit, opt => opt.MapFrom(m => m.SelectedProductionOrderDetailUomUnit))
+                .ForPath(p => p.ProductionOrder.StandardTestName, opt => opt.MapFrom(m => m.StandarTestName))
                 .ReverseMap();
         }
     }

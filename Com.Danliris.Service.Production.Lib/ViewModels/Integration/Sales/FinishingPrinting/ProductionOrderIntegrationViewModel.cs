@@ -48,5 +48,7 @@ namespace Com.Danliris.Service.Production.Lib.ViewModels.Integration.Sales.Finis
         public StandardTestIntegrationViewModel StandardTests { get; set; }
         public UOMIntegrationViewModel Uom { get; set; }
         public YarnMaterialIntegrationViewModel YarnMaterial { get; set; }
+        public string StandardTestName { get; set; }
+
     }
 }
