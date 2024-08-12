@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             PdfPTable headerTable = new PdfPTable(4);
             PdfPCell cellHeaderCS4 = new PdfPCell() { Border = Rectangle.NO_BORDER, Colspan = 4, PaddingTop = 1, PaddingBottom = 1  };
             PdfPCell cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER, PaddingTop = 1, PaddingBottom = 2 };
-            float[] widths = new float[] { 6f, 10f, 5f, 10f };
+            float[] widths = new float[] { 7f, 10f, 5f, 10f };
             headerTable.SetWidths(widths);
             headerTable.WidthPercentage = 100;
 
@@ -42,16 +42,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             headerTable.AddCell(cellHeaderCS4);
 
             string delivery_date = viewModel.ProductionOrder.DeliveryDate == null ? "-" : viewModel.ProductionOrder.DeliveryDate1.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
-            cellHeaderCS4.Phrase = new Phrase($"Delivery: {delivery_date}", body_font);
-            //cellHeader.Phrase = new Phrase($"Delivery: {viewModel.ProductionOrder.DeliveryDate.Value.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
+            cellHeaderCS4.Phrase = new Phrase($"DELIVERY : {delivery_date}", body_font);
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_RIGHT;
             headerTable.AddCell(cellHeaderCS4);
 
-            cellHeaderCS4.Phrase = new Phrase("--------------------------------", bold_font);
-            cellHeaderCS4.HorizontalAlignment = Element.ALIGN_RIGHT;
-            headerTable.AddCell(cellHeaderCS4);
-
-            cellHeaderCS4.Phrase = new Phrase("FM-FP-00-PC-19-020", body_bold_font);
+            cellHeaderCS4.Phrase = new Phrase("FM-DP-00-EN-001/R1", body_bold_font);
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_RIGHT;
             headerTable.AddCell(cellHeaderCS4);
 
@@ -140,6 +135,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
             headerTable.AddCell(cellHeader);
 
+            //
+            cellHeader.Phrase = new Phrase("STANDARD TEST", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+
+            cellHeader.Phrase = new Phrase($": {viewModel.ProductionOrder.StandardTestName}", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+
+            cellHeader.Phrase = new Phrase("", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+
+            cellHeader.Phrase = new Phrase("", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+            //
+
             cellHeaderCS4.Phrase = new Phrase("", bold_font);
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_CENTER;
             headerTable.AddCell(cellHeaderCS4);
@@ -152,44 +165,27 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             #endregion Header
 
             #region Table 1
-            PdfPTable bodyTable1 = new PdfPTable(2);
-            bodyTable1.SplitLate = false;
-            float[] bodyTable1Widths = new float[] { 50f, 50f };
-            bodyTable1.SetWidths(bodyTable1Widths);
-            bodyTable1.WidthPercentage = 100;
-
             PdfPTable bodyTable1Left = new PdfPTable(6);
             bodyTable1Left.SplitLate = false;
-            float[] bodyTable1LeftWidths = new float[] { 11f, 11f, 11f, 40f, 11f, 12f };
+            float[] bodyTable1LeftWidths = new float[] { 10f, 10f, 10f, 10f, 10f, 50f };
             bodyTable1Left.SetWidths(bodyTable1LeftWidths);
             bodyTable1Left.WidthPercentage = 100;
-
-            PdfPTable bodyTable1Right = new PdfPTable(4);
-            bodyTable1Right.SplitLate = false;
-            float[] bodyTable1RightWidths = new float[] { 30f, 20f, 30f, 20f };
-            bodyTable1Right.SetWidths(bodyTable1RightWidths);
-            bodyTable1Right.WidthPercentage = 100;
 
             #region Set Table 1 Header
             PdfPCell table1LeftCellHeader = new PdfPCell() { FixedHeight = 20};
             PdfPCell table1RightCellHeader = new PdfPCell() { FixedHeight = 20, Colspan = 4 };
 
-            table1LeftCellHeader.Phrase = new Phrase("TGL", body_bold_font);
+            table1LeftCellHeader.Phrase = new Phrase("PROSES", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
-            table1LeftCellHeader.Phrase = new Phrase("MESIN", body_bold_font);
+            table1LeftCellHeader.Phrase = new Phrase("TANGGAL", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
             table1LeftCellHeader.Phrase = new Phrase("SHIFT", body_bold_font);
-            table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
-            bodyTable1Left.AddCell(table1LeftCellHeader);
-
-            table1LeftCellHeader.Phrase = new Phrase("KETERANGAN", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable1Left.AddCell(table1LeftCellHeader);
@@ -202,13 +198,14 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             table1LeftCellHeader.Phrase = new Phrase("PARAF", body_bold_font);
             table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
-            
             bodyTable1Left.AddCell(table1LeftCellHeader);
 
-            table1RightCellHeader.Phrase = new Phrase("FLOW PROSES", body_bold_font);
-            table1RightCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table1RightCellHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable1Right.AddCell(table1RightCellHeader);
+            table1LeftCellHeader.Phrase = new Phrase("KETERANGAN", body_bold_font);
+            table1LeftCellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            table1LeftCellHeader.VerticalAlignment = Element.ALIGN_MIDDLE;
+
+            bodyTable1Left.AddCell(table1LeftCellHeader);
+
             #endregion Set Table 1 Header
 
             #region Set Table 1 Value
@@ -217,46 +214,46 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             PdfPCell table1RightCellNoRightBorder = new PdfPCell() { FixedHeight = 15, BorderWidthRight = 0 };
             PdfPCell table1RightCellNoLeftBorder = new PdfPCell() { FixedHeight = 15, BorderWidthLeft = 0 };
 
-            int totalRow = 0;
-            foreach (var step in viewModel.Instruction.Steps)
-            {
-                table1RightCellRS2CS4.Phrase = new Phrase(step.Process, body_bold_font);
-                table1RightCellRS2CS4.HorizontalAlignment = Element.ALIGN_CENTER;
-                table1RightCellRS2CS4.VerticalAlignment = Element.ALIGN_CENTER;
-                bodyTable1Right.AddCell(table1RightCellRS2CS4);
-                totalRow += 2;
+            int totalRow = 3;
+            //foreach (var step in viewModel.Instruction.Steps)
+            //{
+            //    table1RightCellRS2CS4.Phrase = new Phrase(step.Process, body_bold_font);
+            //    table1RightCellRS2CS4.HorizontalAlignment = Element.ALIGN_CENTER;
+            //    table1RightCellRS2CS4.VerticalAlignment = Element.ALIGN_CENTER;
+            //    bodyTable1Right.AddCell(table1RightCellRS2CS4);
+            //    totalRow += 2;
 
-                int countIndex = 0;
-                foreach (var stepIndicator in step.StepIndicators)
-                {
-                    table1RightCellNoRightBorder.Phrase = new Phrase(stepIndicator.Name, body_font);
-                    table1RightCellNoRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCellNoRightBorder);
+            //    int countIndex = 0;
+            //    foreach (var stepIndicator in step.StepIndicators)
+            //    {
+            //        table1RightCellNoRightBorder.Phrase = new Phrase(stepIndicator.Name, body_font);
+            //        table1RightCellNoRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            //        bodyTable1Right.AddCell(table1RightCellNoRightBorder);
 
-                    table1RightCellNoLeftBorder.Phrase = new Phrase($": {stepIndicator.Value} {stepIndicator.Uom}", body_font);
-                    table1RightCellNoLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCellNoLeftBorder);
+            //        table1RightCellNoLeftBorder.Phrase = new Phrase($": {stepIndicator.Value} {stepIndicator.Uom}", body_font);
+            //        table1RightCellNoLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            //        bodyTable1Right.AddCell(table1RightCellNoLeftBorder);
 
-                    countIndex++;
-                    if (countIndex == 2)
-                    {
-                        totalRow++;
-                        countIndex = 0;
-                    }
-                }
+            //        countIndex++;
+            //        if (countIndex == 2)
+            //        {
+            //            totalRow++;
+            //            countIndex = 0;
+            //        }
+            //    }
 
-                if (step.StepIndicators.Count % 2 != 0)
-                {
-                    table1RightCellNoRightBorder.Phrase = new Phrase("", body_font);
-                    table1RightCellNoRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCellNoRightBorder);
+            //    if (step.StepIndicators.Count % 2 != 0)
+            //    {
+            //        table1RightCellNoRightBorder.Phrase = new Phrase("", body_font);
+            //        table1RightCellNoRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            //        bodyTable1Right.AddCell(table1RightCellNoRightBorder);
 
-                    table1RightCellNoLeftBorder.Phrase = new Phrase("", body_font);
-                    table1RightCellNoLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
-                    bodyTable1Right.AddCell(table1RightCellNoLeftBorder);
-                    totalRow++;
-                }
-            }
+            //        table1RightCellNoLeftBorder.Phrase = new Phrase("", body_font);
+            //        table1RightCellNoLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            //        bodyTable1Right.AddCell(table1RightCellNoLeftBorder);
+            //        totalRow++;
+            //    }
+            //}
 
             for (int i = 0; i < totalRow; i++)
             {
@@ -266,81 +263,77 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             PdfPCell bodyTable1LeftCol = new PdfPCell() { Border = Rectangle.NO_BORDER, Padding = 0 };
             bodyTable1LeftCol.AddElement(bodyTable1Left);
             PdfPCell bodyTable1RightCol = new PdfPCell() { Border = Rectangle.NO_BORDER, Padding = 0 };
-            bodyTable1RightCol.AddElement(bodyTable1Right);
+            bodyTable1RightCol.AddElement(bodyTable1Left);
 
-            bodyTable1.AddCell(bodyTable1LeftCol);
-            bodyTable1.AddCell(bodyTable1RightCol);
+            bodyTable1Left.AddCell(bodyTable1LeftCol);
 
-            //try
-            //{
-            //    document.Add(bodyTable1);
-            //}
-            //catch(Exception e)
-            //{
-            //    throw new Exception(e.Message);
-            //}
+            try
+            {
+                document.Add(bodyTable1Left);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
 
             #endregion Set Table 1 Value
 
-            document.Add(bodyTable1);
+            //document.Add(bodyTable1Left);
             #endregion Table 1
 
             document.Add(new Paragraph("\n"));
 
             #region Table 2
-            int StepTotal = viewModel.Instruction.Steps.Count;
-            int Columns = StepTotal + 5;
-            PdfPTable bodyTable2 = new PdfPTable(Columns);
-            float[] bodyTable2Widths = new float[Columns];
+            //int StepTotal = viewModel.Instruction.Steps.Count;
+            //int Columns = StepTotal + 5;
+            PdfPTable bodyTable2 = new PdfPTable(5);
+            bodyTable1Left.SplitLate = false;
+            float[] bodyTable2Widths = new float[] { 12.5f, 12.5f, 12.5f, 12.5f, 50f };
 
-            for (int i = 0; i < Columns; i++)
-            {
-                if (i > 3 && i < Columns - 1)
-                {
-                    bodyTable2Widths[i] = 60 / StepTotal;
-                }
-                else
-                {
-                    bodyTable2Widths[i] = 7;
-                }
-            }
             bodyTable2.SetWidths(bodyTable2Widths);
             bodyTable2.WidthPercentage = 100;
 
             PdfPCell table2CellHeader = new PdfPCell();
-            PdfPCell table2CellContent = new PdfPCell() { PaddingBottom = 10};
-            PdfPCell table2CellHeaderCS3 = new PdfPCell() { Colspan = 3 };
+            PdfPCell table2CellContent = new PdfPCell() { PaddingBottom = 8};
+            PdfPCell table2CellHeaderCS3 = new PdfPCell() { Colspan = 4, PaddingBottom = 8 };
+            PdfPCell table2CellHeaderCS2 = new PdfPCell() { Colspan = 2 };
             PdfPCell table2CellHeaderRS2 = new PdfPCell() { Rowspan = 2 };
+            PdfPCell table2CellHeaderRS3 = new PdfPCell() { Rowspan = 3 };
 
-            table2CellHeaderRS2.Phrase = new Phrase("NO PCS", body_bold_font);
-            table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
-            table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
-            bodyTable2.AddCell(table2CellHeaderRS2);
-
-            table2CellHeaderCS3.Phrase = new Phrase("PANJANG", body_bold_font);
+            table2CellHeaderCS3.Phrase = new Phrase("DATA IDENTITAS GREIGE", body_bold_font);
             table2CellHeaderCS3.HorizontalAlignment = Element.ALIGN_CENTER;
             table2CellHeaderCS3.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable2.AddCell(table2CellHeaderCS3);
 
-            foreach (var step in viewModel.Instruction.Steps)
-            {
-                table2CellHeaderRS2.Phrase = new Phrase(step.Alias, body_bold_font);
-                table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
-                table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
-                bodyTable2.AddCell(table2CellHeaderRS2);
-            }
+            table2CellHeaderRS3.Phrase = new Phrase("KEETRANGAN", body_bold_font);
+            table2CellHeaderRS3.HorizontalAlignment = Element.ALIGN_CENTER;
+            table2CellHeaderRS3.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable2.AddCell(table2CellHeaderRS3);
+
+            //foreach (var step in viewModel.Instruction.Steps)
+            //{
+            //    table2CellHeaderRS2.Phrase = new Phrase(step.Alias, body_bold_font);
+            //    table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
+            //    table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
+            //    bodyTable2.AddCell(table2CellHeaderRS2);
+            //}
 
             table2CellHeaderRS2.Phrase = new Phrase("NO PCS", body_bold_font);
             table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
             table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable2.AddCell(table2CellHeaderRS2);
 
-            table2CellHeader.Phrase = new Phrase("ASLI", body_bold_font);
-            table2CellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            table2CellHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable2.AddCell(table2CellHeader);
+            table2CellHeaderRS2.Phrase = new Phrase("PANJANG", body_bold_font);
+            table2CellHeaderRS2.HorizontalAlignment = Element.ALIGN_CENTER;
+            table2CellHeaderRS2.VerticalAlignment = Element.ALIGN_MIDDLE;
+            bodyTable2.AddCell(table2CellHeaderRS2);
 
-            table2CellHeader.Phrase = new Phrase("GRADE", body_bold_font);
+            table2CellHeaderCS2.Phrase = new Phrase("GRADE", body_bold_font);
+            table2CellHeaderCS2.HorizontalAlignment = Element.ALIGN_CENTER;
+            table2CellHeaderCS2.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable2.AddCell(table2CellHeaderCS2);
+
+            table2CellHeader.Phrase = new Phrase("ASLI", body_bold_font);
             table2CellHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             table2CellHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable2.AddCell(table2CellHeader);
@@ -350,9 +343,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             table2CellHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable2.AddCell(table2CellHeader);
 
-            for (int i = 1; i <= 22; i++)
+            for (int i = 1; i <= 25; i++)
             {
-                for (int j = 0; j < Columns; j++)
+                for (int j = 0; j < 5; j++)
                 {
                     string index = "";
                     if (j == 0)
@@ -364,37 +357,20 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                 }
             }
 
-            PdfPCell signatureCell = new PdfPCell() { FixedHeight = 30, Colspan = 3 };
-            PdfPCell signatureBlankCell = new PdfPCell() { FixedHeight = 30 };
+            PdfPCell signatureCell = new PdfPCell() { FixedHeight = 25, Colspan = 4 };
+            PdfPCell signatureBlankCell = new PdfPCell() { FixedHeight = 25 };
 
             signatureCell.Phrase = new Phrase("PARAF CHECK", body_bold_font);
             signatureCell.HorizontalAlignment = Element.ALIGN_CENTER;
             signatureCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             bodyTable2.AddCell(signatureCell);
 
-
-            for (int j = 3; j < Columns; j++)
+            for (int j = 3; j < 5; j++)
             {
                 signatureBlankCell.Phrase = new Phrase("", body_font);
                 signatureBlankCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 signatureBlankCell.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable2.AddCell(signatureBlankCell);
-            }
-
-            PdfPCell bottomCell = new PdfPCell() { FixedHeight = 40, Colspan = 3 };
-            PdfPCell bottomBlankCell = new PdfPCell() { FixedHeight = 40 };
-
-            bottomCell.Phrase = new Phrase("KETERANGAN", body_bold_font);
-            bottomCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            bottomCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            bodyTable2.AddCell(bottomCell);
-
-            for (int j = 3; j < Columns; j++)
-            {
-                bottomBlankCell.Phrase = new Phrase("", body_font);
-                bottomBlankCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                bottomBlankCell.VerticalAlignment = Element.ALIGN_CENTER;
-                bodyTable2.AddCell(bottomBlankCell);
             }
 
             document.Add(bodyTable2);

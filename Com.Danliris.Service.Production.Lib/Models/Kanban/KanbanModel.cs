@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.Kanban
         public string SelectedProductionOrderDetailColorTypeName { get; set; }
         public double SelectedProductionOrderDetailQuantity { get; set; }
         public string SelectedProductionOrderDetailUomUnit { get; set; }
+        public string StandarTestName { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
