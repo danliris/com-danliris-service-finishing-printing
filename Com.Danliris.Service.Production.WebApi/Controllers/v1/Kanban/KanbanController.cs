@@ -132,9 +132,6 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
 
                     //var request = new HttpRequestMessage(HttpMethod.Get, $@"{APIEndpoint.Sales}sales/production-orders/" + viewModel.ProductionOrder.Id);
 
-
-
-
                     //var client = _clientFactory.CreateClient();
 
                     //var http = serviceProvider.GetService<IHttpClientService>();
@@ -154,15 +151,26 @@ namespace Com.Danliris.Service.Finishing.Printing.WebApi.Controllers.v1.Kanban
                         var tanggal = spp.TryGetValue("DeliveryDate", out json) ? (json != null ? json.ToString() : "") : "";
                         viewModel.ProductionOrder.DeliveryDate1 = Convert.ToDateTime(tanggal);
                     }
-                    
 
-                    var PdfTemplate = new KanbanPdfTemplate();
-                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(viewModel, timeoffsset);
-                    return new FileStreamResult(stream, "application/pdf")
+                    //
+                    if (viewModel.Instruction.Name == "COATING")
                     {
-                        FileDownloadName = viewModel.ProductionOrder.OrderNo + " " + viewModel.Cart.CartNumber + ".pdf"
-                    };
-
+                        var PdfTemplate = new KanbanPdfTemplateOld();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplateOld(viewModel, timeoffsset);
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = viewModel.ProductionOrder.OrderNo + " " + viewModel.Cart.CartNumber + ".pdf"
+                        };
+                    }
+                    else
+                    {
+                        var PdfTemplate = new KanbanPdfTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(viewModel, timeoffsset);
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = viewModel.ProductionOrder.OrderNo + " " + viewModel.Cart.CartNumber + ".pdf"
+                        };
+                    } 
                 }
             }
             catch (Exception e)
