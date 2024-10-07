@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_RIGHT;
             headerTable.AddCell(cellHeaderCS4);
 
-            cellHeaderCS4.Phrase = new Phrase("--------------------------------", bold_font);
+            cellHeaderCS4.Phrase = new Phrase("---------------------------------", bold_font);
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_RIGHT;
             headerTable.AddCell(cellHeaderCS4);
 
@@ -138,6 +138,24 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
             headerTable.AddCell(cellHeader);
 
+            //
+            cellHeader.Phrase = new Phrase("STANDARD TEST", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+
+            cellHeader.Phrase = new Phrase($": {viewModel.ProductionOrder.StandardTestName}", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+
+            cellHeader.Phrase = new Phrase("", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+
+            cellHeader.Phrase = new Phrase("", body_font);
+            cellHeader.HorizontalAlignment = Element.ALIGN_LEFT;
+            headerTable.AddCell(cellHeader);
+            //
+
             cellHeaderCS4.Phrase = new Phrase("", bold_font);
             cellHeaderCS4.HorizontalAlignment = Element.ALIGN_CENTER;
             headerTable.AddCell(cellHeaderCS4);
@@ -158,7 +176,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             PdfPTable bodyTable1Left = new PdfPTable(6);
             bodyTable1Left.SplitLate = false;
-            float[] bodyTable1LeftWidths = new float[] { 10f, 10f, 10f, 50f, 10f, 10f };
+            float[] bodyTable1LeftWidths = new float[] { 11f, 12.5f, 11f, 50f, 12.5f, 12.5f };
             bodyTable1Left.SetWidths(bodyTable1LeftWidths);
             bodyTable1Left.WidthPercentage = 100;
 
@@ -286,25 +304,28 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
             #region Table 2
             int StepTotal = viewModel.Instruction.Steps.Count;
-            int Columns = StepTotal + 5;
-            PdfPTable bodyTable2 = new PdfPTable(Columns);
-            float[] bodyTable2Widths = new float[Columns];
+            //int Columns = StepTotal + 5;
+            //PdfPTable bodyTable2 = new PdfPTable(Columns);
+            PdfPTable bodyTable2 = new PdfPTable(7);
+            //float[] bodyTable2Widths = new float[Columns];
+            float[] bodyTable2Widths = new float[] { 12.5f, 12.5f, 12.5f, 12.5f, 40f, 40f, 12.5f };
 
-            for (int i = 0; i < Columns; i++)
-            {
-                if (i > 3 && i < Columns - 1)
-                {
-                    bodyTable2Widths[i] = 80 / StepTotal;
-                }
-                else
-                {
-                    bodyTable2Widths[i] = 5;
-                }
-            }
+            //for (int i = 0; i < Columns; i++)
+            //{
+            //    if (i > 3 && i < Columns - 1)
+            //    {
+            //        bodyTable2Widths[i] = 60 / StepTotal;
+            //    }
+            //    else
+            //    {
+            //        bodyTable2Widths[i] = 5;
+            //    }
+            //}
+
             bodyTable2.SetWidths(bodyTable2Widths);
             bodyTable2.WidthPercentage = 100;
 
-            PdfPCell table2CellHeader = new PdfPCell();
+            PdfPCell table2CellHeader = new PdfPCell() { PaddingBottom = 6 };
             PdfPCell table2CellHeaderCS3 = new PdfPCell() { Colspan = 3 };
             PdfPCell table2CellHeaderRS2 = new PdfPCell() { Rowspan = 2 };
 
@@ -346,9 +367,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             table2CellHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable2.AddCell(table2CellHeader);
 
-            for (int i = 1; i <= 30; i++)
+            for (int i = 1; i <= 25; i++)
             {
-                for (int j = 0; j < Columns; j++)
+                for (int j = 0; j < 7; j++)
                 {
                     string index = "";
                     if (j == 0)
@@ -369,7 +390,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             bodyTable2.AddCell(signatureCell);
 
 
-            for (int j = 3; j < Columns; j++)
+            for (int j = 3; j < 7; j++)
             {
                 signatureBlankCell.Phrase = new Phrase("", body_font);
                 signatureBlankCell.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -385,7 +406,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
             bottomCell.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable2.AddCell(bottomCell);
 
-            for (int j = 3; j < Columns; j++)
+            for (int j = 3; j < 7; j++)
             {
                 bottomBlankCell.Phrase = new Phrase("", body_font);
                 bottomBlankCell.HorizontalAlignment = Element.ALIGN_CENTER;
