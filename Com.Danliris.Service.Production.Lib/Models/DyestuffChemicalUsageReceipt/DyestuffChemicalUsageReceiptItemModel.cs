@@ -29,6 +29,8 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.Models.DyestuffChemicalUsa
 
         public decimal TotalRealizationQty { get; set; }
 
+        public decimal Wide { get; set; }
+
         public ICollection<DyestuffChemicalUsageReceiptItemDetailModel> DyestuffChemicalUsageReceiptItemDetails { get; set; }
 
         public int DyestuffChemicalUsageReceiptId { get; set; }

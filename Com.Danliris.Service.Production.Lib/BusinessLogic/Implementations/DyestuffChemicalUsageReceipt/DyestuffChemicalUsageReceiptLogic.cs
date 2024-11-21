@@ -81,6 +81,7 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.BusinessLogic.Implementati
                 dbItem.Adjs3Date = item.Adjs3Date;
                 dbItem.Adjs4Date = item.Adjs4Date;
                 dbItem.TotalRealizationQty = item.TotalRealizationQty;
+                dbItem.Wide = item.Wide;
                 EntityExtension.FlagForUpdate(dbItem, IdentityService.Username, UserAgent);
 
                 var addedDetails = item.DyestuffChemicalUsageReceiptItemDetails.Where(x => !dbItem.DyestuffChemicalUsageReceiptItemDetails.Any(y => y.Id == x.Id)).ToList();
