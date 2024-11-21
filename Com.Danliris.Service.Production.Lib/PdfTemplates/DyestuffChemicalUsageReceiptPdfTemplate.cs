@@ -861,9 +861,9 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                 };
 
-                cellColorName.Phrase = new Phrase("Luas", TEXT_FONT_BOLD);
+                cellColorName.Phrase = new Phrase("Luas Area", TEXT_FONT_BOLD);
                 table.AddCell(cellColorName);
-                cellColor.Phrase = new Phrase(item.Wide.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT_BOLD);
+                cellColor.Phrase = new Phrase(item.Wide.ToString("N2", CultureInfo.InvariantCulture)+ "%", TEXT_FONT_BOLD);
                 table.AddCell(cellColor);
 
                 cellColorName.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
