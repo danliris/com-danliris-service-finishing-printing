@@ -861,6 +861,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
 
                 };
 
+                cellColorName.Phrase = new Phrase("Luas Area", TEXT_FONT_BOLD);
+                table.AddCell(cellColorName);
+                cellColor.Phrase = new Phrase(item.Wide.ToString("N2", CultureInfo.InvariantCulture)+ "%", TEXT_FONT_BOLD);
+                table.AddCell(cellColor);
+
                 cellColorName.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
                 table.AddCell(cellColorName);
 
@@ -1111,6 +1116,11 @@ namespace Com.Danliris.Service.Finishing.Printing.Lib.PdfTemplates
                     VerticalAlignment = Element.ALIGN_TOP,
                     //MinimumHeight = rowHeight,
                 };
+                cellSubHeader2.Phrase = new Phrase("Luas", TEXT_FONT_BOLD);
+                table.AddCell(cellSubHeader2);
+
+                cellColor.Phrase = new Phrase(item.Wide.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT_BOLD);
+                table.AddCell(cellColor);
 
                 cellSubHeader2.Phrase = new Phrase("Warna", TEXT_FONT_BOLD);
                 table.AddCell(cellSubHeader2);
